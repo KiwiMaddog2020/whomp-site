@@ -85,8 +85,12 @@ section{margin-top:64px}
 .arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
 .arc p{margin:0;font-size:.88rem;color:var(--dim)}
 
-/* GATED: the shape is real even though the auth wiring is not landed here yet.
-   Deploy 46 ships the sign-in UI, so this is the surface it plugs into. */
+/* SIGN-IN, reused from the game's own accounts worker so one account covers
+   both surfaces. Same worker, same client id, same session shape. */
+.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:18px 0 0}
+.authbar .btn{padding:9px 18px;font-size:.82rem;box-shadow:none}
+.authbar-name{color:var(--cream);font-weight:700;font-size:.85rem}
+
 .gate{border:var(--edge);border-radius:16px;padding:26px;background:
   linear-gradient(180deg,rgba(177,75,255,.07),rgba(255,47,126,.04));text-align:center}
 .gate ul{list-style:none;padding:0;margin:18px 0;display:grid;gap:9px;
@@ -95,6 +99,10 @@ section{margin-top:64px}
   background:rgba(6,4,14,.5);color:var(--dim)}
 .gate li b{display:block;color:var(--cream);font-size:.94rem;font-weight:700;margin-bottom:2px}
 .lock{opacity:.5;font-size:.8rem}
+.gate-auth{margin-top:20px;padding-top:20px;border-top:var(--edge)}
+.gate-error{min-height:18px;font-size:.82rem;font-weight:700;color:#ffb3cf;margin:10px 0 0}
+.gate-locked{margin:16px 0;padding:16px;border:var(--edge);border-radius:10px;
+  background:rgba(6,4,14,.5);text-align:left}
 
 footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);font-size:.82rem;text-align:center}
 footer code{color:var(--body)}
@@ -103,6 +111,16 @@ footer code{color:var(--body)}
 </head>
 <body>
 <div class="wrap">
+
+<div class="authbar">
+  <span id="ab-signedout">
+    <button id="ab-signin" class="btn ghost" type="button">Sign in</button>
+  </span>
+  <span id="ab-signedin" style="display:none">
+    <span class="authbar-name" id="ab-name"></span>
+    <button id="ab-signout" class="btn ghost" type="button">Sign out</button>
+  </span>
+</div>
 
 <header>
   
@@ -224,16 +242,67 @@ footer code{color:var(--body)}
       <li><b>Known bugs</b> What is broken and what we are doing about it</li>
       <li><b>Your ledger</b> Every report you sent and what it changed</li>
     </ul>
-    <p class="lock">Sign-in is coming shortly and uses the same account as the game,
-    so one login covers both.</p>
+
+    <div class="gate-auth">
+      <div id="gate-signedout">
+        <p class="lock">Sign in with the same account you use in the game. One login covers both.</p>
+        <button id="gate-signin" class="btn" type="button">Sign in with Google</button>
+        <p class="gate-error" id="gate-error"></p>
+      </div>
+      <div id="gate-signedin" style="display:none">
+        <p class="lock">Signed in as <b id="gate-name" style="color:var(--cream)"></b></p>
+        <div class="gate-locked" id="gate-content">
+          <p class="lock" style="margin:0">The log, known bugs and your ledger land here next.</p>
+        </div>
+        <button id="gate-signout" class="btn ghost" type="button">Sign out</button>
+      </div>
+    </div>
   </div>
 </section>
 
 <footer>
-  Generated 2026-07-30 08:56 UTC from <code>main@8a21e80</code>.
+  Generated 2026-07-30 09:01 UTC from <code>main@8a21e80</code>.
   Live build <code>a58a6e0</code> (a deploy is pending).
 </footer>
 
 </div>
+<script type="module">
+import { getUser, onChange, signIn, signOut } from './bin/auth.js';
+
+const show = (el, visible) => { el.style.display = visible ? '' : 'none'; };
+
+function render(user) {
+  const signedIn = user !== null;
+  show(document.getElementById('ab-signedout'), !signedIn);
+  show(document.getElementById('ab-signedin'), signedIn);
+  show(document.getElementById('gate-signedout'), !signedIn);
+  show(document.getElementById('gate-signedin'), signedIn);
+  if (signedIn) {
+    const name = user.displayName || user.email;
+    document.getElementById('ab-name').textContent = name;
+    document.getElementById('gate-name').textContent = name;
+  }
+}
+
+async function runSignIn(button) {
+  const errorEl = document.getElementById('gate-error');
+  errorEl.textContent = '';
+  button.disabled = true;
+  try {
+    const out = await signIn();
+    if (!out.ok && out.error !== 'sign-in dismissed') errorEl.textContent = "Sign-in didn't go through. Try again.";
+  } finally {
+    button.disabled = false;
+  }
+}
+
+document.getElementById('ab-signin').addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('gate-signin').addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('ab-signout').addEventListener('click', () => signOut());
+document.getElementById('gate-signout').addEventListener('click', () => signOut());
+
+onChange(render);
+render(getUser());
+</script>
 </body>
 </html>
