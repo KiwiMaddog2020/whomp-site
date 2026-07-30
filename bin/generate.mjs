@@ -33,14 +33,13 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 
 /* ---------- derive: identity ---------- */
 const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-/* The repo description leads with the game's own name and carries em dashes. The
- * site's voice rule is plain human writing with NO em dashes, and pairing it with
- * our own heading rendered the title twice. Derive rather than hand-type a second
- * tagline that would drift from the repo's. */
-const TAGLINE = (pkg.description ?? '')
-  .replace(/^\s*WHOMP\s*[^A-Za-z0-9]+\s*/i, '')
-  .replace(/\s*[\u2014\u2013]\s*/g, ', ')
-  .trim();
+/* AUTHORED, deliberately NOT derived from package.json. The repo description is
+ * written for developers and name-drops the two games WHOMP gets compared to,
+ * which the director cut as "a bit much" for a public page: leading with someone
+ * else's games sells theirs, not ours. This is the one string on the site that is
+ * marketing copy rather than repo truth, so it lives here and Kevin owns it. */
+const TAGLINE = 'A 3D horde-survivor where you aim it yourself.';
+
 const headSha = git('rev-parse', '--short', 'main');
 
 /* ---------- derive: what is actually live ---------- */
