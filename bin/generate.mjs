@@ -108,6 +108,28 @@ const TAGLINE = 'A 3D horde-survivor where you aim it yourself.';
 
 const headSha = git('rev-parse', '--short', 'main');
 
+// ---------------------------------------------------------------- derive: title screen wordmark + slogans
+/* Director change 2026-07-30: "copy the title from the title screen EXACTLY"
+ * and "use the same rotating slogans... under the title". Both come straight
+ * out of whomp/src/ui/mainMenu.ts, the game's own source of truth, so this
+ * page can never drift from what the title screen actually says or does.
+ * TAGLINES is parsed out of the exported array rather than hand-copied, same
+ * derive-not-duplicate reasoning as arcs/bugs above: the strings are the
+ * game's own authored copy, and a hand-copy is exactly the kind of thing that
+ * goes stale the next time someone tunes a line in the game. */
+function parseGameTaglines() {
+  const path = join(REPO, 'src/ui/mainMenu.ts');
+  if (!existsSync(path)) return [];
+  const raw = readFileSync(path, 'utf8');
+  const block = raw.split(/export const TAGLINES: readonly string\[\] = \[/)[1]?.split(/\n\];/)[0] ?? '';
+  return [...block.matchAll(/'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)"/g)]
+    .map((m) => (m[1] ?? m[2]).replace(/\\'/g, "'").replace(/\\"/g, '"'));
+}
+const gameTaglines = parseGameTaglines();
+if (gameTaglines.length === 0) {
+  throw new Error('No TAGLINES parsed from whomp/src/ui/mainMenu.ts. The title screen file moved or its export shape changed, fix parseGameTaglines rather than shipping an empty rotation.');
+}
+
 // ---------------------------------------------------------------- derive: what is actually live
 /* The live sha is the ONLY proof of live (deploy-verification law), so the site
  * reports it as measured, and says so plainly when it could not measure it. */
@@ -428,6 +450,32 @@ button{font-family:var(--font)}
   text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
 }
 
+/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
+   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
+   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
+   comment explains 1000 exceeds the heaviest real weight of the system
+   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
+   The retro chromatic layering is two ::before/::after copies of the word
+   via content:attr(data-wordmark), every offset and shadow expressed in em
+   rather than px so the layering scales WITH the clamped font-size and holds
+   together at every viewport width instead of drifting apart. SACRED, same
+   as the game's own comment on this block: a frozen copy, not a reference,
+   do not tokenize. */
+.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
+  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+  text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
+  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
+.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+@keyframes whomp-wordmark-hit{
+  0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
+  2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
+  5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
+}
+@media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{
   display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
@@ -525,8 +573,12 @@ ${SHARED_CSS}
 .wrap{max-width:860px;margin:0 auto;padding:0 24px 96px}
 header{padding:56px 0 40px;text-align:center}
 .wm{display:block;margin:0 auto 22px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.45))}
-h1{font-size:clamp(3rem,13vw,6rem);margin:0;line-height:.95}
-.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:var(--body);margin:18px auto 0;max-width:34ch}
+/* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
+   700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size
+   stays the site's own responsive clamp (the game's is a fixed 16px in a
+   fixed-size menu panel, not a full-bleed hero) rather than pinned to 16px. */
+.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:18px auto 0;max-width:34ch;
+  font-weight:700;font-style:italic;letter-spacing:0.03em}
 .chips{justify-content:center;margin-top:26px}
 .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
 .doorway{text-align:center;color:var(--dim);font-size:.92rem;margin-top:18px}
@@ -541,8 +593,9 @@ ${AUTHBAR}
 
 <header>
   ${wordmark(112, 'h')}
-  <h1 class="chroma">WHOMP</h1>
-  <p class="tag">${esc(TAGLINE)}</p>
+  <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
+  <p class="tag" id="hero-tagline">${esc(gameTaglines[0])}</p>
+  <script>document.getElementById('hero-tagline').textContent=(${JSON.stringify(gameTaglines)})[Math.min(${gameTaglines.length}-1,Math.max(0,Math.floor(Math.random()*${gameTaglines.length})))];</script>
   <div class="chips">${liveChip()}</div>
   <div class="cta">
     <a class="btn" href="${LIVE_URL}/">Play the current build</a>

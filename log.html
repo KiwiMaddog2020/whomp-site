@@ -35,6 +35,32 @@ button{font-family:var(--font)}
   text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
 }
 
+/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
+   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
+   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
+   comment explains 1000 exceeds the heaviest real weight of the system
+   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
+   The retro chromatic layering is two ::before/::after copies of the word
+   via content:attr(data-wordmark), every offset and shadow expressed in em
+   rather than px so the layering scales WITH the clamped font-size and holds
+   together at every viewport width instead of drifting apart. SACRED, same
+   as the game's own comment on this block: a frozen copy, not a reference,
+   do not tokenize. */
+.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
+  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+  text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
+  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
+.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+@keyframes whomp-wordmark-hit{
+  0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
+  2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
+  5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
+}
+@media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{
   display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
@@ -1353,7 +1379,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-07-30 23:02 UTC from <code>main@e19f982</code>.
+  Generated 2026-07-30 23:15 UTC from <code>main@e19f982</code>.
   Live build <code>60a534d</code> (a deploy is pending).
 </footer>
 
