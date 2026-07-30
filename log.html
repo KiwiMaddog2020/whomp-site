@@ -1,0 +1,1660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WHOMP dev log</title>
+<meta name="description" content="The WHOMP development log: what shipped, what's known-broken, and what's coming next.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<style>
+
+:root{
+  --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
+  --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
+  --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --edge:1px solid rgba(255,243,207,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:radial-gradient(ellipse 120% 80% at 50% -10%,var(--lift),var(--ink) 60%) no-repeat,var(--ink);
+  color:var(--body); font-family:var(--font); line-height:1.6;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+a{color:var(--cyan)}
+button{font-family:var(--font)}
+
+/* THE CHROMATIC OFFSET IS THE SIGNATURE, carried from the icon to type:
+   cyan right-and-down, pink left-and-down, cream face on top. Flat offsets,
+   zero blur, matching the de-BOO flat-plinth doctrine the game already uses. */
+.chroma{
+  color:var(--cream); font-weight:900; letter-spacing:-.02em;
+  text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
+}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
+  border:var(--edge);background:rgba(255,243,207,.04);font-size:.82rem;color:var(--body);
+  font-variant-numeric:tabular-nums;
+}
+.chip b{color:var(--cream);font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
+.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+
+.btn{
+  display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
+  font-weight:700;color:var(--ink);background:var(--sweep);border:0;cursor:pointer;
+  box-shadow:0 4px 0 #7a1440; transition:transform .12s ease,box-shadow .12s ease;font-size:1rem;
+}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 #7a1440}
+.btn.ghost{background:none;color:var(--cream);border:var(--edge);box-shadow:0 4px 0 rgba(0,0,0,.4)}
+.btn.small{padding:9px 18px;font-size:.82rem;box-shadow:none}
+
+.rule{height:3px;border-radius:2px;background:var(--sweep);opacity:.85;margin-bottom:26px;max-width:120px}
+
+.arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+.arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
+.arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
+.arc p{margin:0;font-size:.88rem;color:var(--dim)}
+
+/* SIGN-IN, reused from the game's own accounts worker so one account covers
+   both surfaces. Same worker, same client id, same session shape. */
+.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:16px 0 0}
+.authbar-name{color:var(--cream);font-weight:700;font-size:.85rem}
+
+.spoiler{cursor:pointer;border-radius:4px;padding:0 2px;background:rgba(255,243,207,.08);color:transparent;text-shadow:0 0 0 transparent;transition:color .12s ease}
+.spoiler::selection{color:transparent}
+.spoiler.revealed{color:var(--cream);background:none}
+.spoiler:not(.revealed)::after{content:"spoiler, click to reveal";color:var(--dim);font-style:italic}
+.spoiler.revealed::after{content:""}
+
+footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);font-size:.82rem;text-align:center}
+footer code{color:var(--body)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.topbar{max-width:1180px;margin:0 auto;padding:0 24px}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand .wm{margin:0}
+.brand h1{font-size:1.6rem;margin:0}
+.subtag{color:var(--dim);font-size:.85rem;margin:2px 0 0}
+
+.searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
+  color:var(--cream);font-family:var(--font);font-size:1rem}
+.searchbox::placeholder{color:var(--dim)}
+.searchbox:focus{outline:2px solid var(--cyan);outline-offset:2px}
+.sr-panel{position:absolute;left:24px;right:24px;top:calc(100% + 6px);background:var(--lift);border:var(--edge);
+  border-radius:12px;max-height:60vh;overflow:auto;z-index:20;box-shadow:0 12px 32px rgba(0,0,0,.5);display:none}
+.sr-panel.open{display:block}
+.sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
+.sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
+.sr-item:first-child{border-top:0}
+.sr-item:hover,.sr-item:focus{background:rgba(255,243,207,.06)}
+.sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--gold);margin-right:8px}
+.sr-title{color:var(--cream)}
+
+.shell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
+.side{width:220px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:4px}
+.side a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
+.side a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
+.side .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
+.main{flex:1;min-width:0}
+
+section{margin-top:56px}
+section:first-child{margin-top:0}
+h2{font-size:1.5rem;margin:0 0 6px}
+.lede{color:var(--dim);margin:0 0 20px;font-size:.92rem}
+
+.viewtoggle{display:flex;gap:8px;margin-bottom:18px}
+.vtab{padding:9px 18px;border-radius:999px;border:var(--edge);background:none;color:var(--dim);cursor:pointer;font-size:.88rem;font-weight:700}
+.vtab.is-active{color:var(--ink);background:var(--sweep);border-color:transparent}
+.viewpane[hidden]{display:none}
+
+.notecard{border:var(--edge);border-radius:16px;padding:22px 24px;margin-bottom:18px;background:rgba(255,243,207,.025)}
+.notecard-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
+.notecard-date{color:var(--dim);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+.notecard-version{color:var(--dim);font-size:.78rem;font-family:var(--mono)}
+.notecard p{margin:10px 0}
+.notecard ul{margin:8px 0;padding-left:20px}
+.notecard li{margin:6px 0}
+.buckets{display:grid;gap:14px;margin-top:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.bucket h4{margin:0 0 6px;font-size:.82rem;letter-spacing:.05em;text-transform:uppercase}
+.bucket ul{margin:0;padding-left:18px;font-size:.92rem}
+.bucket li{margin:5px 0}
+.bucket p{margin:0;font-size:.92rem}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chipf{padding:7px 14px;border-radius:999px;border:var(--edge);background:none;color:var(--dim);cursor:pointer;font-size:.8rem}
+.chipf.is-active{color:var(--cream);border-color:var(--cyan)}
+
+.day{border:var(--edge);border-radius:14px;padding:18px 20px;margin-bottom:14px;background:rgba(255,243,207,.025)}
+.day h4{margin:0 0 12px;font-size:.85rem;color:var(--dim);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.row{display:flex;gap:12px;padding:7px 0;border-top:1px solid rgba(255,243,207,.06);align-items:baseline}
+.row:first-of-type{border-top:0}
+.row[data-hidden="1"]{display:none}
+.kind{flex:none;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 8px;border-radius:6px;min-width:64px;text-align:center;color:var(--ink)}
+.what{flex:1}
+.what .scope{color:var(--dim);font-size:.86rem}
+.sha{flex:none;font-family:var(--mono);font-size:.76rem;color:var(--dim)}
+.row.more{color:var(--dim);font-size:.83rem;font-style:italic;justify-content:center}
+
+.bugrow{border:var(--edge);border-radius:12px;padding:14px 18px;margin-bottom:10px;background:rgba(255,243,207,.025)}
+.bugrow-head{display:flex;gap:8px;margin-bottom:6px}
+.bugtag{font-family:var(--mono);font-size:.74rem;color:var(--gold)}
+.bugtag.new{color:var(--cyan)}
+.bugwhat{margin:0 0 4px;color:var(--cream)}
+.bugwhy{margin:0;color:var(--dim);font-size:.86rem}
+
+/* GATING SWITCH lives in the script below (GATING_ENABLED). This wrapper is
+   what a real gate would hide; today it renders unconditionally. */
+.gated-section{}
+
+@media (max-width:700px){
+  .shell{flex-direction:column;gap:20px}
+  .side{width:100%;position:static;flex-direction:row;overflow-x:auto;gap:8px}
+  .side a,.side .stat{white-space:nowrap}
+  .buckets{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  
+<div class="authbar">
+  <span id="ab-signedout">
+    <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
+  </span>
+  <span id="ab-signedin" style="display:none">
+    <span class="authbar-name" id="ab-name"></span>
+    <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
+  </span>
+</div>
+  <div class="topbar-row">
+    <a class="brand" href="index.html">
+      
+<svg class="wm" viewBox="0 0 512 512" width="48" height="48" aria-hidden="true" focusable="false">
+  <defs><radialGradient id="gl" cx="50%" cy="50%" r="72%">
+    <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
+  </radialGradient></defs>
+  <rect width="512" height="512" rx="96" fill="url(#gl)"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/>
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/>
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#151023" stroke-width="69"/>
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#fff3cf" stroke-width="59"/>
+  </g>
+</svg>
+      <span>
+        <h1 class="chroma">WHOMP dev log</h1>
+        <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
+      </span>
+    </a>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
+  live <b>60a534d</b></span>
+  <span class="chip">version <b>0.5.0</b></span></div>
+  </div>
+</div>
+
+<div class="searchwrap">
+  <input class="searchbox" id="search" type="search" placeholder="Search changes, bugs, in-flight work, arcs..." autocomplete="off">
+  <div class="sr-panel" id="sr-panel"></div>
+</div>
+
+<div class="shell">
+  <nav class="side">
+    <a href="#shipped">Shipped</a>
+    <a href="#bugs">Known bugs</a>
+    <a href="#flight">In flight</a>
+    <a href="index.html">&larr; Back to WHOMP</a>
+    <div class="stat">1003 player-visible changes across 11 active days, 984 internal-only commits filtered out</div>
+  </nav>
+
+  <main class="main">
+  <!-- GATING OFF (director, 2026-07-30): the log is public so testers with no
+       account can reach it. Sign-in above still works. To re-gate later, flip
+       GATING_ENABLED to true in the script at the bottom of this file, it
+       already hides everything inside .gated-section behind the same
+       getUser() check the authbar uses, no template change required. -->
+  <div class="gated-section" id="gated-content">
+
+  <section id="shipped">
+    <div class="rule"></div>
+    <h2 class="chroma">Shipped</h2>
+    <p class="lede">Two ways to read it. Concise is Kevin's own notes, written for players. Full is the raw
+      engineering log, generated straight from git, unedited, so a curious player can see everything.</p>
+
+    <div class="viewtoggle" role="tablist">
+      <button class="vtab is-active" data-view="concise" type="button" role="tab" aria-selected="true">Concise</button>
+      <button class="vtab" data-view="full" type="button" role="tab" aria-selected="false">Full log</button>
+    </div>
+
+    <div class="viewpane" id="view-concise">
+      
+  <article class="notecard" id="note-2026-07-30">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-07-30</span>
+      <span class="notecard-version">v0.5.0</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Duels stop dragging, and sign-in shows up</h3>
+    <p>If you have played the arena the last few days, you already know the problem: fights that should end in fifteen or twenty seconds were stretching on and on. Today's build tracks down why and fixes it for good.</p>
+    <div class="buckets">
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li><strong>Lifesteal was way too strong in duels.</strong> The safety cap that keeps lifesteal from getting silly worked fine in a normal run, but it never kicked in inside the arena, so a player who stacked lifesteal could out-heal almost anything you threw at them. That cap now works the way it always should have.</li><li><strong>Health regen had the exact same bug.</strong> Every fighter was passively healing at the same flat rate no matter what they drafted, and in a fast arena fight that rate covers a huge share of the incoming damage. Regen now scales with the fight too, so building for sustain finally means something, and not building for it finally costs something.</li><li><strong>Stalemates are gone.</strong> With both bugs fixed together, we ran a big batch of test duels and every single stalemate resolved. Fights land where they are supposed to: fast enough to feel sharp, long enough that a good hit still matters.</li></ul>
+    </div>
+    <div class="bucket">
+      <h4 style="color:var(--violet)">Better</h4>
+      <ul><li>Some of the passive damage sources (auras, ground effects, homing shots) got turned down a notch, so a clean hit you land or take actually reads as a hit instead of getting buried under chip damage.</li></ul>
+    </div>
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">New</h4>
+      <ul><li><strong>Sign-in is live.</strong> There is a real Google sign-in now, in Settings, and it is the same account across the game and this site. It is early: right now it remembers who you are and shows your cloud save status. More is coming once there is something worth signing in for.</li></ul>
+    </div>
+    <div class="bucket">
+      <h4 style="color:var(--gold)">Coming</h4>
+      <ul><li>More PvP tuning is already queued behind this fix. We want a good read and a clean hit to matter without turning every duel into a coinflip.</li><li><span class="spoiler" tabindex="0" role="button" aria-label="Spoiler, click to reveal">Accounts unlocking cross-device saves and a real leaderboard are next.</span></li></ul>
+    </div></div>
+  </article>
+    </div>
+
+    <div class="viewpane" id="view-full" hidden>
+      <div class="filters" id="kind-filters">
+        <button class="chipf is-active" data-kind="all" type="button">All</button>
+        <button class="chipf" data-kind="feat" type="button">New</button><button class="chipf" data-kind="fix" type="button">Fixed</button><button class="chipf" data-kind="balance" type="button">Balance</button><button class="chipf" data-kind="perf" type="button">Performance</button><button class="chipf" data-kind="style" type="button">Polish</button>
+      </div>
+      
+  <div class="day">
+    <h4>2026-07-30</h4>
+    
+    <div class="row" data-kind="feat" id="chg-613b215">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add reusable clickable decision console <span class="scope">(decisions)</span></span>
+      <span class="sha">613b215</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-e2a1d57">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">PVP_WEAPON_IFRAME_MS - fewer, bigger hits (PARTIAL, do not deploy) <span class="scope">(pvp)</span></span>
+      <span class="sha">e2a1d57</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-990ef67">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">SIM LAB PHASE 0 - the damage attribution seam, and what it found <span class="scope">(sim)</span></span>
+      <span class="sha">990ef67</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-60a534d">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">the regen ceiling scales with the fight, and ambient damage pays for it <span class="scope">(pvp)</span></span>
+      <span class="sha">60a534d</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-461f41a">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">the regen ceiling scales with the fight, and the damage profile pays for it <span class="scope">(pvp)</span></span>
+      <span class="sha">461f41a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-dad22e1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the cohort probe typechecks - node globals are not ambient here <span class="scope">(test)</span></span>
+      <span class="sha">dad22e1</span>
+    </div>
+  </div>
+  <div class="day">
+    <h4>2026-07-29</h4>
+    
+    <div class="row" data-kind="fix" id="chg-c47ee12">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the accounts panel uses the font token, not a literal stack <span class="scope">(ui)</span></span>
+      <span class="sha">c47ee12</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7bef221">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the lifesteal ceiling scales with the fight, not with max HP <span class="scope">(battle)</span></span>
+      <span class="sha">7bef221</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-20aa07b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">honour Sacred Tome and Inner Peace in a duel, and ledger the other twelve <span class="scope">(battle)</span></span>
+      <span class="sha">20aa07b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e82025b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the entry deadline is a re-arm interval, not a one-shot <span class="scope">(online)</span></span>
+      <span class="sha">e82025b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3a6ee2a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the input conflict detector was blind to the whole aimed-core half <span class="scope">(coop)</span></span>
+      <span class="sha">3a6ee2a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6dda090">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a machine's opinion about the network is not sim state <span class="scope">(coop)</span></span>
+      <span class="sha">6dda090</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0e91036">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a human reading the loadout menu is not a crash <span class="scope">(net)</span></span>
+      <span class="sha">0e91036</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-44e0195">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a seat's blob shadow replaces its cast shadow, it does not join it <span class="scope">(coop)</span></span>
+      <span class="sha">44e0195</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c63890c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">census names the unnamed, and stops calling a pool walk a blind spot <span class="scope">(dev)</span></span>
+      <span class="sha">c63890c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3f92af8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">render census - every triangle in a frame attributed to its owner <span class="scope">(dev)</span></span>
+      <span class="sha">3f92af8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cbd130d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a divergence report names which seat moved <span class="scope">(coop)</span></span>
+      <span class="sha">cbd130d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4eac758">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a parked instance is invisible to Matrix4.decompose <span class="scope">(test)</span></span>
+      <span class="sha">4eac758</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d7de267">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the digest rides one clock, and it is the world's <span class="scope">(coop)</span></span>
+      <span class="sha">d7de267</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-32dd76c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">visual lanes get eyes, via bin/shot.sh on the running game <span class="scope">(tooling)</span></span>
+      <span class="sha">32dd76c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1e98582">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">take the relic out of the crater <span class="scope">(coop)</span></span>
+      <span class="sha">1e98582</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b15ce74">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the arc, the landfall and the mark, on every client <span class="scope">(coop)</span></span>
+      <span class="sha">b15ce74</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d4d97d0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the approach's wear stops at the connector's band edge, not on top of it <span class="scope">(hub)</span></span>
+      <span class="sha">d4d97d0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c7c0e69">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the ember portal row stands back off the canyon's back wall <span class="scope">(hub)</span></span>
+      <span class="sha">c7c0e69</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0e65718">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the market's four reserved plots become its stock racks <span class="scope">(hub)</span></span>
+      <span class="sha">0e65718</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bec896c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the connector's fork gets its wear back, so the two lanes meet <span class="scope">(hub)</span></span>
+      <span class="sha">bec896c</span>
+    </div><div class="row more">+ 104 more that day, not shown</div>
+  </div>
+  <div class="day">
+    <h4>2026-07-28</h4>
+    
+    <div class="row" data-kind="feat" id="chg-1b90f1a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">name a kit once, star it, and start there every run <span class="scope">(loadout)</span></span>
+      <span class="sha">1b90f1a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-eef7230">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">light-shaft colonnade - sightlines open, grandeur kept (report 155) <span class="scope">(museum)</span></span>
+      <span class="sha">eef7230</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7ebff48">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the colonnade answers the walk, and it costs no draw call <span class="scope">(hub)</span></span>
+      <span class="sha">7ebff48</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-53efa83">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a Loadout is a named run config, saved eight at a time <span class="scope">(meta)</span></span>
+      <span class="sha">53efa83</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-db7e092">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the dummies get the manual weapon, and one grid serves both hosts <span class="scope">(forge)</span></span>
+      <span class="sha">db7e092</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fbad12c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">opens on the player's current view - seeded from the live rig, base fov <span class="scope">(photo)</span></span>
+      <span class="sha">fbad12c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-84b7344">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the lens opens on the frame he paused for <span class="scope">(photo)</span></span>
+      <span class="sha">84b7344</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a79824f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the museum's colonnade becomes light instead of mass <span class="scope">(hub)</span></span>
+      <span class="sha">a79824f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3255247">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">revert Dragon's Breath unrecorded body cut - the ratified -25% patch rein stands alone <span class="scope">(balance)</span></span>
+      <span class="sha">3255247</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f0555f1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the hands are the first pick, and they travel with the run <span class="scope">(loadout)</span></span>
+      <span class="sha">f0555f1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-72af3ed">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the swing draw-up scales with the stride it exists to serve <span class="scope">(gait)</span></span>
+      <span class="sha">72af3ed</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9b0d303">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the sanctioned waiter, wait and dispatch become one indivisible act <span class="scope">(studio)</span></span>
+      <span class="sha">9b0d303</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c9c121a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">file ownership stops being a promise and becomes a check <span class="scope">(studio)</span></span>
+      <span class="sha">c9c121a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-489f487">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">WHOMP-DIRECTOR claims a device, and the token stays put <span class="scope">(feedback)</span></span>
+      <span class="sha">489f487</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8f3a43a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the sanctioned waiter, wait and dispatch become one indivisible act <span class="scope">(studio)</span></span>
+      <span class="sha">8f3a43a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fa3fa66">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">tester text gets flagged, never filtered <span class="scope">(feedback)</span></span>
+      <span class="sha">fa3fa66</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c47cebe">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the director channel gets a lock only the token opens <span class="scope">(feedback)</span></span>
+      <span class="sha">c47cebe</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0a49327">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the flush-plug law learns what the island already knew <span class="scope">(hub)</span></span>
+      <span class="sha">0a49327</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-605345f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the back is the hero view <span class="scope">(avatars)</span></span>
+      <span class="sha">605345f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2b9e461">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the reticle parks where the fight is, and the camera stops short of your own eyes <span class="scope">(aim)</span></span>
+      <span class="sha">2b9e461</span>
+    </div><div class="row more">+ 202 more that day, not shown</div>
+  </div>
+  <div class="day">
+    <h4>2026-07-27</h4>
+    
+    <div class="row" data-kind="fix" id="chg-58afeb6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ghost wisp emissive takes vColor.rgb + audit catches bare vec4 assigns onto vec3 chunk vars <span class="scope">(fx)</span></span>
+      <span class="sha">58afeb6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1b81dd3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wave 2 - the bottom five reborn (daggers, railgun, ghost orbs, arrows, boom box + FieldSpec) <span class="scope">(fx)</span></span>
+      <span class="sha">1b81dd3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-12f07be">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">boom box gets a body, and founds the FieldSpec ring toolkit <span class="scope">(weaponfx)</span></span>
+      <span class="sha">12f07be</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f60d746">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">discover updates during long sessions - periodic + refocus checks <span class="scope">(pwa)</span></span>
+      <span class="sha">f60d746</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6a2bf96">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cap sheet splits at patch/backing boundary - 318 z-fights down to 5 pinned (reports 104/107/96) <span class="scope">(hub)</span></span>
+      <span class="sha">6a2bf96</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-eb232b7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">discover updates during long sessions <span class="scope">(pwa)</span></span>
+      <span class="sha">eb232b7</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3810376">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">clamp the backing cap's chase at the measured depth, not the entry plane <span class="scope">(hub)</span></span>
+      <span class="sha">3810376</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e1dcd5a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">bridge/rim sextet - q-band seal, corridor clearance, capped ends, derived rails, pine crown rotation (reports 97/98/100/101/102/109) <span class="scope">(hub)</span></span>
+      <span class="sha">e1dcd5a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1481c2d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">spectral arrows become an actual arrow <span class="scope">(weaponfx)</span></span>
+      <span class="sha">1481c2d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-764e56c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">rail the deck as soon as it leaves the lobe (report 101) <span class="scope">(hub)</span></span>
+      <span class="sha">764e56c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7c66913">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ghost orbs get a ghost - faced body, banking, wisp <span class="scope">(weaponfx)</span></span>
+      <span class="sha">7c66913</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4816e85">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">split the cap sheet at the patch/backing boundary so it steps under the plate <span class="scope">(hub)</span></span>
+      <span class="sha">4816e85</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-acd1797">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a bridge marks its own edge, so no barricades on the deck (report 98) <span class="scope">(hub)</span></span>
+      <span class="sha">acd1797</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b0e53d7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cap the bridge parapets where the run actually ends (report 100) <span class="scope">(hub)</span></span>
+      <span class="sha">b0e53d7</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-71f47a9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">void railgun - the charge is the weapon, and it goes dark purple <span class="scope">(weaponfx)</span></span>
+      <span class="sha">71f47a9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2009ffb">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the Void Gate's wall stands at the terrace, not mid-bridge (report 97) <span class="scope">(hub)</span></span>
+      <span class="sha">2009ffb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-731d9b6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">void daggers arrive from the flank, through a rift <span class="scope">(weaponfx)</span></span>
+      <span class="sha">731d9b6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a267aba">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the pine crowns stay on their trunk (reports 102, 109) <span class="scope">(hub)</span></span>
+      <span class="sha">a267aba</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b1b374c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">frost threshold reads the snow line, not a glacial literal (report 95) <span class="scope">(hub)</span></span>
+      <span class="sha">b1b374c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-244a97a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the frost threshold reads the snow line, not a glacial literal <span class="scope">(hub)</span></span>
+      <span class="sha">244a97a</span>
+    </div><div class="row more">+ 132 more that day, not shown</div>
+  </div>
+  <div class="day">
+    <h4>2026-07-26</h4>
+    
+    <div class="row" data-kind="fix" id="chg-3aa32b1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Tier-2 fix-forward - mapnote sessions normalized at the door <span class="scope">(feedback)</span></span>
+      <span class="sha">3aa32b1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-892b014">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">derive the whole-island hub map from the real placement modules <span class="scope">(lab)</span></span>
+      <span class="sha">892b014</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2298d9d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mapnote report kind - map-lab sessions ride the report pipeline <span class="scope">(feedback)</span></span>
+      <span class="sha">2298d9d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-074cd46">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Ember lintel dots go kit-cyan, threshold arrow removed (reports 70-71) <span class="scope">(hub)</span></span>
+      <span class="sha">074cd46</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-521ca5d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">gate arrow pose law + training yard derivations (reports 66-69) <span class="scope">(hub)</span></span>
+      <span class="sha">521ca5d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c52e85d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cactus placement reserves portal keep-outs (report 65) <span class="scope">(hub)</span></span>
+      <span class="sha">c52e85d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3e13fdf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">village full-or-proxy invariant kills intermittent vanish <span class="scope">(hub)</span></span>
+      <span class="sha">3e13fdf</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a553a96">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rename Sunken Steps to Sunken Sands (display only) <span class="scope">(levels)</span></span>
+      <span class="sha">a553a96</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8588e72">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">statue arc v2 - mystery trio concentric behind the roster arc <span class="scope">(hub)</span></span>
+      <span class="sha">8588e72</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1a4410c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">cloud round 2 - no slabs anywhere, unclamped 0.92 fill floor, brighter moonlit palette <span class="scope">(hub)</span></span>
+      <span class="sha">1a4410c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-76e18bf">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">replace duel gate crest with crossed swords <span class="scope">(hub)</span></span>
+      <span class="sha">76e18bf</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3d0bfff">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">anchor ambient y and leprechaun gait <span class="scope">(render)</span></span>
+      <span class="sha">3d0bfff</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-dc7eaac">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">pin interact prompts and center-ring clearance <span class="scope">(hub)</span></span>
+      <span class="sha">dc7eaac</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9c59b04">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">stale proximity index across interactable rebuilds (live villager-chat crash) <span class="scope">(hub)</span></span>
+      <span class="sha">9c59b04</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3580f85">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ungate coop mode row <span class="scope">(lobby)</span></span>
+      <span class="sha">3580f85</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-81057d1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">watertight walls (Law 8) - bridge paneling closed, arm seam skirted, route floors in the shell, cleft risers; oblique ratchet 380 to 147 <span class="scope">(hub)</span></span>
+      <span class="sha">81057d1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9a44b14">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">trophy hall facade + Press-E interior shell (Law 11, report 60) <span class="scope">(hub)</span></span>
+      <span class="sha">9a44b14</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3798b1e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">patrol ping-pong without wrap + dummies face the player (Law 9, report 59) <span class="scope">(hub)</span></span>
+      <span class="sha">3798b1e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-35643ce">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">statue arc single-source + mystery inner semicircle, boulder ring out (report 54) <span class="scope">(hub)</span></span>
+      <span class="sha">35643ce</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c144511">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">single-source portal naming + duplicate-name audit (Law 6, report 51) <span class="scope">(hub)</span></span>
+      <span class="sha">c144511</span>
+    </div><div class="row more">+ 128 more that day, not shown</div>
+  </div>
+  <div class="day">
+    <h4>2026-07-25</h4>
+    
+    <div class="row" data-kind="feat" id="chg-3b6616a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">engine entry wiring - the co-op gate, drive, HUD and settlement <span class="scope">(coop)</span></span>
+      <span class="sha">3b6616a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e54ac98">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep edge arrows clear of the strip rail, survive a zero viewport <span class="scope">(coop)</span></span>
+      <span class="sha">e54ac98</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8cce387">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">three props that read, and a dog with puppy proportions <span class="scope">(render)</span></span>
+      <span class="sha">8cce387</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5c94973">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">wire the opening handler + shipFragmentIds in production (Sol audit findings 1+2 - cutscene and ending were unreachable live) <span class="scope">(homefall)</span></span>
+      <span class="sha">5c94973</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b63dc20">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">run factory, entry-gate acceptance, and the co-op results screen <span class="scope">(coop)</span></span>
+      <span class="sha">b63dc20</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7842e3d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep full-run recovery fail-closed <span class="scope">(coop)</span></span>
+      <span class="sha">7842e3d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8a89540">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the canon-8 presentation kit and canon-4's live shop window <span class="scope">(coop)</span></span>
+      <span class="sha">8a89540</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-63d5fbf">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">interpolate duel render transforms and clear the per-frame hot path <span class="scope">(arena)</span></span>
+      <span class="sha">63d5fbf</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9ff038d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the prospector at the forges, the librarian at the parapet, and a dog being handed over <span class="scope">(hub)</span></span>
+      <span class="sha">9ff038d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf81854">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">open the co-op entry - modes, lobby room, campaign transport <span class="scope">(coop)</span></span>
+      <span class="sha">cf81854</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-86c2276">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">register full-run snapshot adapters <span class="scope">(coop)</span></span>
+      <span class="sha">86c2276</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a8145eb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a stray you can find, and a dog that follows you home <span class="scope">(run)</span></span>
+      <span class="sha">a8145eb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e463e27">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">two per-world givers, three chains, and a questline that changes hands <span class="scope">(data)</span></span>
+      <span class="sha">e463e27</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4b9ce83">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">gate PvP displacement behind a three-layer model <span class="scope">(duel)</span></span>
+      <span class="sha">4b9ce83</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-374ba8c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep the pre-gate teardown ordering in closeOverlays <span class="scope">(net)</span></span>
+      <span class="sha">374ba8c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fb46355">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a net-confirmed online start forces the scene transition <span class="scope">(net)</span></span>
+      <span class="sha">fb46355</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-94b1f7b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">hide the duel lobby for a claimed match, do not leave the room <span class="scope">(ui)</span></span>
+      <span class="sha">94b1f7b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8fdd458">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">arena kits hold THE WHOMP - Q works in Arenas (Kevin live report) <span class="scope">(battle)</span></span>
+      <span class="sha">8fdd458</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-866513a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">make the online duel exit a lockstep event, not an RTT event <span class="scope">(net)</span></span>
+      <span class="sha">866513a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-21f38ff">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">end a faulted online match the same way on both peers <span class="scope">(ui)</span></span>
+      <span class="sha">21f38ff</span>
+    </div><div class="row more">+ 127 more that day, not shown</div>
+  </div>
+  <div class="day">
+    <h4>2026-07-24</h4>
+    
+    <div class="row" data-kind="feat" id="chg-77c4317">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">B6 wire cover into acquisition and movement (duel seats only) <span class="scope">(duel)</span></span>
+      <span class="sha">77c4317</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cd60184">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">B6 line-of-sight cover module, 4-fold symmetric pillars + shared segment test <span class="scope">(duel)</span></span>
+      <span class="sha">cd60184</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1276293">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">give Kingbloom a deliberate root-plant hop-drag <span class="scope">(render)</span></span>
+      <span class="sha">1276293</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cd26e5a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">flatten Ramhorn's planted hoof (harness follow-up) <span class="scope">(render)</span></span>
+      <span class="sha">cd26e5a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0f07a42">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">run-end recap adopts the card/icon system <span class="scope">(ui)</span></span>
+      <span class="sha">0f07a42</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b2b9e04">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">chest reveal, one card, one cost (Kevin live review) <span class="scope">(ui)</span></span>
+      <span class="sha">b2b9e04</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-91ba9c8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no progress bar on a gate that is not the live goal yet <span class="scope">(shop-ui)</span></span>
+      <span class="sha">91ba9c8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cae1b00">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">B6.5 slot upgrades are live; WHOMP-ALL owns the gates <span class="scope">(lockouts)</span></span>
+      <span class="sha">cae1b00</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2f88f64">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the duel pick window adopts the shared offer button language <span class="scope">(ui)</span></span>
+      <span class="sha">2f88f64</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9dcbc76">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">tier sections, gate goal cards, band chips, max-total line <span class="scope">(shop-ui)</span></span>
+      <span class="sha">9dcbc76</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-089d06b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">drive Tidebound's scuttle off displacement, not a clock <span class="scope">(render)</span></span>
+      <span class="sha">089d06b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e676a52">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">legendary offerings become the GOLD TIER of the shared offer card <span class="scope">(ui)</span></span>
+      <span class="sha">e676a52</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6117325">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">B6.5 shop gates - purchase, persistence, tier-gated buy path <span class="scope">(meta)</span></span>
+      <span class="sha">6117325</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f1f596c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">B6.5 price bands, tier/gate structure, lockout slot stats <span class="scope">(shop)</span></span>
+      <span class="sha">f1f596c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b89759f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">game-side account client + local-first cloud-save sync <span class="scope">(accounts)</span></span>
+      <span class="sha">b89759f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2b8717f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">give Thistlemaw an opposite-corner root creep <span class="scope">(render)</span></span>
+      <span class="sha">2b8717f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-79eba52">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">session auth + optimistic-concurrency cloud save endpoints <span class="scope">(accounts)</span></span>
+      <span class="sha">79eba52</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d4c8b77">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">verify Google ID tokens against the live JWKS <span class="scope">(accounts)</span></span>
+      <span class="sha">d4c8b77</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7daf8ac">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">scaffold the whomp-accounts CF worker (D1 schema, bindings) <span class="scope">(accounts)</span></span>
+      <span class="sha">7daf8ac</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0311174">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">give Ramhorn a real 4-beat quadruped walk <span class="scope">(render)</span></span>
+      <span class="sha">0311174</span>
+    </div><div class="row more">+ 85 more that day, not shown</div>
+  </div>
+  <div class="day">
+    <h4>2026-07-23</h4>
+    
+    <div class="row" data-kind="feat" id="chg-1303afb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">raise unified run speed <span class="scope">(movement)</span></span>
+      <span class="sha">1303afb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-40186bc">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">unify the twenty minute campaign <span class="scope">(run)</span></span>
+      <span class="sha">40186bc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3e8f15f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">match apron ground palette <span class="scope">(world)</span></span>
+      <span class="sha">3e8f15f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9f31b56">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">open the visible wall apron <span class="scope">(world)</span></span>
+      <span class="sha">9f31b56</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8ac7c86">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">include starter F on fresh saves <span class="scope">(loadout)</span></span>
+      <span class="sha">8ac7c86</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1f48cd5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">build Maw-safe boundary ramparts <span class="scope">(world)</span></span>
+      <span class="sha">1f48cd5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-aa745d2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">relieve boundary facade trim <span class="scope">(world)</span></span>
+      <span class="sha">aa745d2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a09c930">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">amplify character signature travel <span class="scope">(movement)</span></span>
+      <span class="sha">a09c930</span>
+    </div>
+  </div>
+  <div class="day">
+    <h4>2026-07-22</h4>
+    
+    <div class="row" data-kind="feat" id="chg-98e2415">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ship bespoke specialist avatars <span class="scope">(art)</span></span>
+      <span class="sha">98e2415</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5ef373f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">polish duel combat readability <span class="scope">(multiplayer)</span></span>
+      <span class="sha">5ef373f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-32ebbba">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore green combat vitals <span class="scope">(hud)</span></span>
+      <span class="sha">32ebbba</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf75a6e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bind snapshots to drained event authority <span class="scope">(coop)</span></span>
+      <span class="sha">cf75a6e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-41ffaef">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add exact EventBus drain witnesses <span class="scope">(core)</span></span>
+      <span class="sha">41ffaef</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c5ebd12">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add settled decision checkpoints <span class="scope">(coop)</span></span>
+      <span class="sha">c5ebd12</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4b519e4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">fence campaign recovery epochs <span class="scope">(coop)</span></span>
+      <span class="sha">4b519e4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fde060c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add authenticated campaign snapshots <span class="scope">(coop)</span></span>
+      <span class="sha">fde060c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4f43ddb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add deterministic campaign decisions <span class="scope">(coop)</span></span>
+      <span class="sha">4f43ddb</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-44871ab">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">heal per-button look holds <span class="scope">(input)</span></span>
+      <span class="sha">44871ab</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ebfa039">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">publish original specialist concepts <span class="scope">(art)</span></span>
+      <span class="sha">ebfa039</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-162a893">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">finish Classic at twenty-eight minutes <span class="scope">(modes)</span></span>
+      <span class="sha">162a893</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ffee3ca">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">align boundary wall with contact curb <span class="scope">(world)</span></span>
+      <span class="sha">ffee3ca</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3809929">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">make hold cursor modal-safe <span class="scope">(input)</span></span>
+      <span class="sha">3809929</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6c865eb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add pause run sheet <span class="scope">(ui)</span></span>
+      <span class="sha">6c865eb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-816fdff">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">sprinkle breakable pots <span class="scope">(world)</span></span>
+      <span class="sha">816fdff</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e4c6a03">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">pace upgrade presentation <span class="scope">(rush)</span></span>
+      <span class="sha">e4c6a03</span>
+    </div>
+  </div>
+  <div class="day">
+    <h4>2026-07-21</h4>
+    
+    <div class="row" data-kind="feat" id="chg-7337af2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">finish Classic at thirty minutes <span class="scope">(modes)</span></span>
+      <span class="sha">7337af2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-31724fb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">unlock Rush per Classic clear <span class="scope">(modes)</span></span>
+      <span class="sha">31724fb</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8efe1fc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">remove boundary facade flicker <span class="scope">(world)</span></span>
+      <span class="sha">8efe1fc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f255600">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore hold-only pointer lock <span class="scope">(input)</span></span>
+      <span class="sha">f255600</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8b5b6d2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore classic traveling mystic <span class="scope">(world)</span></span>
+      <span class="sha">8b5b6d2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8de269d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore combined combat vitals <span class="scope">(hud)</span></span>
+      <span class="sha">8de269d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0ed205c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add campaign v3 foundation <span class="scope">(coop)</span></span>
+      <span class="sha">0ed205c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a0b0c8a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">polish pickups and action rings <span class="scope">(render)</span></span>
+      <span class="sha">a0b0c8a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f5f6168">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ship presentation-safe run boundaries <span class="scope">(world)</span></span>
+      <span class="sha">f5f6168</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fe6f12d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ship 15-minute Rush pacing <span class="scope">(run)</span></span>
+      <span class="sha">fe6f12d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-717e29d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add full-roster innate identities <span class="scope">(characters)</span></span>
+      <span class="sha">717e29d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e95b5df">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add banked Rush lifecycle <span class="scope">(run)</span></span>
+      <span class="sha">e95b5df</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-248f3f4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">expand fields and add route caches <span class="scope">(world)</span></span>
+      <span class="sha">248f3f4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-929f3c8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rebuild traveling mystic <span class="scope">(world)</span></span>
+      <span class="sha">929f3c8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5bc7b59">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rebuild combat vitals <span class="scope">(hud)</span></span>
+      <span class="sha">5bc7b59</span>
+    </div>
+  </div>
+  <div class="day">
+    <h4>2026-07-20</h4>
+    
+    <div class="row" data-kind="fix" id="chg-e4bde42">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">lift player action rings above terrain <span class="scope">(fx)</span></span>
+      <span class="sha">e4bde42</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-abd7f7a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rebuild heroic leap <span class="scope">(movement)</span></span>
+      <span class="sha">abd7f7a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf8f72d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add pulse mine interception fuse <span class="scope">(weapons)</span></span>
+      <span class="sha">cf8f72d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-71b7756">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add single-target convergence <span class="scope">(beam)</span></span>
+      <span class="sha">71b7756</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9e2375d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">unify environmental player iframes <span class="scope">(combat)</span></span>
+      <span class="sha">9e2375d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3d1bd3e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">harden delay and preclaim edges <span class="scope">(net)</span></span>
+      <span class="sha">3d1bd3e</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-0464c40">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">trim combat and minimap hot paths <span class="scope">(runtime)</span></span>
+      <span class="sha">0464c40</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-4fc2aad">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">index terrain structures by cell <span class="scope">(nav)</span></span>
+      <span class="sha">4fc2aad</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-376da5b">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">budget distant horde outlines <span class="scope">(render)</span></span>
+      <span class="sha">376da5b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7005ad4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add deterministic campaign foundation <span class="scope">(coop)</span></span>
+      <span class="sha">7005ad4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f5fa690">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add instant arenas mode <span class="scope">(battle)</span></span>
+      <span class="sha">f5fa690</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-45bde18">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add medic support specialist <span class="scope">(character)</span></span>
+      <span class="sha">45bde18</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ee7a8e5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add three distinct heroes <span class="scope">(characters)</span></span>
+      <span class="sha">ee7a8e5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-15c45de">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add treasure goblin <span class="scope">(encounter)</span></span>
+      <span class="sha">15c45de</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-832de16">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add breakable loot containers <span class="scope">(gold)</span></span>
+      <span class="sha">832de16</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9c21275">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add aegis tome and shield presentation <span class="scope">(shield)</span></span>
+      <span class="sha">9c21275</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-64837fe">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">plant kinematic ability endpoints <span class="scope">(movement)</span></span>
+      <span class="sha">64837fe</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-15aebb1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">align reach to range tiers <span class="scope">(weapons)</span></span>
+      <span class="sha">15aebb1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-66eb0e2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">use selected utilities in duels <span class="scope">(battle)</span></span>
+      <span class="sha">66eb0e2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8b2a9ff">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mystic trader sprite uplift (higher poly + detail) <span class="scope">(render)</span></span>
+      <span class="sha">8b2a9ff</span>
+    </div><div class="row more">+ 39 more that day, not shown</div>
+  </div>
+      
+    </div>
+  </section>
+
+  <section id="bugs">
+    <div class="rule"></div>
+    <h2 class="chroma">Known bugs</h2>
+    <p class="lede">Ranked most important first, straight from our own verified bug tracker. Only what is
+      still broken shows up here; the moment something is fixed it drops off this list.</p>
+    
+  <div class="bugrow" id="bug-145-class">
+    <div class="bugrow-head">
+      <span class="bugtag">#145-class</span>
+      
+    </div>
+    <p class="bugwhat">Invisible-wall class: 210 phantom (non-visual) walls found repo-wide by the boundary sweep, 140 &quot;in-band&quot;. Report #145's own exact point was mislabelled in an older debt list (corrected 2026-07-29) and its instance may be covered by the flush-plug law, but the CLASS is explicitly still open</p>
+    <p class="bugwhy">Breaks movement/feel broadly, not cosmetic, a player can be stopped by nothing they can see, anywhere those 140 in-band walls sit</p>
+  </div>
+  <div class="bugrow" id="bug-191">
+    <div class="bugrow-head">
+      <span class="bugtag">#191</span>
+      
+    </div>
+    <p class="bugwhat">&quot;i feel like there shouldn't be an invisible wall here, the holes in the map should just be acting as pits&quot;</p>
+    <p class="bugwhy">Same phantom-wall class as above, filed independently, no fix commit found</p>
+  </div>
+  <div class="bugrow" id="bug-193">
+    <div class="bugrow-head">
+      <span class="bugtag">#193</span>
+      
+    </div>
+    <p class="bugwhat">&quot;invisible wall here as well, this section has lower land below it so it shouldn't be a hard wall&quot;</p>
+    <p class="bugwhy">Same class again</p>
+  </div>
+  <div class="bugrow" id="bug-166">
+    <div class="bugrow-head">
+      <span class="bugtag">#166</span>
+      
+    </div>
+    <p class="bugwhat">Sawtooth cap edge in hubLandmassDressing, shell-cap boundary not snapped to the corridor</p>
+    <p class="bugwhy">Standing debt, own named lane still queued, grew out of the same module as reports 86-94 when last touched</p>
+  </div>
+  <div class="bugrow" id="bug-201">
+    <div class="bugrow-head">
+      <span class="bugtag">#201</span>
+      
+    </div>
+    <p class="bugwhat">&quot;i can jump right through the roof of this desert building&quot;</p>
+    <p class="bugwhy">Possible sequence-break / geometry exploit, not just cosmetic</p>
+  </div>
+  <div class="bugrow" id="bug-192">
+    <div class="bugrow-head">
+      <span class="bugtag">#192</span>
+      
+    </div>
+    <p class="bugwhat">Unexplained &quot;weird circle effect&quot; appearing on screen in one area and at the snow mountain peak</p>
+    <p class="bugwhy">Unclear cause (shader? post-process artifact?), reported twice by location, no diagnosis on record</p>
+  </div>
+  <div class="bugrow" id="bug-184">
+    <div class="bugrow-head">
+      <span class="bugtag">#184</span>
+      
+    </div>
+    <p class="bugwhat">Villagers can walk through walls/objects (should be gated to their own front door)</p>
+    <p class="bugwhy">Immersion break, queued as a real task</p>
+  </div>
+  <div class="bugrow" id="bug-179">
+    <div class="bugrow-head">
+      <span class="bugtag">#179</span>
+      
+    </div>
+    <p class="bugwhat">Feature request: two roaming cats with long non-obvious patrol loops</p>
+    <p class="bugwhy">Not a defect, a queued feature</p>
+  </div>
+  <div class="bugrow" id="bug-181">
+    <div class="bugrow-head">
+      <span class="bugtag">#181</span>
+      
+    </div>
+    <p class="bugwhat">&quot;structures like this one... could use a glow up, everything else has been improving but these got missed&quot;</p>
+    <p class="bugwhy">Queued polish pass</p>
+  </div>
+  <div class="bugrow" id="bug-154">
+    <div class="bugrow-head">
+      <span class="bugtag">#154</span>
+      
+    </div>
+    <p class="bugwhat">&quot;not super stoked on this mechanic, can we do a full redo and glow up in one?&quot;</p>
+    <p class="bugwhy">Vague without the screenshot in hand, genuinely ambiguous which mechanic. Recommend Kevin re-look, this may be effectively a second NEEDS-KEVIN</p>
+  </div>
+  <div class="bugrow" id="bug-163">
+    <div class="bugrow-head">
+      <span class="bugtag">#163</span>
+      
+    </div>
+    <p class="bugwhat">Telescope/bench viewpoint ledge sits too high, blocks the view</p>
+    <p class="bugwhy">Minor UX polish</p>
+  </div>
+  <div class="bugrow" id="bug-159">
+    <div class="bugrow-head">
+      <span class="bugtag">#159</span>
+      
+    </div>
+    <p class="bugwhat">Signpost feels out of place, remove it</p>
+    <p class="bugwhy">Trivial removal</p>
+  </div>
+  <div class="bugrow" id="bug-149">
+    <div class="bugrow-head">
+      <span class="bugtag">#149</span>
+      
+    </div>
+    <p class="bugwhat">&quot;let's extend this area here to connect with the void area, i don't like the gap&quot;</p>
+    <p class="bugwhy">World-building polish</p>
+  </div>
+  <div class="bugrow" id="bug-150">
+    <div class="bugrow-head">
+      <span class="bugtag">#150</span>
+      
+    </div>
+    <p class="bugwhat">Follow-up to 149 (forgot the screenshot first time), same gap</p>
+    <p class="bugwhy">Same as 149</p>
+  </div>
+  <div class="bugrow" id="bug-187">
+    <div class="bugrow-head">
+      <span class="bugtag">#187</span>
+      
+    </div>
+    <p class="bugwhat">Crown-wearing boss/miniboss/elite is floating</p>
+    <p class="bugwhy">Visual</p>
+  </div>
+  <div class="bugrow" id="bug-188">
+    <div class="bugrow-head">
+      <span class="bugtag">#188</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Floating light diamonds move up with the player in a level (recurrence of the report-63 class in a different world)</p>
+    <p class="bugwhy">Visual, but same class as an already-fixed bug elsewhere, regression risk</p>
+  </div>
+  <div class="bugrow" id="bug-189">
+    <div class="bugrow-head">
+      <span class="bugtag">#189</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Minimap should reveal a bit more area as the player moves</p>
+    <p class="bugwhy">Suggestion, not a defect</p>
+  </div>
+  <div class="bugrow" id="bug-190">
+    <div class="bugrow-head">
+      <span class="bugtag">#190</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Ground seam visible right in front of the player</p>
+    <p class="bugwhy">Visual</p>
+  </div>
+  <div class="bugrow" id="bug-194">
+    <div class="bugrow-head">
+      <span class="bugtag">#194</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Tiny unexplained floating polygon in front of the player</p>
+    <p class="bugwhy">Visual</p>
+  </div>
+  <div class="bugrow" id="bug-195">
+    <div class="bugrow-head">
+      <span class="bugtag">#195</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">&quot;our birds look like paper airplanes&quot;</p>
+    <p class="bugwhy">Visual/asset quality</p>
+  </div>
+  <div class="bugrow" id="bug-196">
+    <div class="bugrow-head">
+      <span class="bugtag">#196</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Small triangle-shaped gap near the player</p>
+    <p class="bugwhy">Visual</p>
+  </div>
+  <div class="bugrow" id="bug-199">
+    <div class="bugrow-head">
+      <span class="bugtag">#199</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">&quot;this looks super janky here by the player sprite&quot;</p>
+    <p class="bugwhy">Visual, no further detail</p>
+  </div>
+  <div class="bugrow" id="bug-200">
+    <div class="bugrow-head">
+      <span class="bugtag">#200</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Follow-up angle of 199</p>
+    <p class="bugwhy">Same as 199</p>
+  </div>
+  <div class="bugrow" id="bug-202">
+    <div class="bugrow-head">
+      <span class="bugtag">#202</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Grim Hex should hold his staff like a walking stick (pose/rig)</p>
+    <p class="bugwhy">Cosmetic</p>
+  </div>
+  <div class="bugrow" id="bug-203">
+    <div class="bugrow-head">
+      <span class="bugtag">#203</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Orbital Mechanic skin reads &quot;waaaaay too wide at the bottom&quot;</p>
+    <p class="bugwhy">Cosmetic, on a hero shipped 761c670 &quot;Orbital Mechanic v2&quot; the same day</p>
+  </div>
+  <div class="bugrow" id="bug-204">
+    <div class="bugrow-head">
+      <span class="bugtag">#204</span>
+      <span class="bugtag new">just filed</span>
+    </div>
+    <p class="bugwhat">Wand model points backwards instead of forwards</p>
+    <p class="bugwhy">Cosmetic</p>
+  </div>
+  </section>
+
+  <section id="flight">
+    <div class="rule"></div>
+    <h2 class="chroma">In flight</h2>
+    <p class="lede">What is actively being built, live from the campaign that drives the work.</p>
+    <div class="arcs">
+    <div class="arc">
+      <div class="id">A1 &middot; live</div>
+      <h4>QUALITY BAR</h4>
+      <p>junction law, sprite bar, taste-law enforcement. Rolling.</p>
+    </div>
+    <div class="arc">
+      <div class="id">A2 &middot; nearly closed</div>
+      <h4>WEAPON IDENTITY</h4>
+      <p>integration done; per-weapon focus ranges tier-2.</p>
+    </div>
+    <div class="arc">
+      <div class="id">A3 &middot; Wed 7/30</div>
+      <h4>CO-OP</h4>
+      <p>the quality push campaign. Second Seat registry seeds it.</p>
+    </div>
+    <div class="arc">
+      <div class="id">A4 &middot; Thu 7/31</div>
+      <h4>AUDIO</h4>
+      <p>own campaign. Every ratified visual beat gets its sound twin.</p>
+    </div>
+    <div class="arc">
+      <div class="id">A5</div>
+      <h4>CONTROLLER</h4>
+      <p>S1 Thu, S2 Fri/weekend, Deck later.</p>
+    </div>
+    <div class="arc">
+      <div class="id">A6 &middot; Fri+</div>
+      <h4>CHARACTER PROGRESSION</h4>
+      <p>starters trio, zone-gated new characters (7 themed),</p>
+    </div>
+    <div class="arc">
+      <div class="id">A7 &middot; 0.7</div>
+      <h4>SNOW TIER</h4>
+      <p>Borealisk build (ratified card), S1 maps, Hollow Crown capstone.</p>
+    </div>
+    <div class="arc">
+      <div class="id">A8 &middot; next week, 0.7</div>
+      <h4>ACCOUNTS</h4>
+      <p>wrangler tap + sync; SAVE COMPAT fixtures first.</p>
+    </div>
+    <div class="arc">
+      <div class="id">A9 &middot; pillar, rolling</div>
+      <h4>THE LAB ARC</h4>
+      <p>dev tools graduate to player features. Photo mode +</p>
+    </div>
+  <div class="arc" id="flight-hub-world">
+    <div class="id">IN FLIGHT</div>
+    <h4>HUB / WORLD</h4>
+    <p>The hub keeps getting fixed and dressed up, corner by corner.</p>
+    <p style="margin-top:8px;color:var(--dim);font-size:.78rem">13 items queued</p>
+  </div>
+  <div class="arc" id="flight-performance">
+    <div class="id">IN FLIGHT</div>
+    <h4>PERFORMANCE</h4>
+    <p>Keeping the game fast on more machines, not just the strong ones.</p>
+    <p style="margin-top:8px;color:var(--dim);font-size:.78rem">10 items queued</p>
+  </div>
+  <div class="arc" id="flight-feedback-tester-facing">
+    <div class="id">IN FLIGHT</div>
+    <h4>FEEDBACK / TESTER-FACING</h4>
+    <p>Turning what you tell us into the next build, faster.</p>
+    <p style="margin-top:8px;color:var(--dim);font-size:.78rem">6 items queued</p>
+  </div></div>
+  </section>
+
+  </div>
+  </main>
+</div>
+
+<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
+  Generated 2026-07-30 22:48 UTC from <code>main@32a1752</code>.
+  Live build <code>60a534d</code> (a deploy is pending).
+</footer>
+
+
+<script type="module">
+import { getUser, onChange, signIn, signOut } from './bin/auth.js';
+const show = (el, visible) => { if (el) el.style.display = visible ? '' : 'none'; };
+function renderAuth(user) {
+  const signedIn = user !== null;
+  show(document.getElementById('ab-signedout'), !signedIn);
+  show(document.getElementById('ab-signedin'), signedIn);
+  if (signedIn) {
+    const name = user.displayName || user.email;
+    const el = document.getElementById('ab-name');
+    if (el) el.textContent = name;
+  }
+  window.__whompUser = user;
+  document.dispatchEvent(new CustomEvent('whomp-auth', { detail: user }));
+}
+async function runSignIn(button) {
+  button.disabled = true;
+  try { await signIn(); } finally { button.disabled = false; }
+}
+document.getElementById('ab-signin')?.addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('ab-signout')?.addEventListener('click', () => signOut());
+onChange(renderAuth);
+renderAuth(getUser());
+</script>
+<script type="module">
+// GATING SWITCH (director, 2026-07-30): the log is public for now, so testers
+// can reach it without an account. Sign-in still works above, it just is not
+// required to read anything below. Flip this to true and applyGating() starts
+// hiding #gated-content until getUser() returns a signed-in user - the same
+// session auth.js already exposes, no template rewrite needed.
+const GATING_ENABLED = false;
+function applyGating(user) {
+  const el = document.getElementById('gated-content');
+  if (!el) return;
+  const locked = GATING_ENABLED && user === null;
+  el.style.display = locked ? 'none' : '';
+}
+document.addEventListener('whomp-auth', (e) => applyGating(e.detail));
+applyGating(window.__whompUser ?? null);
+
+// ---- view toggle (concise / full) ----
+const vtabs = document.querySelectorAll('.vtab');
+const panes = { concise: document.getElementById('view-concise'), full: document.getElementById('view-full') };
+vtabs.forEach((tab) => tab.addEventListener('click', () => {
+  vtabs.forEach((t) => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+  tab.classList.add('is-active'); tab.setAttribute('aria-selected', 'true');
+  const view = tab.dataset.view;
+  Object.entries(panes).forEach(([k, el]) => { if (el) el.hidden = k !== view; });
+}));
+
+// ---- kind filters (full view only) ----
+const kindChips = document.querySelectorAll('#kind-filters .chipf');
+kindChips.forEach((chip) => chip.addEventListener('click', () => {
+  kindChips.forEach((c) => c.classList.remove('is-active'));
+  chip.classList.add('is-active');
+  const kind = chip.dataset.kind;
+  document.querySelectorAll('#view-full .row[data-kind]').forEach((row) => {
+    row.dataset.hidden = (kind !== 'all' && row.dataset.kind !== kind) ? '1' : '0';
+  });
+}));
+
+// ---- spoiler reveal ----
+function toggleSpoiler(el) { el.classList.toggle('revealed'); }
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('.spoiler');
+  if (t) toggleSpoiler(t);
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList?.contains('spoiler')) {
+    e.preventDefault();
+    toggleSpoiler(e.target);
+  }
+});
+
+// ---- search, over the generated index: notes, changes, bugs, arcs, in-flight ----
+const searchInput = document.getElementById('search');
+const srPanel = document.getElementById('sr-panel');
+let searchIndex = [];
+fetch('./search-index.json').then((r) => r.ok ? r.json() : []).then((data) => { searchIndex = data; }).catch(() => { searchIndex = []; });
+
+function renderResults(query) {
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) { srPanel.classList.remove('open'); srPanel.innerHTML = ''; return; }
+  const hits = searchIndex.filter((it) => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 30);
+  if (hits.length === 0) {
+    srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
+  } else {
+    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="#${it.anchor}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
+  }
+  srPanel.classList.add('open');
+}
+searchInput.addEventListener('input', (e) => renderResults(e.target.value));
+searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) srPanel.classList.remove('open'); });
+srPanel.addEventListener('click', (e) => {
+  const a = e.target.closest('.sr-item');
+  if (!a) return;
+  srPanel.classList.remove('open');
+  // if the anchor is inside the full log, switch to that view first
+  const id = a.getAttribute('href').slice(1);
+  const target = document.getElementById(id);
+  if (target && panes.full && panes.full.contains(target)) {
+    vtabs.forEach((t) => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+    document.querySelector('.vtab[data-view="full"]').classList.add('is-active');
+    panes.concise.hidden = true; panes.full.hidden = false;
+    document.querySelectorAll('#view-full .row[data-kind]').forEach((row) => { row.dataset.hidden = '0'; });
+    kindChips.forEach((c) => c.classList.toggle('is-active', c.dataset.kind === 'all'));
+  }
+});
+</script>
+</body>
+</html>

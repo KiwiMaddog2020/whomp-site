@@ -4,18 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP: A 3D horde-survivor where you aim it yourself.</title>
-<meta name="description" content="A 3D horde-survivor where you aim it yourself. Built in the open, with the defect ledger published.">
+<meta name="description" content="A 3D horde-survivor where you aim it yourself. Built in the open, with the dev log public.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <style>
-/* THE PALETTE IS THE APP ICON'S, AT FULL SATURATION, ON DARK.
-   Director ruling: candy pastels and four pink-free alternatives were rejected.
-   The pink is load-bearing in the blend, so it is never desaturated or replaced. */
+
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --edge:1px solid rgba(255,243,207,.10);
 }
 *{box-sizing:border-box}
@@ -25,23 +24,18 @@ body{
   color:var(--body); font-family:var(--font); line-height:1.6;
   -webkit-font-smoothing:antialiased; min-height:100vh;
 }
-.wrap{max-width:860px;margin:0 auto;padding:0 24px 96px}
 a{color:var(--cyan)}
+button{font-family:var(--font)}
 
 /* THE CHROMATIC OFFSET IS THE SIGNATURE, carried from the icon to type:
    cyan right-and-down, pink left-and-down, cream face on top. Flat offsets,
    zero blur, matching the de-BOO flat-plinth doctrine the game already uses. */
 .chroma{
-  color:var(--cream); font-weight:800; letter-spacing:-.02em;
+  color:var(--cream); font-weight:900; letter-spacing:-.02em;
   text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
 }
 
-header{padding:72px 0 40px;text-align:center}
-.wm{display:block;margin:0 auto 22px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.45))}
-h1{font-size:clamp(3rem,13vw,6rem);margin:0;line-height:.95}
-.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:var(--body);margin:18px auto 0;max-width:34ch}
-
-.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{
   display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
   border:var(--edge);background:rgba(255,243,207,.04);font-size:.82rem;color:var(--body);
@@ -51,33 +45,16 @@ h1{font-size:clamp(3rem,13vw,6rem);margin:0;line-height:.95}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
 .dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
 
-.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
 .btn{
   display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
-  font-weight:700;color:var(--ink);background:var(--sweep);
-  box-shadow:0 4px 0 #7a1440; transition:transform .12s ease,box-shadow .12s ease;
+  font-weight:700;color:var(--ink);background:var(--sweep);border:0;cursor:pointer;
+  box-shadow:0 4px 0 #7a1440; transition:transform .12s ease,box-shadow .12s ease;font-size:1rem;
 }
 .btn:hover{transform:translateY(2px);box-shadow:0 2px 0 #7a1440}
 .btn.ghost{background:none;color:var(--cream);border:var(--edge);box-shadow:0 4px 0 rgba(0,0,0,.4)}
-
-h2{font-size:1.65rem;margin:0 0 6px}
-section{margin-top:64px}
-.lede{color:var(--dim);margin:0 0 22px;font-size:.95rem}
+.btn.small{padding:9px 18px;font-size:.82rem;box-shadow:none}
 
 .rule{height:3px;border-radius:2px;background:var(--sweep);opacity:.85;margin-bottom:26px;max-width:120px}
-
-.day{border:var(--edge);border-radius:14px;padding:18px 20px;margin-bottom:14px;background:rgba(255,243,207,.025)}
-.day h3{margin:0 0 12px;font-size:.9rem;color:var(--dim);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
-.row{display:flex;gap:12px;padding:7px 0;border-top:1px solid rgba(255,243,207,.06);align-items:baseline}
-.row:first-of-type{border-top:0}
-.kind{
-  flex:none;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-  padding:3px 8px;border-radius:6px;min-width:64px;text-align:center;color:var(--ink);
-}
-.what{flex:1}
-.what .scope{color:var(--dim);font-size:.86rem}
-.sha{flex:none;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;color:var(--dim)}
-.row.more{color:var(--dim);font-size:.83rem;font-style:italic;justify-content:center}
 
 .arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
@@ -87,38 +64,42 @@ section{margin-top:64px}
 
 /* SIGN-IN, reused from the game's own accounts worker so one account covers
    both surfaces. Same worker, same client id, same session shape. */
-.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:18px 0 0}
-.authbar .btn{padding:9px 18px;font-size:.82rem;box-shadow:none}
+.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:16px 0 0}
 .authbar-name{color:var(--cream);font-weight:700;font-size:.85rem}
 
-.gate{border:var(--edge);border-radius:16px;padding:26px;background:
-  linear-gradient(180deg,rgba(177,75,255,.07),rgba(255,47,126,.04));text-align:center}
-.gate ul{list-style:none;padding:0;margin:18px 0;display:grid;gap:9px;
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));text-align:left}
-.gate li{padding:11px 14px;border:var(--edge);border-radius:10px;font-size:.88rem;
-  background:rgba(6,4,14,.5);color:var(--dim)}
-.gate li b{display:block;color:var(--cream);font-size:.94rem;font-weight:700;margin-bottom:2px}
-.lock{opacity:.5;font-size:.8rem}
-.gate-auth{margin-top:20px;padding-top:20px;border-top:var(--edge)}
-.gate-error{min-height:18px;font-size:.82rem;font-weight:700;color:#ffb3cf;margin:10px 0 0}
-.gate-locked{margin:16px 0;padding:16px;border:var(--edge);border-radius:10px;
-  background:rgba(6,4,14,.5);text-align:left}
+.spoiler{cursor:pointer;border-radius:4px;padding:0 2px;background:rgba(255,243,207,.08);color:transparent;text-shadow:0 0 0 transparent;transition:color .12s ease}
+.spoiler::selection{color:transparent}
+.spoiler.revealed{color:var(--cream);background:none}
+.spoiler:not(.revealed)::after{content:"spoiler, click to reveal";color:var(--dim);font-style:italic}
+.spoiler.revealed::after{content:""}
 
 footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);font-size:.82rem;text-align:center}
 footer code{color:var(--body)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.wrap{max-width:860px;margin:0 auto;padding:0 24px 96px}
+header{padding:56px 0 40px;text-align:center}
+.wm{display:block;margin:0 auto 22px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.45))}
+h1{font-size:clamp(3rem,13vw,6rem);margin:0;line-height:.95}
+.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:var(--body);margin:18px auto 0;max-width:34ch}
+.chips{justify-content:center;margin-top:26px}
+.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.doorway{text-align:center;color:var(--dim);font-size:.92rem;margin-top:18px}
+h2{font-size:1.65rem;margin:0 0 6px}
+section{margin-top:64px}
 </style>
 </head>
 <body>
 <div class="wrap">
 
+
 <div class="authbar">
   <span id="ab-signedout">
-    <button id="ab-signin" class="btn ghost" type="button">Sign in</button>
+    <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
   </span>
   <span id="ab-signedin" style="display:none">
     <span class="authbar-name" id="ab-name"></span>
-    <button id="ab-signout" class="btn ghost" type="button">Sign out</button>
+    <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
   </span>
 </div>
 
@@ -138,51 +119,20 @@ footer code{color:var(--body)}
 </svg>
   <h1 class="chroma">WHOMP</h1>
   <p class="tag">A 3D horde-survivor where you aim it yourself.</p>
-  <div class="chips">
-    <span class="chip"><span class="dot stale"></span>
-      live <b>a58a6e0</b></span>
-    <span class="chip">version <b>0.5.0</b></span>
-    <span class="chip"><b>270</b> player-visible changes, last 3 active days</span>
-  </div>
+  <div class="chips"><span class="chip"><span class="dot stale"></span>
+  live <b>60a534d</b></span>
+  <span class="chip">version <b>0.5.0</b></span></div>
   <div class="cta">
     <a class="btn" href="https://kiwimaddog2020.github.io/whomp-play/">Play the current build</a>
-    <a class="btn ghost" href="#shipped">See what shipped</a>
+    <a class="btn ghost" href="log.html">Read the dev log</a>
   </div>
+  <p class="doorway">Every build is written down: what shipped, what's still broken, what's next.</p>
 </header>
 
 <section>
   <div class="rule"></div>
-  <h2 class="chroma">Built in the open</h2>
-  <p>WHOMP is a 3D horde-survivor built by one person and a crew of AI agents, shipping
-  several times a day to a small circle of testers. The unusual part is not the speed.
-  It is that the development log below is generated straight from the repository, so it
-  reports what actually shipped rather than what we meant to ship, including the fixes
-  that were embarrassing.</p>
-  <p>Almost no studio publishes its real defect ledger. We do, because the ledger is the
-  most honest thing we have and it is the reason the game gets better this fast.</p>
-</section>
-
-<section id="shipped">
-  <div class="rule"></div>
-  <h2 class="chroma">Shipped this week</h2>
-  <p class="lede">We ship most days, sometimes many times a day, and every change is
-  written down. The full development log lives behind sign-in.</p>
-  <div class="day">
-    <h3>Recent activity</h3>
-    <div class="row"><span class="what"><b style="color:var(--cream)">270</b>
-      player-visible changes across the last 3 active days</span></div>
-    <div class="row"><span class="what">Newest build shipped
-      <b style="color:var(--cream)">2026-07-30</b></span></div>
-  </div>
-</section>
-
-
-<section>
-  <div class="rule"></div>
   <h2 class="chroma">What we are building</h2>
-  <p class="lede">The live arcs, parsed from the campaign file that actually drives the work.</p>
   <div class="arcs">
-    
     <div class="arc">
       <div class="id">A1 &middot; live</div>
       <h4>QUALITY BAR</h4>
@@ -227,82 +177,39 @@ footer code{color:var(--body)}
       <div class="id">A9 &middot; pillar, rolling</div>
       <h4>THE LAB ARC</h4>
       <p>dev tools graduate to player features. Photo mode +</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="rule"></div>
-  <h2 class="chroma">For testers</h2>
-  <div class="gate">
-    <p style="margin:0;color:var(--cream);font-weight:600">Testers see the whole thing</p>
-    <ul>
-      <li><b>The full development log</b> Every change, plain-English or raw</li>
-      <li><b>What is coming</b> The next few builds, in order</li>
-      <li><b>Known bugs</b> What is broken and what we are doing about it</li>
-      <li><b>Your ledger</b> Every report you sent and what it changed</li>
-    </ul>
-
-    <div class="gate-auth">
-      <div id="gate-signedout">
-        <p class="lock">Sign in with the same account you use in the game. One login covers both.</p>
-        <button id="gate-signin" class="btn" type="button">Sign in with Google</button>
-        <p class="gate-error" id="gate-error"></p>
-      </div>
-      <div id="gate-signedin" style="display:none">
-        <p class="lock">Signed in as <b id="gate-name" style="color:var(--cream)"></b></p>
-        <div class="gate-locked" id="gate-content">
-          <p class="lock" style="margin:0">The log, known bugs and your ledger land here next.</p>
-        </div>
-        <button id="gate-signout" class="btn ghost" type="button">Sign out</button>
-      </div>
-    </div>
-  </div>
+    </div></div>
 </section>
 
 <footer>
-  Generated 2026-07-30 09:01 UTC from <code>main@8a21e80</code>.
-  Live build <code>a58a6e0</code> (a deploy is pending).
+  Generated 2026-07-30 22:48 UTC from <code>main@32a1752</code>.
+  Live build <code>60a534d</code> (a deploy is pending).
 </footer>
 
 </div>
+
 <script type="module">
 import { getUser, onChange, signIn, signOut } from './bin/auth.js';
-
-const show = (el, visible) => { el.style.display = visible ? '' : 'none'; };
-
-function render(user) {
+const show = (el, visible) => { if (el) el.style.display = visible ? '' : 'none'; };
+function renderAuth(user) {
   const signedIn = user !== null;
   show(document.getElementById('ab-signedout'), !signedIn);
   show(document.getElementById('ab-signedin'), signedIn);
-  show(document.getElementById('gate-signedout'), !signedIn);
-  show(document.getElementById('gate-signedin'), signedIn);
   if (signedIn) {
     const name = user.displayName || user.email;
-    document.getElementById('ab-name').textContent = name;
-    document.getElementById('gate-name').textContent = name;
+    const el = document.getElementById('ab-name');
+    if (el) el.textContent = name;
   }
+  window.__whompUser = user;
+  document.dispatchEvent(new CustomEvent('whomp-auth', { detail: user }));
 }
-
 async function runSignIn(button) {
-  const errorEl = document.getElementById('gate-error');
-  errorEl.textContent = '';
   button.disabled = true;
-  try {
-    const out = await signIn();
-    if (!out.ok && out.error !== 'sign-in dismissed') errorEl.textContent = "Sign-in didn't go through. Try again.";
-  } finally {
-    button.disabled = false;
-  }
+  try { await signIn(); } finally { button.disabled = false; }
 }
-
-document.getElementById('ab-signin').addEventListener('click', (e) => runSignIn(e.currentTarget));
-document.getElementById('gate-signin').addEventListener('click', (e) => runSignIn(e.currentTarget));
-document.getElementById('ab-signout').addEventListener('click', () => signOut());
-document.getElementById('gate-signout').addEventListener('click', () => signOut());
-
-onChange(render);
-render(getUser());
+document.getElementById('ab-signin')?.addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('ab-signout')?.addEventListener('click', () => signOut());
+onChange(renderAuth);
+renderAuth(getUser());
 </script>
 </body>
 </html>

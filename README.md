@@ -1,6 +1,36 @@
 # whomp-site
 
-The public WHOMP page: a marketing pitch that doubles as a development log.
+The public WHOMP page: a short pitch (`index.html`) and the real development log
+(`log.html`).
+
+## Two surfaces
+
+- **`index.html`** is the short public landing page: mark, tagline, live build
+  chip, play button, arcs. It is deliberately small and never grows.
+- **`log.html`** is the real dev log: sidebar, search, filters, and a toggle
+  between two views of what shipped.
+
+## Two views inside the log
+
+- **Concise** (default) is Kevin's own notes, one file per update in `notes/`.
+  A machine cannot pick highlights, so this view is only ever what a human
+  decided was worth saying.
+- **Full** is the generated feed straight from `git log`, labelled honestly as
+  the raw engineering log. Nothing is cleaned up for the reader.
+
+The log also carries a **known bugs** list (parsed from the game repo's
+verified `docs/BUG_INVENTORY.md`, OPEN items only) and an **in flight** section
+(the campaign arcs plus a few backlog teasers), and a small generated
+**search index** covering all of it.
+
+## Gating
+
+Director change 2026-07-30: the log is **public** for now, no sign-in required
+to read it, so early testers can just reach it. The sign-in control (reused
+from the game's accounts worker) still works on both pages. `log.html` keeps a
+single `GATING_ENABLED` switch in its own script, off by default, that already
+wraps the page's content in a `.gated-section` ready to hide behind sign-in
+later, no template rewrite needed. See the comment next to that switch.
 
 ## Why it is a separate repo
 
@@ -25,8 +55,9 @@ It only ever **reads** the game repo. Kevin writes short human notes on top; the
 machine is not trusted to say why something mattered.
 
 ```bash
-node bin/generate.mjs --repo ../whomp --out index.html
-node bin/generate.mjs --repo ../whomp --offline   # skip the live sha fetch
+node bin/generate.mjs --repo ../whomp                # writes index.html, log.html, search-index.json
+node bin/generate.mjs --repo ../whomp --offline       # skip the live sha fetch
+bin/deploy-site.sh                                    # regenerate and push to GitHub Pages
 ```
 
 The page says so plainly when it could not reach the live build, rather than
@@ -51,11 +82,9 @@ pink or the cyan, and do not replace the pink; it is load-bearing in the blend.
 
 ## Not done yet
 
-- Sign-in. The gated section renders its real shape but is not wired. It plugs into
-  the accounts worker that the game's deploy 46 ships the UI for, so one identity
-  spans game and site.
-- Deploy. No GitHub repo exists yet; creating and pushing one needs Kevin's word.
-- The daily cron and the per-deploy refresh.
+- The daily cron and the per-deploy refresh: today `bin/deploy-site.sh` is run by
+  hand.
 - The shared data layer with A11 (wiki) and A13 (memory index). All three derive
   from the same registries and repo state, and three separate derivations would
   drift within a week.
+- Real gating, see the Gating section above.
