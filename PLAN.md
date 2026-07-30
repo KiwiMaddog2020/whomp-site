@@ -64,6 +64,65 @@ the site and the game agree **on the same machine**, which is the sense of "exac
 that a reader can actually perceive. The site already uses this stack; the glow-up
 adds the 900 weight and the size-scaled layering.
 
+## VOICE: the concise view is written for gamers, not engineers
+
+Director, 2026-07-30: testers are mostly gamers, so treat them like customers. Get
+them excited about what is new and what is coming, and tell them plainly what got
+fixed. Humanized, no AI tells, and **no em dashes anywhere**.
+
+This resolves the tension the two-source split creates. The generated feed is
+engineer language by nature ("fix(coop): the input conflict detector was blind to
+the whole aimed-core half"), and no automatic rewrite of that is going to be both
+accurate and readable. So:
+
+- **The concise view is the product.** It is the default, it is authored, and it is
+  the only thing most testers will ever read.
+- **The full view is labelled for what it is:** the raw engineering log, unedited.
+  Framing it honestly turns its density from a failure into the point. Almost no
+  studio publishes this, and a curious player opening it should feel let in rather
+  than lost. One line of framing above it does that work.
+
+### Rules for the concise view
+
+- Talk to the player. "You" and "your", not "the user" or "players".
+- Lead with what changed FOR THEM, not what we did to the code.
+- Game words, never code words. "Your health regen", not `duelRegenHps`. "The
+  arena", not `duelSim`. No shas, no file paths, no test names, no percentages of
+  a constant nobody has heard of.
+- Excitement comes from specifics, not adjectives. "Every stalemate disappeared"
+  beats "massively improved balance".
+- Name bugs plainly, with no drama and no apology tour. Players respect a studio
+  that says what broke.
+- Short. If a note runs past a short paragraph it belongs in the full view.
+
+### The four buckets
+
+Every concise entry is one of these, and the labels are player-facing:
+
+| Bucket | What goes in it |
+|---|---|
+| **New** | Content and features a player can go and do |
+| **Better** | Feel, quality of life, performance, anything that improves what exists |
+| **Fixed** | Bugs, named plainly |
+| **Coming** | What is next. Spoiler-gated per the wiki ruling, so unreleased content sits behind click-to-reveal even for signed-in testers |
+
+### A real translation, from tonight
+
+The generated line, which is what the full view shows:
+
+> `balance(pvp): the regen ceiling scales with the fight, and the damage profile
+> pays for it`
+
+The concise entry, which is what a tester reads:
+
+> **Fixed. Duels were dragging on.** Everyone was regenerating health at the same
+> rate whether they built for it or not, so fights that should have ended kept
+> going. That is fixed, and we retuned damage alongside it so hits land harder and
+> you can actually see a health bar move. In testing, every single stalemate
+> disappeared.
+
+Same fact, no jargon, no em dashes, and it gives a player a reason to care.
+
 ## Build order
 
 1. **Split the surfaces.** Landing becomes pitch-only. Move the feed behind the gate.
