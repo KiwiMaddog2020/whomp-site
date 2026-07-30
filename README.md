@@ -18,19 +18,46 @@ The public WHOMP page: a short pitch (`index.html`) and the real development log
 - **Full** is the generated feed straight from `git log`, labelled honestly as
   the raw engineering log. Nothing is cleaned up for the reader.
 
-The log also carries a **known bugs** list (parsed from the game repo's
-verified `docs/BUG_INVENTORY.md`, OPEN items only) and an **in flight** section
-(the campaign arcs plus a few backlog teasers), and a small generated
-**search index** covering all of it.
+The log also carries a **known bugs** summary (aggregate only: fixed/open
+totals, a breakdown by player-facing area, a severity shape, all counts
+derived from the game repo's verified `docs/BUG_INVENTORY.md` OPEN table) and
+an **in flight** section (the campaign arcs plus a few backlog teasers), and a
+small generated **search index** covering all of it.
+
+### Known bugs is aggregate only, on purpose
+
+Director change 2026-07-30: publishing a tester's own report text verbatim on
+a public URL is a different thing from publishing a changelog, and testers did
+not sign up for that. So the public page never gets per-report text, ids, or
+quotes, only counts: total fixed, total open, a breakdown by area (world and
+hub, combat, multiplayer, interface, performance, audio) and a severity shape,
+plus one or two authored sentences in the site's voice. The area and severity
+buckets are derived by a keyword classifier over each report's own text in
+`bin/generate.mjs` (`classifyBugArea` / `classifyBugSeverity`), never by a hand
+list of report ids mapped to a category, that is exactly the staleness failure
+this project already got burned by once (CAMPAIGN's old STANDING DEBTS list).
+`search-index.json` gets one aggregate entry for the bugs section too, never
+per-report text, because it is a static file fetched without auth by anyone
+regardless of sign-in state.
+
+An **owner-only** view of the full per-report detail exists in the generator
+(`ownerBugSection` in `bin/generate.mjs`) but is built dark: while
+`GATING_ENABLED` is `false`, the generator does not even construct that
+section's HTML, so there is nothing in `log.html` or `search-index.json` to
+hide with CSS, it is genuinely absent from the payload. See the comment on
+`GATING_ENABLED` and on `ownerBugSection` for how it turns on later and the
+real caveat about static hosting once it does.
 
 ## Gating
 
 Director change 2026-07-30: the log is **public** for now, no sign-in required
 to read it, so early testers can just reach it. The sign-in control (reused
-from the game's accounts worker) still works on both pages. `log.html` keeps a
-single `GATING_ENABLED` switch in its own script, off by default, that already
-wraps the page's content in a `.gated-section` ready to hide behind sign-in
-later, no template rewrite needed. See the comment next to that switch.
+from the game's accounts worker) still works on both pages. A single
+`GATING_ENABLED` switch at the top of `bin/generate.mjs`, off by default,
+drives both the runtime switch in `log.html`'s own script (which already
+wraps the page's content in a `.gated-section` ready to hide behind sign-in)
+and whether the owner-only bug detail section gets generated at all. See the
+comment next to that constant.
 
 ## Why it is a separate repo
 

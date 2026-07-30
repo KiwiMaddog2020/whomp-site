@@ -153,6 +153,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
 .bugwhat{margin:0 0 4px;color:var(--cream)}
 .bugwhy{margin:0;color:var(--dim);font-size:.86rem}
 
+/* AGGREGATE bug summary, counts only, no per-report anything. */
+.bugtotals{margin-bottom:20px}
+.bugareas{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:16px}
+.bugarea{border:var(--edge);border-radius:12px;padding:14px 16px;background:rgba(255,243,207,.025)}
+.bugarea-count{display:block;color:var(--cream);font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums}
+.bugarea-name{display:block;color:var(--dim);font-size:.8rem;margin-top:2px}
+.bugseverity{display:flex;flex-wrap:wrap;gap:8px}
+.bugseverity span{padding:7px 14px;border-radius:999px;border:var(--edge);color:var(--dim);font-size:.8rem}
+.bugseverity span b{color:var(--cream)}
+
 /* GATING SWITCH lives in the script below (GATING_ENABLED). This wrapper is
    what a real gate would hide; today it renders unconditionally. */
 .gated-section{}
@@ -215,7 +225,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <a href="#bugs">Known bugs</a>
     <a href="#flight">In flight</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">1003 player-visible changes across 11 active days, 984 internal-only commits filtered out</div>
+    <div class="stat">1001 player-visible changes across 11 active days, 986 internal-only commits filtered out</div>
   </nav>
 
   <main class="main">
@@ -1244,7 +1254,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">mystic trader sprite uplift (higher poly + detail) <span class="scope">(render)</span></span>
       <span class="sha">8b2a9ff</span>
-    </div><div class="row more">+ 39 more that day, not shown</div>
+    </div><div class="row more">+ 37 more that day, not shown</div>
   </div>
       
     </div>
@@ -1253,218 +1263,20 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="bugs">
     <div class="rule"></div>
     <h2 class="chroma">Known bugs</h2>
-    <p class="lede">Ranked most important first, straight from our own verified bug tracker. Only what is
-      still broken shows up here; the moment something is fixed it drops off this list.</p>
-    
-  <div class="bugrow" id="bug-145-class">
-    <div class="bugrow-head">
-      <span class="bugtag">#145-class</span>
-      
+    <p class="lede">We have fixed 175 reports so far and 26 are still open. Most of what is left is small visual polish, corners of the map, a stray floating triangle, that kind of thing, not anything that stops you from playing.</p>
+    <div class="chips bugtotals">
+      <span class="chip">fixed <b>175</b></span>
+      <span class="chip">open <b>26</b></span>
     </div>
-    <p class="bugwhat">Invisible-wall class: 210 phantom (non-visual) walls found repo-wide by the boundary sweep, 140 &quot;in-band&quot;. Report #145's own exact point was mislabelled in an older debt list (corrected 2026-07-29) and its instance may be covered by the flush-plug law, but the CLASS is explicitly still open</p>
-    <p class="bugwhy">Breaks movement/feel broadly, not cosmetic, a player can be stopped by nothing they can see, anywhere those 140 in-band walls sit</p>
-  </div>
-  <div class="bugrow" id="bug-191">
-    <div class="bugrow-head">
-      <span class="bugtag">#191</span>
-      
+    <div class="bugareas">
+      <div class="bugarea"><span class="bugarea-count">21</span><span class="bugarea-name">world and hub</span></div><div class="bugarea"><span class="bugarea-count">4</span><span class="bugarea-name">combat</span></div><div class="bugarea"><span class="bugarea-count">0</span><span class="bugarea-name">multiplayer</span></div><div class="bugarea"><span class="bugarea-count">1</span><span class="bugarea-name">interface</span></div><div class="bugarea"><span class="bugarea-count">0</span><span class="bugarea-name">performance</span></div><div class="bugarea"><span class="bugarea-count">0</span><span class="bugarea-name">audio</span></div>
     </div>
-    <p class="bugwhat">&quot;i feel like there shouldn't be an invisible wall here, the holes in the map should just be acting as pits&quot;</p>
-    <p class="bugwhy">Same phantom-wall class as above, filed independently, no fix commit found</p>
-  </div>
-  <div class="bugrow" id="bug-193">
-    <div class="bugrow-head">
-      <span class="bugtag">#193</span>
-      
+    <div class="bugseverity">
+      <span>Recurring class, several spots <b>3</b></span><span>Single spot, visual polish <b>21</b></span><span>Suggestion, not a defect <b>2</b></span>
     </div>
-    <p class="bugwhat">&quot;invisible wall here as well, this section has lower land below it so it shouldn't be a hard wall&quot;</p>
-    <p class="bugwhy">Same class again</p>
-  </div>
-  <div class="bugrow" id="bug-166">
-    <div class="bugrow-head">
-      <span class="bugtag">#166</span>
-      
-    </div>
-    <p class="bugwhat">Sawtooth cap edge in hubLandmassDressing, shell-cap boundary not snapped to the corridor</p>
-    <p class="bugwhy">Standing debt, own named lane still queued, grew out of the same module as reports 86-94 when last touched</p>
-  </div>
-  <div class="bugrow" id="bug-201">
-    <div class="bugrow-head">
-      <span class="bugtag">#201</span>
-      
-    </div>
-    <p class="bugwhat">&quot;i can jump right through the roof of this desert building&quot;</p>
-    <p class="bugwhy">Possible sequence-break / geometry exploit, not just cosmetic</p>
-  </div>
-  <div class="bugrow" id="bug-192">
-    <div class="bugrow-head">
-      <span class="bugtag">#192</span>
-      
-    </div>
-    <p class="bugwhat">Unexplained &quot;weird circle effect&quot; appearing on screen in one area and at the snow mountain peak</p>
-    <p class="bugwhy">Unclear cause (shader? post-process artifact?), reported twice by location, no diagnosis on record</p>
-  </div>
-  <div class="bugrow" id="bug-184">
-    <div class="bugrow-head">
-      <span class="bugtag">#184</span>
-      
-    </div>
-    <p class="bugwhat">Villagers can walk through walls/objects (should be gated to their own front door)</p>
-    <p class="bugwhy">Immersion break, queued as a real task</p>
-  </div>
-  <div class="bugrow" id="bug-179">
-    <div class="bugrow-head">
-      <span class="bugtag">#179</span>
-      
-    </div>
-    <p class="bugwhat">Feature request: two roaming cats with long non-obvious patrol loops</p>
-    <p class="bugwhy">Not a defect, a queued feature</p>
-  </div>
-  <div class="bugrow" id="bug-181">
-    <div class="bugrow-head">
-      <span class="bugtag">#181</span>
-      
-    </div>
-    <p class="bugwhat">&quot;structures like this one... could use a glow up, everything else has been improving but these got missed&quot;</p>
-    <p class="bugwhy">Queued polish pass</p>
-  </div>
-  <div class="bugrow" id="bug-154">
-    <div class="bugrow-head">
-      <span class="bugtag">#154</span>
-      
-    </div>
-    <p class="bugwhat">&quot;not super stoked on this mechanic, can we do a full redo and glow up in one?&quot;</p>
-    <p class="bugwhy">Vague without the screenshot in hand, genuinely ambiguous which mechanic. Recommend Kevin re-look, this may be effectively a second NEEDS-KEVIN</p>
-  </div>
-  <div class="bugrow" id="bug-163">
-    <div class="bugrow-head">
-      <span class="bugtag">#163</span>
-      
-    </div>
-    <p class="bugwhat">Telescope/bench viewpoint ledge sits too high, blocks the view</p>
-    <p class="bugwhy">Minor UX polish</p>
-  </div>
-  <div class="bugrow" id="bug-159">
-    <div class="bugrow-head">
-      <span class="bugtag">#159</span>
-      
-    </div>
-    <p class="bugwhat">Signpost feels out of place, remove it</p>
-    <p class="bugwhy">Trivial removal</p>
-  </div>
-  <div class="bugrow" id="bug-149">
-    <div class="bugrow-head">
-      <span class="bugtag">#149</span>
-      
-    </div>
-    <p class="bugwhat">&quot;let's extend this area here to connect with the void area, i don't like the gap&quot;</p>
-    <p class="bugwhy">World-building polish</p>
-  </div>
-  <div class="bugrow" id="bug-150">
-    <div class="bugrow-head">
-      <span class="bugtag">#150</span>
-      
-    </div>
-    <p class="bugwhat">Follow-up to 149 (forgot the screenshot first time), same gap</p>
-    <p class="bugwhy">Same as 149</p>
-  </div>
-  <div class="bugrow" id="bug-187">
-    <div class="bugrow-head">
-      <span class="bugtag">#187</span>
-      
-    </div>
-    <p class="bugwhat">Crown-wearing boss/miniboss/elite is floating</p>
-    <p class="bugwhy">Visual</p>
-  </div>
-  <div class="bugrow" id="bug-188">
-    <div class="bugrow-head">
-      <span class="bugtag">#188</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Floating light diamonds move up with the player in a level (recurrence of the report-63 class in a different world)</p>
-    <p class="bugwhy">Visual, but same class as an already-fixed bug elsewhere, regression risk</p>
-  </div>
-  <div class="bugrow" id="bug-189">
-    <div class="bugrow-head">
-      <span class="bugtag">#189</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Minimap should reveal a bit more area as the player moves</p>
-    <p class="bugwhy">Suggestion, not a defect</p>
-  </div>
-  <div class="bugrow" id="bug-190">
-    <div class="bugrow-head">
-      <span class="bugtag">#190</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Ground seam visible right in front of the player</p>
-    <p class="bugwhy">Visual</p>
-  </div>
-  <div class="bugrow" id="bug-194">
-    <div class="bugrow-head">
-      <span class="bugtag">#194</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Tiny unexplained floating polygon in front of the player</p>
-    <p class="bugwhy">Visual</p>
-  </div>
-  <div class="bugrow" id="bug-195">
-    <div class="bugrow-head">
-      <span class="bugtag">#195</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">&quot;our birds look like paper airplanes&quot;</p>
-    <p class="bugwhy">Visual/asset quality</p>
-  </div>
-  <div class="bugrow" id="bug-196">
-    <div class="bugrow-head">
-      <span class="bugtag">#196</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Small triangle-shaped gap near the player</p>
-    <p class="bugwhy">Visual</p>
-  </div>
-  <div class="bugrow" id="bug-199">
-    <div class="bugrow-head">
-      <span class="bugtag">#199</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">&quot;this looks super janky here by the player sprite&quot;</p>
-    <p class="bugwhy">Visual, no further detail</p>
-  </div>
-  <div class="bugrow" id="bug-200">
-    <div class="bugrow-head">
-      <span class="bugtag">#200</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Follow-up angle of 199</p>
-    <p class="bugwhy">Same as 199</p>
-  </div>
-  <div class="bugrow" id="bug-202">
-    <div class="bugrow-head">
-      <span class="bugtag">#202</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Grim Hex should hold his staff like a walking stick (pose/rig)</p>
-    <p class="bugwhy">Cosmetic</p>
-  </div>
-  <div class="bugrow" id="bug-203">
-    <div class="bugrow-head">
-      <span class="bugtag">#203</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Orbital Mechanic skin reads &quot;waaaaay too wide at the bottom&quot;</p>
-    <p class="bugwhy">Cosmetic, on a hero shipped 761c670 &quot;Orbital Mechanic v2&quot; the same day</p>
-  </div>
-  <div class="bugrow" id="bug-204">
-    <div class="bugrow-head">
-      <span class="bugtag">#204</span>
-      <span class="bugtag new">just filed</span>
-    </div>
-    <p class="bugwhat">Wand model points backwards instead of forwards</p>
-    <p class="bugwhy">Cosmetic</p>
-  </div>
   </section>
+
+  
 
   <section id="flight">
     <div class="rule"></div>
@@ -1541,7 +1353,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-07-30 22:48 UTC from <code>main@32a1752</code>.
+  Generated 2026-07-30 23:02 UTC from <code>main@e19f982</code>.
   Live build <code>60a534d</code> (a deploy is pending).
 </footer>
 
@@ -1573,9 +1385,11 @@ renderAuth(getUser());
 <script type="module">
 // GATING SWITCH (director, 2026-07-30): the log is public for now, so testers
 // can reach it without an account. Sign-in still works above, it just is not
-// required to read anything below. Flip this to true and applyGating() starts
-// hiding #gated-content until getUser() returns a signed-in user - the same
-// session auth.js already exposes, no template rewrite needed.
+// required to read anything below. This value is set from the same
+// GATING_ENABLED at the top of bin/generate.mjs, one flag, flipped in one
+// place. Flip it there and regenerate: applyGating() starts hiding
+// #gated-content until getUser() returns a signed-in user, the same session
+// auth.js already exposes, no template rewrite needed.
 const GATING_ENABLED = false;
 function applyGating(user) {
   const el = document.getElementById('gated-content');
@@ -1585,6 +1399,24 @@ function applyGating(user) {
 }
 document.addEventListener('whomp-auth', (e) => applyGating(e.detail));
 applyGating(window.__whompUser ?? null);
+
+// OWNER-ONLY VIEW (dark). #owner-bugs only exists in this document at all
+// when GATING_ENABLED was true when bin/generate.mjs ran (see ownerBugSection
+// there), so while gating is off there is no element here to find and this
+// check is a no-op. When it does exist, it still starts hidden and only this
+// check reveals it, to the one signed-in identity that matches OWNER_EMAIL.
+// Reminder for later, from the generator comment: this is a UI convenience on
+// a static host, not real access control, every generated file is reachable
+// by its own URL regardless of sign-in state.
+const OWNER_EMAIL = "kevinmadson@protonmail.com";
+function applyOwnerGate(user) {
+  const el = document.getElementById('owner-bugs');
+  if (!el) return;
+  const visible = GATING_ENABLED && !!user && user.email === OWNER_EMAIL;
+  el.hidden = !visible;
+}
+document.addEventListener('whomp-auth', (e) => applyOwnerGate(e.detail));
+applyOwnerGate(window.__whompUser ?? null);
 
 // ---- view toggle (concise / full) ----
 const vtabs = document.querySelectorAll('.vtab');

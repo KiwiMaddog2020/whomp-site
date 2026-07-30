@@ -2,9 +2,9 @@
 /** THE WHOMP SITE GENERATOR, the generated spine.
  *
  *  "Generated spine, authored highlights": a job derives deploys, the live sha,
- *  the campaign arcs and the known-bug list FROM THE REPO, so the site cannot go
- *  stale or lie, and Kevin writes short human notes on top for the part a machine
- *  cannot pick: which changes actually mattered to a player.
+ *  the campaign arcs and the known-bug counts FROM THE REPO, so the site cannot
+ *  go stale or lie, and Kevin writes short human notes on top for the part a
+ *  machine cannot pick: which changes actually mattered to a player.
  *
  *  IT NEVER TOUCHES THE GAME REPO. It reads. The site lives in its own repo on
  *  GitHub Pages precisely so a site edit can never bump the game's build sha,
@@ -20,11 +20,21 @@
  *  Both read a shared search-index.json written alongside them, built at
  *  generate time from everything on the page: notes, commits, known bugs, arcs.
  *
+ *  KNOWN BUGS, director change 2026-07-30: publishing individual tester reports
+ *  verbatim on a public URL is not the same thing as publishing a changelog, and
+ *  testers did not sign up for that. The public page gets an AGGREGATE ONLY
+ *  summary (fixed/open totals, an area breakdown, a severity shape, one or two
+ *  authored sentences), all counts derived by keyword classifier over the
+ *  OPEN table, never a hand list of report ids. The real per-report text stays
+ *  out of both log.html's public section and search-index.json. See
+ *  parseOpenBugs / classifyBugArea / classifyBugSeverity below.
+ *
  *  GATING, director change 2026-07-30: the log is PUBLIC for now (testers should
- *  be able to just reach it), but the sign-in control still works and the
- *  templates keep a single switch (GATING_ENABLED in log.html's own script) that
- *  turns real gating back on later without a template rewrite. See the comment
- *  next to that switch.
+ *  be able to just reach it), but the sign-in control still works and a single
+ *  GATING_ENABLED flag right below (not in log.html's own script anymore, this
+ *  file is now the one place to flip it) turns real gating back on later, AND
+ *  controls whether the OWNER-ONLY per-report bug section even gets generated.
+ *  See the comment on that constant and on ownerBugSection further down.
  *
  *  USAGE: node bin/generate.mjs [--repo ../whomp] [--outdir .] [--offline]
  */
@@ -44,6 +54,19 @@ const REPO = resolve(arg('--repo', '../whomp'));
 const OUTDIR = resolve(arg('--outdir', SITE_ROOT));
 const OFFLINE = args.includes('--offline');
 const LIVE_URL = 'https://kiwimaddog2020.github.io/whomp-play';
+
+/* GATING, single flag, one place to flip. Director change 2026-07-30: the log
+ * is public today, so this is false. It drives two things at once:
+ *   1. the runtime switch in log.html's own script (interpolated in below),
+ *      which is what real reader gating turns on later.
+ *   2. whether the OWNER-ONLY per-report bug detail is generated AT ALL. When
+ *      this is false, the generator never builds that section's markup or
+ *      data, so there is nothing to hide with CSS, it is genuinely absent
+ *      from log.html and search-index.json. See the ownerBugSection comment
+ *      near the bugs section below for how it turns on later, and the real
+ *      caveat about static hosting once it does. */
+const GATING_ENABLED = false;
+const OWNER_EMAIL = 'kevinmadson@protonmail.com';
 
 const git = (...a) => execFileSync('git', ['-C', REPO, ...a], { encoding: 'utf8' }).trim();
 
@@ -161,11 +184,72 @@ function parseOpenBugs() {
     const what = cleanDoc(m[2]);
     const why = cleanDoc(m[3]);
     const evidence = cleanDoc(m[4]);
-    bugs.push({ id, what, why, freshlyFiled: /^untriaged$/i.test(evidence) });
+    bugs.push({ id, what, why, evidence, freshlyFiled: /^untriaged$/i.test(evidence) });
   }
   return bugs;
 }
 const openBugs = parseOpenBugs();
+
+/* The FIXED/OPEN totals come straight from the inventory's own "Headline
+ * counts" table rather than a hand count anywhere in this file, so the
+ * published ratio can never drift from the source of truth. */
+function parseHeadlineCounts() {
+  const path = join(REPO, 'docs/BUG_INVENTORY.md');
+  if (!existsSync(path)) return { fixed: null, open: null };
+  const raw = readFileSync(path, 'utf8');
+  const block = raw.split(/^## Headline counts$/m)[1]?.split(/^## /m)[0] ?? '';
+  const grab = (label) => {
+    const m = block.match(new RegExp(`\\|\\s*\\*\\*${label}\\*\\*\\s*\\|\\s*(\\d+)\\s*\\|`));
+    return m ? Number(m[1]) : null;
+  };
+  return { fixed: grab('FIXED'), open: grab('OPEN') };
+}
+const bugHeadline = parseHeadlineCounts();
+const totalOpenBugs = openBugs.length;
+const totalFixedBugs = bugHeadline.fixed;
+if (bugHeadline.open !== null && bugHeadline.open !== totalOpenBugs) {
+  console.warn(`WARNING: BUG_INVENTORY headline says ${bugHeadline.open} OPEN, but ${totalOpenBugs} OPEN rows were parsed. Counts may be stale, check the OPEN table.`);
+}
+
+/* AGGREGATE ONLY, derived by keyword match over each report's own "what" /
+ * "why" / "evidence" text, never by a hand list of report ids. A hand list
+ * of ids-to-category is exactly the staleness failure this project already
+ * got burned by once (CAMPAIGN's STANDING DEBTS, see the header comment on
+ * parseOpenBugs above), so the classifier reads the same way every time the
+ * inventory changes, no id ever gets looked up individually. This function
+ * and classifySeverity below are the ONLY things allowed to see each report's
+ * text; everything downstream of them is counts only. */
+const BUG_AREAS = ['world and hub', 'combat', 'multiplayer', 'interface', 'performance', 'audio'];
+function classifyBugArea(b) {
+  const t = `${b.what} ${b.why} ${b.evidence}`.toLowerCase();
+  if (/\b(coop|co-op|duel|multiplayer|seat|desync|online match|lobby)\b/.test(t)) return 'multiplayer';
+  if (/\b(sound|audio|music|sfx|volume|mute)\b/.test(t)) return 'audio';
+  if (/\b(fps|frame rate|framerate|lag|stutter|performance|freeze)\b/.test(t)) return 'performance';
+  if (/\b(minimap|hud|menu|share card|sign in|settings)\b/.test(t)) return 'interface';
+  if (/\b(boss|miniboss|elite|hero|skin|wand|staff|weapon)\b/.test(t)) return 'combat';
+  return 'world and hub';
+}
+function classifyBugSeverity(b) {
+  const t = `${b.what} ${b.why} ${b.evidence}`.toLowerCase();
+  if (/invisible wall|phantom wall/.test(t)) return 'recurring';
+  if (/not a defect|suggestion, not|feature request|queued feature/.test(t)) return 'suggestion';
+  return 'polish';
+}
+const bugAreaCounts = BUG_AREAS.map((area) => ({ area, count: openBugs.filter((b) => classifyBugArea(b) === area).length }));
+const SEVERITY_LABEL = { recurring: 'Recurring class, several spots', polish: 'Single spot, visual polish', suggestion: 'Suggestion, not a defect' };
+const severityCounts = { recurring: 0, polish: 0, suggestion: 0 };
+for (const b of openBugs) severityCounts[classifyBugSeverity(b)]++;
+const bugSeverityCounts = Object.entries(severityCounts).map(([key, count]) => ({ key, label: SEVERITY_LABEL[key], count }));
+
+/* IF the data actually supports it: no open report uses crash/stuck/softlock
+ * language, and most of what is open is polish or a suggestion rather than a
+ * recurring class. Both are checked here, not assumed, so the authored line
+ * below only claims what this run's data backs up. */
+const noBlockingLanguage = !openBugs.some((b) => /\bcrash(?:es|ed)?\b|\bcan(?:'t|not) (?:play|progress|continue)\b|\bstuck\b|\bsoft.?lock\b/i.test(`${b.what} ${b.why} ${b.evidence}`));
+const polishShare = totalOpenBugs > 0 ? (severityCounts.polish + severityCounts.suggestion) / totalOpenBugs : 0;
+const bugFraming = (totalFixedBugs !== null && noBlockingLanguage && polishShare >= 0.6)
+  ? `We have fixed ${totalFixedBugs} reports so far and ${totalOpenBugs} are still open. Most of what is left is small visual polish, corners of the map, a stray floating triangle, that kind of thing, not anything that stops you from playing.`
+  : `We have fixed ${totalFixedBugs ?? '?'} reports so far and ${totalOpenBugs} are still open. We are working through the rest now.`;
 
 // ---------------------------------------------------------------- derive: also in flight, from BACKLOG_INVENTORY
 /* BACKLOG_INVENTORY.md is an engineer-facing sweep (line-numbers, file paths,
@@ -527,6 +611,9 @@ const dayBlock = (date, changes) => {
   </div>`;
 };
 
+/* OWNER-ONLY, per-report detail. Never used on the public page, only inside
+ * ownerBugSection below, which only exists in the output at all when
+ * GATING_ENABLED is true at build time. */
 const bugRow = (b) => `
   <div class="bugrow" id="bug-${slug(b.id)}">
     <div class="bugrow-head">
@@ -536,6 +623,32 @@ const bugRow = (b) => `
     <p class="bugwhat">${esc(b.what)}</p>
     ${b.why ? `<p class="bugwhy">${esc(b.why)}</p>` : ''}
   </div>`;
+
+/* OWNER-ONLY VIEW, built now, kept dark. Guarded at BUILD TIME, not just in
+ * the browser: while GATING_ENABLED is false (today), this whole block is the
+ * empty string, so openBugs' per-report what/why text never reaches logHtml
+ * or search-index.json at all, there is nothing for a browser to download and
+ * nothing a CSS rule is hiding. That is the difference between this and the
+ * anti-pattern the director called out explicitly: shipping the raw text and
+ * hiding it with CSS.
+ *
+ * TO TURN IT ON LATER: flip GATING_ENABLED to true at the top of this file
+ * and regenerate. That restores the runtime check below (OWNER_EMAIL against
+ * the signed-in identity from auth.js), so only Kevin's own signed-in session
+ * reveals #owner-bugs. Read this caveat first though: GitHub Pages has no
+ * server-side auth, every generated file is fetchable by its raw URL by
+ * anyone who knows to look, signed in or not. The DOM check stops a casual
+ * tester from seeing it in the rendered page, it is not real access control.
+ * Before ever using this for genuinely sensitive detail, move the per-report
+ * text behind the accounts worker as an authenticated endpoint instead of a
+ * static file. */
+const ownerBugSection = GATING_ENABLED ? `
+  <section id="owner-bugs" class="gated-section" hidden>
+    <div class="rule"></div>
+    <h2 class="chroma">Owner detail</h2>
+    <p class="lede">Full per-report bug text. Signed-in owner only, never part of what testers get.</p>
+    ${openBugs.length ? openBugs.map(bugRow).join('') : '<p class="lede">Nothing open right now.</p>'}
+  </section>` : '';
 
 const flightCard = (t) => `
   <div class="arc" id="flight-${slug(t.name)}">
@@ -631,6 +744,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
 .bugwhat{margin:0 0 4px;color:var(--cream)}
 .bugwhy{margin:0;color:var(--dim);font-size:.86rem}
 
+/* AGGREGATE bug summary, counts only, no per-report anything. */
+.bugtotals{margin-bottom:20px}
+.bugareas{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:16px}
+.bugarea{border:var(--edge);border-radius:12px;padding:14px 16px;background:rgba(255,243,207,.025)}
+.bugarea-count{display:block;color:var(--cream);font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums}
+.bugarea-name{display:block;color:var(--dim);font-size:.8rem;margin-top:2px}
+.bugseverity{display:flex;flex-wrap:wrap;gap:8px}
+.bugseverity span{padding:7px 14px;border-radius:999px;border:var(--edge);color:var(--dim);font-size:.8rem}
+.bugseverity span b{color:var(--cream)}
+
 /* GATING SWITCH lives in the script below (GATING_ENABLED). This wrapper is
    what a real gate would hide; today it renders unconditionally. */
 .gated-section{}
@@ -709,10 +832,20 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="bugs">
     <div class="rule"></div>
     <h2 class="chroma">Known bugs</h2>
-    <p class="lede">Ranked most important first, straight from our own verified bug tracker. Only what is
-      still broken shows up here; the moment something is fixed it drops off this list.</p>
-    ${openBugs.length ? openBugs.map(bugRow).join('') : '<p class="lede">Nothing open right now.</p>'}
+    <p class="lede">${esc(bugFraming)}</p>
+    <div class="chips bugtotals">
+      <span class="chip">fixed <b>${totalFixedBugs ?? '?'}</b></span>
+      <span class="chip">open <b>${totalOpenBugs}</b></span>
+    </div>
+    <div class="bugareas">
+      ${bugAreaCounts.map((a) => `<div class="bugarea"><span class="bugarea-count">${a.count}</span><span class="bugarea-name">${esc(a.area)}</span></div>`).join('')}
+    </div>
+    <div class="bugseverity">
+      ${bugSeverityCounts.map((s) => `<span>${esc(s.label)} <b>${s.count}</b></span>`).join('')}
+    </div>
   </section>
+
+  ${ownerBugSection}
 
   <section id="flight">
     <div class="rule"></div>
@@ -735,10 +868,12 @@ ${AUTH_SCRIPT()}
 <script type="module">
 // GATING SWITCH (director, 2026-07-30): the log is public for now, so testers
 // can reach it without an account. Sign-in still works above, it just is not
-// required to read anything below. Flip this to true and applyGating() starts
-// hiding #gated-content until getUser() returns a signed-in user - the same
-// session auth.js already exposes, no template rewrite needed.
-const GATING_ENABLED = false;
+// required to read anything below. This value is set from the same
+// GATING_ENABLED at the top of bin/generate.mjs, one flag, flipped in one
+// place. Flip it there and regenerate: applyGating() starts hiding
+// #gated-content until getUser() returns a signed-in user, the same session
+// auth.js already exposes, no template rewrite needed.
+const GATING_ENABLED = ${GATING_ENABLED};
 function applyGating(user) {
   const el = document.getElementById('gated-content');
   if (!el) return;
@@ -747,6 +882,24 @@ function applyGating(user) {
 }
 document.addEventListener('whomp-auth', (e) => applyGating(e.detail));
 applyGating(window.__whompUser ?? null);
+
+// OWNER-ONLY VIEW (dark). #owner-bugs only exists in this document at all
+// when GATING_ENABLED was true when bin/generate.mjs ran (see ownerBugSection
+// there), so while gating is off there is no element here to find and this
+// check is a no-op. When it does exist, it still starts hidden and only this
+// check reveals it, to the one signed-in identity that matches OWNER_EMAIL.
+// Reminder for later, from the generator comment: this is a UI convenience on
+// a static host, not real access control, every generated file is reachable
+// by its own URL regardless of sign-in state.
+const OWNER_EMAIL = ${JSON.stringify(OWNER_EMAIL)};
+function applyOwnerGate(user) {
+  const el = document.getElementById('owner-bugs');
+  if (!el) return;
+  const visible = GATING_ENABLED && !!user && user.email === OWNER_EMAIL;
+  el.hidden = !visible;
+}
+document.addEventListener('whomp-auth', (e) => applyOwnerGate(e.detail));
+applyOwnerGate(window.__whompUser ?? null);
 
 // ---- view toggle (concise / full) ----
 const vtabs = document.querySelectorAll('.vtab');
@@ -822,9 +975,17 @@ srPanel.addEventListener('click', (e) => {
 </html>`;
 
 // ---------------------------------------------------------------- search index
-/* One small JSON file, built at generate time, over everything the page shows:
- * notes, the full commit feed, known bugs, arcs and in-flight work. Loaded
- * client-side and filtered live. No service, no dependency. */
+/* One small JSON file, built at generate time, over everything the page
+ * shows: notes, the full commit feed, known bugs, arcs and in-flight work.
+ * Loaded client-side and filtered live. No service, no dependency.
+ *
+ * KNOWN BUGS gets exactly one aggregate entry, counts only, same as the
+ * public section itself. Per-report text (what/why/evidence) NEVER goes in
+ * here, not even inside a GATING_ENABLED check: this file is a static asset
+ * fetched with a plain, unauthenticated request, so anything written into it
+ * ships to every visitor regardless of sign-in state. The owner-only detail
+ * lives only in ownerBugSection's HTML (itself gated at build time), never in
+ * this JSON. */
 const searchIndex = [];
 for (const n of notes) {
   const anchor = `note-${n.date}`;
@@ -840,9 +1001,12 @@ for (const [, changes] of allDays) {
     searchIndex.push({ type: 'change', title: c.text, text: `${c.kind} ${c.scope}`, anchor: `chg-${c.sha}` });
   }
 }
-for (const b of openBugs) {
-  searchIndex.push({ type: 'bug', title: b.what, text: b.why, anchor: `bug-${slug(b.id)}` });
-}
+searchIndex.push({
+  type: 'bugs',
+  title: 'Known bugs',
+  text: `${totalFixedBugs ?? '?'} fixed, ${totalOpenBugs} open. ${bugAreaCounts.map((a) => `${a.area} ${a.count}`).join(', ')}`,
+  anchor: 'bugs',
+});
 for (const a of arcs) {
   searchIndex.push({ type: 'arc', title: `${a.id} ${a.name}`, text: a.what, anchor: `flight-${slug(a.name)}` });
 }
