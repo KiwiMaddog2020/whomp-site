@@ -122,9 +122,9 @@ footer code{color:var(--body)}
   <p class="tag">WHOMP — 3D horde-survivor between Vampire Survivors and Megabonk</p>
   <div class="chips">
     <span class="chip"><span class="dot stale"></span>
-      live <b>ed53558</b></span>
+      live <b>a58a6e0</b></span>
     <span class="chip">version <b>0.5.0</b></span>
-    <span class="chip"><b>277</b> player-visible changes, last 2 active days</span>
+    <span class="chip"><b>270</b> player-visible changes, last 3 active days</span>
   </div>
   <div class="cta">
     <a class="btn" href="https://kiwimaddog2020.github.io/whomp-play/">Play the current build</a>
@@ -146,159 +146,15 @@ footer code{color:var(--body)}
 
 <section id="shipped">
   <div class="rule"></div>
-  <h2 class="chroma">What shipped</h2>
-  <p class="lede">Derived from the repository at build time. Player-visible changes only:
-  318 docs, chore, test and refactor commits are filtered out of this view.</p>
-  
+  <h2 class="chroma">Shipped this week</h2>
+  <p class="lede">We ship most days, sometimes many times a day, and every change is
+  written down. The full development log lives behind sign-in.</p>
   <div class="day">
-    <h3>2026-07-29 &middot; 124 changes</h3>
-    
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">the accounts panel uses the font token, not a literal stack <span class="scope">(ui)</span></span>
-      <span class="sha">c47ee12</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">the lifesteal ceiling scales with the fight, not with max HP <span class="scope">(battle)</span></span>
-      <span class="sha">7bef221</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">honour Sacred Tome and Inner Peace in a duel, and ledger the other twelve <span class="scope">(battle)</span></span>
-      <span class="sha">20aa07b</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">the entry deadline is a re-arm interval, not a one-shot <span class="scope">(online)</span></span>
-      <span class="sha">e82025b</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">the input conflict detector was blind to the whole aimed-core half <span class="scope">(coop)</span></span>
-      <span class="sha">3a6ee2a</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">a machine's opinion about the network is not sim state <span class="scope">(coop)</span></span>
-      <span class="sha">6dda090</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">a human reading the loadout menu is not a crash <span class="scope">(net)</span></span>
-      <span class="sha">0e91036</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">a seat's blob shadow replaces its cast shadow, it does not join it <span class="scope">(coop)</span></span>
-      <span class="sha">44e0195</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">census names the unnamed, and stops calling a pool walk a blind spot <span class="scope">(dev)</span></span>
-      <span class="sha">c63890c</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">render census - every triangle in a frame attributed to its owner <span class="scope">(dev)</span></span>
-      <span class="sha">3f92af8</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">a divergence report names which seat moved <span class="scope">(coop)</span></span>
-      <span class="sha">cbd130d</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">a parked instance is invisible to Matrix4.decompose <span class="scope">(test)</span></span>
-      <span class="sha">4eac758</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">the digest rides one clock, and it is the world's <span class="scope">(coop)</span></span>
-      <span class="sha">d7de267</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">visual lanes get eyes, via bin/shot.sh on the running game <span class="scope">(tooling)</span></span>
-      <span class="sha">32dd76c</span>
-    </div>
-    <div class="row more">and 110 more that day</div>
-  </div>
-  <div class="day">
-    <h3>2026-07-28 &middot; 153 changes</h3>
-    
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">name a kit once, star it, and start there every run <span class="scope">(loadout)</span></span>
-      <span class="sha">1b90f1a</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">light-shaft colonnade - sightlines open, grandeur kept (report 155) <span class="scope">(museum)</span></span>
-      <span class="sha">eef7230</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">the colonnade answers the walk, and it costs no draw call <span class="scope">(hub)</span></span>
-      <span class="sha">7ebff48</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">a Loadout is a named run config, saved eight at a time <span class="scope">(meta)</span></span>
-      <span class="sha">53efa83</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">the dummies get the manual weapon, and one grid serves both hosts <span class="scope">(forge)</span></span>
-      <span class="sha">db7e092</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">opens on the player's current view - seeded from the live rig, base fov <span class="scope">(photo)</span></span>
-      <span class="sha">fbad12c</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">the lens opens on the frame he paused for <span class="scope">(photo)</span></span>
-      <span class="sha">84b7344</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">the museum's colonnade becomes light instead of mass <span class="scope">(hub)</span></span>
-      <span class="sha">a79824f</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">revert Dragon's Breath unrecorded body cut - the ratified -25% patch rein stands alone <span class="scope">(balance)</span></span>
-      <span class="sha">3255247</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">the hands are the first pick, and they travel with the run <span class="scope">(loadout)</span></span>
-      <span class="sha">f0555f1</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--pink)">fix</span>
-      <span class="what">the swing draw-up scales with the stride it exists to serve <span class="scope">(gait)</span></span>
-      <span class="sha">72af3ed</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">the sanctioned waiter — wait and dispatch become one indivisible act <span class="scope">(studio)</span></span>
-      <span class="sha">9b0d303</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">file ownership stops being a promise and becomes a check <span class="scope">(studio)</span></span>
-      <span class="sha">c9c121a</span>
-    </div>
-    <div class="row">
-      <span class="kind" style="background:var(--cyan)">feat</span>
-      <span class="what">WHOMP-DIRECTOR claims a device, and the token stays put <span class="scope">(feedback)</span></span>
-      <span class="sha">489f487</span>
-    </div>
-    <div class="row more">and 139 more that day</div>
+    <h3>Recent activity</h3>
+    <div class="row"><span class="what"><b style="color:var(--cream)">270</b>
+      player-visible changes across the last 3 active days</span></div>
+    <div class="row"><span class="what">Newest build shipped
+      <b style="color:var(--cream)">2026-07-30</b></span></div>
   </div>
 </section>
 
@@ -361,20 +217,21 @@ footer code{color:var(--body)}
   <div class="rule"></div>
   <h2 class="chroma">For testers</h2>
   <div class="gate">
-    <p style="margin:0;color:var(--cream);font-weight:600">Sign in to see the rest</p>
+    <p style="margin:0;color:var(--cream);font-weight:600">Testers see the whole thing</p>
     <ul>
-      <li><b>The upcoming train</b> What is queued, in order</li>
-      <li><b>Known bugs</b> The open defect ledger</li>
-      <li><b>In flight now</b> What the lanes are building</li>
-      <li><b>Your ledger</b> Every report you filed and what it changed</li>
+      <li><b>The full development log</b> Every change, plain-English or raw</li>
+      <li><b>What is coming</b> The next few builds, in order</li>
+      <li><b>Known bugs</b> What is broken and what we are doing about it</li>
+      <li><b>Your ledger</b> Every report you sent and what it changed</li>
     </ul>
-    <p class="lock">Sign-in uses the same account as the game, so one identity spans both.</p>
+    <p class="lock">Sign-in is coming shortly and uses the same account as the game,
+    so one login covers both.</p>
   </div>
 </section>
 
 <footer>
-  Generated 2026-07-30 07:34 UTC from <code>main@a58a6e0</code>.
-  Live build <code>ed53558</code> (a deploy is pending).
+  Generated 2026-07-30 08:52 UTC from <code>main@8a21e80</code>.
+  Live build <code>a58a6e0</code> (a deploy is pending).
 </footer>
 
 </div>

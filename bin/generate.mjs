@@ -243,20 +243,16 @@ footer code{color:var(--body)}
 
 <section id="shipped">
   <div class="rule"></div>
-  <h2 class="chroma">What shipped</h2>
-  <p class="lede">Derived from the repository at build time. Player-visible changes only:
-  ${filtered} docs, chore, test and refactor commits are filtered out of this view.</p>
-  ${feed.map(([date, items]) => `
+  <h2 class="chroma">Shipped this week</h2>
+  <p class="lede">We ship most days, sometimes many times a day, and every change is
+  written down. The full development log lives behind sign-in.</p>
   <div class="day">
-    <h3>${esc(date)} &middot; ${items.length} change${items.length === 1 ? '' : 's'}</h3>
-    ${items.slice(0, PER_DAY).map((it) => `
-    <div class="row">
-      <span class="kind" style="background:var(${KIND_INK[it.kind] ?? '--cyan'})">${esc(it.kind)}</span>
-      <span class="what">${esc(it.text)}${it.scope ? ` <span class="scope">(${esc(it.scope)})</span>` : ''}</span>
-      <span class="sha">${esc(it.sha)}</span>
-    </div>`).join('')}
-    ${items.length > PER_DAY ? `<div class="row more">and ${items.length - PER_DAY} more that day</div>` : ''}
-  </div>`).join('')}
+    <h3>Recent activity</h3>
+    <div class="row"><span class="what"><b style="color:var(--cream)">${totalShipped}</b>
+      player-visible changes across the last ${feed.length} active day${feed.length === 1 ? '' : 's'}</span></div>
+    <div class="row"><span class="what">Newest build shipped
+      <b style="color:var(--cream)">${esc(feed[0]?.[0] ?? 'recently')}</b></span></div>
+  </div>
 </section>
 
 ${arcs.length ? `
@@ -278,14 +274,15 @@ ${arcs.length ? `
   <div class="rule"></div>
   <h2 class="chroma">For testers</h2>
   <div class="gate">
-    <p style="margin:0;color:var(--cream);font-weight:600">Sign in to see the rest</p>
+    <p style="margin:0;color:var(--cream);font-weight:600">Testers see the whole thing</p>
     <ul>
-      <li><b>The upcoming train</b> What is queued, in order</li>
-      <li><b>Known bugs</b> The open defect ledger</li>
-      <li><b>In flight now</b> What the lanes are building</li>
-      <li><b>Your ledger</b> Every report you filed and what it changed</li>
+      <li><b>The full development log</b> Every change, plain-English or raw</li>
+      <li><b>What is coming</b> The next few builds, in order</li>
+      <li><b>Known bugs</b> What is broken and what we are doing about it</li>
+      <li><b>Your ledger</b> Every report you sent and what it changed</li>
     </ul>
-    <p class="lock">Sign-in uses the same account as the game, so one identity spans both.</p>
+    <p class="lock">Sign-in is coming shortly and uses the same account as the game,
+    so one login covers both.</p>
   </div>
 </section>
 
