@@ -33,6 +33,14 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 
 /* ---------- derive: identity ---------- */
 const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
+/* The repo description leads with the game's own name and carries em dashes. The
+ * site's voice rule is plain human writing with NO em dashes, and pairing it with
+ * our own heading rendered the title twice. Derive rather than hand-type a second
+ * tagline that would drift from the repo's. */
+const TAGLINE = (pkg.description ?? '')
+  .replace(/^\s*WHOMP\s*[^A-Za-z0-9]+\s*/i, '')
+  .replace(/\s*[\u2014\u2013]\s*/g, ', ')
+  .trim();
 const headSha = git('rev-parse', '--short', 'main');
 
 /* ---------- derive: what is actually live ---------- */
@@ -112,8 +120,8 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP — ${esc(pkg.description ?? 'a 3D horde-survivor')}</title>
-<meta name="description" content="${esc(pkg.description ?? '')} Built in the open, with the defect ledger published.">
+<title>WHOMP: ${esc(TAGLINE)}</title>
+<meta name="description" content="${esc(TAGLINE)} Built in the open, with the defect ledger published.">
 <link rel="icon" href="data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#06040e"/><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${W_PATH}" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/><path d="${W_PATH}" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/><path d="${W_PATH}" stroke="#fff3cf" stroke-width="59"/></g></svg>`)}">
 <style>
 /* THE PALETTE IS THE APP ICON'S, AT FULL SATURATION, ON DARK.
@@ -216,7 +224,7 @@ footer code{color:var(--body)}
 <header>
   ${wordmark(112, 'h')}
   <h1 class="chroma">WHOMP</h1>
-  <p class="tag">${esc(pkg.description ?? '')}</p>
+  <p class="tag">${esc(TAGLINE)}</p>
   <div class="chips">
     <span class="chip"><span class="dot${live && live.sha === headSha ? '' : ' stale'}"></span>
       ${live ? `live <b>${esc(live.sha)}</b>` : 'live build <b>unverified</b>'}</span>
