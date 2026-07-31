@@ -45,8 +45,25 @@ button{font-family:var(--font)}
    rather than px so the layering scales WITH the clamped font-size and holds
    together at every viewport width instead of drifting apart. SACRED, same
    as the game's own comment on this block: a frozen copy, not a reference,
-   do not tokenize. */
-.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+   do not tokenize.
+
+   FONT STACK, director bug 2026-07-30 (squished M/P, dark seams in W/H):
+   confirmed with headless Chrome + a CoreText probe that Chromium's variable
+   system font ('system-ui'/'-apple-system', requested at weight 900) mis
+   interpolates and produces overlapping glyph outlines for this word at ANY
+   size, on a real current Chrome, independent of letter-spacing/kerning/
+   line-height (all tried and ruled out). Asking for the SAME San Francisco
+   Black by its resolved static name, '.AppleSystemUIFontBlack', sidesteps
+   the interpolation and renders pixel-identical to the correct look (a
+   direct CoreText name lookup resolves it the same way WebKit's font
+   matching would, so Safari is unaffected either way). 'system-ui' and
+   '-apple-system' are DROPPED, not reordered: Chromium's bug fires from
+   their mere presence in the list regardless of position, so they cannot
+   sit anywhere as a safety net. 'Roboto Black' / 'sans-serif-black' are the
+   Android equivalent move (real static named weights, not the variable
+   default), best-effort since it could not be verified on-device; the
+   generic sans-serif tail still lands on Roboto there either way. */
+.whomp-wordmark{font-family:'.AppleSystemUIFontBlack','Segoe UI','Roboto Black',sans-serif-black,sans-serif;
   position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
   letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
   text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
@@ -167,7 +184,17 @@ h2{font-size:1.5rem;margin:0 0 6px}
 .row[data-hidden="1"]{display:none}
 .kind{flex:none;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
   padding:3px 8px;border-radius:6px;min-width:64px;text-align:center;color:var(--ink)}
-.what{flex:1}
+/* min-width:0 is load-bearing, not decoration: a flex:1 item defaults to
+   min-width:auto, which floors it at its own content's intrinsic width. A raw
+   git subject can contain a long unbroken token (an ALL_CAPS_CONSTANT, a path)
+   wide enough on its own to push the row past the viewport, and BODY has
+   nothing clipping it, so that overflow becomes a page-wide horizontal
+   scrollbar (director bug 2026-07-30, Full log view on mobile). min-width:0
+   lets the row's real content still wrap, so the FIX is wrapping text, not a
+   scroll box, per the no-body-scroll rule below. overflow-wrap is the same
+   fix one layer down, for the rare single token wider than the column even
+   after that. */
+.what{flex:1;min-width:0;overflow-wrap:break-word}
 .what .scope{color:var(--dim);font-size:.86rem}
 .sha{flex:none;font-family:var(--mono);font-size:.76rem;color:var(--dim)}
 .row.more{color:var(--dim);font-size:.83rem;font-style:italic;justify-content:center}
@@ -234,8 +261,8 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>60a534d</b></span>
+    <div class="chips"><span class="chip"><span class="dot"></span>
+  live <b>e19f982</b></span>
   <span class="chip">version <b>0.5.0</b></span></div>
   </div>
 </div>
@@ -1379,8 +1406,8 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-07-30 23:15 UTC from <code>main@e19f982</code>.
-  Live build <code>60a534d</code> (a deploy is pending).
+  Generated 2026-07-31 00:02 UTC from <code>main@e19f982</code>.
+  Live build <code>e19f982</code> (current).
 </footer>
 
 
