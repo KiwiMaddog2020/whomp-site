@@ -462,23 +462,12 @@ button{font-family:var(--font)}
    as the game's own comment on this block: a frozen copy, not a reference,
    do not tokenize.
 
-   FONT STACK, director bug 2026-07-30 (squished M/P, dark seams in W/H):
-   confirmed with headless Chrome + a CoreText probe that Chromium's variable
-   system font ('system-ui'/'-apple-system', requested at weight 900) mis
-   interpolates and produces overlapping glyph outlines for this word at ANY
-   size, on a real current Chrome, independent of letter-spacing/kerning/
-   line-height (all tried and ruled out). Asking for the SAME San Francisco
-   Black by its resolved static name, '.AppleSystemUIFontBlack', sidesteps
-   the interpolation and renders pixel-identical to the correct look (a
-   direct CoreText name lookup resolves it the same way WebKit's font
-   matching would, so Safari is unaffected either way). 'system-ui' and
-   '-apple-system' are DROPPED, not reordered: Chromium's bug fires from
-   their mere presence in the list regardless of position, so they cannot
-   sit anywhere as a safety net. 'Roboto Black' / 'sans-serif-black' are the
-   Android equivalent move (real static named weights, not the variable
-   default), best-effort since it could not be verified on-device; the
-   generic sans-serif tail still lands on Roboto there either way. */
-.whomp-wordmark{font-family:'.AppleSystemUIFontBlack','Segoe UI','Roboto Black',sans-serif-black,sans-serif;
+   NOTE 2026-07-30: a Chromium variable-font interpolation fix briefly replaced
+   this stack with a static Black face. The director judged the resulting face
+   worse and it was reverted, here and in the game together, so both surfaces
+   stay identical. The squish and seam report on narrow Android is therefore
+   still OPEN, and any future fix must preserve this face rather than swap it. */
+.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
   position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
   letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
   text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
