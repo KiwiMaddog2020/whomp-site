@@ -470,6 +470,13 @@ button{font-family:var(--font)}
 .whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
   position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
   letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+  /* PAINT ORDER IS LOAD BEARING. letter-spacing is negative, so glyphs OVERLAP,
+     and a per-glyph stroke would otherwise draw the M's dark outline straight
+     across the O's cream face. That is the seam the director reported, not a
+     font problem. paint-order lays every stroke down first, so they merge into
+     one silhouette, then every fill on top of all of them. Tight tracking and
+     the outline both survive; the lines through the letters do not. */
+  paint-order:stroke fill;
   text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
   transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
 .whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
