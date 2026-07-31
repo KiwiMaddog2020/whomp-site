@@ -53,6 +53,14 @@ const arg = (name, dflt) => {
 const REPO = resolve(arg('--repo', '../whomp'));
 const OUTDIR = resolve(arg('--outdir', SITE_ROOT));
 const OFFLINE = args.includes('--offline');
+/* THE DEPLOY KNOWS WHAT IT SHIPPED; THE NETWORK DOES NOT, YET. Fetching
+ * version.json right after a deploy races GitHub Pages propagation, and the loser
+ * is the site confidently reporting the PREVIOUS build as live. So the deploy
+ * ritual passes what it just shipped and no fetch happens at all. Everything else
+ * (a cron, a hand run) still fetches, which is correct for them because they have
+ * no privileged knowledge. */
+const SHA_ARG = arg('--sha', '');
+const VERSION_ARG = arg('--version', '');
 const LIVE_URL = 'https://kiwimaddog2020.github.io/whomp-play';
 
 /* GATING, single flag, one place to flip. Director change 2026-07-30: the log
@@ -134,7 +142,9 @@ if (gameTaglines.length === 0) {
 /* The live sha is the ONLY proof of live (deploy-verification law), so the site
  * reports it as measured, and says so plainly when it could not measure it. */
 let live = null;
-if (!OFFLINE) {
+if (SHA_ARG) {
+  live = { sha: SHA_ARG, version: VERSION_ARG || pkg.version, builtAt: null };
+} else if (!OFFLINE) {
   try {
     const r = await fetch(`${LIVE_URL}/version.json`, { signal: AbortSignal.timeout(8000) });
     if (r.ok) live = await r.json();
