@@ -83,8 +83,18 @@ const num = (n, places = 2) => {
 const pct = (x) => `${x >= 0 ? '+' : ''}${num(x * 100, 1)}%`;
 
 /** Title Case a camelCase enum for display, so a value that gains a new member
- *  in src/data still renders readably instead of falling through to blank. */
-const humanize = (s) => String(s)
+ *  in src/data still renders readably instead of falling through to blank.
+ *
+ *  LABEL holds display-only overrides for the values camelCase splitting
+ *  mangles: `randomAoE` becomes "Random ao e" under the general rule, which is
+ *  the sort of small ugliness that makes a page look unmaintained. Safe to
+ *  hand-write, unlike a hand-written list of FACTS, because a value missing from
+ *  here falls through to the general rule and renders slightly worse rather than
+ *  wrongly. Nothing in it can go stale into a lie. */
+const LABEL = {
+  randomAoE: 'Random AoE',
+};
+const humanize = (s) => LABEL[s] || String(s)
   .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
   .toLowerCase()
   .replace(/^./, (c) => c.toUpperCase());
