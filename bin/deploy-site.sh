@@ -33,9 +33,29 @@ if [ "${1:-}" = "--offline" ]; then OFFLINE_FLAG=(--offline); fi
 
 node bin/generate.mjs --repo "$GAME_REPO" "${OFFLINE_FLAG[@]}"
 
-# Stage exactly what the generator writes. Never a wildcard add: a guard in
-# this repo blocks `git add -A` / `git add .` on purpose.
-git add index.html log.html search-index.json
+# Stage exactly what the generator writes, FROM THE MANIFEST IT WROTE.
+#
+# Still never a wildcard add: a guard in this repo blocks `git add -A` / `git
+# add .` on purpose, and a wildcard would happily commit a stray file. This is
+# an explicit list, it just is not a hand-typed one any more.
+#
+# It used to be `git add index.html log.html search-index.json`, duplicated here
+# and in the game repo's bin/deploy-play.sh. That was correct for exactly as long
+# as the site had three files. The wiki added pages, and a hand-typed list means
+# the new pages silently stop refreshing on deploy while the deploy still reports
+# success, which is the worst shape a staleness bug can take.
+#
+# .site-outputs is gitignored: it is a build-time handoff, not site content.
+if [ ! -f .site-outputs ]; then
+  echo "ERROR: bin/generate.mjs wrote no .site-outputs manifest, refusing to guess what to stage" >&2
+  exit 1
+fi
+# Line-by-line rather than word-splitting: the generator already refuses to emit
+# a filename that is not a plain lowercase name, and this keeps it that way.
+while IFS= read -r out; do
+  [ -n "$out" ] || continue
+  git add -- "$out"
+done < .site-outputs
 if git diff --cached --quiet; then
   echo "site unchanged, nothing to deploy"
   exit 0

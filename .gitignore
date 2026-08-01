@@ -1,2 +1,6 @@
 node_modules/
 .DS_Store
+# Build-time handoff from bin/generate.mjs to the deploy scripts: the list of
+# files the generator just wrote, so staging never needs a hand-typed filename
+# list. Regenerated every run, not site content.
+.site-outputs
