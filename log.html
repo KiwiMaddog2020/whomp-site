@@ -116,6 +116,13 @@ footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);
 footer code{color:var(--body)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
+/* NOTHING may make the page itself scroll sideways, on ANY page. A floor rather
+   than a fix: the per-element fixes are real but the next long token will arrive
+   somewhere nobody predicted, and this was reported twice on mobile before it got
+   one. Lives in SHARED_CSS because the second report was on the log while the wiki
+   pages had no protection at all. */
+html,body{max-width:100%;overflow-x:hidden}
+
 .topbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
@@ -219,8 +226,23 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
 @media (max-width:700px){
   .shell{flex-direction:column;gap:20px}
-  .side{width:100%;position:static;flex-direction:row;overflow-x:auto;gap:8px}
-  .side a,.side .stat{white-space:nowrap}
+  /* THE NAV STRIP SCROLLS ITSELF, THE PAGE NEVER DOES. overflow-x:auto on a
+     flex row only contains the row if the row is allowed to be narrower than
+     its content, and a flex item defaults to min-width:auto, which floors it at
+     intrinsic width. Without min-width:0 the strip is as wide as its longest
+     child and the PAGE gets the scrollbar instead of the strip. Same defect the
+     .what rule fixes one layer down, arriving from a different direction:
+     director bug 2026-07-30 was the row, this is the nav (2026-08-01). */
+  .side{width:100%;max-width:100%;min-width:0;position:static;flex-direction:row;
+    overflow-x:auto;gap:8px;-webkit-overflow-scrolling:touch}
+  .side a{white-space:nowrap}
+  /* .stat is a SENTENCE, not a nav item. Holding it nowrap made one unbreakable
+     ~70-character line the widest thing on the page, which is what actually
+     produced the scrollbar. On a phone it is footnote text, so it leaves the
+     strip entirely and wraps underneath where it can be read. */
+  .side .stat{display:none}
+  .shell .stat{display:block;white-space:normal;color:var(--dim);font-size:.78rem;
+    padding:0 2px;margin-top:-8px}
   .buckets{grid-template-columns:1fr}
 }
 </style>
@@ -276,9 +298,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <a href="#bugs">Known bugs</a>
     <a href="#flight">In flight</a>
     <span class="wside-h" style="padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase">Wiki</span>
-    <a href="wiki-weapons.html">Weapons</a>
-    <a href="wiki-cores.html">Core weapons</a>
-    <a href="wiki-bestiary.html">Bestiary</a>
+    <a href="wiki.html">All rosters</a>
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">901 player-visible changes across 8 active days, 1083 internal-only commits filtered out</div>
   </nav>
@@ -297,7 +317,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <p class="lede">Two ways to read it. Concise is Kevin's own notes, written for players. Full is the raw
       engineering log, generated straight from git, unedited, so a curious player can see everything.</p>
 
-    <div class="viewtoggle" role="tablist">
+    <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
+         lands ON the Concise / Full choice rather than above it. -->
+    <div class="viewtoggle" id="views" role="tablist">
       <button class="vtab is-active" data-view="concise" type="button" role="tab" aria-selected="true">Concise</button>
       <button class="vtab" data-view="full" type="button" role="tab" aria-selected="false">Full log</button>
     </div>
@@ -1266,7 +1288,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-01 21:06 UTC from <code>main@7aa975b5</code>.
+  Generated 2026-08-01 21:14 UTC from <code>main@7aa975b5</code>.
   Live build <code>7aa975b5</code> (current).
 </footer>
 

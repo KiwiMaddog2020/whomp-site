@@ -116,6 +116,13 @@ footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);
 footer code{color:var(--body)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
+/* NOTHING may make the page itself scroll sideways, on ANY page. A floor rather
+   than a fix: the per-element fixes are real but the next long token will arrive
+   somewhere nobody predicted, and this was reported twice on mobile before it got
+   one. Lives in SHARED_CSS because the second report was on the log while the wiki
+   pages had no protection at all. */
+html,body{max-width:100%;overflow-x:hidden}
+
 
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
@@ -300,7 +307,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="wiki-cores.html">Core weapons</a>
     <a href="wiki-bestiary.html" class="is-here">Bestiary</a>
     <span class="wside-h">Elsewhere</span>
-    <a href="log.html">Dev log</a>
+    <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">53 entries, read straight out of the game</div>
   </nav>
@@ -1789,9 +1796,9 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-01 21:06 UTC from <code>main@7aa975b5</code>,
+  Generated 2026-08-01 21:14 UTC from <code>main@7aa975b5</code>,
   content derived from <code>data/game-data.json</code>.
-  <a href="wiki.html">All rosters</a> &middot; <a href="log.html">Dev log</a>
+  <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
 <script type="module">

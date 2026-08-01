@@ -885,7 +885,7 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
   Generated ${esc(chrome.buildStamp)} from <code>main@${esc(chrome.headSha)}</code>,
   content derived from <code>data/game-data.json</code>.
-  <a href="wiki.html">All rosters</a> &middot; <a href="log.html">Dev log</a>
+  <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>`;
 
   const script = `
@@ -1029,7 +1029,7 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
   Generated ${esc(chrome.buildStamp)} from <code>main@${esc(chrome.headSha)}</code>,
   content derived from <code>data/game-data.json</code>.
-  <a href="log.html">Dev log</a>
+  <a href="log.html#views">Dev log</a>
 </footer>`;
 
   return {

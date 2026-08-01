@@ -116,6 +116,13 @@ footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);
 footer code{color:var(--body)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
+/* NOTHING may make the page itself scroll sideways, on ANY page. A floor rather
+   than a fix: the per-element fixes are real but the next long token will arrive
+   somewhere nobody predicted, and this was reported twice on mobile before it got
+   one. Lives in SHARED_CSS because the second report was on the log while the wiki
+   pages had no protection at all. */
+html,body{max-width:100%;overflow-x:hidden}
+
 .wrap{max-width:860px;margin:0 auto;padding:0 24px 96px}
 header{padding:56px 0 40px;text-align:center}
 .wm{display:block;margin:0 auto 22px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.45))}
@@ -227,7 +234,7 @@ section{margin-top:64px}
 </section>
 
 <footer>
-  Generated 2026-08-01 21:06 UTC from <code>main@7aa975b5</code>.
+  Generated 2026-08-01 21:14 UTC from <code>main@7aa975b5</code>.
   Live build <code>7aa975b5</code> (current).
 </footer>
 
