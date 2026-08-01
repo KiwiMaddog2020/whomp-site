@@ -123,6 +123,7 @@ footer code{color:var(--body)}
 .brand h1{font-size:1.6rem;margin:0}
 .subtag{color:var(--dim);font-size:.85rem;margin:2px 0 0}
 
+
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
@@ -257,14 +258,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot"></span>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
   live <b>cbb811cb</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
 
+
 <div class="searchwrap">
-  <input class="searchbox" id="search" type="search" placeholder="Search changes, bugs, in-flight work, arcs..." autocomplete="off">
+  <input class="searchbox" id="search" type="search" placeholder="Search weapons, cores, enemies, changes, bugs..." autocomplete="off">
   <div class="sr-panel" id="sr-panel"></div>
 </div>
 
@@ -273,8 +275,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <a href="#shipped">Shipped</a>
     <a href="#bugs">Known bugs</a>
     <a href="#flight">In flight</a>
+    <span class="wside-h" style="padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase">Wiki</span>
+    <a href="wiki-weapons.html">Weapons</a>
+    <a href="wiki-cores.html">Core weapons</a>
+    <a href="wiki-bestiary.html">Bestiary</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">907 player-visible changes across 8 active days, 1078 internal-only commits filtered out</div>
+    <div class="stat">906 player-visible changes across 8 active days, 1079 internal-only commits filtered out</div>
   </nav>
 
   <main class="main">
@@ -334,6 +340,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-01</h4>
     
+    <div class="row" data-kind="feat" id="chg-9d8b0c03">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the two ledgers the protocol asked for and nobody built <span class="scope">(protocol)</span></span>
+      <span class="sha">9d8b0c03</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-799690ba">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">every brief declares its runner, and idle Codex becomes visible <span class="scope">(protocol)</span></span>
+      <span class="sha">799690ba</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-fb116b02">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the pointer arrives when a world does, and boot failed twice over <span class="scope">(input)</span></span>
@@ -423,17 +439,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the interior budget and the inventory row the full suite caught <span class="scope">(hub)</span></span>
       <span class="sha">329d3587</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9bed3367">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the void shards asked not to cast and the island sweep overruled them <span class="scope">(hub)</span></span>
-      <span class="sha">9bed3367</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-56f020c1">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the villagers stop casting and gain a contact, in one call <span class="scope">(hub)</span></span>
-      <span class="sha">56f020c1</span>
-    </div><div class="row more">+ 57 more that day, not shown</div>
+    </div><div class="row more">+ 59 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-07-31</h4>
@@ -1161,7 +1167,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">end a faulted online match the same way on both peers <span class="scope">(ui)</span></span>
       <span class="sha">21f38ff0</span>
-    </div><div class="row more">+ 49 more that day, not shown</div>
+    </div><div class="row more">+ 46 more that day, not shown</div>
   </div>
       
     </div>
@@ -1260,8 +1266,8 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-01 19:11 UTC from <code>main@cbb811cb</code>.
-  Live build <code>cbb811cb</code> (current).
+  Generated 2026-08-01 20:25 UTC from <code>main@066ce355</code>.
+  Live build <code>cbb811cb</code> (a deploy is pending).
 </footer>
 
 
@@ -1359,7 +1365,10 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ---- search, over the generated index: notes, changes, bugs, arcs, in-flight ----
+// ---- search, over the generated index: notes, changes, bugs, arcs, in-flight,
+// and now every wiki entry too, so a reader can type "wraith" here and land on
+// the bestiary card. Cross-page results are why index entries carry a full href.
+
 const searchInput = document.getElementById('search');
 const srPanel = document.getElementById('sr-panel');
 let searchIndex = [];
@@ -1372,7 +1381,7 @@ function renderResults(query) {
   if (hits.length === 0) {
     srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
   } else {
-    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="#${it.anchor}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
+    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="${it.href}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
   }
   srPanel.classList.add('open');
 }
@@ -1383,17 +1392,20 @@ srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
   srPanel.classList.remove('open');
+  const href = a.getAttribute('href') || '';
+  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
+  const target = hash ? document.getElementById(hash) : null;
+  if (target) { 
   // if the anchor is inside the full log, switch to that view first
-  const id = a.getAttribute('href').slice(1);
-  const target = document.getElementById(id);
-  if (target && panes.full && panes.full.contains(target)) {
+  if (panes.full && panes.full.contains(target)) {
     vtabs.forEach((t) => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
     document.querySelector('.vtab[data-view="full"]').classList.add('is-active');
     panes.concise.hidden = true; panes.full.hidden = false;
     document.querySelectorAll('#view-full .row[data-kind]').forEach((row) => { row.dataset.hidden = '0'; });
     kindChips.forEach((c) => c.classList.toggle('is-active', c.dataset.kind === 'all'));
-  }
+  } }
 });
+
 </script>
 </body>
 </html>

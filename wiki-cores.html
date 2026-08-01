@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WHOMP core weapons</title>
+<meta name="description" content="Core weapons: The one you aim yourself. Every value generated from the game's own data.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<style>
+
+:root{
+  --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
+  --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
+  --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --edge:1px solid rgba(255,243,207,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:radial-gradient(ellipse 120% 80% at 50% -10%,var(--lift),var(--ink) 60%) no-repeat,var(--ink);
+  color:var(--body); font-family:var(--font); line-height:1.6;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+a{color:var(--cyan)}
+button{font-family:var(--font)}
+
+/* THE CHROMATIC OFFSET IS THE SIGNATURE, carried from the icon to type:
+   cyan right-and-down, pink left-and-down, cream face on top. Flat offsets,
+   zero blur, matching the de-BOO flat-plinth doctrine the game already uses. */
+.chroma{
+  color:var(--cream); font-weight:900; letter-spacing:-.02em;
+  text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
+}
+
+/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
+   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
+   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
+   comment explains 1000 exceeds the heaviest real weight of the system
+   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
+   The retro chromatic layering is two ::before/::after copies of the word
+   via content:attr(data-wordmark), every offset and shadow expressed in em
+   rather than px so the layering scales WITH the clamped font-size and holds
+   together at every viewport width instead of drifting apart. SACRED, same
+   as the game's own comment on this block: a frozen copy, not a reference,
+   do not tokenize.
+
+   NOTE 2026-07-30: a Chromium variable-font interpolation fix briefly replaced
+   this stack with a static Black face. The director judged the resulting face
+   worse and it was reverted, here and in the game together, so both surfaces
+   stay identical. The squish and seam report on narrow Android is therefore
+   still OPEN, and any future fix must preserve this face rather than swap it. */
+.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
+  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+  /* PAINT ORDER IS LOAD BEARING. letter-spacing is negative, so glyphs OVERLAP,
+     and a per-glyph stroke would otherwise draw the M's dark outline straight
+     across the O's cream face. That is the seam the director reported, not a
+     font problem. paint-order lays every stroke down first, so they merge into
+     one silhouette, then every fill on top of all of them. Tight tracking and
+     the outline both survive; the lines through the letters do not. */
+  paint-order:stroke fill;
+  text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
+  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
+.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+@keyframes whomp-wordmark-hit{
+  0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
+  2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
+  5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
+}
+@media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
+  border:var(--edge);background:rgba(255,243,207,.04);font-size:.82rem;color:var(--body);
+  font-variant-numeric:tabular-nums;
+}
+.chip b{color:var(--cream);font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
+.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+
+.btn{
+  display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
+  font-weight:700;color:var(--ink);background:var(--sweep);border:0;cursor:pointer;
+  box-shadow:0 4px 0 #7a1440; transition:transform .12s ease,box-shadow .12s ease;font-size:1rem;
+}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 #7a1440}
+.btn.ghost{background:none;color:var(--cream);border:var(--edge);box-shadow:0 4px 0 rgba(0,0,0,.4)}
+.btn.small{padding:9px 18px;font-size:.82rem;box-shadow:none}
+
+.rule{height:3px;border-radius:2px;background:var(--sweep);opacity:.85;margin-bottom:26px;max-width:120px}
+
+.arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+.arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
+.arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
+.arc p{margin:0;font-size:.88rem;color:var(--dim)}
+
+/* SIGN-IN, reused from the game's own accounts worker so one account covers
+   both surfaces. Same worker, same client id, same session shape. */
+.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:16px 0 0}
+.authbar-name{color:var(--cream);font-weight:700;font-size:.85rem}
+
+.spoiler{cursor:pointer;border-radius:4px;padding:0 2px;background:rgba(255,243,207,.08);color:transparent;text-shadow:0 0 0 transparent;transition:color .12s ease}
+.spoiler::selection{color:transparent}
+.spoiler.revealed{color:var(--cream);background:none}
+.spoiler:not(.revealed)::after{content:"spoiler, click to reveal";color:var(--dim);font-style:italic}
+.spoiler.revealed::after{content:""}
+
+footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);font-size:.82rem;text-align:center}
+footer code{color:var(--body)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+
+.searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
+  color:var(--cream);font-family:var(--font);font-size:1rem}
+.searchbox::placeholder{color:var(--dim)}
+.searchbox:focus{outline:2px solid var(--cyan);outline-offset:2px}
+.sr-panel{position:absolute;left:24px;right:24px;top:calc(100% + 6px);background:var(--lift);border:var(--edge);
+  border-radius:12px;max-height:60vh;overflow:auto;z-index:20;box-shadow:0 12px 32px rgba(0,0,0,.5);display:none}
+.sr-panel.open{display:block}
+.sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
+.sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
+.sr-item:first-child{border-top:0}
+.sr-item:hover,.sr-item:focus{background:rgba(255,243,207,.06)}
+.sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--gold);margin-right:8px}
+.sr-title{color:var(--cream)}
+
+
+.wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
+.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
+.wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
+.wside{width:210px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px}
+.wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
+.wside a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
+.wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
+.wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
+.wmain{flex:1;min-width:0}
+
+/* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
+   that it cannot go stale, and a reader has no way to know that unless the page
+   says so. Said once per page, quietly, near the top. */
+.wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
+  background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
+.wprov b{color:var(--cream);font-weight:700}
+/* THE OMISSIONS BOX. What the page will not tell you and why. A wiki that just
+   leaves a column out reads as incomplete; one that says "this number exists and
+   here is why publishing it would be a lie" reads as trustworthy. */
+.womit{border:var(--edge);border-left:3px solid var(--gold);border-radius:10px;padding:12px 16px;
+  background:rgba(255,207,63,.035);color:var(--dim);font-size:.83rem;margin:0 0 24px;line-height:1.55}
+.womit b{color:var(--gold);font-weight:700}
+
+.wbar{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;margin-bottom:16px}
+.wfacet{display:flex;flex-direction:column;gap:6px}
+.wfacet-h{color:var(--dim);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wfacet-row{display:flex;flex-wrap:wrap;gap:6px}
+.wf{padding:6px 13px;border-radius:999px;border:var(--edge);background:none;color:var(--dim);cursor:pointer;
+  font-size:.79rem;font-family:var(--font)}
+.wf:hover{color:var(--cream)}
+.wf.is-active{color:var(--cream);border-color:var(--cyan);background:rgba(36,240,255,.08)}
+.wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
+  font-family:var(--font);font-size:.82rem}
+.wcount{color:var(--dim);font-size:.82rem;margin:0 0 18px;font-variant-numeric:tabular-nums}
+
+.wgroup{margin-bottom:34px}
+.wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
+.wgroup-h h3{margin:0;font-size:1.15rem;color:var(--cream)}
+.wgroup-n{color:var(--dim);font-size:.8rem;font-variant-numeric:tabular-nums}
+.wgroup-note{color:var(--dim);font-size:.86rem;margin:0 0 14px;max-width:74ch}
+.wgroup[data-empty="1"]{display:none}
+
+.wgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.wcard{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025);
+  display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
+.wcard[data-hidden="1"]{display:none}
+.wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wdesc{margin:0;font-size:.9rem;color:var(--body)}
+.wgloss{margin:0;font-size:.88rem;color:var(--dim)}
+.wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
+
+.wtags{display:flex;flex-wrap:wrap;gap:6px}
+.wtag{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
+  border-radius:6px;border:var(--edge);color:var(--dim)}
+.wtag.ink-cyan{color:var(--cyan);border-color:rgba(36,240,255,.35)}
+.wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
+.wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
+.wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
+
+.wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
+.wfact{display:flex;gap:10px;font-size:.85rem;align-items:baseline}
+.wfact-k{flex:none;width:96px;color:var(--dim);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase}
+.wfact-v{flex:1;min-width:0;overflow-wrap:break-word;color:var(--body)}
+.wfact-v b{color:var(--cream);font-weight:700;font-variant-numeric:tabular-nums}
+.wfact-v a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wfact-v a:hover{border-bottom-color:var(--cyan)}
+.wfact-v .wsub{color:var(--dim);font-size:.92em}
+
+/* COMPARISON METERS. The bar is relative to the biggest value in THIS roster and
+   the real number is always printed beside it, so the bar is a sorting aid and
+   never the claim. Said out loud in the provenance banner. */
+.wmeters{display:flex;flex-direction:column;gap:4px}
+.wmeter{display:flex;align-items:center;gap:8px;font-size:.78rem}
+.wmeter-k{flex:none;width:96px;color:var(--dim);letter-spacing:.05em;text-transform:uppercase;font-size:.68rem}
+.wmeter-t{flex:1;min-width:40px;height:6px;border-radius:3px;background:rgba(255,243,207,.07);overflow:hidden}
+.wmeter-t i{display:block;height:100%;border-radius:3px;background:var(--sweep)}
+.wmeter-v{flex:none;min-width:66px;text-align:right;color:var(--cream);font-variant-numeric:tabular-nums;font-weight:700}
+.wmeter-u{color:var(--dim);font-weight:400}
+
+.whub{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-bottom:12px}
+.whubcard{border:var(--edge);border-radius:14px;padding:20px 22px;background:rgba(255,243,207,.025);
+  text-decoration:none;display:block;transition:border-color .12s ease,transform .12s ease}
+.whubcard:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.2rem}
+.whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
+.whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
+.wsoon{display:flex;flex-wrap:wrap;gap:8px}
+.wsoon span{padding:7px 14px;border-radius:999px;border:var(--edge);color:var(--dim);font-size:.8rem}
+.wsoon span b{color:var(--body);font-weight:700;font-variant-numeric:tabular-nums}
+
+@media (max-width:760px){
+  .wshell{flex-direction:column;gap:18px}
+  .wside{width:100%;position:static;flex-direction:row;overflow-x:auto;gap:6px}
+  .wside a,.wside .stat{white-space:nowrap}
+  .wside-h{display:none}
+  .wgrid{grid-template-columns:1fr}
+  .wfact-k,.wmeter-k{width:84px}
+}
+
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand .wm{margin:0}
+.brand h1{font-size:1.6rem;margin:0}
+.subtag{color:var(--dim);font-size:.85rem;margin:2px 0 0}
+h2{font-size:1.5rem;margin:0 0 6px}
+.lede{color:var(--dim);margin:0 0 20px;font-size:.92rem;max-width:78ch}
+footer a{color:var(--cyan);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="wtopbar">
+  
+<div class="authbar">
+  <span id="ab-signedout">
+    <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
+  </span>
+  <span id="ab-signedin" style="display:none">
+    <span class="authbar-name" id="ab-name"></span>
+    <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
+  </span>
+</div>
+  <div class="wtopbar-row">
+    <a class="brand" href="index.html">
+      
+<svg class="wm" viewBox="0 0 512 512" width="48" height="48" aria-hidden="true" focusable="false">
+  <defs><radialGradient id="gwcores" cx="50%" cy="50%" r="72%">
+    <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
+  </radialGradient></defs>
+  <rect width="512" height="512" rx="96" fill="url(#gwcores)"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/>
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/>
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#151023" stroke-width="69"/>
+    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#fff3cf" stroke-width="59"/>
+  </g>
+</svg>
+      <span>
+        <h1 class="chroma">WHOMP core weapons</h1>
+        <p class="subtag">The one you aim yourself.</p>
+      </span>
+    </a>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
+  live <b>cbb811cb</b></span>
+  <span class="chip">version <b>0.6.0</b></span></div>
+  </div>
+</div>
+
+
+<div class="searchwrap">
+  <input class="searchbox" id="search" type="search" placeholder="Search weapons, cores, enemies, changes, bugs..." autocomplete="off">
+  <div class="sr-panel" id="sr-panel"></div>
+</div>
+
+<div class="wshell">
+  <nav class="wside">
+    
+    <span class="wside-h">Wiki</span>
+    <a href="wiki.html">All rosters</a>
+    <a href="wiki-weapons.html">Weapons</a>
+    <a href="wiki-cores.html" class="is-here">Core weapons</a>
+    <a href="wiki-bestiary.html">Bestiary</a>
+    <span class="wside-h">Elsewhere</span>
+    <a href="log.html">Dev log</a>
+    <a href="index.html">&larr; Back to WHOMP</a>
+    <div class="stat">8 entries, read straight out of the game</div>
+  </nav>
+  <main class="wmain">
+    <div class="rule"></div>
+    <h2 class="chroma">Core weapons</h2>
+    <p class="lede">A core weapon is the weapon under your hand, and picking one is the only decision that shapes a whole run before it starts. All eight are available on a fresh save, you take exactly one, and the draft can never offer you another. Every core is built around one specific thing it wants you to be good at. That word is the game’s own, and it is on every card.</p>
+
+    <p class="wprov">Every value on this page is read out of the game’s own registries at build time, from
+      <b>main@066ce355</b>. Nothing here is retyped by hand, so it cannot fall behind a balance
+      change. Bars compare an entry against the largest value in <b>this roster</b>, never an absolute ceiling,
+      and the real number is always printed beside the bar.
+      Written flavour notes are the director’s to write and <b>0 of 8</b> exist so far, so these cards are mechanics only.</p>
+
+    <p class="womit">No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these eight lives as a private constant inside the combat code and is not published in the data these pages read from, so the wiki genuinely does not know them and will not guess. What it does know is the shape of each core: where its damage is anchored, what rhythm it imposes, and what it is asking you to be good at. <b>The pip count is the exception</b> and only because the test suite pins it against the real clip size.</p>
+
+    <div class="wbar">
+      <div class="wfacet">
+        <span class="wfacet-h">Rhythm</span>
+        <div class="wfacet-row" data-facet="cadence">
+          <button class="wf is-active" type="button" data-value="all">All</button>
+          <button class="wf" type="button" data-value="charge">Charge <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="clip">Clip <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="cooldown">Cooldown <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="drain">Drain <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="heat">Heat <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="lock">Lock <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spin">Spin <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="windup">Windup <span style="opacity:.5">1</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h">Asks you for</span>
+        <div class="wfacet-row" data-facet="feel">
+          <button class="wf is-active" type="button" data-value="all">All</button>
+          <button class="wf" type="button" data-value="commitment">Commitment <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="conviction">Conviction <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="leading">Leading <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="nerve">Nerve <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="painting">Painting <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="patience">Patience <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="placement">Placement <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spacing">Spacing <span style="opacity:.5">1</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h">Meter</span>
+        <div class="wfacet-row" data-facet="meter">
+          <button class="wf is-active" type="button" data-value="all">All</button>
+          <button class="wf" type="button" data-value="continuous">Continuous <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="discrete">Discrete <span style="opacity:.5">3</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h">Sort</span>
+        <select class="wsort" id="wsort" aria-label="Sort Core weapons">
+          <option value="roster" data-desc="0" data-text="0">Cradle order</option><option value="name" data-desc="0" data-text="1">Name</option>
+        </select>
+      </div></div>
+    <p class="wcount" id="wcount"></p>
+
+    
+    <section class="wgroup" data-group="all" id="g-all">
+      <div class="wgroup-h"><h3>The cradle</h3><span class="wgroup-n">8</span></div>
+      <p class="wgroup-note">In the order the cradle presents them. This is display order, not a ladder: none of them are locked and none of them are later.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-scattergun" data-cadence="clip" data-feel="spacing" data-meter="discrete" data-s-roster="0" data-s-name="scattergun">
+        <div class="wcard-h">
+          <h4>Scattergun</h4>
+          <span class="wcard-accent" style="background:#ff9a33"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Clip</span><span class="wtag ink-pink">Spacing</span></div>
+        <p class="wdesc">Two barrels, then a reload you can feel. Meaty up close.</p>
+        <p class="wgloss">A couple of shells, then a reload you have to survive. The empty clip is the whole design.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Spacing</b>, knowing exactly how far away you are.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>2</b> pips marked SHELLS, spent one at a time</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article>
+      <article class="wcard" id="e-longbow" data-cadence="charge" data-feel="leading" data-meter="continuous" data-s-roster="1" data-s-name="longbow">
+        <div class="wcard-h">
+          <h4>Longbow</h4>
+          <span class="wcard-accent" style="background:#ffcf3f"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Charge</span><span class="wtag ink-pink">Leading</span></div>
+        <p class="wdesc">Draw, lead the target, release. Full draw punches through.</p>
+        <p class="wgloss">Hold to draw, release to fire. A partial draw still goes off, just weaker, so the question is always whether you had time for the full one.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Leading</b>, firing where they are going to be, not where they are.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAW fill rather than countable shots</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-spectralArrows">Spectral Arrows</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article>
+      <article class="wcard" id="e-mortar" data-cadence="cooldown" data-feel="placement" data-meter="discrete" data-s-roster="2" data-s-name="mortar">
+        <div class="wcard-h">
+          <h4>Mortar</h4>
+          <span class="wcard-accent" style="background:#ff8f3c"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Cooldown</span><span class="wtag ink-pink">Placement</span></div>
+        <p class="wdesc">Lob a shell onto the ground you pick. Patience, then a crater.</p>
+        <p class="wgloss">One shot, a flat wait, then another. The shell takes time to land, so you are aiming at where they will be.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Placement</b>, choosing the spot before the moment.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>1</b> pip marked SHELL, spent one at a time</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-meteorStrike">Meteor Strike</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article>
+      <article class="wcard" id="e-laser" data-cadence="heat" data-feel="painting" data-meter="continuous" data-s-roster="3" data-s-name="sweepbeam">
+        <div class="wcard-h">
+          <h4>Sweepbeam</h4>
+          <span class="wcard-accent" style="background:#e0203f"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Heat</span><span class="wtag ink-pink">Painting</span></div>
+        <p class="wdesc">A hot line you steer. It bites while you hold it, and it runs hot.</p>
+        <p class="wgloss">Keeps firing while you hold it and builds heat while it does. Overheat and it locks you out until it cools.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Painting</b>, holding on target and staying on it.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous HEAT fill rather than countable shots</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-deathray">Deathray</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article>
+      <article class="wcard" id="e-glaive" data-cadence="windup" data-feel="commitment" data-meter="continuous" data-s-roster="4" data-s-name="glaive">
+        <div class="wcard-h">
+          <h4>Glaive</h4>
+          <span class="wcard-accent" style="background:#e8dcc0"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Windup</span><span class="wtag ink-pink">Commitment</span></div>
+        <p class="wdesc">Wind it up and sweep everything in front of you. No taking it back.</p>
+        <p class="wgloss">Commits to a windup before the sweep lands, and chains into a second swing if you keep it going. Once it starts you cannot take it back.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Commitment</b>, deciding early and not flinching.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SWING fill rather than countable shots</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-photonScythe">Photon Scythe</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article>
+      <article class="wcard" id="e-arcCaster" data-cadence="lock" data-feel="patience" data-meter="discrete" data-s-roster="5" data-s-name="arc caster">
+        <div class="wcard-h">
+          <h4>Arc Caster</h4>
+          <span class="wcard-accent" style="background:#ea5cff"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Lock</span><span class="wtag ink-pink">Patience</span></div>
+        <p class="wdesc">Hold a target until the charge takes. Then it jumps, and jumps again.</p>
+        <p class="wgloss">Builds a lock only while you keep a target inside the cone, and loses it if you switch. Then it spends the lock.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Patience</b>, waiting for the shot instead of taking the one on offer.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>4</b> pips marked LOCK, spent one at a time</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-chainLightning">Chain Lightning</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article>
+      <article class="wcard" id="e-frostLance" data-cadence="spin" data-feel="conviction" data-meter="continuous" data-s-roster="6" data-s-name="frost lance">
+        <div class="wcard-h">
+          <h4>Frost Lance</h4>
+          <span class="wcard-accent" style="background:#2f9dff"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Spin</span><span class="wtag ink-pink">Conviction</span></div>
+        <p class="wdesc">Spin it up, hold it as long as you like, and put a line through the room.</p>
+        <p class="wgloss">Spins up to a gate rather than a scale. Releasing early gives you nothing at all, so there is no partial credit.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Conviction</b>, backing your read all the way through.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SPIN fill rather than countable shots</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-voidRailgun">Void Railgun</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article>
+      <article class="wcard" id="e-tether" data-cadence="drain" data-feel="nerve" data-meter="continuous" data-s-roster="7" data-s-name="tether">
+        <div class="wcard-h">
+          <h4>Tether</h4>
+          <span class="wcard-accent" style="background:#6a3dff"></span>
+        </div>
+        
+        <div class="wtags"><span class="wtag ink-cyan">Drain</span><span class="wtag ink-pink">Nerve</span></div>
+        <p class="wdesc">Hook something and let it fill. The longer you dare hold it, the worse the snap.</p>
+        <p class="wgloss">Attach and hold. It pays out at the release, so letting go early forfeits what you had built.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Nerve</b>, standing in it one beat longer than feels wise.</span></div>
+          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAIN fill rather than countable shots</span></div>
+          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a>, which is where its damage is anchored</span></div>
+        </div>
+        
+      </article></div>
+    </section>
+  </main>
+</div>
+
+<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
+  Generated 2026-08-01 20:25 UTC from <code>main@066ce355</code>,
+  content derived from <code>data/game-data.json</code>.
+  <a href="wiki.html">All rosters</a> &middot; <a href="log.html">Dev log</a>
+</footer>
+
+<script type="module">
+import { getUser, onChange, signIn, signOut } from './bin/auth.js';
+const show = (el, visible) => { if (el) el.style.display = visible ? '' : 'none'; };
+function renderAuth(user) {
+  const signedIn = user !== null;
+  show(document.getElementById('ab-signedout'), !signedIn);
+  show(document.getElementById('ab-signedin'), signedIn);
+  if (signedIn) {
+    const name = user.displayName || user.email;
+    const el = document.getElementById('ab-name');
+    if (el) el.textContent = name;
+  }
+  window.__whompUser = user;
+  document.dispatchEvent(new CustomEvent('whomp-auth', { detail: user }));
+}
+async function runSignIn(button) {
+  button.disabled = true;
+  try { await signIn(); } finally { button.disabled = false; }
+}
+document.getElementById('ab-signin')?.addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('ab-signout')?.addEventListener('click', () => signOut());
+onChange(renderAuth);
+renderAuth(getUser());
+</script>
+<script type="module">
+
+// ---- facets ----
+const cards = [...document.querySelectorAll('.wcard')];
+const active = {};
+document.querySelectorAll('.wfacet-row').forEach((row) => {
+  const facet = row.dataset.facet;
+  active[facet] = 'all';
+  row.querySelectorAll('.wf').forEach((btn) => btn.addEventListener('click', () => {
+    row.querySelectorAll('.wf').forEach((b) => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    active[facet] = btn.dataset.value;
+    apply();
+  }));
+});
+function apply() {
+  let shown = 0;
+  for (const c of cards) {
+    const ok = Object.entries(active).every(([k, v]) => v === 'all' || c.dataset[k] === v);
+    c.dataset.hidden = ok ? '0' : '1';
+    if (ok) shown++;
+  }
+  document.querySelectorAll('.wgroup').forEach((g) => {
+    const visible = [...g.querySelectorAll('.wcard')].filter((c) => c.dataset.hidden !== '1').length;
+    g.dataset.empty = visible ? '0' : '1';
+    const n = g.querySelector('.wgroup-n');
+    if (n) n.textContent = visible;
+  });
+  const el = document.getElementById('wcount');
+  if (el) el.textContent = shown === cards.length ? cards.length + ' shown' : shown + ' of ' + cards.length + ' shown';
+}
+// ---- sort ----
+const sortSel = document.getElementById('wsort');
+if (sortSel) sortSel.addEventListener('change', () => {
+  const opt = sortSel.selectedOptions[0];
+  const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
+  const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
+  document.querySelectorAll('.wgrid').forEach((grid) => {
+    [...grid.children]
+      .sort((a, b) => {
+        const x = a.dataset[prop], y = b.dataset[prop];
+        const cmp = isText ? String(x).localeCompare(String(y)) : (Number(x) - Number(y));
+        return desc ? -cmp : cmp;
+      })
+      .forEach((k) => grid.appendChild(k));
+  });
+});
+apply();
+// ---- search: clear the filters before jumping, so a hit is never display:none ----
+
+const searchInput = document.getElementById('search');
+const srPanel = document.getElementById('sr-panel');
+let searchIndex = [];
+fetch('./search-index.json').then((r) => r.ok ? r.json() : []).then((data) => { searchIndex = data; }).catch(() => { searchIndex = []; });
+
+function renderResults(query) {
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) { srPanel.classList.remove('open'); srPanel.innerHTML = ''; return; }
+  const hits = searchIndex.filter((it) => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 30);
+  if (hits.length === 0) {
+    srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
+  } else {
+    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="${it.href}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
+  }
+  srPanel.classList.add('open');
+}
+searchInput.addEventListener('input', (e) => renderResults(e.target.value));
+searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) srPanel.classList.remove('open'); });
+srPanel.addEventListener('click', (e) => {
+  const a = e.target.closest('.sr-item');
+  if (!a) return;
+  srPanel.classList.remove('open');
+  const href = a.getAttribute('href') || '';
+  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
+  const target = hash ? document.getElementById(hash) : null;
+  if (target) { 
+    if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
+      document.querySelectorAll('.wfacet-row').forEach((row) => {
+        row.querySelectorAll('.wf').forEach((b) => b.classList.toggle('is-active', b.dataset.value === 'all'));
+        active[row.dataset.facet] = 'all';
+      });
+      apply();
+    } }
+});
+
+
+</script>
+</body>
+</html>
