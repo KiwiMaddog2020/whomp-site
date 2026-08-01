@@ -791,10 +791,11 @@ ${AUTHBAR}
   <div class="chips">${liveChip()}</div>
   <div class="cta">
     <a class="btn" href="${LIVE_URL}/">Play the current build</a>
-    <a class="btn ghost" href="log.html">Read the dev log</a>
     <a class="btn ghost" href="wiki.html">Browse the wiki</a>
+    <a class="btn ghost" href="log.html">Read the dev log</a>
   </div>
-  <p class="doorway">Every build is written down: what shipped, what's still broken, what's next.</p>
+  <p class="doorway">The wiki is every weapon, core and enemy, generated from the game's own
+    data. The dev log is every build: what shipped, what's still broken, what's next.</p>
 </header>
 
 <section>
