@@ -184,7 +184,60 @@ if (SHA_ARG) {
  * silently truncated feed reads as "that was everything" when it was not
  * (no-silent-caps law). This is the FULL view's raw material; log.html labels
  * it honestly as the raw engineering log, unedited. */
-const RAW = git('log', 'main', '--date=short', '--pretty=%h\x1f%ad\x1f%s', '-n', '2000').split('\n');
+/* ── THE WINDOW IS A TIMEFRAME, NOT A COMMIT COUNT (director, 2026-08-01) ───
+ * "Reword it to say what it is - a recent window... let's change it to a
+ * timeframe though." So the DERIVATION moved, not just the wording: a sentence
+ * that says "the last 7 days" over a number computed from the last 2000 commits
+ * would be a second version of the same defect, agreeing by luck until the pace
+ * changed.
+ *
+ * WHY SEVEN, AND WHY THE BOUNDARY IS MIDNIGHT. Measured against the repo on
+ * 2026-08-01 rather than chosen for the round number:
+ *
+ *     window        player-visible   active days   raw commits
+ *     -n 2000                891           7          2000     <- what it was
+ *     last 7 days            899           7          2011
+ *     last 14 days          1333          14          2840
+ *     last 30 days          1664          22          3315     <- ALL of it
+ *
+ * The repo's first commit is 2026-07-11, so it is 22 days old. A 30-day window
+ * is the entire history, which would make the number the cumulative achievement
+ * stat the director has just said it is NOT - and it would start silently
+ * truncating on day 31, reintroducing the falling number under wording that
+ * hides it. Seven days is what the 2000-commit cap has effectively BEEN (2000
+ * commits is 2011 in seven days at this pace), so saying it out loud changes
+ * what the sentence CLAIMS without changing what it counts: 891 -> 899.
+ *
+ * WHAT THE LONGER WINDOW WOULD HAVE BOUGHT: a bigger headline and a longer feed.
+ * Not taken. The ask was to make the sentence true, not to grow the number, and
+ * a 50% larger figure arriving in the same commit would make it impossible to
+ * tell which change moved it.
+ *
+ * THE BOUNDARY IS MIDNIGHT of (today - 6), not `--since=7.days`, and that is
+ * load-bearing rather than fussy. A rolling 7x24h window spans EIGHT calendar
+ * dates, so the page would have read "across 8 active days" inside "the last 7
+ * days" - the same sentence contradicting itself in the same breath. Anchored to
+ * a date boundary, the active-day count cannot exceed the window, ever.
+ *
+ * IT WILL STILL GO DOWN, and that is now correct rather than confusing: a
+ * trailing window drops what ages past it, and the sentence says trailing. */
+const FEED_WINDOW_DAYS = 7;
+/* LOCAL date, not `toISOString()`, and the first run of this code proved why:
+ * `git log --date=short` prints dates in LOCAL time, so a UTC boundary is a
+ * different day for most of the evening in this timezone. It generated
+ * "751 changes in the last 7 days ... across 6 active days" — a seven-day window
+ * that had quietly become six, off by exactly the UTC offset. The window and the
+ * dates it is compared against have to be reckoned in the same clock. */
+const windowStartDate = new Date(Date.now() - (FEED_WINDOW_DAYS - 1) * 86400000);
+const windowStart = [
+  windowStartDate.getFullYear(),
+  String(windowStartDate.getMonth() + 1).padStart(2, '0'),
+  String(windowStartDate.getDate()).padStart(2, '0'),
+].join('-');
+const RAW = git(
+  'log', 'main', '--date=short', '--pretty=%h\x1f%ad\x1f%s',
+  `--since=${windowStart} 00:00:00`,
+).split('\n');
 const PLAYER_VISIBLE = /^(feat|fix|balance|perf|style)(\(|:)/;
 const NOISE = /^(docs|chore|test|refactor|merge|revert)(\(|:)/i;
 const KIND_LABEL = { feat: 'New', fix: 'Fixed', balance: 'Balance', perf: 'Performance', style: 'Polish' };
@@ -221,14 +274,20 @@ const totalShipped = [...days.values()].reduce((n, d) => n + d.length, 0);
  * 2026-08-02 against 901 the day before.
  *
  * AND IT WENT DOWN, WHICH IS THE PART WORTH KNOWING. The feed is built from a
- * fixed TRAILING WINDOW of the last 2000 commits (`-n 2000` above), not from
- * the whole history. Ninety commits landed between those two generations; the
- * ninety that aged off the tail were feature-heavy and the ninety that arrived
- * were docs and chore, so player-visible fell by 11 and filtered rose by 11.
- * The sentence reads like a cumulative achievement stat and is not one.
- * Whether it should BECOME one — a lifetime count, or one that says "in the
- * last 2000 commits" out loud — changes what the page claims about the project,
- * so it is the director's call and is left exactly as he has seen it. */
+ * fixed TRAILING WINDOW, not from the whole history. Ninety commits landed
+ * between those two generations; the ninety that aged off the tail were
+ * feature-heavy and the ninety that arrived were docs and chore, so
+ * player-visible fell by 11 and filtered rose by 11. The sentence read like a
+ * cumulative achievement stat and was not one.
+ *
+ * RULED, 2026-08-01: "Reword it to say what it is — a recent window... let's
+ * change it to a timeframe though." Done, and done in the DERIVATION as well as
+ * the wording — see THE WINDOW IS A TIMEFRAME above `git log`, which carries the
+ * measurements the seven days were picked on. The sentence now names the window
+ * it counts, so the number falling is the window working rather than a stat
+ * mysteriously losing ground. A lifetime count was the other option and was not
+ * taken: it is a different claim about the project, and it is not what was
+ * asked for. */
 
 /* index.html only needs the headline numbers. log.html's full view gets the
  * real feed, capped per day so a burst day (150+ commits) reads as a feed
@@ -1157,7 +1216,7 @@ ${searchMarkup('Search weapons, cores, enemies, changes, bugs...')}
          : 'Live build could not be reached at generation time, so no live sha is claimed.'}
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">${totalShipped} player-visible changes across ${allDays.length} active days, ${filtered} internal-only commits filtered out</div>
+  <div class="stat">${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days, across ${allDays.length} active days, ${filtered} internal-only commits filtered out</div>
 </footer>
 
 ${AUTH_SCRIPT()}
@@ -1364,7 +1423,7 @@ writeFileSync(join(OUTDIR, '.site-outputs'), `${OUTPUTS.map((o) => o.file).join(
 
 console.log(`wrote ${OUTPUTS.length} files to ${OUTDIR}`);
 console.log(`  main@${headSha}  live=${live ? live.sha : 'unreachable'}`);
-console.log(`  ${totalShipped} player-visible changes across ${allDays.length} days (${filtered} noise commits filtered)`);
+console.log(`  ${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days since ${windowStart}, across ${allDays.length} active days (${filtered} noise commits filtered)`);
 console.log(`  ${arcs.length} arcs, ${backlogTeasers.length} backlog teasers, ${openBugs.length} open bugs, ${notes.length} authored notes`);
 console.log(`  wiki: ${wiki.rosters.length} rosters, ${wiki.rosters.map((r) => `${r.title} ${r.entries.length}`).join(', ')}`);
 console.log(`  wiki: ${[...emittedAnchors.values()].reduce((n, s) => n + s.size, 0)} anchors, all internal links resolve`);
