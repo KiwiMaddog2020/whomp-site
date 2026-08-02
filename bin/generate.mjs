@@ -204,6 +204,32 @@ for (const line of RAW) {
 const allDays = [...days.entries()].sort((a, b) => b[0].localeCompare(a[0]));
 const totalShipped = [...days.values()].reduce((n, d) => n + d.length, 0);
 
+/* ── THE COUNT IS NOT NAVIGATION, and it is not a milestone either ───────────
+ *
+ * These three numbers used to be printed inside log.html's <nav class="side">.
+ * Director, 2026-08-01: "that '901 player visible changes...' part doesn't need
+ * to be in the navigation section." It never did — nothing about it is
+ * clickable and it goes nowhere. It is PROVENANCE, so it now sits in the footer
+ * beside the build stamp, which is the other sentence about where this page
+ * came from. Its two mobile CSS overrides went with it: they existed only to
+ * stop a 70-character sentence being the widest thing in a nowrap flex strip,
+ * and out of the strip there is nothing to override.
+ *
+ * NOTHING HERE IS HARDCODED — the "confirm it is still 901" question has an
+ * answer and the answer is no. All three are recomputed from `git log` on every
+ * run; the committed log.html was simply older than the repo. It read 890 on
+ * 2026-08-02 against 901 the day before.
+ *
+ * AND IT WENT DOWN, WHICH IS THE PART WORTH KNOWING. The feed is built from a
+ * fixed TRAILING WINDOW of the last 2000 commits (`-n 2000` above), not from
+ * the whole history. Ninety commits landed between those two generations; the
+ * ninety that aged off the tail were feature-heavy and the ninety that arrived
+ * were docs and chore, so player-visible fell by 11 and filtered rose by 11.
+ * The sentence reads like a cumulative achievement stat and is not one.
+ * Whether it should BECOME one — a lifetime count, or one that says "in the
+ * last 2000 commits" out loud — changes what the page claims about the project,
+ * so it is the director's call and is left exactly as he has seen it. */
+
 /* index.html only needs the headline numbers. log.html's full view gets the
  * real feed, capped per day so a burst day (150+ commits) reads as a feed
  * rather than a wall, with the drop count said out loud. */
@@ -934,7 +960,9 @@ ${SEARCH_CSS}
 .side{width:220px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:4px}
 .side a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
 .side a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
-.side .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
+/* .stat sits in the FOOTER now, beside the build stamp, where a sentence about
+   provenance belongs. It spent its life in the nav pretending to be a link. */
+footer .stat{margin-top:10px;font-size:.78rem;opacity:.82}
 .main{flex:1;min-width:0}
 
 section{margin-top:56px}
@@ -1019,13 +1047,14 @@ h2{font-size:1.5rem;margin:0 0 6px}
   .side{width:100%;max-width:100%;min-width:0;position:static;flex-direction:row;
     overflow-x:auto;gap:8px;-webkit-overflow-scrolling:touch}
   .side a{white-space:nowrap}
-  /* .stat is a SENTENCE, not a nav item. Holding it nowrap made one unbreakable
-     ~70-character line the widest thing on the page, which is what actually
-     produced the scrollbar. On a phone it is footnote text, so it leaves the
-     strip entirely and wraps underneath where it can be read. */
-  .side .stat{display:none}
-  .shell .stat{display:block;white-space:normal;color:var(--dim);font-size:.78rem;
-    padding:0 2px;margin-top:-8px}
+  /* THE .stat OVERRIDE PAIR IS GONE, and its removal is the point rather than a
+     tidy-up. It existed because a ~70-character SENTENCE was sitting inside a
+     nowrap flex strip, making one unbreakable line the widest thing on the page;
+     the fix was to hide it in the strip and re-show it underneath. Both rules
+     were a workaround for the sentence being in the nav at all. The director
+     moved it to the footer on 2026-08-01 and the workaround has nothing left to
+     work around — the sentence now wraps because it is in a normal block, not
+     because two rules argue about it at 700px. */
   .buckets{grid-template-columns:1fr}
 }
 </style>
@@ -1056,7 +1085,6 @@ ${searchMarkup('Search weapons, cores, enemies, changes, bugs...')}
     <span class="wside-h" style="padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase">Wiki</span>
     <a href="wiki.html">All rosters</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">${totalShipped} player-visible changes across ${allDays.length} active days, ${filtered} internal-only commits filtered out</div>
   </nav>
 
   <main class="main">
@@ -1127,6 +1155,9 @@ ${searchMarkup('Search weapons, cores, enemies, changes, bugs...')}
   Generated ${esc(buildStamp)} from <code>main@${esc(headSha)}</code>.
   ${live ? `Live build <code>${esc(live.sha)}</code>${live.sha === headSha ? ' (current)' : ' (a deploy is pending)'}.`
          : 'Live build could not be reached at generation time, so no live sha is claimed.'}
+  <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
+       these three numbers are derived, for what the count actually counts. -->
+  <div class="stat">${totalShipped} player-visible changes across ${allDays.length} active days, ${filtered} internal-only commits filtered out</div>
 </footer>
 
 ${AUTH_SCRIPT()}

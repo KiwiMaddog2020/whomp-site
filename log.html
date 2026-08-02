@@ -151,7 +151,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .side{width:220px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:4px}
 .side a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
 .side a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
-.side .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
+/* .stat sits in the FOOTER now, beside the build stamp, where a sentence about
+   provenance belongs. It spent its life in the nav pretending to be a link. */
+footer .stat{margin-top:10px;font-size:.78rem;opacity:.82}
 .main{flex:1;min-width:0}
 
 section{margin-top:56px}
@@ -236,13 +238,14 @@ h2{font-size:1.5rem;margin:0 0 6px}
   .side{width:100%;max-width:100%;min-width:0;position:static;flex-direction:row;
     overflow-x:auto;gap:8px;-webkit-overflow-scrolling:touch}
   .side a{white-space:nowrap}
-  /* .stat is a SENTENCE, not a nav item. Holding it nowrap made one unbreakable
-     ~70-character line the widest thing on the page, which is what actually
-     produced the scrollbar. On a phone it is footnote text, so it leaves the
-     strip entirely and wraps underneath where it can be read. */
-  .side .stat{display:none}
-  .shell .stat{display:block;white-space:normal;color:var(--dim);font-size:.78rem;
-    padding:0 2px;margin-top:-8px}
+  /* THE .stat OVERRIDE PAIR IS GONE, and its removal is the point rather than a
+     tidy-up. It existed because a ~70-character SENTENCE was sitting inside a
+     nowrap flex strip, making one unbreakable line the widest thing on the page;
+     the fix was to hide it in the strip and re-show it underneath. Both rules
+     were a workaround for the sentence being in the nav at all. The director
+     moved it to the footer on 2026-08-01 and the workaround has nothing left to
+     work around — the sentence now wraps because it is in a normal block, not
+     because two rules argue about it at 700px. */
   .buckets{grid-template-columns:1fr}
 }
 </style>
@@ -281,7 +284,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot"></span>
-  live <b>7aa975b5</b></span>
+  live <b>654cc6cf</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -300,7 +303,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <span class="wside-h" style="padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase">Wiki</span>
     <a href="wiki.html">All rosters</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">901 player-visible changes across 8 active days, 1083 internal-only commits filtered out</div>
   </nav>
 
   <main class="main">
@@ -362,106 +364,106 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-01</h4>
     
-    <div class="row" data-kind="feat" id="chg-6a9a7350">
+    <div class="row" data-kind="feat" id="chg-829e3c64">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the range floor is reachability, and the card joins its own row <span class="scope">(cores)</span></span>
-      <span class="sha">6a9a7350</span>
+      <span class="what">extend evidence-marker coverage past three hand-listed files <span class="scope">(staleness)</span></span>
+      <span class="sha">829e3c64</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-6b5c12a6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the wiki's first derived pages, and the deploy stops hand-typing its outputs <span class="scope">(site)</span></span>
-      <span class="sha">6b5c12a6</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-5b593ba4">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">the core card joins its own row, palette only, nothing structural <span class="scope">(hud)</span></span>
-      <span class="sha">5b593ba4</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9d8b0c03">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the two ledgers the protocol asked for and nobody built <span class="scope">(protocol)</span></span>
-      <span class="sha">9d8b0c03</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-799690ba">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">every brief declares its runner, and idle Codex becomes visible <span class="scope">(protocol)</span></span>
-      <span class="sha">799690ba</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-12b5fc75">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">raise the aimed-core range floor to the reticle's own near edge <span class="scope">(cores)</span></span>
-      <span class="sha">12b5fc75</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fb116b02">
+    <div class="row" data-kind="fix" id="chg-a3446aa1">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the pointer arrives when a world does, and boot failed twice over <span class="scope">(input)</span></span>
-      <span class="sha">fb116b02</span>
+      <span class="what">correct two stale &quot;SNOW_CAMPAIGN is empty&quot; comments <span class="scope">(hub)</span></span>
+      <span class="sha">a3446aa1</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-09181bcb">
+    <div class="row" data-kind="fix" id="chg-0e8ca5cc">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a world arriving is owed the classic lock, so START hands the camera over <span class="scope">(input)</span></span>
-      <span class="sha">09181bcb</span>
+      <span class="what">stop promising a core evolution that does not exist <span class="scope">(ui)</span></span>
+      <span class="sha">0e8ca5cc</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-3d94e1d9">
+    <div class="row" data-kind="feat" id="chg-69f032b0">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">move every returning tester onto Mouse Look, once <span class="scope">(settings)</span></span>
-      <span class="sha">3d94e1d9</span>
+      <span class="what">deploy-status, a report that derives every number it prints <span class="scope">(skill)</span></span>
+      <span class="sha">69f032b0</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-88ecb8c0">
+    <div class="row" data-kind="fix" id="chg-7faaaf2d">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">right click drives no aim pin, in either mode, by the director's ruling <span class="scope">(aim)</span></span>
-      <span class="sha">88ecb8c0</span>
+      <span class="what">the load gate broke its own suite by working, so now it is tested <span class="scope">(codex-fire)</span></span>
+      <span class="sha">7faaaf2d</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-81315946">
+    <div class="row" data-kind="feat" id="chg-acd4b21a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the core's readiness becomes an underline, and the payoff is gold that was not there <span class="scope">(aura)</span></span>
+      <span class="sha">acd4b21a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a75ba203">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the cap drops to one, and the audit line stops being a judgement call <span class="scope">(codex)</span></span>
+      <span class="sha">a75ba203</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-554ae4cc">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the right button has a job in Mouse Look, so two surfaces say so <span class="scope">(copy)</span></span>
+      <span class="sha">554ae4cc</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-86621a6c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">hold right to free the cursor, and the release asks through the debt <span class="scope">(input)</span></span>
+      <span class="sha">86621a6c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0879c290">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a steer press stops dragging the beam toward centre, and the pointer comes back <span class="scope">(aim)</span></span>
-      <span class="sha">81315946</span>
+      <span class="what">shield regen was authored in the run's currency and spent in the duel's <span class="scope">(pvp)</span></span>
+      <span class="sha">0879c290</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-4c50638a">
+    <div class="row" data-kind="feat" id="chg-9112a996">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a pre-merge report of which balance dials a branch moves <span class="scope">(merge-guard)</span></span>
+      <span class="sha">9112a996</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-562221d8">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close the merged block, re-point the cursor pins, fix my own triage <span class="scope">(test)</span></span>
-      <span class="sha">4c50638a</span>
+      <span class="what">give a lane a clone, not a worktree, so it can commit its own work <span class="scope">(codex)</span></span>
+      <span class="sha">562221d8</span>
     </div>
-    <div class="row" data-kind="perf" id="chg-7653e0b9">
+    <div class="row" data-kind="fix" id="chg-59d7623e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the concise notes get the gate the patch notes already had <span class="scope">(devlog)</span></span>
+      <span class="sha">59d7623e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3028d2f2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">firing Codex is a script, and the concurrency cap is a refusal <span class="scope">(protocol)</span></span>
+      <span class="sha">3028d2f2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e35d0c06">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">nothing closes without saying what it left behind <span class="scope">(protocol)</span></span>
+      <span class="sha">e35d0c06</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c0010127">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the ledger only verified the rows it already believed <span class="scope">(records)</span></span>
+      <span class="sha">c0010127</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4b80a868">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a marker attached to no claim guards nothing, and now says so <span class="scope">(staleness)</span></span>
+      <span class="sha">4b80a868</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-bd7910d8">
       <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the seats stop casting and gain the contact they never had <span class="scope">(duel)</span></span>
-      <span class="sha">7653e0b9</span>
+      <span class="what">the footprint sweep was never quadratic, it was asking vitest 36 million questions <span class="scope">(test)</span></span>
+      <span class="sha">bd7910d8</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-c18e6743">
+    <div class="row" data-kind="feat" id="chg-442c2a1c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the default cursor height is 35 percent, chosen by feel on the live build <span class="scope">(aim)</span></span>
+      <span class="sha">442c2a1c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f1c16bae">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the pointer comes back when a menu closes, and a refusal is not final <span class="scope">(input)</span></span>
-      <span class="sha">c18e6743</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e074fbf5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">raise the default cursor height, the park cleared the healthbar by 9px <span class="scope">(aim)</span></span>
-      <span class="sha">e074fbf5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-32d09953">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a steer press stops dragging the beam toward screen centre <span class="scope">(aim)</span></span>
-      <span class="sha">32d09953</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-43040ca0">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the pups stop casting, the keeper keeps his shadow, and the freeze is unblocked <span class="scope">(hub)</span></span>
-      <span class="sha">43040ca0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-882f2bc8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the fixture could deadlock the whole machine, and a heredoc is not a command <span class="scope">(gate)</span></span>
-      <span class="sha">882f2bc8</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-d44a6622">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the ghost pups stop casting and gain a contact, and it is an ellipse <span class="scope">(hub)</span></span>
-      <span class="sha">d44a6622</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-54858b04">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the pup rig publishes what touches the floor, and names its second caster <span class="scope">(render)</span></span>
-      <span class="sha">54858b04</span>
-    </div><div class="row more">+ 63 more that day, not shown</div>
+      <span class="what">the weak aura stops orbiting, and two premises were false <span class="scope">(hud)</span></span>
+      <span class="sha">f1c16bae</span>
+    </div><div class="row more">+ 97 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-07-31</h4>
@@ -1150,46 +1152,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">a stray you can find, and a dog that follows you home <span class="scope">(run)</span></span>
       <span class="sha">a8145eb4</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-e463e279">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">two per-world givers, three chains, and a questline that changes hands <span class="scope">(data)</span></span>
-      <span class="sha">e463e279</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4b9ce83a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">gate PvP displacement behind a three-layer model <span class="scope">(duel)</span></span>
-      <span class="sha">4b9ce83a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-374ba8cf">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">keep the pre-gate teardown ordering in closeOverlays <span class="scope">(net)</span></span>
-      <span class="sha">374ba8cf</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fb46355e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a net-confirmed online start forces the scene transition <span class="scope">(net)</span></span>
-      <span class="sha">fb46355e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-94b1f7b0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">hide the duel lobby for a claimed match, do not leave the room <span class="scope">(ui)</span></span>
-      <span class="sha">94b1f7b0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8fdd458b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">arena kits hold THE WHOMP - Q works in Arenas (Kevin live report) <span class="scope">(battle)</span></span>
-      <span class="sha">8fdd458b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-866513ad">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">make the online duel exit a lockstep event, not an RTT event <span class="scope">(net)</span></span>
-      <span class="sha">866513ad</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-21f38ff0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">end a faulted online match the same way on both peers <span class="scope">(ui)</span></span>
-      <span class="sha">21f38ff0</span>
-    </div><div class="row more">+ 37 more that day, not shown</div>
   </div>
       
     </div>
@@ -1288,8 +1250,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-01 21:14 UTC from <code>main@7aa975b5</code>.
-  Live build <code>7aa975b5</code> (current).
+  Generated 2026-08-02 02:08 UTC from <code>main@654cc6cf</code>.
+  Live build <code>654cc6cf</code> (current).
+  <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
+       these three numbers are derived, for what the count actually counts. -->
+  <div class="stat">890 player-visible changes across 8 active days, 1094 internal-only commits filtered out</div>
 </footer>
 
 
