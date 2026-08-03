@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP weapons</title>
 <meta name="description" content="Weapons: The half of your build that fires itself. Every value generated from the game's own data.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="icon" href="whomp-icon.svg">
 <style>
 
 :root{
@@ -125,6 +125,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -135,19 +136,22 @@ html,body{max-width:100%;overflow-x:hidden}
 .sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
 .sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
 .sr-item:first-child{border-top:0}
-.sr-item:hover,.sr-item:focus{background:rgba(255,243,207,.06)}
+.sr-item:hover,.sr-item:focus,.sr-item.is-active,.sr-item[aria-selected="true"]{background:rgba(36,240,255,.08);outline:none}
 .sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
   color:var(--gold);margin-right:8px}
 .sr-title{color:var(--cream)}
+.sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
-.wside{width:210px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px}
+.wside{width:220px;max-height:calc(100vh - 40px);overflow-y:auto;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
 .wside a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
 .wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
+.wside a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--cyan)}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
@@ -176,6 +180,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
   font-family:var(--font);font-size:.82rem}
 .wcount{color:var(--dim);font-size:.82rem;margin:0 0 18px;font-variant-numeric:tabular-nums}
+.wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
+.wempty b{display:block;color:var(--cream);margin-bottom:8px}
+.wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
 
 .wgroup{margin-bottom:34px}
 .wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
@@ -195,6 +202,10 @@ html,body{max-width:100%;overflow-x:hidden}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
+.wequation{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:9px;background:rgba(36,240,255,.04);font-size:.9rem}
+.wequation a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wequation b{color:var(--gold)}
+.wswatch{display:inline-block;width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,255,255,.25);vertical-align:-2px;margin-right:5px}
 
 .wtags{display:flex;flex-wrap:wrap;gap:6px}
 .wtag{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
@@ -212,6 +223,31 @@ html,body{max-width:100%;overflow-x:hidden}
 .wfact-v a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
 .wfact-v a:hover{border-bottom-color:var(--cyan)}
 .wfact-v .wsub{color:var(--dim);font-size:.92em}
+
+.wraw{border-top:var(--edge);padding-top:8px;color:var(--dim);font-size:.78rem}
+.wraw summary{cursor:pointer;color:var(--cyan);font-weight:700;list-style-position:outside;margin-left:15px}
+.wraw summary span{color:var(--dim);font-weight:400;margin-left:5px;font-variant-numeric:tabular-nums}
+.wraw dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:5px 12px;margin:10px 0 0}
+.wraw dl div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,243,207,.05);padding:3px 0}
+.wraw dt,.wraw dd{margin:0;overflow-wrap:anywhere}
+.wraw dd{color:var(--body);text-align:right;font-variant-numeric:tabular-nums}
+.wschedule ol{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.wschedule li{padding-left:3px;color:var(--body)}
+.wschedule li a{color:var(--cyan);text-decoration:none}
+.wschedule li span{color:var(--dim);margin-left:6px}
+.wschedule li code{float:right;margin-left:8px}
+
+.wfeature{border:var(--edge);border-radius:14px;padding:20px;margin:0 0 24px;background:linear-gradient(135deg,rgba(36,240,255,.05),rgba(177,75,255,.035));color:var(--body)}
+.wfeature h3{margin:2px 0 8px;color:var(--cream);font-size:1.2rem}
+.wfeature p{margin:7px 0;color:var(--dim);font-size:.86rem}
+.wfeature .eyebrow{color:var(--gold);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wmethod-grid,.wbuild-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:14px 0}
+.wmethod-grid>div,.wbuild-grid>article{border:var(--edge);border-radius:10px;padding:12px;background:rgba(6,4,14,.34)}
+.wmethod-grid b,.wmethod-grid span,.wmethod-grid code{display:block}
+.wmethod-grid span{color:var(--body);font-size:.82rem;margin:5px 0}
+.wbuild-grid h4{margin:10px 0 5px;font-size:.9rem;line-height:1.5}
+.wbuild-grid h4 a,.wbuild-grid li a{color:var(--cyan);text-decoration:none}
+.wbuild-grid ol{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:.78rem}
 
 /* COMPARISON METERS. The bar is relative to the biggest value in THIS roster and
    the real number is always printed beside it, so the bar is a sorting aid and
@@ -231,19 +267,50 @@ html,body{max-width:100%;overflow-x:hidden}
 .whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.2rem}
 .whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
 .whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
-.wsoon{display:flex;flex-wrap:wrap;gap:8px}
-.wsoon span{padding:7px 14px;border-radius:999px;border:var(--edge);color:var(--dim);font-size:.8rem}
-.wsoon span b{color:var(--body);font-weight:700;font-variant-numeric:tabular-nums}
-
+.whubsection{margin:0 0 34px;scroll-margin-top:24px}
+.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+.whubsection-h h3{margin:0;color:var(--cream);font-size:1.08rem}
+.whubsection-h span{color:var(--dim);font-size:.75rem}
 @media (max-width:760px){
   .wshell{flex-direction:column;gap:18px}
-  .wside{width:100%;position:static;flex-direction:row;overflow-x:auto;gap:6px}
-  .wside a,.wside .stat{white-space:nowrap}
-  .wside-h{display:none}
+  .wside{width:100%;max-height:none;position:static;overflow:visible;padding:0}
   .wgrid{grid-template-columns:1fr}
   .wfact-k,.wmeter-k{width:84px}
+  .wraw dl{grid-template-columns:1fr}
+  .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
+  .wfeature{padding:16px}
+  .wtopbar,.wshell{padding-left:16px;padding-right:16px}
 }
+@media (max-width:420px){
+  .wcard{padding:14px}
+  .wfact{flex-direction:column;gap:2px}
+  .wfact-k{width:auto}
+  .wmeter{display:grid;grid-template-columns:80px 1fr auto}
+}
+@media (prefers-reduced-motion:reduce){.whubcard{transition:none}}
+.wf:focus-visible,.wsort:focus-visible,.wside a:focus-visible,.wraw summary:focus-visible,.wempty button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
+.wside-section{border-top:1px solid rgba(255,243,207,.06)}
+.wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
+  font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
+.wside-section summary:hover{background:rgba(255,243,207,.04)}
+.wside-section summary::marker{color:var(--cyan)}
+.wside-section summary span{float:right;color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums}
+.wside-section[open] summary{color:var(--cream)}
+.wside-links{padding:0 0 5px 7px}
+.wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside a.wiki-home{display:flex;align-items:center;gap:10px;padding:7px 10px 12px;margin:0 0 4px;border-bottom:var(--edge)}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
+.wiki-home-copy b{color:var(--cream);font-size:.94rem;letter-spacing:.02em}
+.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:4px}
+@media(max-width:760px){
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
+  .wside a.wiki-home{width:100%;padding:8px 10px 13px}
+  .wside-section summary{padding:12px}
+  .wside-links{padding-left:8px}
+  .wside-links a{padding:10px 12px}
+}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand .wm{margin:0}
 .brand h1{font-size:1.6rem;margin:0}
@@ -256,7 +323,7 @@ footer a{color:var(--cyan);text-decoration:none}
 <body>
 
 <div class="wtopbar">
-  
+
 <div class="authbar">
   <span id="ab-signedout">
     <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
@@ -268,44 +335,91 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
-      
-<svg class="wm" viewBox="0 0 512 512" width="48" height="48" aria-hidden="true" focusable="false">
-  <defs><radialGradient id="gwweapons" cx="50%" cy="50%" r="72%">
-    <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
-  </radialGradient></defs>
-  <rect width="512" height="512" rx="96" fill="url(#gwweapons)"/>
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#151023" stroke-width="69"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#fff3cf" stroke-width="59"/>
-  </g>
-</svg>
       <span>
         <h1 class="chroma">WHOMP weapons</h1>
         <p class="subtag">The half of your build that fires itself.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot"></span>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
   live <b>c4d4c20b</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
 
 
-<div class="searchwrap">
-  <input class="searchbox" id="search" type="search" placeholder="Search weapons, cores, enemies, changes, bugs..." autocomplete="off">
-  <div class="sr-panel" id="sr-panel"></div>
+<div class="searchwrap" role="search">
+  <label class="searchlabel" for="search">Search WHOMP</label>
+  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+    role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
+    aria-controls="sr-panel" aria-describedby="sr-status">
+  <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
+  <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
 </div>
 
 <div class="wshell">
   <nav class="wside">
-    
+
+    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
+      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
+      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
+    </a>
     <span class="wside-h">Wiki</span>
-    <a href="wiki.html">All rosters</a>
-    <a href="wiki-weapons.html" class="is-here">Weapons</a>
-    <a href="wiki-cores.html">Core weapons</a>
-    <a href="wiki-bestiary.html">Bestiary</a>
+    <a href="wiki.html">All guides</a>
+    <details class="wside-section" open>
+      <summary>Buildcraft <span>13</span></summary>
+      <div class="wside-links">
+        <a href="wiki-weapons.html" class="is-here" aria-current="page">Weapons</a>
+        <a href="wiki-cores.html">Core weapons</a>
+        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-tiers.html">Weapon tiers</a>
+        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tomes.html">Tomes</a>
+        <a href="wiki-relics.html">Relics</a>
+        <a href="wiki-legendaries.html">Legendary upgrades</a>
+        <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-utilities.html">Utility abilities</a>
+        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-evolutions.html">Evolution recipes</a>
+        <a href="wiki-jump-augments.html">Jump augments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Heroes <span>3</span></summary>
+      <div class="wside-links">
+        <a href="wiki-characters.html">Characters</a>
+        <a href="wiki-innates.html">Innates</a>
+        <a href="wiki-signatures.html">Signatures</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>World <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-bestiary.html">Bestiary</a>
+        <a href="wiki-worlds.html">Campaign worlds</a>
+        <a href="wiki-expeditions.html">Expeditions</a>
+        <a href="wiki-modes.html">Run modes</a>
+        <a href="wiki-world-events.html">Rare world events</a>
+        <a href="wiki-ambient-events.html">Ambient events</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Progression <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-achievements.html">Achievements</a>
+        <a href="wiki-quests.html">Quests and rewards</a>
+        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-ship-cores.html">Ship cores</a>
+        <a href="wiki-ship-systems.html">Ship systems</a>
+        <a href="wiki-ship-fragments.html">Ship fragments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Collection <span>2</span></summary>
+      <div class="wside-links">
+        <a href="wiki-wearables.html">Wearables</a>
+        <a href="wiki-cosmetics.html">Cosmetic styles</a>
+      </div>
+    </details>
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
@@ -314,36 +428,37 @@ footer a{color:var(--cyan);text-decoration:none}
   <main class="wmain">
     <div class="rule"></div>
     <h2 class="chroma">Weapons</h2>
-    <p class="lede">Weapons fire on their own. You are offered them as you level, you level them up, and eight of them turn into something else entirely if you are holding the right tome when a boss chest opens. The weapon you aim by hand is the core weapon, and it has its own page.</p>
+    <p class="lede">Weapons fire on their own. You are offered them as you level, you level them up, and 8 of them are terminal forms reached with the right tome and a boss chest. The weapon you aim by hand is the core weapon, and it has its own page.</p>
 
-    <p class="wprov">Every value on this page is read out of the game’s own registries at build time, from
-      <b>main@c4d4c20b</b>. Nothing here is retyped by hand, so it cannot fall behind a balance
-      change. Bars compare an entry against the largest value in <b>this roster</b>, never an absolute ceiling,
-      and the real number is always printed beside the bar.
-      Written flavour notes are the director’s to write and <b>0 of 33</b> exist so far, so these cards are mechanics only.</p>
+    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
+      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+      and dead relations before it writes a page. Source: <code>src/data/weapons.ts#WEAPONS</code>.
+      Optional director notes have <b>0 of 33</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
 
     <p class="womit">There is no damage-per-second column here, and that is deliberate. The game does not compute one: your might and crit multiply the damage, your attack speed divides the interval, and half of these do not have "damage times shots per second" semantics in the first place. A beam ramps the longer it holds, chain jumps land a flat share of the first hit, the shotgun pays more up close. A single number would be wrong on most of these cards, so the page gives you the base figures and the growth rule and lets you compare like with like. <b>Element is a look, not a rule</b>: it picks the effect tint and nothing in the game reads it for damage, resistance or status.</p>
+
+
 
     <div class="wbar">
       <div class="wfacet">
         <span class="wfacet-h">Element</span>
-        <div class="wfacet-row" data-facet="element">
-          <button class="wf is-active" type="button" data-value="all">All</button>
-          <button class="wf" type="button" data-value="holy">Holy <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="void">Void <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="fire">Fire <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="physical">Physical <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="lightning">Lightning <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="ice">Ice <span style="opacity:.5">3</span></button>
+        <div class="wfacet-row" data-facet="element" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="holy" aria-pressed="false" aria-controls="wiki-groups">Holy <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="void" aria-pressed="false" aria-controls="wiki-groups">Void <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="fire" aria-pressed="false" aria-controls="wiki-groups">Fire <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="physical" aria-pressed="false" aria-controls="wiki-groups">Physical <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="lightning" aria-pressed="false" aria-controls="wiki-groups">Lightning <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="ice" aria-pressed="false" aria-controls="wiki-groups">Ice <span style="opacity:.5">3</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h">How it fires</span>
-        <div class="wfacet-row" data-facet="pattern">
-          <button class="wf is-active" type="button" data-value="all">All</button>
-          <button class="wf" type="button" data-value="cone">Cone <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="pierceLine">Pierce line <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="randomAoE">Random AoE <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="beam">Beam <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="aura">Aura <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="boomerang">Boomerang <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="burstNearest">Burst nearest <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="chain">Chain <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="orbit">Orbit <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="petUnits">Pet units <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="blackHole">Black hole <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="homing">Homing <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meleeArc">Melee arc <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meteor">Meteor <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="pathEcho">Path echo <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="ricochet">Ricochet <span style="opacity:.5">1</span></button>
+        <div class="wfacet-row" data-facet="pattern" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="cone" aria-pressed="false" aria-controls="wiki-groups">Cone <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="pierceLine" aria-pressed="false" aria-controls="wiki-groups">Pierce line <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="randomAoE" aria-pressed="false" aria-controls="wiki-groups">Random AoE <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="beam" aria-pressed="false" aria-controls="wiki-groups">Beam <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="aura" aria-pressed="false" aria-controls="wiki-groups">Aura <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="boomerang" aria-pressed="false" aria-controls="wiki-groups">Boomerang <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="burstNearest" aria-pressed="false" aria-controls="wiki-groups">Burst nearest <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="chain" aria-pressed="false" aria-controls="wiki-groups">Chain <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="orbit" aria-pressed="false" aria-controls="wiki-groups">Orbit <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="petUnits" aria-pressed="false" aria-controls="wiki-groups">Pet units <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="blackHole" aria-pressed="false" aria-controls="wiki-groups">Black hole <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="homing" aria-pressed="false" aria-controls="wiki-groups">Homing <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meleeArc" aria-pressed="false" aria-controls="wiki-groups">Melee arc <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meteor" aria-pressed="false" aria-controls="wiki-groups">Meteor <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="pathEcho" aria-pressed="false" aria-controls="wiki-groups">Path echo <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="ricochet" aria-pressed="false" aria-controls="wiki-groups">Ricochet <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h">Availability</span>
-        <div class="wfacet-row" data-facet="access">
-          <button class="wf is-active" type="button" data-value="all">All</button>
-          <button class="wf" type="button" data-value="achievement">Achievement <span style="opacity:.5">15</span></button><button class="wf" type="button" data-value="start">From the start <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="evolution">Evolution <span style="opacity:.5">8</span></button>
+        <div class="wfacet-row" data-facet="access" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="achievement" aria-pressed="false" aria-controls="wiki-groups">Achievement <span style="opacity:.5">15</span></button><button class="wf" type="button" data-value="start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="evolution" aria-pressed="false" aria-controls="wiki-groups">Evolution <span style="opacity:.5">8</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -352,217 +467,221 @@ footer a{color:var(--cyan);text-decoration:none}
           <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="damage" data-desc="1" data-text="0">Base damage</option><option value="range" data-desc="1" data-text="0">Range</option><option value="cadence" data-desc="0" data-text="0">Fire interval</option>
         </select>
       </div></div>
-    <p class="wcount" id="wcount"></p>
+    <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
+    <div class="wempty" id="wempty" hidden>
+      <b>No entries match these filters.</b>
+      <button type="button" id="wreset">Reset filters</button>
+    </div>
 
-    
+    <div id="wiki-groups">
     <section class="wgroup" data-group="base" id="g-base">
       <div class="wgroup-h"><h3>Base weapons</h3><span class="wgroup-n">25</span></div>
-      <p class="wgroup-note">What the level-up offer draws from, plus the ones a character brings with them. Ten are available on a fresh save; the rest are behind an achievement, and each card says which.</p>
+      <p class="wgroup-note">What the level-up offer draws from, plus the ones a character brings with them. 10 are available on a fresh save; the rest are behind an achievement, and each card says which.</p>
       <div class="wgrid">
       <article class="wcard" id="e-energyBolt" data-element="holy" data-pattern="pierceLine" data-access="start" data-s-roster="0" data-s-name="energy bolt" data-s-damage="9.6" data-s-range="21.45" data-s-cadence="560">
         <div class="wcard-h">
           <h4>Energy Bolt</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Holy</span>
           <span class="wtag ink-cyan">Pierce line</span>
         </div>
         <p class="wdesc">Auto-fires at the nearest enemy.</p>
         <p class="wgloss">Leads its target and fires a small volley in a straight line, punching through a limited number of enemies per shot.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Orbital Mechanic and Event Horizon start with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-cragjaw">Orbital Mechanic</a> and <a href="wiki-characters.html#e-graviton">Event Horizon</a> start with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>560</b> ms between shots <span class="wsub">, 503.78 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4.5%</b> damage per level <span class="wsub">, 12.62 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-novaLance">Nova Lance</a>, once you hold the <b>Tome of Power</b> and open a boss chest</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-novaLance">Nova Lance</a>, once you hold <a href="wiki-tomes.html#e-powerTome">Tome of Power</a> and open a boss chest</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">9.6</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:46%"></i></span><span class="wmeter-v">16.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-plasmaOrbit" data-element="physical" data-pattern="orbit" data-access="start" data-s-roster="1" data-s-name="plasma shield" data-s-damage="14" data-s-range="0" data-s-cadence="250">
+      <article class="wcard" id="e-plasmaOrbit" data-element="physical" data-pattern="orbit" data-access="start" data-s-roster="1" data-s-name="plasma shield" data-s-damage="14"  data-s-cadence="250">
         <div class="wcard-h">
           <h4>Plasma Shield</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Physical</span>
           <span class="wtag ink-cyan">Orbit</span>
         </div>
         <p class="wdesc">Orbiting shield blocks and damages.</p>
         <p class="wgloss">Bodies circle you continuously and hurt whatever they sweep through. Nothing to aim and no downtime.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Capsule Signal and Medic start with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-bonkrat">Capsule Signal</a> and <a href="wiki-characters.html#e-medic">Medic</a> start with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>250</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>2</b> orbs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 17.92 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-ringOfRuin">Ring of Ruin</a>, once you hold the <b>Tome of Magnitude</b> and open a boss chest</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-ringOfRuin">Ring of Ruin</a>, once you hold <a href="wiki-tomes.html#e-sizeTome">Tome of Magnitude</a> and open a boss chest</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:58%"></i></span><span class="wmeter-v">14</span></div>
-          
-          
+
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-spiritOrbs" data-element="void" data-pattern="homing" data-access="achievement" data-s-roster="2" data-s-name="ghost orbs" data-s-damage="14.25" data-s-range="30" data-s-cadence="1080">
         <div class="wcard-h">
           <h4>Ghost Orbs</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Void</span>
           <span class="wtag ink-cyan">Homing</span>
         </div>
         <p class="wdesc">Homing spirit projectiles.</p>
         <p class="wgloss">Shots pick a target as they leave you and steer toward it.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by First Blood (150 kills in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-firstBlood">First Blood</a> (150 kills in one run), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1080</b> ms between shots <span class="wsub">, 971.58 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Wisp</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14%</b> damage per level <span class="wsub">, 28.21 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:59%"></i></span><span class="wmeter-v">14.25</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">30<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:28%"></i></span><span class="wmeter-v">9.9<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
       <article class="wcard" id="e-boomerang" data-element="physical" data-pattern="boomerang" data-access="start" data-s-roster="3" data-s-name="boomerang" data-s-damage="10.8" data-s-range="9" data-s-cadence="2100">
         <div class="wcard-h">
           <h4>Boomerang</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Physical</span>
           <span class="wtag ink-cyan">Boomerang</span>
         </div>
         <p class="wdesc">Returns to you. Hits twice.</p>
         <p class="wgloss">Thrown out, then it comes back, and it can hit on both legs of the trip.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Apprentice starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-slipstream">Apprentice</a> starts with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2100</b> ms between shots <span class="wsub">, 1889.18 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+9.4%</b> damage per level <span class="wsub">, 17.91 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-goldReaver">Gold Reaver</a>, once you hold the <b>Tome of Riches</b> and open a boss chest</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-goldReaver">Gold Reaver</a>, once you hold <a href="wiki-tomes.html#e-midasTome">Tome of Riches</a> and open a boss chest</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:45%"></i></span><span class="wmeter-v">10.8</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:29%"></i></span><span class="wmeter-v">10.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
       <article class="wcard" id="e-meteorStrike" data-element="fire" data-pattern="meteor" data-access="achievement" data-s-roster="4" data-s-name="meteor strike" data-s-damage="12.5" data-s-range="17" data-s-cadence="2100">
         <div class="wcard-h">
           <h4>Meteor Strike</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Fire</span>
           <span class="wtag ink-cyan">Meteor</span>
         </div>
         <p class="wdesc">Explosive impacts from the sky.</p>
         <p class="wgloss">Paints a shadow on the ground, then drops a strike into it a moment later. You are hitting a place, not a target.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Marsh Cleared (Clear Gloom Marsh), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-marshCleared">Marsh Cleared</a> (Clear Gloom Marsh), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2100</b> ms between shots <span class="wsub">, 1889.18 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Orb</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14.3%</b> damage per level <span class="wsub">, 25.01 damage at 8</span></span></div>
-          
+
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-mortar">Mortar</a> is built on it</span></div>
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:52%"></i></span><span class="wmeter-v">12.5</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-chainLightning" data-element="lightning" data-pattern="chain" data-access="achievement" data-s-roster="5" data-s-name="chain lightning" data-s-damage="18" data-s-range="21.45" data-s-cadence="1320">
         <div class="wcard-h">
           <h4>Chain Lightning</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Lightning</span>
           <span class="wtag ink-cyan">Chain</span>
         </div>
         <p class="wdesc">Lightning jumps between enemies.</p>
         <p class="wgloss">Hits one enemy at full damage, then jumps to the nearest one it has not hit yet, each jump landing a flat share of the first.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Exterminator (4,000 kills lifetime), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-exterminator">Exterminator</a> (4,000 kills lifetime), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1320</b> ms between shots <span class="wsub">, 1187.48 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> arcs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6.8%</b> damage per level <span class="wsub">, 26.57 damage at 8</span></span></div>
-          
+
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-arcCaster">Arc Caster</a> is built on it</span></div>
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:75%"></i></span><span class="wmeter-v">18</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-iceShard" data-element="ice" data-pattern="cone" data-access="start" data-s-roster="6" data-s-name="ice shards" data-s-damage="7.7" data-s-range="21.45" data-s-cadence="840">
         <div class="wcard-h">
           <h4>Ice Shards</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Ice</span>
           <span class="wtag ink-cyan">Cone</span>
         </div>
         <p class="wdesc">Freezing projectiles that slow.</p>
         <p class="wgloss">Throws a converging volley of shards that also slows what they hit.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Elder Star starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-echoKnight">Elder Star</a> starts with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>840</b> ms between shots <span class="wsub">, 755.67 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>2</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6%</b> damage per level <span class="wsub">, 10.93 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-glacierLance">Glacier Lance</a>, once you hold the <b>Tome of Velocity</b> and open a boss chest</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-glacierLance">Glacier Lance</a>, once you hold <a href="wiki-tomes.html#e-velocityTome">Tome of Velocity</a> and open a boss chest</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:32%"></i></span><span class="wmeter-v">7.7</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">15<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-toxicAura" data-element="physical" data-pattern="aura" data-access="start" data-s-roster="7" data-s-name="toxic aura" data-s-damage="7.2" data-s-range="0" data-s-cadence="1400">
+      <article class="wcard" id="e-toxicAura" data-element="physical" data-pattern="aura" data-access="start" data-s-roster="7" data-s-name="toxic aura" data-s-damage="7.2"  data-s-cadence="1400">
         <div class="wcard-h">
           <h4>Toxic Aura</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Physical</span>
           <span class="wtag ink-cyan">Aura</span>
         </div>
@@ -573,91 +692,91 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>1400</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6%</b> damage per level <span class="wsub">, 10.22 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">7.2</span></div>
-          
-          
+
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-ricochetDisc" data-element="physical" data-pattern="ricochet" data-access="achievement" data-s-roster="8" data-s-name="ricochet disc" data-s-damage="15.25" data-s-range="21.45" data-s-cadence="1600">
         <div class="wcard-h">
           <h4>Ricochet Disc</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Physical</span>
           <span class="wtag ink-cyan">Ricochet</span>
         </div>
         <p class="wdesc">Disc bounces between enemies.</p>
         <p class="wgloss">A disc thrown at a lead, then bouncing on to a budget of further targets that grows with level.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Big Spender (Earn 3,500 gold in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-bigSpender">Big Spender</a> (Earn 3,500 gold in one run), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1600</b> ms between shots <span class="wsub">, 1439.37 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> discs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6.4%</b> damage per level <span class="wsub">, 22.08 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:64%"></i></span><span class="wmeter-v">15.25</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:46%"></i></span><span class="wmeter-v">16.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
       <article class="wcard" id="e-beam" data-element="void" data-pattern="beam" data-access="start" data-s-roster="9" data-s-name="beam" data-s-damage="6.4" data-s-range="9" data-s-cadence="100">
         <div class="wcard-h">
           <h4>Beam</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Void</span>
           <span class="wtag ink-cyan">Beam</span>
         </div>
         <p class="wdesc">Splash beams that ramp up over time.</p>
         <p class="wgloss">Holds persistent locks on targets and ramps its damage the longer a lock survives, with splash around where it lands.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Puppeteer starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-puppeteer">Puppeteer</a> starts with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>100</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Beam</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 8.64 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-deathray">Deathray</a>, once you hold the <b>Tome of Precision</b> and open a boss chest</span></div>
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-deathray">Deathray</a>, once you hold <a href="wiki-tomes.html#e-critTome">Tome of Precision</a> and open a boss chest</span></div>
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-tether">Tether</a> is built on it</span></div>
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">6.4</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-shotgun" data-element="fire" data-pattern="burstNearest" data-access="start" data-s-roster="10" data-s-name="shotgun" data-s-damage="7.7" data-s-range="9" data-s-cadence="1485">
         <div class="wcard-h">
           <h4>Shotgun</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Fire</span>
           <span class="wtag ink-cyan">Burst nearest</span>
         </div>
         <p class="wdesc">Spread shot. Deadly up close.</p>
         <p class="wgloss">A pellet volley that hits much harder up close than far away. The spread is the range limit.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Berserker and Bubblehead start with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-berserker">Berserker</a> and <a href="wiki-characters.html#e-hookline">Bubblehead</a> start with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1485</b> ms between shots <span class="wsub">, 1289.17 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>6</b> bolts per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 10.4 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-hellscatter">Hellscatter</a>, once you hold the <b>Tome of Haste</b> and open a boss chest</span></div>
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-hellscatter">Hellscatter</a>, once you hold <a href="wiki-tomes.html#e-attackSpeedTome">Tome of Haste</a> and open a boss chest</span></div>
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-scattergun">Scattergun</a> is built on it</span></div>
         </div>
         <div class="wmeters">
@@ -665,307 +784,307 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">36<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
       <article class="wcard" id="e-gravityWell" data-element="void" data-pattern="blackHole" data-access="achievement" data-s-roster="11" data-s-name="gravity well" data-s-damage="3" data-s-range="30" data-s-cadence="4200">
         <div class="wcard-h">
           <h4>Gravity Well</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Void</span>
           <span class="wtag ink-cyan">Black hole</span>
         </div>
         <p class="wdesc">Black hole pulls and crushes enemies.</p>
         <p class="wgloss">Drops a well that drags enemies inward and ticks damage into them while it lasts.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Endurance (Survive 20:00 in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-survivor20">Endurance</a> (Survive 20:00 in one run), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>4200</b> ms between shots <span class="wsub">, 3778.36 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Orb</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 4.05 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">3</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">30<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:19%"></i></span><span class="wmeter-v">6.72<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-encore" data-element="ice" data-pattern="pathEcho" data-access="achievement" data-s-roster="12" data-s-name="echo" data-s-damage="6" data-s-range="0" data-s-cadence="300">
+      <article class="wcard" id="e-encore" data-element="ice" data-pattern="pathEcho" data-access="achievement" data-s-roster="12" data-s-name="echo" data-s-damage="6"  data-s-cadence="300">
         <div class="wcard-h">
           <h4>Echo</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Ice</span>
           <span class="wtag ink-cyan">Path echo</span>
         </div>
         <p class="wdesc">It's you, but it already left. Now it brought friends.</p>
         <p class="wgloss">A lashing chain of nodes that trails the path you walked, heaviest at the front and tapering to the tail.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Ember Cleared (Clear Ember Wastes), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-emberCleared">Ember Cleared</a> (Clear Ember Wastes), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>300</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Wisp</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level, compounding <span class="wsub">, 8.44 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:25%"></i></span><span class="wmeter-v">6</span></div>
-          
-          
+
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-photonScythe" data-element="void" data-pattern="meleeArc" data-access="achievement" data-s-roster="13" data-s-name="photon scythe" data-s-damage="14.4" data-s-range="9" data-s-cadence="950">
         <div class="wcard-h">
           <h4>Photon Scythe</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Void</span>
           <span class="wtag ink-cyan">Melee arc</span>
         </div>
         <p class="wdesc">Reaps the front and both flanks. No survivors, no paperwork.</p>
         <p class="wgloss">Sweeps a wide arc around you facing the way you are moving, leaving only a gap directly behind.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Perfectionist (Max any weapon), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-perfectionist">Perfectionist</a> (Max any weapon), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>950</b> ms between shots <span class="wsub">, 713.88 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level, compounding <span class="wsub">, 20.26 damage at 8</span></span></div>
-          
+
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-glaive">Glaive</a> is built on it</span></div>
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:60%"></i></span><span class="wmeter-v">14.4</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-voidRailgun" data-element="void" data-pattern="pierceLine" data-access="achievement" data-s-roster="14" data-s-name="void railgun" data-s-damage="24" data-s-range="17" data-s-cadence="2700">
         <div class="wcard-h">
           <h4>Void Railgun</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Void</span>
           <span class="wtag ink-cyan">Pierce line</span>
         </div>
         <p class="wdesc">Picks the biggest thing in the room. Deletes the line behind it.</p>
         <p class="wgloss">Charges, then fires an instant line down the whole length of its range. The charge is the cost and the lockout after it is the risk.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Rift Cleared (Clear the Void Rift), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-riftCleared">Rift Cleared</a> (Clear the Void Rift), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2700</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Beam</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14%</b> damage per level, compounding <span class="wsub">, 60.05 damage at 8</span></span></div>
-          
+
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-frostLance">Frost Lance</a> is built on it</span></div>
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">24</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-lighthouse" data-element="physical" data-pattern="beam" data-access="achievement" data-s-roster="15" data-s-name="faultline" data-s-damage="16" data-s-range="17" data-s-cadence="2300">
         <div class="wcard-h">
           <h4>Faultline</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Physical</span>
           <span class="wtag ink-cyan">Beam</span>
         </div>
         <p class="wdesc">The ground remembers. It heaves them up, then lets go.</p>
         <p class="wgloss">Ruptures the ground in a line rather than firing a beam, throwing up pillars along it.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Keeper (Activate 3 shrines in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-keeper">Keeper</a> (Activate 3 shrines in one run), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2300</b> ms between shots <span class="wsub">, 1858.36 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6%</b> damage per level, compounding <span class="wsub">, 24.06 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">16</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-stormSentry" data-element="lightning" data-pattern="petUnits" data-access="achievement" data-s-roster="16" data-s-name="storm sentry" data-s-damage="11.9" data-s-range="17" data-s-cadence="5200">
         <div class="wcard-h">
           <h4>Storm Sentry</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Lightning</span>
           <span class="wtag ink-cyan">Pet units</span>
         </div>
         <p class="wdesc">Deploys a small opinionated cloud. It roves. It zaps.</p>
         <p class="wgloss">Plants a sentry that holds a position and zaps what comes near it, for as long as it lives.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Necropolis Cleared (Clear Neon Necropolis), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-necroCleared">Necropolis Cleared</a> (Clear Neon Necropolis), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>5200</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level, compounding <span class="wsub">, 16.74 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:50%"></i></span><span class="wmeter-v">11.9</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-blackSquirrel" data-element="physical" data-pattern="petUnits" data-access="achievement" data-s-roster="17" data-s-name="ghost pup" data-s-damage="11.3" data-s-range="13" data-s-cadence="2500">
         <div class="wcard-h">
           <h4>Ghost Pup</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Physical</span>
           <span class="wtag ink-cyan">Pet units</span>
         </div>
         <p class="wdesc">A loyal little haunt. It winds up, pounces, and drifts back to your side.</p>
         <p class="wgloss">Sends out a pack that chases, pounces, and comes back to you.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Pack Hunter (800 kills in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-quests.html#e-theOneItPicked">The One It Picked</a>, then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2500</b> ms between shots <span class="wsub">, 2249.02 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Wisp</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+10.4%</b> damage per level <span class="wsub">, 19.53 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">11.3</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-thunderStrike" data-element="lightning" data-pattern="randomAoE" data-access="achievement" data-s-roster="18" data-s-name="lightning strike" data-s-damage="24" data-s-range="9" data-s-cadence="1200">
         <div class="wcard-h">
           <h4>Lightning Strike</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Lightning</span>
           <span class="wtag ink-cyan">Random AoE</span>
         </div>
         <p class="wdesc">The sky files a grievance. Directly.</p>
         <p class="wgloss">Calls strikes down out of the sky, instantly, at points near you.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Boss Down (Kill 5 bosses lifetime), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-bossDown">Boss Down</a> (Kill 5 bosses lifetime), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1200</b> ms between shots <span class="wsub">, 1079.53 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14%</b> damage per level <span class="wsub">, 47.52 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">24</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-voidDaggers" data-element="void" data-pattern="chain" data-access="achievement" data-s-roster="19" data-s-name="void daggers" data-s-damage="8.5" data-s-range="17" data-s-cadence="960">
         <div class="wcard-h">
           <h4>Void Daggers</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Void</span>
           <span class="wtag ink-cyan">Chain</span>
         </div>
         <p class="wdesc">They arrive from the side you were not watching.</p>
         <p class="wgloss">Strikes the nearest few enemies to YOU at full damage each. It does not hop between them, so it does not care how they are spaced.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Survivor (Survive 10:00 in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-survivor10">Survivor</a> (Survive 10:00 in one run), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>960</b> ms between shots <span class="wsub">, 863.62 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 10.88 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:35%"></i></span><span class="wmeter-v">8.5</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-flameThrower" data-element="fire" data-pattern="cone" data-access="start" data-s-roster="20" data-s-name="flame thrower" data-s-damage="3.85" data-s-range="9" data-s-cadence="144">
         <div class="wcard-h">
           <h4>Flame Thrower</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Fire</span>
           <span class="wtag ink-cyan">Cone</span>
         </div>
         <p class="wdesc">Cone of fire damage.</p>
         <p class="wgloss">Holds a sustained cone in front of you with a smoothed aim, so it keeps burning as you turn.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Grim Hex starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-wispmother">Grim Hex</a> starts with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>144</b> ms between shots <span class="wsub">, 129.54 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 4.93 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-dragonsBreath">Dragon's Breath</a>, once you hold the <b>Tome of Persistence</b> and open a boss chest</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-dragonsBreath">Dragon's Breath</a>, once you hold <a href="wiki-tomes.html#e-persistTome">Tome of Persistence</a> and open a boss chest</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:16%"></i></span><span class="wmeter-v">3.85</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-spectralArrows" data-element="holy" data-pattern="pierceLine" data-access="achievement" data-s-roster="21" data-s-name="spectral arrows" data-s-damage="5.8" data-s-range="17" data-s-cadence="500">
         <div class="wcard-h">
           <h4>Spectral Arrows</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Holy</span>
           <span class="wtag ink-cyan">Pierce line</span>
         </div>
         <p class="wdesc">Rapid arrows that leave damage trails.</p>
         <p class="wgloss">Fires arrows in bursts that pierce, and leaves damage on the ground along the path they took.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Taskmaster (Complete 3 directives in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-taskmaster">Taskmaster</a> (Complete 3 directives in one run), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>500</b> ms between shots <span class="wsub">, 449.8 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 7.42 damage at 8</span></span></div>
-          
+
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-longbow">Longbow</a> is built on it</span></div>
         </div>
         <div class="wmeters">
@@ -973,16 +1092,16 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:58%"></i></span><span class="wmeter-v">21<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-starField" data-element="holy" data-pattern="randomAoE" data-access="start" data-s-roster="22" data-s-name="star field" data-s-damage="3.2" data-s-range="0" data-s-cadence="500">
+      <article class="wcard" id="e-starField" data-element="holy" data-pattern="randomAoE" data-access="start" data-s-roster="22" data-s-name="star field" data-s-damage="3.2"  data-s-cadence="500">
         <div class="wcard-h">
           <h4>Star Field</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Holy</span>
           <span class="wtag ink-cyan">Random AoE</span>
         </div>
@@ -993,71 +1112,71 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>500</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>3</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 4.1 damage at 8</span></span></div>
-          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-constellation">Constellation</a>, once you hold the <b>Tome of Fortune</b> and open a boss chest</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-constellation">Constellation</a>, once you hold <a href="wiki-tomes.html#e-luckTome">Tome of Fortune</a> and open a boss chest</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">3.2</span></div>
-          
-          
+
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-pulseMine" data-element="fire" data-pattern="randomAoE" data-access="start" data-s-roster="23" data-s-name="pulse mine" data-s-damage="12.5" data-s-range="21.45" data-s-cadence="2000">
         <div class="wcard-h">
           <h4>Pulse Mine</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Fire</span>
           <span class="wtag ink-cyan">Random AoE</span>
         </div>
         <p class="wdesc">Drops mines that explode on contact.</p>
         <p class="wgloss">Drops mines behind you that arm, wait, and go off when something comes close enough.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Sentinel starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-sentinel">Sentinel</a> starts with it. In the level-up pool from the first run.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2000</b> ms between shots <span class="wsub">, 1799.22 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Orb</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+15%</b> damage per level <span class="wsub">, 25.62 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:52%"></i></span><span class="wmeter-v">12.5</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-boomBox" data-element="holy" data-pattern="aura" data-access="achievement" data-s-roster="24" data-s-name="boom box" data-s-damage="10" data-s-range="0" data-s-cadence="1440">
+      <article class="wcard" id="e-boomBox" data-element="holy" data-pattern="aura" data-access="achievement" data-s-roster="24" data-s-name="boom box" data-s-damage="10"  data-s-cadence="1440">
         <div class="wcard-h">
           <h4>Boom Box</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
-          
+
           <span class="wtag ink-violet">Holy</span>
           <span class="wtag ink-cyan">Aura</span>
         </div>
         <p class="wdesc">Blasts every nearby enemy with an expanding sound wave.</p>
         <p class="wgloss">A field around you that ticks damage into whatever is standing in it. Always on, never aimed.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by Forged in Fire (Reach level 30 in Ember Wastes), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-emberAscend">Forged in Fire</a> (Reach level 30 in Ember Wastes), then it joins the level-up pool.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1440</b> ms between shots <span class="wsub">, 1295.44 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 13.5 damage at 8</span></span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">10</span></div>
-          
-          
+
+
         </div>
-        
+
       </article></div>
     </section>
     <section class="wgroup" data-group="evolved" id="g-evolved">
@@ -1067,9 +1186,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <article class="wcard" id="e-novaLance" data-element="holy" data-pattern="pierceLine" data-access="evolution" data-s-roster="25" data-s-name="nova lance" data-s-damage="19.5672" data-s-range="21.45" data-s-cadence="647.7182143255357">
         <div class="wcard-h">
           <h4>Nova Lance</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Holy</span>
@@ -1078,26 +1197,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">A lance of compressed starlight that refuses to stop.</p>
         <p class="wgloss">Leads its target and fires a small volley in a straight line, punching through a limited number of enemies per shot.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> to level <b>8</b> while holding the <b>Tome of Power</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-powerTome">Tome of Power</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>647.72</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:82%"></i></span><span class="wmeter-v">19.57</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:37%"></i></span><span class="wmeter-v">13.2<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-ringOfRuin" data-element="lightning" data-pattern="orbit" data-access="evolution" data-s-roster="26" data-s-name="ring of ruin" data-s-damage="15.36" data-s-range="0" data-s-cadence="250">
+      <article class="wcard" id="e-ringOfRuin" data-element="lightning" data-pattern="orbit" data-access="evolution" data-s-roster="26" data-s-name="ring of ruin" data-s-damage="15.36"  data-s-cadence="250">
         <div class="wcard-h">
           <h4>Ring of Ruin</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Lightning</span>
@@ -1106,26 +1225,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">One ring was apparently not enough ruin.</p>
         <p class="wgloss">Bodies circle you continuously and hurt whatever they sweep through. Nothing to aim and no downtime.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> to level <b>8</b> while holding the <b>Tome of Magnitude</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-sizeTome">Tome of Magnitude</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>250</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> orbs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:64%"></i></span><span class="wmeter-v">15.36</span></div>
-          
-          
+
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-hellscatter" data-element="fire" data-pattern="burstNearest" data-access="evolution" data-s-roster="27" data-s-name="hellscatter" data-s-damage="8.108100000000002" data-s-range="13" data-s-cadence="1289.1664168713792">
         <div class="wcard-h">
           <h4>Hellscatter</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Fire</span>
@@ -1134,26 +1253,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">The second volley is the punchline.</p>
         <p class="wgloss">A pellet volley that hits much harder up close than far away. The spread is the range limit.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-shotgun">Shotgun</a> to level <b>8</b> while holding the <b>Tome of Haste</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-shotgun">Shotgun</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-attackSpeedTome">Tome of Haste</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1289.17</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>10</b> bolts per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:34%"></i></span><span class="wmeter-v">8.11</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">36<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
       <article class="wcard" id="e-dragonsBreath" data-element="fire" data-pattern="cone" data-access="evolution" data-s-roster="28" data-s-name="dragon's breath" data-s-damage="4.928" data-s-range="13.5" data-s-cadence="129.54364286510713">
         <div class="wcard-h">
           <h4>Dragon's Breath</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Fire</span>
@@ -1162,26 +1281,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">The cone lays burning ground.</p>
         <p class="wgloss">Holds a sustained cone in front of you with a smoothed aim, so it keeps burning as you turn.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-flameThrower">Flame Thrower</a> to level <b>8</b> while holding the <b>Tome of Persistence</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-flameThrower">Flame Thrower</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-persistTome">Tome of Persistence</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>129.54</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.93</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:45%"></i></span><span class="wmeter-v">13.5<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-glacierLance" data-element="ice" data-pattern="cone" data-access="evolution" data-s-roster="29" data-s-name="glacier lance" data-s-damage="12.574099999999998" data-s-range="21.45" data-s-cadence="755.6712500464582">
         <div class="wcard-h">
           <h4>Glacier Lance</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Ice</span>
@@ -1190,26 +1309,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">The first impact breaks winter open.</p>
         <p class="wgloss">Throws a converging volley of shards that also slows what they hit.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-iceShard">Ice Shards</a> to level <b>8</b> while holding the <b>Tome of Velocity</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-iceShard">Ice Shards</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-velocityTome">Tome of Velocity</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>755.67</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:52%"></i></span><span class="wmeter-v">12.57</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">15<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-constellation" data-element="holy" data-pattern="randomAoE" data-access="evolution" data-s-roster="30" data-s-name="constellation" data-s-damage="6.144" data-s-range="0" data-s-cadence="500">
+      <article class="wcard" id="e-constellation" data-element="holy" data-pattern="randomAoE" data-access="evolution" data-s-roster="30" data-s-name="constellation" data-s-damage="6.144"  data-s-cadence="500">
         <div class="wcard-h">
           <h4>Constellation</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Holy</span>
@@ -1218,26 +1337,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Critical stars leave useful pieces of the sky behind.</p>
         <p class="wgloss">Fills the area around you with falling stars, out to a radius that grows as it levels.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-starField">Star Field</a> to level <b>8</b> while holding the <b>Tome of Fortune</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-starField">Star Field</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-luckTome">Tome of Fortune</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>500</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>5</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:26%"></i></span><span class="wmeter-v">6.14</span></div>
-          
-          
+
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-deathray" data-element="void" data-pattern="beam" data-access="evolution" data-s-roster="31" data-s-name="deathray" data-s-damage="11.232000000000001" data-s-range="13.95" data-s-cadence="100">
         <div class="wcard-h">
           <h4>Deathray</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Void</span>
@@ -1246,26 +1365,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Every three seconds, subtlety clocks out.</p>
         <p class="wgloss">Holds persistent locks on targets and ramps its damage the longer a lock survives, with splash around where it lands.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-beam">Beam</a> to level <b>8</b> while holding the <b>Tome of Precision</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-beam">Beam</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-critTome">Tome of Precision</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>100</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Beam</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
+
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-laser">Sweepbeam</a> is built on it</span></div>
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">11.23</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">13.95<span class="wmeter-u"> m</span></span></div>
-          
+
         </div>
-        
+
       </article>
       <article class="wcard" id="e-goldReaver" data-element="holy" data-pattern="boomerang" data-access="evolution" data-s-roster="32" data-s-name="gold reaver" data-s-damage="21.752959999999998" data-s-range="13" data-s-cadence="1889.1781251161456">
         <div class="wcard-h">
           <h4>Gold Reaver</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
           <span class="wtag ink-violet">Holy</span>
@@ -1274,26 +1393,26 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">It cuts through crowds and invoices each one.</p>
         <p class="wgloss">Thrown out, then it comes back, and it can hit on both legs of the trip.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-boomerang">Boomerang</a> to level <b>8</b> while holding the <b>Tome of Riches</b>, then open a boss chest.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-boomerang">Boomerang</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-midasTome">Tome of Riches</a>, then open a boss chest.</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1889.18</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
-          
-          
+
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:91%"></i></span><span class="wmeter-v">21.75</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:29%"></i></span><span class="wmeter-v">10.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article></div>
-    </section>
+    </section></div>
   </main>
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 14:02 UTC from <code>main@c4d4c20b</code>,
+  Generated 2026-08-03 20:59 UTC from <code>game@d2b39395</code>,
   content derived from <code>data/game-data.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
@@ -1331,8 +1450,9 @@ document.querySelectorAll('.wfacet-row').forEach((row) => {
   const facet = row.dataset.facet;
   active[facet] = 'all';
   row.querySelectorAll('.wf').forEach((btn) => btn.addEventListener('click', () => {
-    row.querySelectorAll('.wf').forEach((b) => b.classList.remove('is-active'));
+    row.querySelectorAll('.wf').forEach((b) => { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
     btn.classList.add('is-active');
+    btn.setAttribute('aria-pressed', 'true');
     active[facet] = btn.dataset.value;
     apply();
   }));
@@ -1340,7 +1460,11 @@ document.querySelectorAll('.wfacet-row').forEach((row) => {
 function apply() {
   let shown = 0;
   for (const c of cards) {
-    const ok = Object.entries(active).every(([k, v]) => v === 'all' || c.dataset[k] === v);
+    const ok = Object.entries(active).every(([k, v]) => {
+      if (v === 'all') return true;
+      const row = document.querySelector('.wfacet-row[data-facet="' + k + '"]');
+      return row?.dataset.multi === '1' ? String(c.dataset[k] || '').split(' ').includes(v) : c.dataset[k] === v;
+    });
     c.dataset.hidden = ok ? '0' : '1';
     if (ok) shown++;
   }
@@ -1352,7 +1476,21 @@ function apply() {
   });
   const el = document.getElementById('wcount');
   if (el) el.textContent = shown === cards.length ? cards.length + ' shown' : shown + ' of ' + cards.length + ' shown';
+  const empty = document.getElementById('wempty');
+  if (empty) empty.hidden = shown !== 0;
 }
+function resetFilters() {
+  document.querySelectorAll('.wfacet-row').forEach((row) => {
+    row.querySelectorAll('.wf').forEach((b) => {
+      const selected = b.dataset.value === 'all';
+      b.classList.toggle('is-active', selected);
+      b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    });
+    active[row.dataset.facet] = 'all';
+  });
+  apply();
+}
+document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
 if (sortSel) sortSel.addEventListener('change', () => {
@@ -1363,6 +1501,9 @@ if (sortSel) sortSel.addEventListener('change', () => {
     [...grid.children]
       .sort((a, b) => {
         const x = a.dataset[prop], y = b.dataset[prop];
+        if (x == null && y == null) return 0;
+        if (x == null) return 1;
+        if (y == null) return -1;
         const cmp = isText ? String(x).localeCompare(String(y)) : (Number(x) - Number(y));
         return desc ? -cmp : cmp;
       })
@@ -1374,39 +1515,197 @@ apply();
 
 const searchInput = document.getElementById('search');
 const srPanel = document.getElementById('sr-panel');
+const searchStatus = document.getElementById('sr-status');
+const SEARCH_LIMIT = 30;
 let searchIndex = [];
-fetch('./search-index.json').then((r) => r.ok ? r.json() : []).then((data) => { searchIndex = data; }).catch(() => { searchIndex = []; });
+let searchState = 'loading';
+let renderedHits = [];
+let activeResult = -1;
+
+function setSearchStatus(message) {
+  if (searchStatus) searchStatus.textContent = message;
+}
+
+function setSearchOpen(open) {
+  srPanel.classList.toggle('open', open);
+  searchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!open) {
+    activeResult = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function showSearchMessage(message, announcement = message) {
+  renderedHits = [];
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  const empty = document.createElement('div');
+  empty.className = 'sr-empty';
+  empty.setAttribute('role', 'option');
+  empty.setAttribute('aria-disabled', 'true');
+  empty.textContent = message;
+  srPanel.append(empty);
+  setSearchStatus(announcement);
+  setSearchOpen(true);
+}
+
+const normalized = (value) => String(value || '').trim().toLowerCase();
+const hasWordPrefix = (value, query) => value.split(/\s+/).some((word) => word.startsWith(query));
+
+/* Ranking is deliberately source-aware. Exact and prefix title matches are
+ * always first; after those, a generated wiki route/card beats a generic
+ * change-log body match. This is what makes a short query such as "core" land
+ * on Core weapons and its cards instead of a commit that happened to say core. */
+function searchRank(item, query) {
+  const title = normalized(item.title);
+  const text = normalized(item.text);
+  const type = normalized(item.type);
+  const wikiResult = normalized(item.href).startsWith('wiki');
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 10;
+  if (wikiResult && hasWordPrefix(title, query)) return 20;
+  if (wikiResult && title.includes(query)) return 30;
+  if (wikiResult && (text.startsWith(query) || type.startsWith(query))) return 40;
+  if (wikiResult && (hasWordPrefix(text, query) || hasWordPrefix(type, query))) return 45;
+  if (wikiResult) return 50;
+  if (title.includes(query)) return 60;
+  if (text.startsWith(query) || type.startsWith(query) || hasWordPrefix(text, query) || hasWordPrefix(type, query)) return 70;
+  return type === 'change' ? 90 : 80;
+}
+
+function setActiveResult(next) {
+  const options = [...srPanel.querySelectorAll('.sr-item')];
+  if (!options.length) return;
+  activeResult = (next + options.length) % options.length;
+  options.forEach((option, index) => {
+    const active = index === activeResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  const selected = options[activeResult];
+  searchInput.setAttribute('aria-activedescendant', selected.id);
+  selected.scrollIntoView({ block: 'nearest' });
+}
 
 function renderResults(query) {
   const q = query.trim().toLowerCase();
-  if (q.length < 2) { srPanel.classList.remove('open'); srPanel.innerHTML = ''; return; }
-  const hits = searchIndex.filter((it) => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 30);
-  if (hits.length === 0) {
-    srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
-  } else {
-    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="${it.href}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
+  if (q.length < 2) {
+    renderedHits = [];
+    srPanel.replaceChildren();
+    setSearchOpen(false);
+    setSearchStatus('Enter at least two characters to search.');
+    return;
   }
-  srPanel.classList.add('open');
+  if (searchState === 'loading') {
+    showSearchMessage('Loading the search index...', 'Search is still loading.');
+    return;
+  }
+  if (searchState === 'error') {
+    showSearchMessage('Search is unavailable right now. Reload the page to try again.', 'Search could not load. Reload the page to try again.');
+    return;
+  }
+
+  const ranked = searchIndex
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => normalized(item.title + ' ' + item.text + ' ' + item.type).includes(q))
+    .sort((a, b) => searchRank(a.item, q) - searchRank(b.item, q)
+      || normalized(a.item.title).localeCompare(normalized(b.item.title))
+      || a.index - b.index);
+  renderedHits = ranked.slice(0, SEARCH_LIMIT).map(({ item }) => item);
+  if (renderedHits.length === 0) {
+    showSearchMessage('No matches for "' + query.trim() + '". Try a weapon, character, world, or dev-log term.', 'No search results for ' + query.trim() + '.');
+    return;
+  }
+
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  renderedHits.forEach((item, index) => {
+    const link = document.createElement('a');
+    link.className = 'sr-item';
+    link.id = 'sr-option-' + index;
+    link.href = String(item.href || '');
+    link.tabIndex = -1;
+    link.setAttribute('role', 'option');
+    link.setAttribute('aria-selected', 'false');
+    const kind = document.createElement('span');
+    kind.className = 'sr-kind';
+    kind.textContent = String(item.type || 'result');
+    const title = document.createElement('span');
+    title.className = 'sr-title';
+    title.textContent = String(item.title || 'Untitled');
+    link.append(kind, title);
+    srPanel.append(link);
+  });
+  const shown = renderedHits.length;
+  const total = ranked.length;
+  setSearchStatus((shown < total ? 'Showing ' + shown + ' of ' + total : total) + (total === 1 ? ' search result' : ' search results') + ' for ' + query.trim() + '.');
+  setSearchOpen(true);
 }
 searchInput.addEventListener('input', (e) => renderResults(e.target.value));
 searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
-document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) srPanel.classList.remove('open'); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (searchInput.value.trim().length < 2) return;
+    e.preventDefault();
+    if (!srPanel.classList.contains('open')) renderResults(searchInput.value);
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    setActiveResult(activeResult < 0 ? (direction > 0 ? 0 : renderedHits.length - 1) : activeResult + direction);
+    return;
+  }
+  if (e.key === 'Enter' && renderedHits.length && srPanel.classList.contains('open')) {
+    e.preventDefault();
+    const options = [...srPanel.querySelectorAll('.sr-item')];
+    const selected = options[activeResult >= 0 ? activeResult : 0];
+    selected?.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (srPanel.classList.contains('open')) e.preventDefault();
+    setSearchOpen(false);
+    setSearchStatus('Search suggestions closed.');
+  }
+  if (e.key === 'Tab') setSearchOpen(false);
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
-  srPanel.classList.remove('open');
+  setSearchOpen(false);
   const href = a.getAttribute('href') || '';
   const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
   const target = hash ? document.getElementById(hash) : null;
-  if (target) { 
+  if (target) {
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
-        row.querySelectorAll('.wf').forEach((b) => b.classList.toggle('is-active', b.dataset.value === 'all'));
+        row.querySelectorAll('.wf').forEach((b) => {
+          const selected = b.dataset.value === 'all';
+          b.classList.toggle('is-active', selected);
+          b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
         active[row.dataset.facet] = 'all';
       });
       apply();
     } }
 });
+
+fetch('./search-index.json')
+  .then((response) => {
+    if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+    return response.json();
+  })
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error('Search index is not an array');
+    searchIndex = data;
+    searchState = 'ready';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  })
+  .catch(() => {
+    searchIndex = [];
+    searchState = 'error';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  });
 
 
 </script>

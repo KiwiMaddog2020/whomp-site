@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP core weapons</title>
-<meta name="description" content="Core weapons: The one you aim yourself. Every value generated from the game's own data.">
+<title>WHOMP cosmetic styles</title>
+<meta name="description" content="Cosmetic styles: Every body, rim and accent palette. Every value generated from the game's own data.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -336,8 +336,8 @@ footer a{color:var(--cyan);text-decoration:none}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP core weapons</h1>
-        <p class="subtag">The one you aim yourself.</p>
+        <h1 class="chroma">WHOMP cosmetic styles</h1>
+        <p class="subtag">Every body, rim and accent palette.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale"></span>
@@ -365,11 +365,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
-    <details class="wside-section" open>
+    <details class="wside-section">
       <summary>Buildcraft <span>13</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
-        <a href="wiki-cores.html" class="is-here" aria-current="page">Core weapons</a>
+        <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
         <a href="wiki-tiers.html">Weapon tiers</a>
         <a href="wiki-builds.html">Measured builds</a>
@@ -413,70 +413,44 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-ship-fragments.html">Ship fragments</a>
       </div>
     </details>
-    <details class="wside-section">
+    <details class="wside-section" open>
       <summary>Collection <span>2</span></summary>
       <div class="wside-links">
         <a href="wiki-wearables.html">Wearables</a>
-        <a href="wiki-cosmetics.html">Cosmetic styles</a>
+        <a href="wiki-cosmetics.html" class="is-here" aria-current="page">Cosmetic styles</a>
       </div>
     </details>
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">8 entries, read straight out of the game</div>
+    <div class="stat">9 entries, read straight out of the game</div>
   </nav>
   <main class="wmain">
     <div class="rule"></div>
-    <h2 class="chroma">Core weapons</h2>
-    <p class="lede">A core weapon is the weapon under your hand, and picking one is the only decision that shapes a whole run before it starts. All 8 are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.</p>
+    <h2 class="chroma">Cosmetic styles</h2>
+    <p class="lede">Cosmetic styles are complete source palettes. Each card shows availability, achievement route when one exists, and the exact body, rim and accent values stored by the registry.</p>
 
     <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
       <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/coreWeapons.ts#CORE_WEAPONS</code>.
-      Optional director notes have <b>0 of 8</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
-
-    <p class="womit">No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these 8 lives outside the shared artifact, so this page will not retype private constants. The reserved evolution labels in the registry are not a playable mechanic and are not presented as available or upcoming content. <b>Aim and forgiveness values describe targeting generosity only</b>; they do not imply damage strength. The pip count is shown because the game suite pins it against the real clip size.</p>
+      and dead relations before it writes a page. Source: <code>src/data/cosmetics.ts#COSMETICS</code>.
+      Optional director notes have <b>0 of 9</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
 
 
-    <section class="wfeature" aria-labelledby="aim-policy">
-      <div><span class="eyebrow">Global core mechanic</span><h3 id="aim-policy">Aim-assist policy</h3></div>
-      <div class="wmethod-grid">
-        <div><b>Off</b><span>Assist scale</span><code>0</code></div><div><b>Light</b><span>Assist scale</span><code>0.6</code></div><div><b>Full</b><span>Assist scale</span><code>1</code></div>
-        <div><b>Light</b><span>Default assist level</span><code>light</code></div>
-        <div><b>Light</b><span>Duel normalization</span><code>light</code></div>
-        <div><b>11.02 m</b><span>Minimum acquisition range</span><code>minimumRangeM</code></div>
-        <div><b><a href="wiki-cores.html#e-glaive">Glaive</a></b><span>Range-floor exemption</span><code>minimumRangeExempt</code></div>
-      </div>
-      <p>These are targeting-assistance and forgiveness parameters. They are not damage values, weapon-strength scores or measured rankings.</p>
-      <details class="wraw"><summary>Aim-policy provenance <span>4</span></summary><dl><div><dt><code>profiles</code></dt><dd>src/sim/forgiveness.ts#FORGIVENESS</dd></div><div><dt><code>assist</code></dt><dd>src/sim/forgiveness.ts#AIM_ASSIST_*</dd></div><div><dt><code>duelAssist</code></dt><dd>src/sim/forgiveness.ts#DUEL_AIM_ASSIST</dd></div><div><dt><code>rangeFloor</code></dt><dd>src/sim/forgiveness.ts#AIMED_CORE_MIN_RANGE_*</dd></div></dl></details>
-    </section>
+
+
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Rhythm</span>
-        <div class="wfacet-row" data-facet="cadence" data-multi="0">
+        <span class="wfacet-h">Availability</span>
+        <div class="wfacet-row" data-facet="access" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="charge" aria-pressed="false" aria-controls="wiki-groups">Charge <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="clip" aria-pressed="false" aria-controls="wiki-groups">Clip <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="cooldown" aria-pressed="false" aria-controls="wiki-groups">Cooldown <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="drain" aria-pressed="false" aria-controls="wiki-groups">Drain <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="heat" aria-pressed="false" aria-controls="wiki-groups">Heat <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="lock" aria-pressed="false" aria-controls="wiki-groups">Lock <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spin" aria-pressed="false" aria-controls="wiki-groups">Spin <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="windup" aria-pressed="false" aria-controls="wiki-groups">Windup <span style="opacity:.5">1</span></button>
-        </div>
-      </div>
-      <div class="wfacet">
-        <span class="wfacet-h">Asks you for</span>
-        <div class="wfacet-row" data-facet="feel" data-multi="0">
-          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="commitment" aria-pressed="false" aria-controls="wiki-groups">Commitment <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="conviction" aria-pressed="false" aria-controls="wiki-groups">Conviction <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="leading" aria-pressed="false" aria-controls="wiki-groups">Leading <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="nerve" aria-pressed="false" aria-controls="wiki-groups">Nerve <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="painting" aria-pressed="false" aria-controls="wiki-groups">Painting <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="patience" aria-pressed="false" aria-controls="wiki-groups">Patience <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="placement" aria-pressed="false" aria-controls="wiki-groups">Placement <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spacing" aria-pressed="false" aria-controls="wiki-groups">Spacing <span style="opacity:.5">1</span></button>
-        </div>
-      </div>
-      <div class="wfacet">
-        <span class="wfacet-h">Meter</span>
-        <div class="wfacet-row" data-facet="meter" data-multi="0">
-          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="continuous" aria-pressed="false" aria-controls="wiki-groups">Continuous <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="discrete" aria-pressed="false" aria-controls="wiki-groups">Discrete <span style="opacity:.5">3</span></button>
+          <button class="wf" type="button" data-value="achievement" aria-pressed="false" aria-controls="wiki-groups">Achievement <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="from the start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h">Sort</span>
-        <select class="wsort" id="wsort" aria-label="Sort Core weapons">
-          <option value="roster" data-desc="0" data-text="0">Selection order</option><option value="name" data-desc="0" data-text="1">Name</option>
+        <select class="wsort" id="wsort" aria-label="Sort Cosmetic styles">
+          <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option>
         </select>
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
@@ -486,144 +460,148 @@ footer a{color:var(--cyan);text-decoration:none}
     </div>
 
     <div id="wiki-groups">
-    <section class="wgroup" data-group="all" id="g-all">
-      <div class="wgroup-h"><h3>Core selection</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">In the source picker’s selectOrder. This is display order, not a ladder.</p>
+    <section class="wgroup" data-group="start" id="g-start">
+      <div class="wgroup-h"><h3>Available from the start</h3><span class="wgroup-n">1</span></div>
+      <p class="wgroup-note">Present on a fresh save.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-scattergun" data-cadence="clip" data-feel="spacing" data-meter="discrete" data-s-roster="0" data-s-name="scattergun">
+      <article class="wcard" id="e-classic" data-access="from the start" data-s-roster="0" data-s-name="classic">
         <div class="wcard-h">
-          <h4>Scattergun</h4>
-          <span class="wcard-accent" style="background:#ff9a33"></span>
+          <h4>Classic</h4>
+          <span class="wcard-accent" style="background:#ffffff"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Clip</span><span class="wtag ink-pink">Spacing</span></div>
-        <p class="wdesc">Two barrels, then a reload you can feel. Meaty up close.</p>
-        <p class="wgloss">A couple of shells, then a reload you have to survive. The empty clip is the whole design.</p>
+        <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Spacing</b>, knowing exactly how far away you are.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>2</b> pips marked SHELLS, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Availability</span><span class="wfact-v">From the start</span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wsub">Body uses the default</span></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wsub">Rim uses the default</span></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#ffffff"></span><code>#ffffff</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.62 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>11.53 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.4 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.62 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.3 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.26 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.55 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.16 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.35 unitless</dd></div></dl></details>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="earned" id="g-earned">
+      <div class="wgroup-h"><h3>Earned styles</h3><span class="wgroup-n">8</span></div>
+      <p class="wgroup-note">Achievement-linked styles.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-shades" data-access="achievement" data-s-roster="1" data-s-name="shades">
+        <div class="wcard-h">
+          <h4>Shades</h4>
+          <span class="wcard-accent" style="background:#121522"></span>
+        </div>
+
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-survivor10">Survivor</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#c8b6ff"></span><code>#c8b6ff</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#f5edff"></span><code>#f5edff</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#121522"></span><code>#121522</code></span></div>
+        </div>
 
       </article>
-      <article class="wcard" id="e-longbow" data-cadence="charge" data-feel="leading" data-meter="continuous" data-s-roster="1" data-s-name="longbow">
+      <article class="wcard" id="e-mossy" data-access="achievement" data-s-roster="2" data-s-name="mossy">
         <div class="wcard-h">
-          <h4>Longbow</h4>
-          <span class="wcard-accent" style="background:#ffcf3f"></span>
+          <h4>Mossy</h4>
+          <span class="wcard-accent" style="background:#f08b5d"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Charge</span><span class="wtag ink-pink">Leading</span></div>
-        <p class="wdesc">Draw, lead the target, release. Full draw punches through.</p>
-        <p class="wgloss">Hold to draw, release to fire. A partial draw still goes off, just weaker, so the question is always whether you had time for the full one.</p>
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Leading</b>, firing where they are going to be, not where they are.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAW fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-spectralArrows">Spectral Arrows</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-marshCleared">Marsh Cleared</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#70ad58"></span><code>#70ad58</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#daf2a2"></span><code>#daf2a2</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#f08b5d"></span><code>#f08b5d</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.46 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>19 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.34 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.56 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.26 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.2 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.45 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.11 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.3 unitless</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-mortar" data-cadence="cooldown" data-feel="placement" data-meter="discrete" data-s-roster="2" data-s-name="mortar">
+      <article class="wcard" id="e-skully" data-access="achievement" data-s-roster="3" data-s-name="skully">
         <div class="wcard-h">
-          <h4>Mortar</h4>
-          <span class="wcard-accent" style="background:#ff8f3c"></span>
+          <h4>Skully</h4>
+          <span class="wcard-accent" style="background:#3a3348"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Cooldown</span><span class="wtag ink-pink">Placement</span></div>
-        <p class="wdesc">Lob a shell onto the ground you pick. Patience, then a crater.</p>
-        <p class="wgloss">One shot, a flat wait, then another. The shell takes time to land, so you are aiming at where they will be.</p>
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Placement</b>, choosing the spot before the moment.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>1</b> pip marked SHELL, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-meteorStrike">Meteor Strike</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-necroCleared">Necropolis Cleared</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#e3ddcc"></span><code>#e3ddcc</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#ffffff"></span><code>#ffffff</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#3a3348"></span><code>#3a3348</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.7 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>17 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.55 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.8 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.45 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.24 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.4 unitless</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-laser" data-cadence="heat" data-feel="painting" data-meter="continuous" data-s-roster="3" data-s-name="sweepbeam">
+      <article class="wcard" id="e-blazer" data-access="achievement" data-s-roster="4" data-s-name="blazer">
         <div class="wcard-h">
-          <h4>Sweepbeam</h4>
-          <span class="wcard-accent" style="background:#e0203f"></span>
+          <h4>Blazer</h4>
+          <span class="wcard-accent" style="background:#ffed4f"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Heat</span><span class="wtag ink-pink">Painting</span></div>
-        <p class="wdesc">A hot line you steer. It bites while you hold it, and it runs hot.</p>
-        <p class="wgloss">Keeps firing while you hold it and builds heat while it does. Overheat and it locks you out until it cools.</p>
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Painting</b>, holding on target and staying on it.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous HEAT fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-deathray">Deathray</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-emberCleared">Ember Cleared</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#ff6535"></span><code>#ff6535</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#ffdf78"></span><code>#ffdf78</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#ffed4f"></span><code>#ffed4f</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.3 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>12.75 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.3 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.52 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.22 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.14 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.7 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.09 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.32 unitless</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-glaive" data-cadence="windup" data-feel="commitment" data-meter="continuous" data-s-roster="4" data-s-name="glaive">
+      <article class="wcard" id="e-cosmic" data-access="achievement" data-s-roster="5" data-s-name="cosmic">
         <div class="wcard-h">
-          <h4>Glaive</h4>
-          <span class="wcard-accent" style="background:#e8dcc0"></span>
+          <h4>Cosmic</h4>
+          <span class="wcard-accent" style="background:#ff7bc8"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Windup</span><span class="wtag ink-pink">Commitment</span></div>
-        <p class="wdesc">Wind it up and sweep everything in front of you. No taking it back.</p>
-        <p class="wgloss">Commits to a windup before the sweep lands, and chains into a second swing if you keep it going. Once it starts you cannot take it back.</p>
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Commitment</b>, deciding early and not flinching.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SWING fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-photonScythe">Photon Scythe</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-riftCleared">Rift Cleared</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#382c71"></span><code>#382c71</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#9de8ff"></span><code>#9de8ff</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#ff7bc8"></span><code>#ff7bc8</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>1.9 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>4.2 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.45 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.7 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.35 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.5 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.4 unitless</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-arcCaster" data-cadence="lock" data-feel="patience" data-meter="discrete" data-s-roster="5" data-s-name="arc caster">
+      <article class="wcard" id="e-captain" data-access="achievement" data-s-roster="6" data-s-name="captain">
         <div class="wcard-h">
-          <h4>Arc Caster</h4>
-          <span class="wcard-accent" style="background:#ea5cff"></span>
+          <h4>Captain</h4>
+          <span class="wcard-accent" style="background:#ffd269"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Lock</span><span class="wtag ink-pink">Patience</span></div>
-        <p class="wdesc">Hold a target until the charge takes. Then it jumps, and jumps again.</p>
-        <p class="wgloss">Builds a lock only while you keep a target inside the cone, and loses it if you switch. Then it spends the lock.</p>
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Patience</b>, waiting for the shot instead of taking the one on offer.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>4</b> pips marked LOCK, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-chainLightning">Chain Lightning</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-exterminator">Exterminator</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#2e719e"></span><code>#2e719e</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#d6f4ff"></span><code>#d6f4ff</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#ffd269"></span><code>#ffd269</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.58 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>14 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.36 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.58 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.28 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.22 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.5 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.07 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.34 unitless</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-frostLance" data-cadence="spin" data-feel="conviction" data-meter="continuous" data-s-roster="6" data-s-name="frost lance">
+      <article class="wcard" id="e-demon" data-access="achievement" data-s-roster="7" data-s-name="demon">
         <div class="wcard-h">
-          <h4>Frost Lance</h4>
-          <span class="wcard-accent" style="background:#2f9dff"></span>
+          <h4>Demon</h4>
+          <span class="wcard-accent" style="background:#281326"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Spin</span><span class="wtag ink-pink">Conviction</span></div>
-        <p class="wdesc">Spin it up, hold it as long as you like, and put a line through the room.</p>
-        <p class="wgloss">Spins up to a gate rather than a scale. Releasing early gives you nothing at all, so there is no partial credit.</p>
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Conviction</b>, backing your read all the way through.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SPIN fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-voidRailgun">Void Railgun</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-infernoCleared">Hellmouth Cleared</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#a72a3c"></span><code>#a72a3c</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#ff8c65"></span><code>#ff8c65</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#281326"></span><code>#281326</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.26 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>20 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.32 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.54 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.24 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.06 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.2 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.08 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.3 unitless</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-tether" data-cadence="drain" data-feel="nerve" data-meter="continuous" data-s-roster="7" data-s-name="tether">
+      <article class="wcard" id="e-legend" data-access="achievement" data-s-roster="8" data-s-name="legend">
         <div class="wcard-h">
-          <h4>Tether</h4>
-          <span class="wcard-accent" style="background:#6a3dff"></span>
+          <h4>Legend</h4>
+          <span class="wcard-accent" style="background:#9b50ff"></span>
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Drain</span><span class="wtag ink-pink">Nerve</span></div>
-        <p class="wdesc">Hook something and let it fill. The longer you dare hold it, the worse the snap.</p>
-        <p class="wgloss">Attach and hold. It pays out at the release, so letting go early forfeits what you had built.</p>
+        <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Nerve</b>, standing in it one beat longer than feels wise.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAIN fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a>, which is where its damage is anchored</span></div>
+          <div class="wfact"><span class="wfact-k">Unlocked by</span><span class="wfact-v"><a href="wiki-achievements.html#e-mawSealed">Sealed the Hellmouth</a></span></div>
+          <div class="wfact"><span class="wfact-k">Body</span><span class="wfact-v"><span class="wswatch" style="background:#ffca3d"></span><code>#ffca3d</code></span></div>
+          <div class="wfact"><span class="wfact-k">Rim</span><span class="wfact-v"><span class="wswatch" style="background:#fff3a8"></span><code>#fff3a8</code></span></div>
+          <div class="wfact"><span class="wfact-k">Accent</span><span class="wfact-v"><span class="wswatch" style="background:#9b50ff"></span><code>#9b50ff</code></span></div>
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.66 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>11.02 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.48 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.72 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.34 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.24 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.6 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.2 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.38 unitless</dd></div></dl></details>
 
       </article></div>
     </section></div>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP: A 3D horde-survivor where you aim it yourself.</title>
 <meta name="description" content="A 3D horde-survivor where you aim it yourself. Built in the open, with the dev log public.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="icon" href="whomp-icon.svg">
 <style>
 
 :root{
@@ -154,7 +154,7 @@ section{margin-top:64px}
 </div>
 
 <header>
-  
+
 <svg class="wm" viewBox="0 0 512 512" width="112" height="112" aria-hidden="true" focusable="false">
   <defs><radialGradient id="gh" cx="50%" cy="50%" r="72%">
     <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
@@ -170,7 +170,7 @@ section{margin-top:64px}
   <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
   <p class="tag" id="hero-tagline">It's a hammer.</p>
   <script>document.getElementById('hero-tagline').textContent=(["It's a hammer.","The horde is a physics object.","The ghosts started it.","Cardio, with consequences.","Politely violent.","The ghosts are unionizing. Whomp faster.","The crowd is never satisfied. Try anyway.","Whomp first. Ask questions never."])[Math.min(8-1,Math.max(0,Math.floor(Math.random()*8)))];</script>
-  <div class="chips"><span class="chip"><span class="dot"></span>
+  <div class="chips"><span class="chip"><span class="dot stale"></span>
   live <b>c4d4c20b</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   <div class="cta">
@@ -186,47 +186,47 @@ section{margin-top:64px}
   <div class="rule"></div>
   <h2 class="chroma">What we are building</h2>
   <div class="arcs">
-    <div class="arc">
+    <div class="arc" id="flight-quality-bar">
       <div class="id">A1 &middot; live</div>
       <h4>QUALITY BAR</h4>
       <p>junction law, sprite bar, taste-law enforcement. Rolling.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-weapon-identity">
       <div class="id">A2 &middot; nearly closed</div>
       <h4>WEAPON IDENTITY</h4>
       <p>integration done; per-weapon focus ranges tier-2.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-co-op">
       <div class="id">A3 &middot; Wed 7/30</div>
       <h4>CO-OP</h4>
       <p>the quality push campaign. Second Seat registry seeds it.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-audio">
       <div class="id">A4 &middot; Thu 7/31</div>
       <h4>AUDIO</h4>
       <p>own campaign. Every ratified visual beat gets its sound twin.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-controller">
       <div class="id">A5</div>
       <h4>CONTROLLER</h4>
       <p>S1 Thu, S2 Fri/weekend, Deck later.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-character-progression">
       <div class="id">A6 &middot; Fri+</div>
       <h4>CHARACTER PROGRESSION</h4>
       <p>starters trio, zone-gated new characters (7 themed),</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-snow-tier">
       <div class="id">A7 &middot; 0.7</div>
       <h4>SNOW TIER</h4>
       <p>Borealisk build (ratified card), S1 maps, Hollow Crown capstone.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-accounts">
       <div class="id">A8 &middot; next week, 0.7</div>
       <h4>ACCOUNTS</h4>
       <p>wrangler tap + sync; SAVE COMPAT fixtures first.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-the-lab-arc">
       <div class="id">A9 &middot; pillar, rolling</div>
       <h4>THE LAB ARC</h4>
       <p>dev tools graduate to player features. Photo mode +</p>
@@ -234,8 +234,8 @@ section{margin-top:64px}
 </section>
 
 <footer>
-  Generated 2026-08-03 14:02 UTC from <code>main@c4d4c20b</code>.
-  Live build <code>c4d4c20b</code> (current).
+  Generated 2026-08-03 20:59 UTC from <code>game@d2b39395</code>.
+  Live build <code>c4d4c20b</code> (a deploy is pending).
 </footer>
 
 </div>

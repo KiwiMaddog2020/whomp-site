@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP wiki</title>
-<meta name="description" content="The WHOMP wiki: weapons, core weapons and the bestiary, every value generated from the game’s own data.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<meta name="description" content="The complete generated WHOMP wiki: every public source catalog, measured weapon tiers and measured build pairs.">
+<link rel="icon" href="whomp-icon.svg">
 <style>
 
 :root{
@@ -125,6 +125,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -135,19 +136,22 @@ html,body{max-width:100%;overflow-x:hidden}
 .sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
 .sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
 .sr-item:first-child{border-top:0}
-.sr-item:hover,.sr-item:focus{background:rgba(255,243,207,.06)}
+.sr-item:hover,.sr-item:focus,.sr-item.is-active,.sr-item[aria-selected="true"]{background:rgba(36,240,255,.08);outline:none}
 .sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
   color:var(--gold);margin-right:8px}
 .sr-title{color:var(--cream)}
+.sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
-.wside{width:210px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px}
+.wside{width:220px;max-height:calc(100vh - 40px);overflow-y:auto;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
 .wside a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
 .wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
+.wside a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--cyan)}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
@@ -176,6 +180,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
   font-family:var(--font);font-size:.82rem}
 .wcount{color:var(--dim);font-size:.82rem;margin:0 0 18px;font-variant-numeric:tabular-nums}
+.wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
+.wempty b{display:block;color:var(--cream);margin-bottom:8px}
+.wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
 
 .wgroup{margin-bottom:34px}
 .wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
@@ -195,6 +202,10 @@ html,body{max-width:100%;overflow-x:hidden}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
+.wequation{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:9px;background:rgba(36,240,255,.04);font-size:.9rem}
+.wequation a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wequation b{color:var(--gold)}
+.wswatch{display:inline-block;width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,255,255,.25);vertical-align:-2px;margin-right:5px}
 
 .wtags{display:flex;flex-wrap:wrap;gap:6px}
 .wtag{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
@@ -212,6 +223,31 @@ html,body{max-width:100%;overflow-x:hidden}
 .wfact-v a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
 .wfact-v a:hover{border-bottom-color:var(--cyan)}
 .wfact-v .wsub{color:var(--dim);font-size:.92em}
+
+.wraw{border-top:var(--edge);padding-top:8px;color:var(--dim);font-size:.78rem}
+.wraw summary{cursor:pointer;color:var(--cyan);font-weight:700;list-style-position:outside;margin-left:15px}
+.wraw summary span{color:var(--dim);font-weight:400;margin-left:5px;font-variant-numeric:tabular-nums}
+.wraw dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:5px 12px;margin:10px 0 0}
+.wraw dl div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,243,207,.05);padding:3px 0}
+.wraw dt,.wraw dd{margin:0;overflow-wrap:anywhere}
+.wraw dd{color:var(--body);text-align:right;font-variant-numeric:tabular-nums}
+.wschedule ol{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.wschedule li{padding-left:3px;color:var(--body)}
+.wschedule li a{color:var(--cyan);text-decoration:none}
+.wschedule li span{color:var(--dim);margin-left:6px}
+.wschedule li code{float:right;margin-left:8px}
+
+.wfeature{border:var(--edge);border-radius:14px;padding:20px;margin:0 0 24px;background:linear-gradient(135deg,rgba(36,240,255,.05),rgba(177,75,255,.035));color:var(--body)}
+.wfeature h3{margin:2px 0 8px;color:var(--cream);font-size:1.2rem}
+.wfeature p{margin:7px 0;color:var(--dim);font-size:.86rem}
+.wfeature .eyebrow{color:var(--gold);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wmethod-grid,.wbuild-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:14px 0}
+.wmethod-grid>div,.wbuild-grid>article{border:var(--edge);border-radius:10px;padding:12px;background:rgba(6,4,14,.34)}
+.wmethod-grid b,.wmethod-grid span,.wmethod-grid code{display:block}
+.wmethod-grid span{color:var(--body);font-size:.82rem;margin:5px 0}
+.wbuild-grid h4{margin:10px 0 5px;font-size:.9rem;line-height:1.5}
+.wbuild-grid h4 a,.wbuild-grid li a{color:var(--cyan);text-decoration:none}
+.wbuild-grid ol{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:.78rem}
 
 /* COMPARISON METERS. The bar is relative to the biggest value in THIS roster and
    the real number is always printed beside it, so the bar is a sorting aid and
@@ -231,19 +267,50 @@ html,body{max-width:100%;overflow-x:hidden}
 .whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.2rem}
 .whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
 .whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
-.wsoon{display:flex;flex-wrap:wrap;gap:8px}
-.wsoon span{padding:7px 14px;border-radius:999px;border:var(--edge);color:var(--dim);font-size:.8rem}
-.wsoon span b{color:var(--body);font-weight:700;font-variant-numeric:tabular-nums}
-
+.whubsection{margin:0 0 34px;scroll-margin-top:24px}
+.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+.whubsection-h h3{margin:0;color:var(--cream);font-size:1.08rem}
+.whubsection-h span{color:var(--dim);font-size:.75rem}
 @media (max-width:760px){
   .wshell{flex-direction:column;gap:18px}
-  .wside{width:100%;position:static;flex-direction:row;overflow-x:auto;gap:6px}
-  .wside a,.wside .stat{white-space:nowrap}
-  .wside-h{display:none}
+  .wside{width:100%;max-height:none;position:static;overflow:visible;padding:0}
   .wgrid{grid-template-columns:1fr}
   .wfact-k,.wmeter-k{width:84px}
+  .wraw dl{grid-template-columns:1fr}
+  .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
+  .wfeature{padding:16px}
+  .wtopbar,.wshell{padding-left:16px;padding-right:16px}
 }
+@media (max-width:420px){
+  .wcard{padding:14px}
+  .wfact{flex-direction:column;gap:2px}
+  .wfact-k{width:auto}
+  .wmeter{display:grid;grid-template-columns:80px 1fr auto}
+}
+@media (prefers-reduced-motion:reduce){.whubcard{transition:none}}
+.wf:focus-visible,.wsort:focus-visible,.wside a:focus-visible,.wraw summary:focus-visible,.wempty button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
+.wside-section{border-top:1px solid rgba(255,243,207,.06)}
+.wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
+  font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
+.wside-section summary:hover{background:rgba(255,243,207,.04)}
+.wside-section summary::marker{color:var(--cyan)}
+.wside-section summary span{float:right;color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums}
+.wside-section[open] summary{color:var(--cream)}
+.wside-links{padding:0 0 5px 7px}
+.wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside a.wiki-home{display:flex;align-items:center;gap:10px;padding:7px 10px 12px;margin:0 0 4px;border-bottom:var(--edge)}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
+.wiki-home-copy b{color:var(--cream);font-size:.94rem;letter-spacing:.02em}
+.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:4px}
+@media(max-width:760px){
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
+  .wside a.wiki-home{width:100%;padding:8px 10px 13px}
+  .wside-section summary{padding:12px}
+  .wside-links{padding-left:8px}
+  .wside-links a{padding:10px 12px}
+}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand .wm{margin:0}
 .brand h1{font-size:1.6rem;margin:0}
@@ -256,7 +323,7 @@ footer a{color:var(--cyan);text-decoration:none}
 <body>
 
 <div class="wtopbar">
-  
+
 <div class="authbar">
   <span id="ab-signedout">
     <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
@@ -268,44 +335,91 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
-      
-<svg class="wm" viewBox="0 0 512 512" width="48" height="48" aria-hidden="true" focusable="false">
-  <defs><radialGradient id="gwhub" cx="50%" cy="50%" r="72%">
-    <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
-  </radialGradient></defs>
-  <rect width="512" height="512" rx="96" fill="url(#gwhub)"/>
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#151023" stroke-width="69"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#fff3cf" stroke-width="59"/>
-  </g>
-</svg>
       <span>
         <h1 class="chroma">WHOMP wiki</h1>
         <p class="subtag">Generated from the game, not written about it.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot"></span>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
   live <b>c4d4c20b</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
 
 
-<div class="searchwrap">
-  <input class="searchbox" id="search" type="search" placeholder="Search weapons, cores, enemies, changes, bugs..." autocomplete="off">
-  <div class="sr-panel" id="sr-panel"></div>
+<div class="searchwrap" role="search">
+  <label class="searchlabel" for="search">Search WHOMP</label>
+  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+    role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
+    aria-controls="sr-panel" aria-describedby="sr-status">
+  <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
+  <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
 </div>
 
 <div class="wshell">
   <nav class="wside">
-    
+
+    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
+      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
+      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
+    </a>
     <span class="wside-h">Wiki</span>
-    <a href="wiki.html" class="is-here">All rosters</a>
-    <a href="wiki-weapons.html">Weapons</a>
-    <a href="wiki-cores.html">Core weapons</a>
-    <a href="wiki-bestiary.html">Bestiary</a>
+    <a href="wiki.html" class="is-here" aria-current="page">All guides</a>
+    <details class="wside-section">
+      <summary>Buildcraft <span>13</span></summary>
+      <div class="wside-links">
+        <a href="wiki-weapons.html">Weapons</a>
+        <a href="wiki-cores.html">Core weapons</a>
+        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-tiers.html">Weapon tiers</a>
+        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tomes.html">Tomes</a>
+        <a href="wiki-relics.html">Relics</a>
+        <a href="wiki-legendaries.html">Legendary upgrades</a>
+        <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-utilities.html">Utility abilities</a>
+        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-evolutions.html">Evolution recipes</a>
+        <a href="wiki-jump-augments.html">Jump augments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Heroes <span>3</span></summary>
+      <div class="wside-links">
+        <a href="wiki-characters.html">Characters</a>
+        <a href="wiki-innates.html">Innates</a>
+        <a href="wiki-signatures.html">Signatures</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>World <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-bestiary.html">Bestiary</a>
+        <a href="wiki-worlds.html">Campaign worlds</a>
+        <a href="wiki-expeditions.html">Expeditions</a>
+        <a href="wiki-modes.html">Run modes</a>
+        <a href="wiki-world-events.html">Rare world events</a>
+        <a href="wiki-ambient-events.html">Ambient events</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Progression <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-achievements.html">Achievements</a>
+        <a href="wiki-quests.html">Quests and rewards</a>
+        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-ship-cores.html">Ship cores</a>
+        <a href="wiki-ship-systems.html">Ship systems</a>
+        <a href="wiki-ship-fragments.html">Ship fragments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Collection <span>2</span></summary>
+      <div class="wside-links">
+        <a href="wiki-wearables.html">Wearables</a>
+        <a href="wiki-cosmetics.html">Cosmetic styles</a>
+      </div>
+    </details>
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
@@ -313,52 +427,190 @@ footer a{color:var(--cyan);text-decoration:none}
   <main class="wmain">
     <div class="rule"></div>
     <h2 class="chroma">The wiki</h2>
-    <p class="lede">Everything in the game, as the game itself defines it.</p>
+    <p class="lede">Every player-facing catalog in the generated public data layer, plus the measurements the simulation can honestly support.</p>
 
-    <p class="wprov">This wiki is <b>generated</b>. Every damage figure, spawn time, level name and relation on
-      these pages is read out of the registries the game actually runs on, at build time, from
-      <b>main@c4d4c20b</b>. Nobody retypes a number here, which is why nothing on these pages can
-      quietly fall out of date the next time balance moves. <b>313</b> entries across
-      <b>22</b> registries are indexed; the rosters below are the ones with pages so far.</p>
+    <p class="wprov">This wiki is <b>generated and fail-closed</b>. Every value and relation is read from the
+      verified artifacts built from <b>game@d2b39395</b>. All <b>27</b> public
+      registries have a route, with <b>387</b> rendered source entries. The measured section adds
+      <b>83</b> weapon tier rows and <b>300</b> exhaustive weapon
+      pairs. A stale artifact, unclassified domain, missing card, missing search entry or dead link stops generation.</p>
 
     <p class="womit">Where the game has no answer, these pages say so instead of guessing. Several numbers that a
       normal wiki would print are deliberately absent, and each roster explains which ones and why at the top of
       its own page. A missing column here means the value the game runs on is not the value the registry
       carries, so printing it would be a confident lie rather than a gap.</p>
 
-    <div class="whub">
-      
-      <a class="whubcard" href="wiki-weapons.html">
-        <span class="n">33 entries</span>
-        <h3>Weapons</h3>
-        <p>The half of your build that fires itself.</p>
-      </a>
-      <a class="whubcard" href="wiki-cores.html">
-        <span class="n">8 entries</span>
-        <h3>Core weapons</h3>
-        <p>The one you aim yourself.</p>
-      </a>
-      <a class="whubcard" href="wiki-bestiary.html">
-        <span class="n">53 entries</span>
-        <h3>Bestiary</h3>
-        <p>Everything that wants to touch you.</p>
-      </a>
-    </div>
-
-    <section style="margin-top:44px">
-      <div class="rule"></div>
-      <h2 class="chroma" style="font-size:1.3rem">Not built yet</h2>
-      <p class="lede">These registries are already indexed and pinned against the game, they just do not have a
-        page. The counts are live, so this list shrinks by itself.</p>
-      <div class="wsoon">
-        <span>Relics <b>36</b></span><span>Characters <b>11</b></span><span>Innates <b>11</b></span><span>Signatures <b>11</b></span><span>Levels <b>12</b></span><span>Expeditions <b>2</b></span><span>Run modes <b>2</b></span><span>Ship cores <b>10</b></span><span>Ship fragments <b>3</b></span><span>Legendaries <b>17</b></span><span>Passives <b>17</b></span><span>Ultimates <b>1</b></span><span>Evolutions <b>8</b></span><span>Shrine blessings <b>20</b></span><span>Utilities <b>8</b></span><span>Wearables <b>13</b></span><span>Achievements <b>26</b></span><span>Cosmetics <b>9</b></span><span>Jump augments <b>2</b></span>
-      </div>
-    </section>
+    <section class="whubsection" id="section-buildcraft">
+        <div class="whubsection-h"><h3>Buildcraft</h3><span>13 guides</span></div>
+        <div class="whub">
+          <a class="whubcard" href="wiki-weapons.html">
+            <span class="n">33 entries</span>
+            <h3>Weapons</h3>
+            <p>The half of your build that fires itself.</p>
+          </a>
+          <a class="whubcard" href="wiki-cores.html">
+            <span class="n">8 entries</span>
+            <h3>Core weapons</h3>
+            <p>The one you aim yourself.</p>
+          </a>
+          <a class="whubcard" href="wiki-power-ceilings.html">
+            <span class="n">4 source dials</span>
+            <h3>Power soft knees</h3>
+            <p>4 exported permanent-power dials, without an invented build result.</p>
+          </a>
+          <a class="whubcard" href="wiki-tiers.html">
+            <span class="n">33 weapons · 83 measured rows</span>
+            <h3>Weapon tiers</h3>
+            <p>2 measured jobs, with sample and spread attached.</p>
+          </a>
+          <a class="whubcard" href="wiki-builds.html">
+            <span class="n">300 measured pairs · 4 build chains</span>
+            <h3>Measured builds</h3>
+            <p>Every weapon pair and the build chains the sweep found.</p>
+          </a>
+          <a class="whubcard" href="wiki-tomes.html">
+            <span class="n">17 entries</span>
+            <h3>Tomes</h3>
+            <p>The stat half of your build.</p>
+          </a>
+          <a class="whubcard" href="wiki-relics.html">
+            <span class="n">36 entries</span>
+            <h3>Relics</h3>
+            <p>Stackable finds, with every trade written down.</p>
+          </a>
+          <a class="whubcard" href="wiki-legendaries.html">
+            <span class="n">17 entries</span>
+            <h3>Legendary upgrades</h3>
+            <p>Run-defining effects with their real payload attached.</p>
+          </a>
+          <a class="whubcard" href="wiki-blessings.html">
+            <span class="n">20 entries</span>
+            <h3>Shrine blessings</h3>
+            <p>20 shrine outcomes, exactly as authored.</p>
+          </a>
+          <a class="whubcard" href="wiki-utilities.html">
+            <span class="n">8 entries</span>
+            <h3>Utility abilities</h3>
+            <p>Your F-slot options, costs and cooldowns.</p>
+          </a>
+          <a class="whubcard" href="wiki-ultimates.html">
+            <span class="n">1 entry</span>
+            <h3>Boss ultimates</h3>
+            <p>The stealable Q-slot registry.</p>
+          </a>
+          <a class="whubcard" href="wiki-evolutions.html">
+            <span class="n">8 entries</span>
+            <h3>Evolution recipes</h3>
+            <p>Every base weapon, tome and terminal form.</p>
+          </a>
+          <a class="whubcard" href="wiki-jump-augments.html">
+            <span class="n">2 entries</span>
+            <h3>Jump augments</h3>
+            <p>Chest-only movement upgrades.</p>
+          </a></div>
+      </section><section class="whubsection" id="section-heroes">
+        <div class="whubsection-h"><h3>Heroes</h3><span>3 guides</span></div>
+        <div class="whub">
+          <a class="whubcard" href="wiki-characters.html">
+            <span class="n">11 entries</span>
+            <h3>Characters</h3>
+            <p>Base stats, starting kit and movement identity.</p>
+          </a>
+          <a class="whubcard" href="wiki-innates.html">
+            <span class="n">11 entries</span>
+            <h3>Innates</h3>
+            <p>The passive rule each character brings.</p>
+          </a>
+          <a class="whubcard" href="wiki-signatures.html">
+            <span class="n">11 entries</span>
+            <h3>Signatures</h3>
+            <p>The R-slot move that defines each character.</p>
+          </a></div>
+      </section><section class="whubsection" id="section-world">
+        <div class="whubsection-h"><h3>World</h3><span>6 guides</span></div>
+        <div class="whub">
+          <a class="whubcard" href="wiki-bestiary.html">
+            <span class="n">53 entries</span>
+            <h3>Bestiary</h3>
+            <p>Everything that wants to touch you.</p>
+          </a>
+          <a class="whubcard" href="wiki-worlds.html">
+            <span class="n">12 entries</span>
+            <h3>Campaign worlds</h3>
+            <p>The arenas, unlock chain and encounter schedules.</p>
+          </a>
+          <a class="whubcard" href="wiki-expeditions.html">
+            <span class="n">2 entries</span>
+            <h3>Expeditions</h3>
+            <p>Standalone arenas with complete encounter schedules.</p>
+          </a>
+          <a class="whubcard" href="wiki-modes.html">
+            <span class="n">2 entries</span>
+            <h3>Run modes</h3>
+            <p>The pacing and movement profiles a run actually reads.</p>
+          </a>
+          <a class="whubcard" href="wiki-world-events.html">
+            <span class="n">3 entries</span>
+            <h3>Rare world events</h3>
+            <p>The discoverable event pool and its exact world allow-lists.</p>
+          </a>
+          <a class="whubcard" href="wiki-ambient-events.html">
+            <span class="n">14 entries</span>
+            <h3>Ambient events</h3>
+            <p>The exact event and theme placements registered per world.</p>
+          </a></div>
+      </section><section class="whubsection" id="section-progression">
+        <div class="whubsection-h"><h3>Progression</h3><span>6 guides</span></div>
+        <div class="whub">
+          <a class="whubcard" href="wiki-achievements.html">
+            <span class="n">26 entries</span>
+            <h3>Achievements</h3>
+            <p>Every goal and every payload it unlocks.</p>
+          </a>
+          <a class="whubcard" href="wiki-quests.html">
+            <span class="n">24 quests · 7 chains · 7 titles</span>
+            <h3>Quests and rewards</h3>
+            <p>Every chain, objective, giver, response and validated reward.</p>
+          </a>
+          <a class="whubcard" href="wiki-shop.html">
+            <span class="n">23 upgrades · 89 ranks · 5935g all-in</span>
+            <h3>Meta shop</h3>
+            <p>Every permanent upgrade, rank price, tier and gate.</p>
+          </a>
+          <a class="whubcard" href="wiki-ship-cores.html">
+            <span class="n">10 entries</span>
+            <h3>Ship cores</h3>
+            <p>Recovered systems, tied back to their worlds.</p>
+          </a>
+          <a class="whubcard" href="wiki-ship-systems.html">
+            <span class="n">10 sockets · 4 rebuild tiers</span>
+            <h3>Ship systems</h3>
+            <p>Every socket, its core and the complete rebuild ladder.</p>
+          </a>
+          <a class="whubcard" href="wiki-ship-fragments.html">
+            <span class="n">3 entries</span>
+            <h3>Ship fragments</h3>
+            <p>The route pieces scattered beyond the core recoveries.</p>
+          </a></div>
+      </section><section class="whubsection" id="section-collection">
+        <div class="whubsection-h"><h3>Collection</h3><span>2 guides</span></div>
+        <div class="whub">
+          <a class="whubcard" href="wiki-wearables.html">
+            <span class="n">13 entries</span>
+            <h3>Wearables</h3>
+            <p>Cosmetic pieces, anchors and trail behavior.</p>
+          </a>
+          <a class="whubcard" href="wiki-cosmetics.html">
+            <span class="n">9 entries</span>
+            <h3>Cosmetic styles</h3>
+            <p>Every body, rim and accent palette.</p>
+          </a></div>
+      </section>
   </main>
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 14:02 UTC from <code>main@c4d4c20b</code>,
+  Generated 2026-08-03 20:59 UTC from <code>game@d2b39395</code>,
   content derived from <code>data/game-data.json</code>.
   <a href="log.html#views">Dev log</a>
 </footer>
@@ -391,32 +643,186 @@ renderAuth(getUser());
 
 const searchInput = document.getElementById('search');
 const srPanel = document.getElementById('sr-panel');
+const searchStatus = document.getElementById('sr-status');
+const SEARCH_LIMIT = 30;
 let searchIndex = [];
-fetch('./search-index.json').then((r) => r.ok ? r.json() : []).then((data) => { searchIndex = data; }).catch(() => { searchIndex = []; });
+let searchState = 'loading';
+let renderedHits = [];
+let activeResult = -1;
+
+function setSearchStatus(message) {
+  if (searchStatus) searchStatus.textContent = message;
+}
+
+function setSearchOpen(open) {
+  srPanel.classList.toggle('open', open);
+  searchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!open) {
+    activeResult = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function showSearchMessage(message, announcement = message) {
+  renderedHits = [];
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  const empty = document.createElement('div');
+  empty.className = 'sr-empty';
+  empty.setAttribute('role', 'option');
+  empty.setAttribute('aria-disabled', 'true');
+  empty.textContent = message;
+  srPanel.append(empty);
+  setSearchStatus(announcement);
+  setSearchOpen(true);
+}
+
+const normalized = (value) => String(value || '').trim().toLowerCase();
+const hasWordPrefix = (value, query) => value.split(/\s+/).some((word) => word.startsWith(query));
+
+/* Ranking is deliberately source-aware. Exact and prefix title matches are
+ * always first; after those, a generated wiki route/card beats a generic
+ * change-log body match. This is what makes a short query such as "core" land
+ * on Core weapons and its cards instead of a commit that happened to say core. */
+function searchRank(item, query) {
+  const title = normalized(item.title);
+  const text = normalized(item.text);
+  const type = normalized(item.type);
+  const wikiResult = normalized(item.href).startsWith('wiki');
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 10;
+  if (wikiResult && hasWordPrefix(title, query)) return 20;
+  if (wikiResult && title.includes(query)) return 30;
+  if (wikiResult && (text.startsWith(query) || type.startsWith(query))) return 40;
+  if (wikiResult && (hasWordPrefix(text, query) || hasWordPrefix(type, query))) return 45;
+  if (wikiResult) return 50;
+  if (title.includes(query)) return 60;
+  if (text.startsWith(query) || type.startsWith(query) || hasWordPrefix(text, query) || hasWordPrefix(type, query)) return 70;
+  return type === 'change' ? 90 : 80;
+}
+
+function setActiveResult(next) {
+  const options = [...srPanel.querySelectorAll('.sr-item')];
+  if (!options.length) return;
+  activeResult = (next + options.length) % options.length;
+  options.forEach((option, index) => {
+    const active = index === activeResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  const selected = options[activeResult];
+  searchInput.setAttribute('aria-activedescendant', selected.id);
+  selected.scrollIntoView({ block: 'nearest' });
+}
 
 function renderResults(query) {
   const q = query.trim().toLowerCase();
-  if (q.length < 2) { srPanel.classList.remove('open'); srPanel.innerHTML = ''; return; }
-  const hits = searchIndex.filter((it) => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 30);
-  if (hits.length === 0) {
-    srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
-  } else {
-    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="${it.href}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
+  if (q.length < 2) {
+    renderedHits = [];
+    srPanel.replaceChildren();
+    setSearchOpen(false);
+    setSearchStatus('Enter at least two characters to search.');
+    return;
   }
-  srPanel.classList.add('open');
+  if (searchState === 'loading') {
+    showSearchMessage('Loading the search index...', 'Search is still loading.');
+    return;
+  }
+  if (searchState === 'error') {
+    showSearchMessage('Search is unavailable right now. Reload the page to try again.', 'Search could not load. Reload the page to try again.');
+    return;
+  }
+
+  const ranked = searchIndex
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => normalized(item.title + ' ' + item.text + ' ' + item.type).includes(q))
+    .sort((a, b) => searchRank(a.item, q) - searchRank(b.item, q)
+      || normalized(a.item.title).localeCompare(normalized(b.item.title))
+      || a.index - b.index);
+  renderedHits = ranked.slice(0, SEARCH_LIMIT).map(({ item }) => item);
+  if (renderedHits.length === 0) {
+    showSearchMessage('No matches for "' + query.trim() + '". Try a weapon, character, world, or dev-log term.', 'No search results for ' + query.trim() + '.');
+    return;
+  }
+
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  renderedHits.forEach((item, index) => {
+    const link = document.createElement('a');
+    link.className = 'sr-item';
+    link.id = 'sr-option-' + index;
+    link.href = String(item.href || '');
+    link.tabIndex = -1;
+    link.setAttribute('role', 'option');
+    link.setAttribute('aria-selected', 'false');
+    const kind = document.createElement('span');
+    kind.className = 'sr-kind';
+    kind.textContent = String(item.type || 'result');
+    const title = document.createElement('span');
+    title.className = 'sr-title';
+    title.textContent = String(item.title || 'Untitled');
+    link.append(kind, title);
+    srPanel.append(link);
+  });
+  const shown = renderedHits.length;
+  const total = ranked.length;
+  setSearchStatus((shown < total ? 'Showing ' + shown + ' of ' + total : total) + (total === 1 ? ' search result' : ' search results') + ' for ' + query.trim() + '.');
+  setSearchOpen(true);
 }
 searchInput.addEventListener('input', (e) => renderResults(e.target.value));
 searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
-document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) srPanel.classList.remove('open'); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (searchInput.value.trim().length < 2) return;
+    e.preventDefault();
+    if (!srPanel.classList.contains('open')) renderResults(searchInput.value);
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    setActiveResult(activeResult < 0 ? (direction > 0 ? 0 : renderedHits.length - 1) : activeResult + direction);
+    return;
+  }
+  if (e.key === 'Enter' && renderedHits.length && srPanel.classList.contains('open')) {
+    e.preventDefault();
+    const options = [...srPanel.querySelectorAll('.sr-item')];
+    const selected = options[activeResult >= 0 ? activeResult : 0];
+    selected?.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (srPanel.classList.contains('open')) e.preventDefault();
+    setSearchOpen(false);
+    setSearchStatus('Search suggestions closed.');
+  }
+  if (e.key === 'Tab') setSearchOpen(false);
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
-  srPanel.classList.remove('open');
+  setSearchOpen(false);
   const href = a.getAttribute('href') || '';
   const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
   const target = hash ? document.getElementById(hash) : null;
   if (target) {  }
 });
+
+fetch('./search-index.json')
+  .then((response) => {
+    if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+    return response.json();
+  })
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error('Search index is not an array');
+    searchIndex = data;
+    searchState = 'ready';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  })
+  .catch(() => {
+    searchIndex = [];
+    searchState = 'error';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  });
 
 </script>
 </body>

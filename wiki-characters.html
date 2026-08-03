@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP core weapons</title>
-<meta name="description" content="Core weapons: The one you aim yourself. Every value generated from the game's own data.">
+<title>WHOMP characters</title>
+<meta name="description" content="Characters: Base stats, starting kit and movement identity. Every value generated from the game's own data.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -336,8 +336,8 @@ footer a{color:var(--cyan);text-decoration:none}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP core weapons</h1>
-        <p class="subtag">The one you aim yourself.</p>
+        <h1 class="chroma">WHOMP characters</h1>
+        <p class="subtag">Base stats, starting kit and movement identity.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale"></span>
@@ -365,11 +365,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
-    <details class="wside-section" open>
+    <details class="wside-section">
       <summary>Buildcraft <span>13</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
-        <a href="wiki-cores.html" class="is-here" aria-current="page">Core weapons</a>
+        <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
         <a href="wiki-tiers.html">Weapon tiers</a>
         <a href="wiki-builds.html">Measured builds</a>
@@ -383,10 +383,10 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-jump-augments.html">Jump augments</a>
       </div>
     </details>
-    <details class="wside-section">
+    <details class="wside-section" open>
       <summary>Heroes <span>3</span></summary>
       <div class="wside-links">
-        <a href="wiki-characters.html">Characters</a>
+        <a href="wiki-characters.html" class="is-here" aria-current="page">Characters</a>
         <a href="wiki-innates.html">Innates</a>
         <a href="wiki-signatures.html">Signatures</a>
       </div>
@@ -423,60 +423,34 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">8 entries, read straight out of the game</div>
+    <div class="stat">11 entries, read straight out of the game</div>
   </nav>
   <main class="wmain">
     <div class="rule"></div>
-    <h2 class="chroma">Core weapons</h2>
-    <p class="lede">A core weapon is the weapon under your hand, and picking one is the only decision that shapes a whole run before it starts. All 8 are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.</p>
+    <h2 class="chroma">Characters</h2>
+    <p class="lede">Each character card composes the canonical character, starting-weapon, innate and signature registries. Base health, speed and might are printed as stored, with no normalized score hiding the trade.</p>
 
     <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
       <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/coreWeapons.ts#CORE_WEAPONS</code>.
-      Optional director notes have <b>0 of 8</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
-
-    <p class="womit">No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these 8 lives outside the shared artifact, so this page will not retype private constants. The reserved evolution labels in the registry are not a playable mechanic and are not presented as available or upcoming content. <b>Aim and forgiveness values describe targeting generosity only</b>; they do not imply damage strength. The pip count is shown because the game suite pins it against the real clip size.</p>
+      and dead relations before it writes a page. Source: <code>src/data/characters.ts#CHARACTERS</code>.
+      Optional director notes have <b>0 of 11</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
 
 
-    <section class="wfeature" aria-labelledby="aim-policy">
-      <div><span class="eyebrow">Global core mechanic</span><h3 id="aim-policy">Aim-assist policy</h3></div>
-      <div class="wmethod-grid">
-        <div><b>Off</b><span>Assist scale</span><code>0</code></div><div><b>Light</b><span>Assist scale</span><code>0.6</code></div><div><b>Full</b><span>Assist scale</span><code>1</code></div>
-        <div><b>Light</b><span>Default assist level</span><code>light</code></div>
-        <div><b>Light</b><span>Duel normalization</span><code>light</code></div>
-        <div><b>11.02 m</b><span>Minimum acquisition range</span><code>minimumRangeM</code></div>
-        <div><b><a href="wiki-cores.html#e-glaive">Glaive</a></b><span>Range-floor exemption</span><code>minimumRangeExempt</code></div>
-      </div>
-      <p>These are targeting-assistance and forgiveness parameters. They are not damage values, weapon-strength scores or measured rankings.</p>
-      <details class="wraw"><summary>Aim-policy provenance <span>4</span></summary><dl><div><dt><code>profiles</code></dt><dd>src/sim/forgiveness.ts#FORGIVENESS</dd></div><div><dt><code>assist</code></dt><dd>src/sim/forgiveness.ts#AIM_ASSIST_*</dd></div><div><dt><code>duelAssist</code></dt><dd>src/sim/forgiveness.ts#DUEL_AIM_ASSIST</dd></div><div><dt><code>rangeFloor</code></dt><dd>src/sim/forgiveness.ts#AIMED_CORE_MIN_RANGE_*</dd></div></dl></details>
-    </section>
+
+
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Rhythm</span>
-        <div class="wfacet-row" data-facet="cadence" data-multi="0">
+        <span class="wfacet-h">Starting weapon</span>
+        <div class="wfacet-row" data-facet="weapon" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="charge" aria-pressed="false" aria-controls="wiki-groups">Charge <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="clip" aria-pressed="false" aria-controls="wiki-groups">Clip <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="cooldown" aria-pressed="false" aria-controls="wiki-groups">Cooldown <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="drain" aria-pressed="false" aria-controls="wiki-groups">Drain <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="heat" aria-pressed="false" aria-controls="wiki-groups">Heat <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="lock" aria-pressed="false" aria-controls="wiki-groups">Lock <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spin" aria-pressed="false" aria-controls="wiki-groups">Spin <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="windup" aria-pressed="false" aria-controls="wiki-groups">Windup <span style="opacity:.5">1</span></button>
-        </div>
-      </div>
-      <div class="wfacet">
-        <span class="wfacet-h">Asks you for</span>
-        <div class="wfacet-row" data-facet="feel" data-multi="0">
-          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="commitment" aria-pressed="false" aria-controls="wiki-groups">Commitment <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="conviction" aria-pressed="false" aria-controls="wiki-groups">Conviction <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="leading" aria-pressed="false" aria-controls="wiki-groups">Leading <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="nerve" aria-pressed="false" aria-controls="wiki-groups">Nerve <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="painting" aria-pressed="false" aria-controls="wiki-groups">Painting <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="patience" aria-pressed="false" aria-controls="wiki-groups">Patience <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="placement" aria-pressed="false" aria-controls="wiki-groups">Placement <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spacing" aria-pressed="false" aria-controls="wiki-groups">Spacing <span style="opacity:.5">1</span></button>
-        </div>
-      </div>
-      <div class="wfacet">
-        <span class="wfacet-h">Meter</span>
-        <div class="wfacet-row" data-facet="meter" data-multi="0">
-          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="continuous" aria-pressed="false" aria-controls="wiki-groups">Continuous <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="discrete" aria-pressed="false" aria-controls="wiki-groups">Discrete <span style="opacity:.5">3</span></button>
+          <button class="wf" type="button" data-value="energyBolt" aria-pressed="false" aria-controls="wiki-groups">Energy Bolt <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="plasmaOrbit" aria-pressed="false" aria-controls="wiki-groups">Plasma Shield <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="shotgun" aria-pressed="false" aria-controls="wiki-groups">Shotgun <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="beam" aria-pressed="false" aria-controls="wiki-groups">Beam <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="boomerang" aria-pressed="false" aria-controls="wiki-groups">Boomerang <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="flameThrower" aria-pressed="false" aria-controls="wiki-groups">Flame Thrower <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="iceShard" aria-pressed="false" aria-controls="wiki-groups">Ice Shards <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="pulseMine" aria-pressed="false" aria-controls="wiki-groups">Pulse Mine <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h">Sort</span>
-        <select class="wsort" id="wsort" aria-label="Sort Core weapons">
-          <option value="roster" data-desc="0" data-text="0">Selection order</option><option value="name" data-desc="0" data-text="1">Name</option>
+        <select class="wsort" id="wsort" aria-label="Sort Characters">
+          <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="health" data-desc="1" data-text="0">Base health</option><option value="speed" data-desc="1" data-text="0">Base speed</option><option value="might" data-desc="1" data-text="0">Base might</option>
         </select>
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
@@ -486,144 +460,184 @@ footer a{color:var(--cyan);text-decoration:none}
     </div>
 
     <div id="wiki-groups">
-    <section class="wgroup" data-group="all" id="g-all">
-      <div class="wgroup-h"><h3>Core selection</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">In the source picker’s selectOrder. This is display order, not a ladder.</p>
+    <section class="wgroup" data-group="start" id="g-start">
+      <div class="wgroup-h"><h3>Character roster</h3><span class="wgroup-n">11</span></div>
+      <p class="wgroup-note">The complete selectable roster in source order.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-scattergun" data-cadence="clip" data-feel="spacing" data-meter="discrete" data-s-roster="0" data-s-name="scattergun">
+      <article class="wcard" id="e-bonkrat" data-weapon="plasmaOrbit" data-access="from the start" data-s-roster="0" data-s-name="capsule signal" data-s-health="100" data-s-speed="6" data-s-might="1">
         <div class="wcard-h">
-          <h4>Scattergun</h4>
-          <span class="wcard-accent" style="background:#ff9a33"></span>
+          <h4>Capsule Signal</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Clip</span><span class="wtag ink-pink">Spacing</span></div>
-        <p class="wdesc">Two barrels, then a reload you can feel. Meaty up close.</p>
-        <p class="wgloss">A couple of shells, then a reload you have to survive. The empty clip is the whole design.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Spacing</b>, knowing exactly how far away you are.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>2</b> pips marked SHELLS, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.62 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>11.53 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.4 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.62 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.3 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.26 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.55 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.16 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.35 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Lights the boosters and grins through the visor.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-boosterSchool">Booster School</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-megaDash">Mega-Dash</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-longbow" data-cadence="charge" data-feel="leading" data-meter="continuous" data-s-roster="1" data-s-name="longbow">
+      <article class="wcard" id="e-wispmother" data-weapon="flameThrower" data-access="from the start" data-s-roster="1" data-s-name="grim hex" data-s-health="70" data-s-speed="6.8" data-s-might="1.1">
         <div class="wcard-h">
-          <h4>Longbow</h4>
-          <span class="wcard-accent" style="background:#ffcf3f"></span>
+          <h4>Grim Hex</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Charge</span><span class="wtag ink-pink">Leading</span></div>
-        <p class="wdesc">Draw, lead the target, release. Full draw punches through.</p>
-        <p class="wgloss">Hold to draw, release to fire. A partial draw still goes off, just weaker, so the question is always whether you had time for the full one.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Leading</b>, firing where they are going to be, not where they are.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAW fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-spectralArrows">Spectral Arrows</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.46 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>19 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.34 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.56 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.26 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.2 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.45 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.11 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.3 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Made of glass. Hexes anyway.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-flameThrower">Flame Thrower</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-cruelFate">Cruel Fate</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-blink">The Debt</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>70</b> health, <b>6.8</b> speed, <b>1.1</b> might</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-mortar" data-cadence="cooldown" data-feel="placement" data-meter="discrete" data-s-roster="2" data-s-name="mortar">
+      <article class="wcard" id="e-cragjaw" data-weapon="energyBolt" data-access="from the start" data-s-roster="2" data-s-name="orbital mechanic" data-s-health="150" data-s-speed="5" data-s-might="1.05">
         <div class="wcard-h">
-          <h4>Mortar</h4>
-          <span class="wcard-accent" style="background:#ff8f3c"></span>
+          <h4>Orbital Mechanic</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Cooldown</span><span class="wtag ink-pink">Placement</span></div>
-        <p class="wdesc">Lob a shell onto the ground you pick. Patience, then a crater.</p>
-        <p class="wgloss">One shot, a flat wait, then another. The shell takes time to land, so you are aiming at where they will be.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Placement</b>, choosing the spot before the moment.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>1</b> pip marked SHELL, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-meteorStrike">Meteor Strike</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.7 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>17 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.55 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.8 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.45 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.24 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.4 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Heavy boots. Comes down like a dropped wrench.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-loadBearing">Load Bearing</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-groundSlam">Crater</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>150</b> health, <b>5</b> speed, <b>1.05</b> might</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-laser" data-cadence="heat" data-feel="painting" data-meter="continuous" data-s-roster="3" data-s-name="sweepbeam">
+      <article class="wcard" id="e-hookline" data-weapon="shotgun" data-access="from the start" data-s-roster="3" data-s-name="bubblehead" data-s-health="95" data-s-speed="6.6" data-s-might="0.95">
         <div class="wcard-h">
-          <h4>Sweepbeam</h4>
-          <span class="wcard-accent" style="background:#e0203f"></span>
+          <h4>Bubblehead</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Heat</span><span class="wtag ink-pink">Painting</span></div>
-        <p class="wdesc">A hot line you steer. It bites while you hold it, and it runs hot.</p>
-        <p class="wgloss">Keeps firing while you hold it and builds heat while it does. Overheat and it locks you out until it cools.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Painting</b>, holding on target and staying on it.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous HEAT fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-deathray">Deathray</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.3 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>12.75 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.3 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.52 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.22 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.14 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.7 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.09 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.32 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Sealed in glass. Reels straight toward the fight.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-lineTension">Line Tension</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-grapple">Grapple</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>95</b> health, <b>6.6</b> speed, <b>0.95</b> might</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-glaive" data-cadence="windup" data-feel="commitment" data-meter="continuous" data-s-roster="4" data-s-name="glaive">
+      <article class="wcard" id="e-slipstream" data-weapon="boomerang" data-access="from the start" data-s-roster="4" data-s-name="apprentice" data-s-health="85" data-s-speed="7.2" data-s-might="0.9">
         <div class="wcard-h">
-          <h4>Glaive</h4>
-          <span class="wcard-accent" style="background:#e8dcc0"></span>
+          <h4>Apprentice</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Windup</span><span class="wtag ink-pink">Commitment</span></div>
-        <p class="wdesc">Wind it up and sweep everything in front of you. No taking it back.</p>
-        <p class="wgloss">Commits to a windup before the sweep lands, and chains into a second swing if you keep it going. Once it starts you cannot take it back.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Commitment</b>, deciding early and not flinching.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SWING fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-photonScythe">Photon Scythe</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>1.9 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>4.2 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.45 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.7 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.35 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.5 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.4 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">First week on the job. Never stops running.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-boomerang">Boomerang</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-quickFeet">Quick Feet</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-momentumDrift">Miscast</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>85</b> health, <b>7.2</b> speed, <b>0.9</b> might</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-arcCaster" data-cadence="lock" data-feel="patience" data-meter="discrete" data-s-roster="5" data-s-name="arc caster">
+      <article class="wcard" id="e-echoKnight" data-weapon="iceShard" data-access="from the start" data-s-roster="5" data-s-name="elder star" data-s-health="100" data-s-speed="6" data-s-might="0.95">
         <div class="wcard-h">
-          <h4>Arc Caster</h4>
-          <span class="wcard-accent" style="background:#ea5cff"></span>
+          <h4>Elder Star</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Lock</span><span class="wtag ink-pink">Patience</span></div>
-        <p class="wdesc">Hold a target until the charge takes. Then it jumps, and jumps again.</p>
-        <p class="wgloss">Builds a lock only while you keep a target inside the cone, and loses it if you switch. Then it spends the lock.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Patience</b>, waiting for the shot instead of taking the one on offer.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>4</b> pips marked LOCK, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-chainLightning">Chain Lightning</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.58 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>14 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.36 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.58 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.28 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.22 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.5 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.07 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.34 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Casts twice. Once now, once a heartbeat later.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-iceShard">Ice Shards</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-lastingSpell">Lasting Spell</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-afterimage">Afterimage</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>0.95</b> might</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-frostLance" data-cadence="spin" data-feel="conviction" data-meter="continuous" data-s-roster="6" data-s-name="frost lance">
+      <article class="wcard" id="e-graviton" data-weapon="energyBolt" data-access="from the start" data-s-roster="6" data-s-name="event horizon" data-s-health="135" data-s-speed="5.4" data-s-might="1">
         <div class="wcard-h">
-          <h4>Frost Lance</h4>
-          <span class="wcard-accent" style="background:#2f9dff"></span>
+          <h4>Event Horizon</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Spin</span><span class="wtag ink-pink">Conviction</span></div>
-        <p class="wdesc">Spin it up, hold it as long as you like, and put a line through the room.</p>
-        <p class="wgloss">Spins up to a gate rather than a scale. Releasing early gives you nothing at all, so there is no partial credit.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Conviction</b>, backing your read all the way through.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SPIN fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-voidRailgun">Void Railgun</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.26 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>20 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.32 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.54 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.24 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.06 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.2 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.08 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.3 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">The horde falls inward. It was always going to.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-criticalMass">Critical Mass</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-eventHorizon">Event Horizon</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>135</b> health, <b>5.4</b> speed, <b>1</b> might</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-tether" data-cadence="drain" data-feel="nerve" data-meter="continuous" data-s-roster="7" data-s-name="tether">
+      <article class="wcard" id="e-sentinel" data-weapon="pulseMine" data-access="from the start" data-s-roster="7" data-s-name="sentinel" data-s-health="100" data-s-speed="6" data-s-might="1">
         <div class="wcard-h">
-          <h4>Tether</h4>
-          <span class="wcard-accent" style="background:#6a3dff"></span>
+          <h4>Sentinel</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Drain</span><span class="wtag ink-pink">Nerve</span></div>
-        <p class="wdesc">Hook something and let it fill. The longer you dare hold it, the worse the snap.</p>
-        <p class="wgloss">Attach and hold. It pays out at the release, so letting go early forfeits what you had built.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Nerve</b>, standing in it one beat longer than feels wise.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAIN fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a>, which is where its damage is anchored</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Plants the shield where the trouble is headed.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-reserveAegis">Reserve Aegis</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-sentinelGuard">Aegis</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-berserker" data-weapon="shotgun" data-access="from the start" data-s-roster="8" data-s-name="berserker" data-s-health="100" data-s-speed="6" data-s-might="1">
+        <div class="wcard-h">
+          <h4>Berserker</h4>
+
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.66 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>11.02 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.48 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.72 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.34 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.24 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.6 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.2 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.38 unitless</dd></div></dl></details>
+
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Counts to one, then runs through the answer.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-redline">Redline</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-berserkerRush">Redline</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-puppeteer" data-weapon="beam" data-access="from the start" data-s-roster="9" data-s-name="puppeteer" data-s-health="100" data-s-speed="6" data-s-might="1">
+        <div class="wcard-h">
+          <h4>Puppeteer</h4>
+
+        </div>
+
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Never fights alone. Technically.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-longStrings">Long Strings</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-puppetSentry">Marionette</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-medic" data-weapon="plasmaOrbit" data-access="from the start" data-s-roster="10" data-s-name="medic" data-s-health="110" data-s-speed="5.8" data-s-might="0.9">
+        <div class="wcard-h">
+          <h4>Medic</h4>
+
+        </div>
+
+      <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
+      <p class="wdesc">Drops a clinic wherever the panic gets loudest.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a></span></div>
+        <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-bedsideManner">Bedside Manner</a></span></div>
+        <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-triageBeacon">Triage Beacon</a></span></div>
+        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>110</b> health, <b>5.8</b> speed, <b>0.9</b> might</span></div>
+      </div>
 
       </article></div>
     </section></div>

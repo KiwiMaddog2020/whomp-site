@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP dev log</title>
 <meta name="description" content="The WHOMP development log: what shipped, what's known-broken, and what's coming next.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="icon" href="whomp-icon.svg">
 <style>
 
 :root{
@@ -132,6 +132,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -142,10 +143,12 @@ html,body{max-width:100%;overflow-x:hidden}
 .sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
 .sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
 .sr-item:first-child{border-top:0}
-.sr-item:hover,.sr-item:focus{background:rgba(255,243,207,.06)}
+.sr-item:hover,.sr-item:focus,.sr-item.is-active,.sr-item[aria-selected="true"]{background:rgba(36,240,255,.08);outline:none}
 .sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
   color:var(--gold);margin-right:8px}
 .sr-title{color:var(--cream)}
+.sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 .shell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .side{width:220px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:4px}
@@ -253,7 +256,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 <body>
 
 <div class="topbar">
-  
+
 <div class="authbar">
   <span id="ab-signedout">
     <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
@@ -265,7 +268,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
   <div class="topbar-row">
     <a class="brand" href="index.html">
-      
+
 <svg class="wm" viewBox="0 0 512 512" width="48" height="48" aria-hidden="true" focusable="false">
   <defs><radialGradient id="gl" cx="50%" cy="50%" r="72%">
     <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
@@ -283,16 +286,20 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot"></span>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
   live <b>c4d4c20b</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
 
 
-<div class="searchwrap">
-  <input class="searchbox" id="search" type="search" placeholder="Search weapons, cores, enemies, changes, bugs..." autocomplete="off">
-  <div class="sr-panel" id="sr-panel"></div>
+<div class="searchwrap" role="search">
+  <label class="searchlabel" for="search">Search WHOMP</label>
+  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+    role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
+    aria-controls="sr-panel" aria-describedby="sr-status">
+  <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
+  <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
 </div>
 
 <div class="shell">
@@ -327,7 +334,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
 
     <div class="viewpane" id="view-concise">
-      
+
   <article class="notecard" id="note-2026-07-30">
     <div class="notecard-head">
       <span class="notecard-date">2026-07-30</span>
@@ -360,10 +367,45 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <button class="chipf is-active" data-kind="all" type="button">All</button>
         <button class="chipf" data-kind="feat" type="button">New</button><button class="chipf" data-kind="fix" type="button">Fixed</button><button class="chipf" data-kind="balance" type="button">Balance</button><button class="chipf" data-kind="perf" type="button">Performance</button><button class="chipf" data-kind="style" type="button">Polish</button>
       </div>
-      
+
   <div class="day">
     <h4>2026-08-03</h4>
-    
+
+    <div class="row" data-kind="feat" id="chg-d2b39395">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">expose aimed-core tuning <span class="scope">(data)</span></span>
+      <span class="sha">d2b39395</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f3ec00fe">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">publish ship system topology <span class="scope">(data)</span></span>
+      <span class="sha">f3ec00fe</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-32481dde">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">publish world event catalogs <span class="scope">(data)</span></span>
+      <span class="sha">32481dde</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b8a63fb4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">publish shop purchase ladder <span class="scope">(data)</span></span>
+      <span class="sha">b8a63fb4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c3917a9d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">publish quest and unlock graph <span class="scope">(data)</span></span>
+      <span class="sha">c3917a9d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-50c7b13d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">expose profile-gated enemy speeds <span class="scope">(data)</span></span>
+      <span class="sha">50c7b13d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6dbe953e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">make the weekend's most expensive defect arithmetic <span class="scope">(protocol)</span></span>
+      <span class="sha">6dbe953e</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-c4d4c20b">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">a Codex lane is a clone, so tell the operator to fetch before merging <span class="scope">(protocol)</span></span>
@@ -392,7 +434,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   </div>
   <div class="day">
     <h4>2026-08-02</h4>
-    
+
     <div class="row" data-kind="feat" id="chg-3cafe799">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">two more guards that bind every actor, not just the one with hooks <span class="scope">(protocol)</span></span>
@@ -496,7 +538,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   </div>
   <div class="day">
     <h4>2026-08-01</h4>
-    
+
     <div class="row" data-kind="feat" id="chg-4fbf5c80">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">re-expose the dev jump behind the labs door as LEVEL JUMP + AUTOPLAY BOT <span class="scope">(labs)</span></span>
@@ -600,7 +642,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   </div>
   <div class="day">
     <h4>2026-07-31</h4>
-    
+
     <div class="row" data-kind="feat" id="chg-653c5282">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the night session console, 22 decisions, self-contained <span class="scope">(decisions)</span></span>
@@ -704,7 +746,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   </div>
   <div class="day">
     <h4>2026-07-30</h4>
-    
+
     <div class="row" data-kind="fix" id="chg-8c74d756">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">paint-order stops glyph outlines cutting across neighbours <span class="scope">(ui)</span></span>
@@ -808,7 +850,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   </div>
   <div class="day">
     <h4>2026-07-29</h4>
-    
+
     <div class="row" data-kind="fix" id="chg-c47ee12e">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the accounts panel uses the font token, not a literal stack <span class="scope">(ui)</span></span>
@@ -912,7 +954,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   </div>
   <div class="day">
     <h4>2026-07-28</h4>
-    
+
     <div class="row" data-kind="feat" id="chg-1b90f1ab">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">name a kit once, star it, and start there every run <span class="scope">(loadout)</span></span>
@@ -1014,7 +1056,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">2b9e4617</span>
     </div><div class="row more">+ 202 more that day, not shown</div>
   </div>
-      
+
     </div>
   </section>
 
@@ -1034,54 +1076,54 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
   </section>
 
-  
+
 
   <section id="flight">
     <div class="rule"></div>
     <h2 class="chroma">In flight</h2>
     <p class="lede">What is actively being built, live from the campaign that drives the work.</p>
     <div class="arcs">
-    <div class="arc">
+    <div class="arc" id="flight-quality-bar">
       <div class="id">A1 &middot; live</div>
       <h4>QUALITY BAR</h4>
       <p>junction law, sprite bar, taste-law enforcement. Rolling.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-weapon-identity">
       <div class="id">A2 &middot; nearly closed</div>
       <h4>WEAPON IDENTITY</h4>
       <p>integration done; per-weapon focus ranges tier-2.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-co-op">
       <div class="id">A3 &middot; Wed 7/30</div>
       <h4>CO-OP</h4>
       <p>the quality push campaign. Second Seat registry seeds it.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-audio">
       <div class="id">A4 &middot; Thu 7/31</div>
       <h4>AUDIO</h4>
       <p>own campaign. Every ratified visual beat gets its sound twin.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-controller">
       <div class="id">A5</div>
       <h4>CONTROLLER</h4>
       <p>S1 Thu, S2 Fri/weekend, Deck later.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-character-progression">
       <div class="id">A6 &middot; Fri+</div>
       <h4>CHARACTER PROGRESSION</h4>
       <p>starters trio, zone-gated new characters (7 themed),</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-snow-tier">
       <div class="id">A7 &middot; 0.7</div>
       <h4>SNOW TIER</h4>
       <p>Borealisk build (ratified card), S1 maps, Hollow Crown capstone.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-accounts">
       <div class="id">A8 &middot; next week, 0.7</div>
       <h4>ACCOUNTS</h4>
       <p>wrangler tap + sync; SAVE COMPAT fixtures first.</p>
     </div>
-    <div class="arc">
+    <div class="arc" id="flight-the-lab-arc">
       <div class="id">A9 &middot; pillar, rolling</div>
       <h4>THE LAB ARC</h4>
       <p>dev tools graduate to player features. Photo mode +</p>
@@ -1111,11 +1153,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 14:02 UTC from <code>main@c4d4c20b</code>.
-  Live build <code>c4d4c20b</code> (current).
+  Generated 2026-08-03 20:59 UTC from <code>game@d2b39395</code>.
+  Live build <code>c4d4c20b</code> (a deploy is pending).
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">714 player-visible changes in the last 7 days, across 7 active days, 1063 internal-only commits filtered out</div>
+  <div class="stat">721 player-visible changes in the last 7 days, across 7 active days, 1064 internal-only commits filtered out</div>
 </footer>
 
 
@@ -1219,31 +1261,168 @@ document.addEventListener('keydown', (e) => {
 
 const searchInput = document.getElementById('search');
 const srPanel = document.getElementById('sr-panel');
+const searchStatus = document.getElementById('sr-status');
+const SEARCH_LIMIT = 30;
 let searchIndex = [];
-fetch('./search-index.json').then((r) => r.ok ? r.json() : []).then((data) => { searchIndex = data; }).catch(() => { searchIndex = []; });
+let searchState = 'loading';
+let renderedHits = [];
+let activeResult = -1;
+
+function setSearchStatus(message) {
+  if (searchStatus) searchStatus.textContent = message;
+}
+
+function setSearchOpen(open) {
+  srPanel.classList.toggle('open', open);
+  searchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!open) {
+    activeResult = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function showSearchMessage(message, announcement = message) {
+  renderedHits = [];
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  const empty = document.createElement('div');
+  empty.className = 'sr-empty';
+  empty.setAttribute('role', 'option');
+  empty.setAttribute('aria-disabled', 'true');
+  empty.textContent = message;
+  srPanel.append(empty);
+  setSearchStatus(announcement);
+  setSearchOpen(true);
+}
+
+const normalized = (value) => String(value || '').trim().toLowerCase();
+const hasWordPrefix = (value, query) => value.split(/\s+/).some((word) => word.startsWith(query));
+
+/* Ranking is deliberately source-aware. Exact and prefix title matches are
+ * always first; after those, a generated wiki route/card beats a generic
+ * change-log body match. This is what makes a short query such as "core" land
+ * on Core weapons and its cards instead of a commit that happened to say core. */
+function searchRank(item, query) {
+  const title = normalized(item.title);
+  const text = normalized(item.text);
+  const type = normalized(item.type);
+  const wikiResult = normalized(item.href).startsWith('wiki');
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 10;
+  if (wikiResult && hasWordPrefix(title, query)) return 20;
+  if (wikiResult && title.includes(query)) return 30;
+  if (wikiResult && (text.startsWith(query) || type.startsWith(query))) return 40;
+  if (wikiResult && (hasWordPrefix(text, query) || hasWordPrefix(type, query))) return 45;
+  if (wikiResult) return 50;
+  if (title.includes(query)) return 60;
+  if (text.startsWith(query) || type.startsWith(query) || hasWordPrefix(text, query) || hasWordPrefix(type, query)) return 70;
+  return type === 'change' ? 90 : 80;
+}
+
+function setActiveResult(next) {
+  const options = [...srPanel.querySelectorAll('.sr-item')];
+  if (!options.length) return;
+  activeResult = (next + options.length) % options.length;
+  options.forEach((option, index) => {
+    const active = index === activeResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  const selected = options[activeResult];
+  searchInput.setAttribute('aria-activedescendant', selected.id);
+  selected.scrollIntoView({ block: 'nearest' });
+}
 
 function renderResults(query) {
   const q = query.trim().toLowerCase();
-  if (q.length < 2) { srPanel.classList.remove('open'); srPanel.innerHTML = ''; return; }
-  const hits = searchIndex.filter((it) => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 30);
-  if (hits.length === 0) {
-    srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
-  } else {
-    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="${it.href}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
+  if (q.length < 2) {
+    renderedHits = [];
+    srPanel.replaceChildren();
+    setSearchOpen(false);
+    setSearchStatus('Enter at least two characters to search.');
+    return;
   }
-  srPanel.classList.add('open');
+  if (searchState === 'loading') {
+    showSearchMessage('Loading the search index...', 'Search is still loading.');
+    return;
+  }
+  if (searchState === 'error') {
+    showSearchMessage('Search is unavailable right now. Reload the page to try again.', 'Search could not load. Reload the page to try again.');
+    return;
+  }
+
+  const ranked = searchIndex
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => normalized(item.title + ' ' + item.text + ' ' + item.type).includes(q))
+    .sort((a, b) => searchRank(a.item, q) - searchRank(b.item, q)
+      || normalized(a.item.title).localeCompare(normalized(b.item.title))
+      || a.index - b.index);
+  renderedHits = ranked.slice(0, SEARCH_LIMIT).map(({ item }) => item);
+  if (renderedHits.length === 0) {
+    showSearchMessage('No matches for "' + query.trim() + '". Try a weapon, character, world, or dev-log term.', 'No search results for ' + query.trim() + '.');
+    return;
+  }
+
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  renderedHits.forEach((item, index) => {
+    const link = document.createElement('a');
+    link.className = 'sr-item';
+    link.id = 'sr-option-' + index;
+    link.href = String(item.href || '');
+    link.tabIndex = -1;
+    link.setAttribute('role', 'option');
+    link.setAttribute('aria-selected', 'false');
+    const kind = document.createElement('span');
+    kind.className = 'sr-kind';
+    kind.textContent = String(item.type || 'result');
+    const title = document.createElement('span');
+    title.className = 'sr-title';
+    title.textContent = String(item.title || 'Untitled');
+    link.append(kind, title);
+    srPanel.append(link);
+  });
+  const shown = renderedHits.length;
+  const total = ranked.length;
+  setSearchStatus((shown < total ? 'Showing ' + shown + ' of ' + total : total) + (total === 1 ? ' search result' : ' search results') + ' for ' + query.trim() + '.');
+  setSearchOpen(true);
 }
 searchInput.addEventListener('input', (e) => renderResults(e.target.value));
 searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
-document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) srPanel.classList.remove('open'); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (searchInput.value.trim().length < 2) return;
+    e.preventDefault();
+    if (!srPanel.classList.contains('open')) renderResults(searchInput.value);
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    setActiveResult(activeResult < 0 ? (direction > 0 ? 0 : renderedHits.length - 1) : activeResult + direction);
+    return;
+  }
+  if (e.key === 'Enter' && renderedHits.length && srPanel.classList.contains('open')) {
+    e.preventDefault();
+    const options = [...srPanel.querySelectorAll('.sr-item')];
+    const selected = options[activeResult >= 0 ? activeResult : 0];
+    selected?.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (srPanel.classList.contains('open')) e.preventDefault();
+    setSearchOpen(false);
+    setSearchStatus('Search suggestions closed.');
+  }
+  if (e.key === 'Tab') setSearchOpen(false);
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
-  srPanel.classList.remove('open');
+  setSearchOpen(false);
   const href = a.getAttribute('href') || '';
   const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
   const target = hash ? document.getElementById(hash) : null;
-  if (target) { 
+  if (target) {
   // if the anchor is inside the full log, switch to that view first
   if (panes.full && panes.full.contains(target)) {
     vtabs.forEach((t) => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
@@ -1253,6 +1432,23 @@ srPanel.addEventListener('click', (e) => {
     kindChips.forEach((c) => c.classList.toggle('is-active', c.dataset.kind === 'all'));
   } }
 });
+
+fetch('./search-index.json')
+  .then((response) => {
+    if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+    return response.json();
+  })
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error('Search index is not an array');
+    searchIndex = data;
+    searchState = 'ready';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  })
+  .catch(() => {
+    searchIndex = [];
+    searchState = 'error';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  });
 
 </script>
 </body>

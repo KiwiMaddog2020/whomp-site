@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP bestiary</title>
 <meta name="description" content="Bestiary: Everything that wants to touch you. Every value generated from the game's own data.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%3E%3Crect%20width%3D%22512%22%20height%3D%22512%22%20fill%3D%22%2306040e%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%2324f0ff%22%20stroke-width%3D%2259%22%20transform%3D%22translate(14%2C26)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23ff2f7e%22%20stroke-width%3D%2259%22%20transform%3D%22translate(-16%2C16)%22%2F%3E%3Cpath%20d%3D%22M81%20139%20L175%20374%20L256%20251%20L337%20374%20L431%20139%22%20stroke%3D%22%23fff3cf%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="icon" href="whomp-icon.svg">
 <style>
 
 :root{
@@ -125,6 +125,7 @@ html,body{max-width:100%;overflow-x:hidden}
 
 
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -135,19 +136,22 @@ html,body{max-width:100%;overflow-x:hidden}
 .sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
 .sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
 .sr-item:first-child{border-top:0}
-.sr-item:hover,.sr-item:focus{background:rgba(255,243,207,.06)}
+.sr-item:hover,.sr-item:focus,.sr-item.is-active,.sr-item[aria-selected="true"]{background:rgba(36,240,255,.08);outline:none}
 .sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
   color:var(--gold);margin-right:8px}
 .sr-title{color:var(--cream)}
+.sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
-.wside{width:210px;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px}
+.wside{width:220px;max-height:calc(100vh - 40px);overflow-y:auto;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
 .wside a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
 .wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
+.wside a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--cyan)}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
@@ -176,6 +180,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
   font-family:var(--font);font-size:.82rem}
 .wcount{color:var(--dim);font-size:.82rem;margin:0 0 18px;font-variant-numeric:tabular-nums}
+.wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
+.wempty b{display:block;color:var(--cream);margin-bottom:8px}
+.wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
 
 .wgroup{margin-bottom:34px}
 .wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
@@ -195,6 +202,10 @@ html,body{max-width:100%;overflow-x:hidden}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
+.wequation{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:9px;background:rgba(36,240,255,.04);font-size:.9rem}
+.wequation a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wequation b{color:var(--gold)}
+.wswatch{display:inline-block;width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,255,255,.25);vertical-align:-2px;margin-right:5px}
 
 .wtags{display:flex;flex-wrap:wrap;gap:6px}
 .wtag{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
@@ -212,6 +223,31 @@ html,body{max-width:100%;overflow-x:hidden}
 .wfact-v a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
 .wfact-v a:hover{border-bottom-color:var(--cyan)}
 .wfact-v .wsub{color:var(--dim);font-size:.92em}
+
+.wraw{border-top:var(--edge);padding-top:8px;color:var(--dim);font-size:.78rem}
+.wraw summary{cursor:pointer;color:var(--cyan);font-weight:700;list-style-position:outside;margin-left:15px}
+.wraw summary span{color:var(--dim);font-weight:400;margin-left:5px;font-variant-numeric:tabular-nums}
+.wraw dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:5px 12px;margin:10px 0 0}
+.wraw dl div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,243,207,.05);padding:3px 0}
+.wraw dt,.wraw dd{margin:0;overflow-wrap:anywhere}
+.wraw dd{color:var(--body);text-align:right;font-variant-numeric:tabular-nums}
+.wschedule ol{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.wschedule li{padding-left:3px;color:var(--body)}
+.wschedule li a{color:var(--cyan);text-decoration:none}
+.wschedule li span{color:var(--dim);margin-left:6px}
+.wschedule li code{float:right;margin-left:8px}
+
+.wfeature{border:var(--edge);border-radius:14px;padding:20px;margin:0 0 24px;background:linear-gradient(135deg,rgba(36,240,255,.05),rgba(177,75,255,.035));color:var(--body)}
+.wfeature h3{margin:2px 0 8px;color:var(--cream);font-size:1.2rem}
+.wfeature p{margin:7px 0;color:var(--dim);font-size:.86rem}
+.wfeature .eyebrow{color:var(--gold);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wmethod-grid,.wbuild-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:14px 0}
+.wmethod-grid>div,.wbuild-grid>article{border:var(--edge);border-radius:10px;padding:12px;background:rgba(6,4,14,.34)}
+.wmethod-grid b,.wmethod-grid span,.wmethod-grid code{display:block}
+.wmethod-grid span{color:var(--body);font-size:.82rem;margin:5px 0}
+.wbuild-grid h4{margin:10px 0 5px;font-size:.9rem;line-height:1.5}
+.wbuild-grid h4 a,.wbuild-grid li a{color:var(--cyan);text-decoration:none}
+.wbuild-grid ol{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:.78rem}
 
 /* COMPARISON METERS. The bar is relative to the biggest value in THIS roster and
    the real number is always printed beside it, so the bar is a sorting aid and
@@ -231,19 +267,50 @@ html,body{max-width:100%;overflow-x:hidden}
 .whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.2rem}
 .whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
 .whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
-.wsoon{display:flex;flex-wrap:wrap;gap:8px}
-.wsoon span{padding:7px 14px;border-radius:999px;border:var(--edge);color:var(--dim);font-size:.8rem}
-.wsoon span b{color:var(--body);font-weight:700;font-variant-numeric:tabular-nums}
-
+.whubsection{margin:0 0 34px;scroll-margin-top:24px}
+.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+.whubsection-h h3{margin:0;color:var(--cream);font-size:1.08rem}
+.whubsection-h span{color:var(--dim);font-size:.75rem}
 @media (max-width:760px){
   .wshell{flex-direction:column;gap:18px}
-  .wside{width:100%;position:static;flex-direction:row;overflow-x:auto;gap:6px}
-  .wside a,.wside .stat{white-space:nowrap}
-  .wside-h{display:none}
+  .wside{width:100%;max-height:none;position:static;overflow:visible;padding:0}
   .wgrid{grid-template-columns:1fr}
   .wfact-k,.wmeter-k{width:84px}
+  .wraw dl{grid-template-columns:1fr}
+  .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
+  .wfeature{padding:16px}
+  .wtopbar,.wshell{padding-left:16px;padding-right:16px}
 }
+@media (max-width:420px){
+  .wcard{padding:14px}
+  .wfact{flex-direction:column;gap:2px}
+  .wfact-k{width:auto}
+  .wmeter{display:grid;grid-template-columns:80px 1fr auto}
+}
+@media (prefers-reduced-motion:reduce){.whubcard{transition:none}}
+.wf:focus-visible,.wsort:focus-visible,.wside a:focus-visible,.wraw summary:focus-visible,.wempty button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
+.wside-section{border-top:1px solid rgba(255,243,207,.06)}
+.wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
+  font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
+.wside-section summary:hover{background:rgba(255,243,207,.04)}
+.wside-section summary::marker{color:var(--cyan)}
+.wside-section summary span{float:right;color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums}
+.wside-section[open] summary{color:var(--cream)}
+.wside-links{padding:0 0 5px 7px}
+.wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside a.wiki-home{display:flex;align-items:center;gap:10px;padding:7px 10px 12px;margin:0 0 4px;border-bottom:var(--edge)}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
+.wiki-home-copy b{color:var(--cream);font-size:.94rem;letter-spacing:.02em}
+.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:4px}
+@media(max-width:760px){
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
+  .wside a.wiki-home{width:100%;padding:8px 10px 13px}
+  .wside-section summary{padding:12px}
+  .wside-links{padding-left:8px}
+  .wside-links a{padding:10px 12px}
+}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand .wm{margin:0}
 .brand h1{font-size:1.6rem;margin:0}
@@ -256,7 +323,7 @@ footer a{color:var(--cyan);text-decoration:none}
 <body>
 
 <div class="wtopbar">
-  
+
 <div class="authbar">
   <span id="ab-signedout">
     <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
@@ -268,44 +335,91 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
-      
-<svg class="wm" viewBox="0 0 512 512" width="48" height="48" aria-hidden="true" focusable="false">
-  <defs><radialGradient id="gwbestiary" cx="50%" cy="50%" r="72%">
-    <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
-  </radialGradient></defs>
-  <rect width="512" height="512" rx="96" fill="url(#gwbestiary)"/>
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#151023" stroke-width="69"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#fff3cf" stroke-width="59"/>
-  </g>
-</svg>
       <span>
         <h1 class="chroma">WHOMP bestiary</h1>
         <p class="subtag">Everything that wants to touch you.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot"></span>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
   live <b>c4d4c20b</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
 
 
-<div class="searchwrap">
-  <input class="searchbox" id="search" type="search" placeholder="Search weapons, cores, enemies, changes, bugs..." autocomplete="off">
-  <div class="sr-panel" id="sr-panel"></div>
+<div class="searchwrap" role="search">
+  <label class="searchlabel" for="search">Search WHOMP</label>
+  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+    role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
+    aria-controls="sr-panel" aria-describedby="sr-status">
+  <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
+  <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
 </div>
 
 <div class="wshell">
   <nav class="wside">
-    
+
+    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
+      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
+      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
+    </a>
     <span class="wside-h">Wiki</span>
-    <a href="wiki.html">All rosters</a>
-    <a href="wiki-weapons.html">Weapons</a>
-    <a href="wiki-cores.html">Core weapons</a>
-    <a href="wiki-bestiary.html" class="is-here">Bestiary</a>
+    <a href="wiki.html">All guides</a>
+    <details class="wside-section">
+      <summary>Buildcraft <span>13</span></summary>
+      <div class="wside-links">
+        <a href="wiki-weapons.html">Weapons</a>
+        <a href="wiki-cores.html">Core weapons</a>
+        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-tiers.html">Weapon tiers</a>
+        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tomes.html">Tomes</a>
+        <a href="wiki-relics.html">Relics</a>
+        <a href="wiki-legendaries.html">Legendary upgrades</a>
+        <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-utilities.html">Utility abilities</a>
+        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-evolutions.html">Evolution recipes</a>
+        <a href="wiki-jump-augments.html">Jump augments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Heroes <span>3</span></summary>
+      <div class="wside-links">
+        <a href="wiki-characters.html">Characters</a>
+        <a href="wiki-innates.html">Innates</a>
+        <a href="wiki-signatures.html">Signatures</a>
+      </div>
+    </details>
+    <details class="wside-section" open>
+      <summary>World <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-bestiary.html" class="is-here" aria-current="page">Bestiary</a>
+        <a href="wiki-worlds.html">Campaign worlds</a>
+        <a href="wiki-expeditions.html">Expeditions</a>
+        <a href="wiki-modes.html">Run modes</a>
+        <a href="wiki-world-events.html">Rare world events</a>
+        <a href="wiki-ambient-events.html">Ambient events</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Progression <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-achievements.html">Achievements</a>
+        <a href="wiki-quests.html">Quests and rewards</a>
+        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-ship-cores.html">Ship cores</a>
+        <a href="wiki-ship-systems.html">Ship systems</a>
+        <a href="wiki-ship-fragments.html">Ship fragments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Collection <span>2</span></summary>
+      <div class="wside-links">
+        <a href="wiki-wearables.html">Wearables</a>
+        <a href="wiki-cosmetics.html">Cosmetic styles</a>
+      </div>
+    </details>
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
@@ -316,1487 +430,1731 @@ footer a{color:var(--cyan);text-decoration:none}
     <h2 class="chroma">Bestiary</h2>
     <p class="lede">Every kind in the game, what it does, and where it turns up. Health, contact damage and XP are the values a kind starts a run with, before elapsed time, the level’s own multipliers and the opening grace period all scale them up, so read them against each other rather than as what you will meet at minute twelve.</p>
 
-    <p class="wprov">Every value on this page is read out of the game’s own registries at build time, from
-      <b>main@c4d4c20b</b>. Nothing here is retyped by hand, so it cannot fall behind a balance
-      change. Bars compare an entry against the largest value in <b>this roster</b>, never an absolute ceiling,
-      and the real number is always printed beside the bar.
-      Written flavour notes are the director’s to write and <b>0 of 53</b> exist so far, so these cards are mechanics only.</p>
+    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
+      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+      and dead relations before it writes a page. Source: <code>src/data/enemies.ts#ENEMY_KINDS</code>.
+      Optional director notes have <b>0 of 53</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
 
-    <p class="womit"><b>Every time on this page is minutes of real play.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks. <b>Speed is missing on purpose</b>: the registry carries a speed for every kind, but basic and special kinds are re-banded before the game ever uses that number, and the banding is not in the data these pages read. Publishing the raw field would be publishing a speed nobody ever meets, so it is left out and said out loud instead. <b>Boss and miniboss health and damage are missing for the same reason</b>: the boss director replaces them at spawn from its own table, so the registry values for those two tiers are documentation rather than what you actually fight.</p>
+    <p class="womit"><b>Every time on this page is minutes of real play.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks. <b>Live-run speed is a base, not a final chase speed.</b> The canonical policy says timed and per-instance multipliers still apply after the value shown here. <b>Boss and miniboss health and damage are UNMEASURED.</b> Runtime authority is private, multi-stage and mode-dependent, so the registry values for those two tiers are not published as encounter stats.</p>
+
+
+    <section class="wfeature" aria-labelledby="enemy-speed-policy">
+      <div><span class="eyebrow">Canonical speed policy</span><h3 id="enemy-speed-policy">Authored base and live-run base</h3></div>
+      <p>entries.&lt;id&gt;.speed and refs.&lt;id&gt;.speedProfile.authoredBaseMps are the raw authored registry value. refs.&lt;id&gt;.speedProfile.liveRunBaseMps is the profile-gated base used by live-run consumers after src/data/enemies.ts#bandedEnemySpeed. Battle/Arena consumers retain the authored base; the registry is deliberately never rewritten by the band. liveRunBaseMps is before domains.enemies.scaling.speedPer50s and contextual/per-instance multipliers, so it is not an at-time chase speed. A null maxExclusiveMps with unbounded:true is the JSON-safe representation of the source table's Infinity ceiling.</p>
+      <div class="wmethod-grid">
+        <div>
+          <b>Below 6 m/s</b>
+          <span>Live-run multiplier</span><code>&times; 1.1</code>
+        </div><div>
+          <b>Below 8 m/s</b>
+          <span>Live-run multiplier</span><code>&times; 1.07</code>
+        </div><div>
+          <b>Below 9.2 m/s</b>
+          <span>Live-run multiplier</span><code>&times; 1.04</code>
+        </div><div>
+          <b>Remaining speeds</b>
+          <span>Live-run multiplier</span><code>&times; 1</code>
+        </div>
+      </div>
+      <details class="wraw"><summary>Speed provenance <span>3</span></summary><dl><div><dt><code>authoredBase</code></dt><dd>src/data/enemies.ts#ENEMY_KINDS[*].speed</dd></div><div><dt><code>liveRunBase</code></dt><dd>src/data/enemies.ts#bandedEnemySpeed</dd></div><div><dt><code>bands</code></dt><dd>src/data/enemies.ts#ENEMY_SPEED_BANDS</dd></div></dl></details>
+    </section>
 
     <div class="wbar">
       <div class="wfacet">
         <span class="wfacet-h">Tier</span>
-        <div class="wfacet-row" data-facet="tier">
-          <button class="wf is-active" type="button" data-value="all">All</button>
-          <button class="wf" type="button" data-value="special">Special <span style="opacity:.5">33</span></button><button class="wf" type="button" data-value="boss">Boss <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="basic">Basic <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="miniboss">Miniboss <span style="opacity:.5">5</span></button>
+        <div class="wfacet-row" data-facet="tier" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="special" aria-pressed="false" aria-controls="wiki-groups">Special <span style="opacity:.5">33</span></button><button class="wf" type="button" data-value="boss" aria-pressed="false" aria-controls="wiki-groups">Boss <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="basic" aria-pressed="false" aria-controls="wiki-groups">Basic <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="miniboss" aria-pressed="false" aria-controls="wiki-groups">Miniboss <span style="opacity:.5">5</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h">Behaviour</span>
-        <div class="wfacet-row" data-facet="behavior">
-          <button class="wf is-active" type="button" data-value="all">All</button>
-          <button class="wf" type="button" data-value="charger">Charger <span style="opacity:.5">11</span></button><button class="wf" type="button" data-value="swarm">Swarm <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="fast">Fast <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="spitter">Spitter <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="tank">Tank <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="chaser">Chaser <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="sniper">Sniper <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="strafer">Strafer <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="exploder">Exploder <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="wraith">Wraith <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="bomber">Bomber <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="diver">Diver <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="jumper">Jumper <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="splitter">Splitter <span style="opacity:.5">1</span></button>
+        <div class="wfacet-row" data-facet="behavior" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="charger" aria-pressed="false" aria-controls="wiki-groups">Charger <span style="opacity:.5">11</span></button><button class="wf" type="button" data-value="swarm" aria-pressed="false" aria-controls="wiki-groups">Swarm <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="fast" aria-pressed="false" aria-controls="wiki-groups">Fast <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="spitter" aria-pressed="false" aria-controls="wiki-groups">Spitter <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="tank" aria-pressed="false" aria-controls="wiki-groups">Tank <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="chaser" aria-pressed="false" aria-controls="wiki-groups">Chaser <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="sniper" aria-pressed="false" aria-controls="wiki-groups">Sniper <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="strafer" aria-pressed="false" aria-controls="wiki-groups">Strafer <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="exploder" aria-pressed="false" aria-controls="wiki-groups">Exploder <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="wraith" aria-pressed="false" aria-controls="wiki-groups">Wraith <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="bomber" aria-pressed="false" aria-controls="wiki-groups">Bomber <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="diver" aria-pressed="false" aria-controls="wiki-groups">Diver <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="jumper" aria-pressed="false" aria-controls="wiki-groups">Jumper <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="splitter" aria-pressed="false" aria-controls="wiki-groups">Splitter <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h">Sort</span>
         <select class="wsort" id="wsort" aria-label="Sort Bestiary">
-          <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="hp" data-desc="1" data-text="0">Health</option><option value="damage" data-desc="1" data-text="0">Contact damage</option><option value="xp" data-desc="1" data-text="0">XP</option>
+          <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="hp" data-desc="1" data-text="0">Published health</option><option value="damage" data-desc="1" data-text="0">Published contact damage</option><option value="xp" data-desc="1" data-text="0">Published XP</option><option value="speed" data-desc="1" data-text="0">Live-run base speed</option>
         </select>
       </div></div>
-    <p class="wcount" id="wcount"></p>
+    <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
+    <div class="wempty" id="wempty" hidden>
+      <b>No entries match these filters.</b>
+      <button type="button" id="wreset">Reset filters</button>
+    </div>
 
-    
+    <div id="wiki-groups">
     <section class="wgroup" data-group="basic" id="g-basic">
       <div class="wgroup-h"><h3>Basic</h3><span class="wgroup-n">5</span></div>
       <p class="wgroup-note">The bulk of a run, and the only tier that can be promoted to an elite. Individually not the problem; the count is the problem.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-blob" data-tier="basic" data-behavior="chaser" data-s-roster="0" data-s-name="blob" data-s-hp="10" data-s-damage="6.8" data-s-xp="3">
+      <article class="wcard" id="e-blob" data-tier="basic" data-behavior="chaser" data-s-roster="0" data-s-name="blob" data-s-hp="10" data-s-damage="6.8" data-s-xp="3" data-s-speed="4.84">
         <div class="wcard-h">
           <h4>Blob</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag">Basic</span>
           <span class="wtag ink-cyan">Chaser</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Walks straight at you and tries to touch you. The baseline threat.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, Frostreach Pines, Shiverpeak Summit, Meadowfall and Sunken Sands <span class="wsub">from the start</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>4.84 m/s</b> live-run base, from authored 4.4 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:5%"></i></span><span class="wmeter-v">10</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">6.8</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:59%"></i></span><span class="wmeter-v">4.84<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-sprinter" data-tier="basic" data-behavior="fast" data-s-roster="1" data-s-name="sprinter" data-s-hp="7" data-s-damage="4.25" data-s-xp="3">
+      <article class="wcard" id="e-sprinter" data-tier="basic" data-behavior="fast" data-s-roster="1" data-s-name="sprinter" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
           <h4>Sprinter</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag">Basic</span>
           <span class="wtag ink-cyan">Fast</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Comes at you on a curve rather than a line, flanking wider the further out it starts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Meadow, Hellmouth, Glimmer Orchard, Mirage Flats, Meadowfall and Sunken Sands <span class="wsub">from the start</span>; Ember Wastes <span class="wsub">from 0:12</span>; Scorchdune, Void Rift, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 0:18</span>; Gloom Marsh <span class="wsub">from 0:27</span>; Neon Necropolis <span class="wsub">from 0:36</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-ember">Ember Wastes</a> <span class="wsub">from 0:12</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:18</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:27</span>; <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:36</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>8.06 m/s</b> live-run base, from authored 7.53 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:4%"></i></span><span class="wmeter-v">7</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.25</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:99%"></i></span><span class="wmeter-v">8.06<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-chonker" data-tier="basic" data-behavior="tank" data-s-roster="2" data-s-name="chonker" data-s-hp="38" data-s-damage="13.6" data-s-xp="7">
+      <article class="wcard" id="e-chonker" data-tier="basic" data-behavior="tank" data-s-roster="2" data-s-name="chonker" data-s-hp="38" data-s-damage="13.6" data-s-xp="7" data-s-speed="3.52">
         <div class="wcard-h">
           <h4>Chonker</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag">Basic</span>
           <span class="wtag ink-cyan">Tank</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Slow and heavy, and it pushes through the crowd instead of spreading around it.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Meadow, Hellmouth, Glimmer Orchard, Mirage Flats, Meadowfall and Sunken Sands <span class="wsub">from the start</span>; Gloom Marsh <span class="wsub">from 0:12</span>; Void Rift <span class="wsub">from 0:36</span>; Scorchdune, Neon Necropolis, Ember Wastes, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 0:54</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:12</span>; <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:54</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.52 m/s</b> live-run base, from authored 3.2 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">38</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">13.6</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">7</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">3.52<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-mite" data-tier="basic" data-behavior="swarm" data-s-roster="3" data-s-name="mite" data-s-hp="4" data-s-damage="2.55" data-s-xp="3">
+      <article class="wcard" id="e-mite" data-tier="basic" data-behavior="swarm" data-s-roster="3" data-s-name="mite" data-s-hp="4" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
           <h4>Mite</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag">Basic</span>
           <span class="wtag ink-cyan">Swarm</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Meadow, Hellmouth, Glimmer Orchard, Mirage Flats, Meadowfall and Sunken Sands <span class="wsub">from the start</span>; Neon Necropolis <span class="wsub">from 0:18</span>; Scorchdune, Ember Wastes, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 0:36</span>; Gloom Marsh and Void Rift <span class="wsub">from 0:54</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:18</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> and <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:54</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.38 m/s</b> live-run base, from authored 5.8 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:2%"></i></span><span class="wmeter-v">4</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">2.55</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:78%"></i></span><span class="wmeter-v">6.38<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-popper" data-tier="basic" data-behavior="exploder" data-s-roster="4" data-s-name="popper" data-s-hp="5" data-s-damage="3.4" data-s-xp="4">
+      <article class="wcard" id="e-popper" data-tier="basic" data-behavior="exploder" data-s-roster="4" data-s-name="popper" data-s-hp="5" data-s-damage="3.4" data-s-xp="4" data-s-speed="5.5">
         <div class="wcard-h">
           <h4>Popper</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag">Basic</span>
           <span class="wtag ink-cyan">Exploder</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Closes on you, lights a fuse you can see, and detonates. The damage is on the death, not the touch.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, Frostreach Pines, Shiverpeak Summit, Meadowfall and Sunken Sands <span class="wsub">from the start</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>5.5 m/s</b> live-run base, from authored 5 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">5</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:17%"></i></span><span class="wmeter-v">3.4</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">5.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article></div>
     </section>
     <section class="wgroup" data-group="special" id="g-special">
       <div class="wgroup-h"><h3>Special</h3><span class="wgroup-n">33</span></div>
       <p class="wgroup-note">Kinds that change how a fight works rather than adding to its size. This is also the only tier where the listed behaviour actually runs, which is why the rest of this page is quieter about movement.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-spitter" data-tier="special" data-behavior="spitter" data-s-roster="5" data-s-name="spitter" data-s-hp="22" data-s-damage="11.9" data-s-xp="4">
+      <article class="wcard" id="e-spitter" data-tier="special" data-behavior="spitter" data-s-roster="5" data-s-name="spitter" data-s-hp="22" data-s-damage="11.9" data-s-xp="4" data-s-speed="6.9336">
         <div class="wcard-h">
           <h4>Spitter</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Spitter</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Backs off to its own preferred distance, swells up as a tell, then lobs a glob at you. Distance is not safety.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Meadow, Gloom Marsh, Scorchdune, Glimmer Orchard, Mirage Flats, Gilded Canyon, Frostreach Pines, Shiverpeak Summit and Meadowfall <span class="wsub">from 1:12</span>; Hellmouth <span class="wsub">from 3:00</span>; Void Rift <span class="wsub">from 4:12</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 1:12</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 3:00</span>; <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 4:12</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.93 m/s</b> live-run base, from authored 6.48 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:12%"></i></span><span class="wmeter-v">22</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:58%"></i></span><span class="wmeter-v">11.9</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:85%"></i></span><span class="wmeter-v">6.93<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-charger" data-tier="special" data-behavior="charger" data-s-roster="6" data-s-name="charger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5">
+      <article class="wcard" id="e-charger" data-tier="special" data-behavior="charger" data-s-roster="6" data-s-name="charger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="7.39584">
         <div class="wcard-h">
           <h4>Charger</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Winds up with a line drawn on the ground, locks that direction, then commits to a fast straight rush. Readable, and it does not steer once it has gone.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Hellmouth <span class="wsub">from 0:36</span>; Neon Meadow, Ember Wastes, Glimmer Orchard, Mirage Flats and Meadowfall <span class="wsub">from 2:24</span>; Scorchdune, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 3:00</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 2:24</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 3:00</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.4 m/s</b> live-run base, from authored 6.91 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:16%"></i></span><span class="wmeter-v">30</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">18.7</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:91%"></i></span><span class="wmeter-v">7.4<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-splitter" data-tier="special" data-behavior="splitter" data-s-roster="7" data-s-name="splitter" data-s-hp="28" data-s-damage="13.6" data-s-xp="4">
+      <article class="wcard" id="e-splitter" data-tier="special" data-behavior="splitter" data-s-roster="7" data-s-name="splitter" data-s-hp="28" data-s-damage="13.6" data-s-xp="4" data-s-speed="5.2272">
         <div class="wcard-h">
           <h4>Splitter</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Splitter</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Walks at you like anything else. The trick is what happens when it dies.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Void Rift <span class="wsub">from 0:36</span>; Hellmouth <span class="wsub">from 1:12</span>; Neon Meadow, Scorchdune, Glimmer Orchard, Mirage Flats, Gilded Canyon, Frostreach Pines, Shiverpeak Summit and Meadowfall <span class="wsub">from 4:12</span></span></div>
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 1:12</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 4:12</span></span></div>
+
+
           <div class="wfact"><span class="wfact-k">Leaves behind</span><span class="wfact-v"><b>2</b> <a href="wiki-bestiary.html#e-splitterMite">Splitter Mites</a> when it dies</span></div>
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>5.23 m/s</b> live-run base, from authored 4.75 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:15%"></i></span><span class="wmeter-v">28</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">13.6</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:64%"></i></span><span class="wmeter-v">5.23<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-splitterMite" data-tier="special" data-behavior="chaser" data-s-roster="8" data-s-name="splitter mite" data-s-hp="17" data-s-damage="4.25" data-s-xp="2">
+      <article class="wcard" id="e-splitterMite" data-tier="special" data-behavior="chaser" data-s-roster="8" data-s-name="splitter mite" data-s-hp="17" data-s-damage="4.25" data-s-xp="2" data-s-speed="5.7024">
         <div class="wcard-h">
           <h4>Splitter Mite</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Chaser</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Walks straight at you and tries to touch you. The baseline threat.</p>
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
           <div class="wfact"><span class="wfact-k">Comes from</span><span class="wfact-v">killing <a href="wiki-bestiary.html#e-splitter">Splitter</a></span></div>
-          
-          
-          
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>5.7 m/s</b> live-run base, from authored 5.18 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:9%"></i></span><span class="wmeter-v">17</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.25</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">2</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:70%"></i></span><span class="wmeter-v">5.7<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-wraith" data-tier="special" data-behavior="wraith" data-s-roster="9" data-s-name="wraith" data-s-hp="26" data-s-damage="17" data-s-xp="5">
+      <article class="wcard" id="e-wraith" data-tier="special" data-behavior="wraith" data-s-roster="9" data-s-name="wraith" data-s-hp="26" data-s-damage="17" data-s-xp="5" data-s-speed="6.1776">
         <div class="wcard-h">
           <h4>Wraith</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Wraith</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Stalks faded, shimmers as it locks onto you, lunges, then is left exposed while it recovers.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Sunken Sands <span class="wsub">from 1:48</span>; Hellmouth <span class="wsub">from 2:24</span>; Neon Necropolis <span class="wsub">from 3:36</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from 1:48</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 2:24</span>; <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 3:36</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.18 m/s</b> live-run base, from authored 5.62 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:14%"></i></span><span class="wmeter-v">26</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:83%"></i></span><span class="wmeter-v">17</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:76%"></i></span><span class="wmeter-v">6.18<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-sniper" data-tier="special" data-behavior="sniper" data-s-roster="10" data-s-name="sniper" data-s-hp="20" data-s-damage="13.6" data-s-xp="5">
+      <article class="wcard" id="e-sniper" data-tier="special" data-behavior="sniper" data-s-roster="10" data-s-name="sniper" data-s-hp="20" data-s-damage="13.6" data-s-xp="5" data-s-speed="4.2768">
         <div class="wcard-h">
           <h4>Sniper</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Sniper</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Holds a long distance and spends over a second aiming a line you can see before it fires.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Sunken Sands <span class="wsub">from 3:00</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from 3:00</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>4.28 m/s</b> live-run base, from authored 3.89 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:11%"></i></span><span class="wmeter-v">20</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">13.6</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:52%"></i></span><span class="wmeter-v">4.28<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-wisp" data-tier="special" data-behavior="strafer" data-s-roster="11" data-s-name="wisp" data-s-hp="16" data-s-damage="8.5" data-s-xp="3">
+      <article class="wcard" id="e-wisp" data-tier="special" data-behavior="strafer" data-s-roster="11" data-s-name="wisp" data-s-hp="16" data-s-damage="8.5" data-s-xp="3" data-s-speed="7.522956">
         <div class="wcard-h">
           <h4>Wisp</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Strafer</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Circles at range instead of closing, keeping its spacing rather than yours, and fires in bursts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Sunken Sands <span class="wsub">from 1:12</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from 1:12</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.52 m/s</b> live-run base, from authored 7.03 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:8%"></i></span><span class="wmeter-v">16</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">8.5</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">7.52<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-leprechaun" data-tier="special" data-behavior="fast" data-s-roster="26" data-s-name="leprechaun" data-s-hp="190" data-s-damage="4.25" data-s-xp="15">
+      <article class="wcard" id="e-leprechaun" data-tier="special" data-behavior="fast" data-s-roster="26" data-s-name="leprechaun" data-s-hp="190" data-s-damage="4.25" data-s-xp="15" data-s-speed="7.1">
         <div class="wcard-h">
           <h4>Leprechaun</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Fast</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
         <p class="wgloss">Comes at you on a curve rather than a line, flanking wider the further out it starts.</p>
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
-          
-          
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.1 m/s</b> live-run base, unchanged by the live-run band</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">190</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.25</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">15</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:87%"></i></span><span class="wmeter-v">7.1<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-gravecaller" data-tier="special" data-behavior="spitter" data-s-roster="27" data-s-name="gravecaller" data-s-hp="24" data-s-damage="13.6" data-s-xp="5">
+      <article class="wcard" id="e-gravecaller" data-tier="special" data-behavior="spitter" data-s-roster="27" data-s-name="gravecaller" data-s-hp="24" data-s-damage="13.6" data-s-xp="5" data-s-speed="5.7024">
         <div class="wcard-h">
           <h4>Gravecaller</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Spitter</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Backs off to its own preferred distance, swells up as a tell, then lobs a glob at you. Distance is not safety.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Necropolis <span class="wsub">from 1:12</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 1:12</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>5.7 m/s</b> live-run base, from authored 5.18 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">24</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">13.6</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:70%"></i></span><span class="wmeter-v">5.7<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-cinderWisp" data-tier="special" data-behavior="strafer" data-s-roster="28" data-s-name="cinder wisp" data-s-hp="19" data-s-damage="8.5" data-s-xp="4">
+      <article class="wcard" id="e-cinderWisp" data-tier="special" data-behavior="strafer" data-s-roster="28" data-s-name="cinder wisp" data-s-hp="19" data-s-damage="8.5" data-s-xp="4" data-s-speed="8.167738">
         <div class="wcard-h">
           <h4>Cinder Wisp</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Strafer</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Circles at range instead of closing, keeping its spacing rather than yours, and fires in bursts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Hellmouth <span class="wsub">from 0:54</span>; Ember Wastes <span class="wsub">from 1:12</span>; Void Rift <span class="wsub">from 4:48</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 0:54</span>; <a href="wiki-worlds.html#e-ember">Ember Wastes</a> <span class="wsub">from 1:12</span>; <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 4:48</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>8.17 m/s</b> live-run base, from authored 7.63 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:10%"></i></span><span class="wmeter-v">19</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">8.5</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">8.17<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-voidSniper" data-tier="special" data-behavior="sniper" data-s-roster="29" data-s-name="void sniper" data-s-hp="24" data-s-damage="13.6" data-s-xp="6">
+      <article class="wcard" id="e-voidSniper" data-tier="special" data-behavior="sniper" data-s-roster="29" data-s-name="void sniper" data-s-hp="24" data-s-damage="13.6" data-s-xp="6" data-s-speed="4.0392">
         <div class="wcard-h">
           <h4>Void Sniper</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Sniper</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Holds a long distance and spends over a second aiming a line you can see before it fires.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Void Rift <span class="wsub">from 3:00</span>; Hellmouth <span class="wsub">from 3:36</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 3:00</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 3:36</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>4.04 m/s</b> live-run base, from authored 3.67 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">24</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">13.6</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">6</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:49%"></i></span><span class="wmeter-v">4.04<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-bogHopper" data-tier="special" data-behavior="charger" data-s-roster="30" data-s-name="bog hopper" data-s-hp="28" data-s-damage="18.7" data-s-xp="5">
+      <article class="wcard" id="e-bogHopper" data-tier="special" data-behavior="charger" data-s-roster="30" data-s-name="bog hopper" data-s-hp="28" data-s-damage="18.7" data-s-xp="5" data-s-speed="4.752">
         <div class="wcard-h">
           <h4>Bog Hopper</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Winds up with a line drawn on the ground, locks that direction, then commits to a fast straight rush. Readable, and it does not steer once it has gone.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Gloom Marsh <span class="wsub">from 1:30</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 1:30</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>4.75 m/s</b> live-run base, from authored 4.32 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:15%"></i></span><span class="wmeter-v">28</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">18.7</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:58%"></i></span><span class="wmeter-v">4.75<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-mireBeast" data-tier="special" data-behavior="tank" data-s-roster="31" data-s-name="mire beast" data-s-hp="46" data-s-damage="20.4" data-s-xp="8">
+      <article class="wcard" id="e-mireBeast" data-tier="special" data-behavior="tank" data-s-roster="31" data-s-name="mire beast" data-s-hp="46" data-s-damage="20.4" data-s-xp="8" data-s-speed="3.52">
         <div class="wcard-h">
           <h4>Mire Beast</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Tank</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Slow and heavy, and it pushes through the crowd instead of spreading around it.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Gloom Marsh <span class="wsub">from 0:12</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:12</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.52 m/s</b> live-run base, from authored 3.2 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:24%"></i></span><span class="wmeter-v">46</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">20.4</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:53%"></i></span><span class="wmeter-v">8</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">3.52<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-sinkTick" data-tier="special" data-behavior="swarm" data-s-roster="32" data-s-name="sink tick" data-s-hp="6" data-s-damage="2.55" data-s-xp="3">
+      <article class="wcard" id="e-sinkTick" data-tier="special" data-behavior="swarm" data-s-roster="32" data-s-name="sink tick" data-s-hp="6" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
           <h4>Sink Tick</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Swarm</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Gloom Marsh <span class="wsub">from 0:45</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:45</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.38 m/s</b> live-run base, from authored 5.8 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">6</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">2.55</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:78%"></i></span><span class="wmeter-v">6.38<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-boneDrifter" data-tier="special" data-behavior="fast" data-s-roster="33" data-s-name="bone drifter" data-s-hp="8" data-s-damage="4.25" data-s-xp="3">
+      <article class="wcard" id="e-boneDrifter" data-tier="special" data-behavior="fast" data-s-roster="33" data-s-name="bone drifter" data-s-hp="8" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
           <h4>Bone Drifter</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Fast</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Comes at you on a curve rather than a line, flanking wider the further out it starts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Necropolis <span class="wsub">from 0:48</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:48</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>8.06 m/s</b> live-run base, from authored 7.53 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:4%"></i></span><span class="wmeter-v">8</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.25</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:99%"></i></span><span class="wmeter-v">8.06<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-graveMite" data-tier="special" data-behavior="swarm" data-s-roster="34" data-s-name="grave mite" data-s-hp="5" data-s-damage="2.55" data-s-xp="3">
+      <article class="wcard" id="e-graveMite" data-tier="special" data-behavior="swarm" data-s-roster="34" data-s-name="grave mite" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
           <h4>Grave Mite</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Swarm</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Necropolis <span class="wsub">from 0:27</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:27</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.38 m/s</b> live-run base, from authored 5.8 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">5</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">2.55</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:78%"></i></span><span class="wmeter-v">6.38<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-tombWisp" data-tier="special" data-behavior="strafer" data-s-roster="35" data-s-name="tomb wisp" data-s-hp="18" data-s-damage="8.5" data-s-xp="4">
+      <article class="wcard" id="e-tombWisp" data-tier="special" data-behavior="strafer" data-s-roster="35" data-s-name="tomb wisp" data-s-hp="18" data-s-damage="8.5" data-s-xp="4" data-s-speed="7.522956">
         <div class="wcard-h">
           <h4>Tomb Wisp</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Strafer</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Circles at range instead of closing, keeping its spacing rather than yours, and fires in bursts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Neon Necropolis <span class="wsub">from 1:48</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 1:48</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.52 m/s</b> live-run base, from authored 7.03 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:9%"></i></span><span class="wmeter-v">18</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">8.5</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">7.52<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-emberSparkling" data-tier="special" data-behavior="fast" data-s-roster="36" data-s-name="ember sparkling" data-s-hp="6" data-s-damage="4.25" data-s-xp="4">
+      <article class="wcard" id="e-emberSparkling" data-tier="special" data-behavior="fast" data-s-roster="36" data-s-name="ember sparkling" data-s-hp="6" data-s-damage="4.25" data-s-xp="4" data-s-speed="8.06031">
         <div class="wcard-h">
           <h4>Ember Sparkling</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Fast</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Comes at you on a curve rather than a line, flanking wider the further out it starts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Ember Wastes <span class="wsub">from 0:24</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-ember">Ember Wastes</a> <span class="wsub">from 0:24</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>8.06 m/s</b> live-run base, from authored 7.53 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">6</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.25</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:99%"></i></span><span class="wmeter-v">8.06<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-cinderMoth" data-tier="special" data-behavior="swarm" data-s-roster="37" data-s-name="cinder moth" data-s-hp="4" data-s-damage="2.55" data-s-xp="3">
+      <article class="wcard" id="e-cinderMoth" data-tier="special" data-behavior="swarm" data-s-roster="37" data-s-name="cinder moth" data-s-hp="4" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.415528">
         <div class="wcard-h">
           <h4>Cinder Moth</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Swarm</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Ember Wastes <span class="wsub">from 0:42</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-ember">Ember Wastes</a> <span class="wsub">from 0:42</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.42 m/s</b> live-run base, from authored 6.93 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:2%"></i></span><span class="wmeter-v">4</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">2.55</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:91%"></i></span><span class="wmeter-v">7.42<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-magmaLurch" data-tier="special" data-behavior="charger" data-s-roster="38" data-s-name="magma lurch" data-s-hp="26" data-s-damage="18.7" data-s-xp="5">
+      <article class="wcard" id="e-magmaLurch" data-tier="special" data-behavior="charger" data-s-roster="38" data-s-name="magma lurch" data-s-hp="26" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.1776">
         <div class="wcard-h">
           <h4>Magma Lurch</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.1</span>
+
         </div>
         <p class="wgloss">Winds up with a line drawn on the ground, locks that direction, then commits to a fast straight rush. Readable, and it does not steer once it has gone.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Ember Wastes <span class="wsub">from 2:00</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-ember">Ember Wastes</a> <span class="wsub">from 2:00</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.18 m/s</b> live-run base, from authored 5.62 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:14%"></i></span><span class="wmeter-v">26</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">18.7</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:76%"></i></span><span class="wmeter-v">6.18<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-riftSkitter" data-tier="special" data-behavior="swarm" data-s-roster="39" data-s-name="rift skitter" data-s-hp="5" data-s-damage="2.55" data-s-xp="4">
+      <article class="wcard" id="e-riftSkitter" data-tier="special" data-behavior="swarm" data-s-roster="39" data-s-name="rift skitter" data-s-hp="5" data-s-damage="2.55" data-s-xp="4" data-s-speed="7.57667">
         <div class="wcard-h">
           <h4>Rift Skitter</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Swarm</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Void Rift <span class="wsub">from 1:00</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 1:00</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.58 m/s</b> live-run base, from authored 7.08 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">5</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">2.55</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:93%"></i></span><span class="wmeter-v">7.58<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-phaseBlinker" data-tier="special" data-behavior="wraith" data-s-roster="40" data-s-name="phase blinker" data-s-hp="22" data-s-damage="17" data-s-xp="5">
+      <article class="wcard" id="e-phaseBlinker" data-tier="special" data-behavior="wraith" data-s-roster="40" data-s-name="phase blinker" data-s-hp="22" data-s-damage="17" data-s-xp="5" data-s-speed="6.47136">
         <div class="wcard-h">
           <h4>Phase Blinker</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Wraith</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Stalks faded, shimmers as it locks onto you, lunges, then is left exposed while it recovers.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Void Rift <span class="wsub">from 2:00</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 2:00</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.47 m/s</b> live-run base, from authored 6.05 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:12%"></i></span><span class="wmeter-v">22</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:83%"></i></span><span class="wmeter-v">17</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:79%"></i></span><span class="wmeter-v">6.47<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-voidChaser" data-tier="special" data-behavior="fast" data-s-roster="41" data-s-name="void chaser" data-s-hp="8" data-s-damage="4.25" data-s-xp="4">
+      <article class="wcard" id="e-voidChaser" data-tier="special" data-behavior="fast" data-s-roster="41" data-s-name="void chaser" data-s-hp="8" data-s-damage="4.25" data-s-xp="4" data-s-speed="7.737919">
         <div class="wcard-h">
           <h4>Void Chaser</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Fast</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Comes at you on a curve rather than a line, flanking wider the further out it starts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Void Rift <span class="wsub">from 3:24</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 3:24</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.74 m/s</b> live-run base, from authored 7.23 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:4%"></i></span><span class="wmeter-v">8</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.25</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:95%"></i></span><span class="wmeter-v">7.74<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-cindersworn" data-tier="special" data-behavior="exploder" data-s-roster="42" data-s-name="cindersworn" data-s-hp="6" data-s-damage="3.4" data-s-xp="4">
+      <article class="wcard" id="e-cindersworn" data-tier="special" data-behavior="exploder" data-s-roster="42" data-s-name="cindersworn" data-s-hp="6" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.28028">
         <div class="wcard-h">
           <h4>Cindersworn</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Exploder</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Closes on you, lights a fuse you can see, and detonates. The damage is on the death, not the touch.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Hellmouth <span class="wsub">from the start</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from the start</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.28 m/s</b> live-run base, from authored 6.8 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">6</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:17%"></i></span><span class="wmeter-v">3.4</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:89%"></i></span><span class="wmeter-v">7.28<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-brimTick" data-tier="special" data-behavior="swarm" data-s-roster="43" data-s-name="brim tick" data-s-hp="5" data-s-damage="3.4" data-s-xp="4">
+      <article class="wcard" id="e-brimTick" data-tier="special" data-behavior="swarm" data-s-roster="43" data-s-name="brim tick" data-s-hp="5" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.254279">
         <div class="wcard-h">
           <h4>Brim Tick</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Swarm</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Hellmouth <span class="wsub">from 0:18</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 0:18</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.25 m/s</b> live-run base, from authored 6.78 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">5</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:17%"></i></span><span class="wmeter-v">3.4</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:89%"></i></span><span class="wmeter-v">7.25<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-hellstalker" data-tier="special" data-behavior="charger" data-s-roster="44" data-s-name="hellstalker" data-s-hp="36" data-s-damage="18.7" data-s-xp="6">
+      <article class="wcard" id="e-hellstalker" data-tier="special" data-behavior="charger" data-s-roster="44" data-s-name="hellstalker" data-s-hp="36" data-s-damage="18.7" data-s-xp="6" data-s-speed="7.307993">
         <div class="wcard-h">
           <h4>Hellstalker</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Winds up with a line drawn on the ground, locks that direction, then commits to a fast straight rush. Readable, and it does not steer once it has gone.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Hellmouth <span class="wsub">from 1:48</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 1:48</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.31 m/s</b> live-run base, from authored 6.83 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:19%"></i></span><span class="wmeter-v">36</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">18.7</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">6</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:89%"></i></span><span class="wmeter-v">7.31<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-duneScarab" data-tier="special" data-behavior="swarm" data-s-roster="46" data-s-name="dune scarab" data-s-hp="5" data-s-damage="2.55" data-s-xp="3">
+      <article class="wcard" id="e-duneScarab" data-tier="special" data-behavior="swarm" data-s-roster="46" data-s-name="dune scarab" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.630384">
         <div class="wcard-h">
           <h4>Dune Scarab</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Swarm</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Scorchdune, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 0:45</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:45</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.63 m/s</b> live-run base, from authored 7.13 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:3%"></i></span><span class="wmeter-v">5</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">2.55</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:93%"></i></span><span class="wmeter-v">7.63<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-dustDevil" data-tier="special" data-behavior="chaser" data-s-roster="47" data-s-name="dust devil" data-s-hp="11" data-s-damage="6.8" data-s-xp="3">
+      <article class="wcard" id="e-dustDevil" data-tier="special" data-behavior="chaser" data-s-roster="47" data-s-name="dust devil" data-s-hp="11" data-s-damage="6.8" data-s-xp="3" data-s-speed="7.522956">
         <div class="wcard-h">
           <h4>Dust Devil</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Chaser</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Walks straight at you and tries to touch you. The baseline threat.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Scorchdune, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 0:09</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:09</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.52 m/s</b> live-run base, from authored 7.03 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:6%"></i></span><span class="wmeter-v">11</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">6.8</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">7.52<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-mirageRunner" data-tier="special" data-behavior="fast" data-s-roster="48" data-s-name="mirage runner" data-s-hp="7" data-s-damage="4.25" data-s-xp="3">
+      <article class="wcard" id="e-mirageRunner" data-tier="special" data-behavior="fast" data-s-roster="48" data-s-name="mirage runner" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
           <h4>Mirage Runner</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Fast</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Comes at you on a curve rather than a line, flanking wider the further out it starts.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Scorchdune, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 0:27</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:27</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>8.06 m/s</b> live-run base, from authored 7.53 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:4%"></i></span><span class="wmeter-v">7</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:21%"></i></span><span class="wmeter-v">4.25</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:20%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:99%"></i></span><span class="wmeter-v">8.06<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-duneStinger" data-tier="special" data-behavior="charger" data-s-roster="49" data-s-name="dune stinger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5">
+      <article class="wcard" id="e-duneStinger" data-tier="special" data-behavior="charger" data-s-roster="49" data-s-name="dune stinger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.9336">
         <div class="wcard-h">
           <h4>Dune Stinger</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Winds up with a line drawn on the ground, locks that direction, then commits to a fast straight rush. Readable, and it does not steer once it has gone.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Scorchdune, Gilded Canyon, Frostreach Pines and Shiverpeak Summit <span class="wsub">from 1:48</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 1:48</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.93 m/s</b> live-run base, from authored 6.48 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:16%"></i></span><span class="wmeter-v">30</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">18.7</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:85%"></i></span><span class="wmeter-v">6.93<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-skydart" data-tier="special" data-behavior="diver" data-s-roster="50" data-s-name="skydart" data-s-hp="8" data-s-damage="6" data-s-xp="4">
+      <article class="wcard" id="e-skydart" data-tier="special" data-behavior="diver" data-s-roster="50" data-s-name="skydart" data-s-hp="8" data-s-damage="6" data-s-xp="4" data-s-speed="7.704">
         <div class="wcard-h">
           <h4>Skydart</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Diver</span>
+          <span class="wtag ink-gold">Speed &times;1.07</span>
           <span class="wtag ink-cyan">Flying</span>
         </div>
         <p class="wgloss">Circles above, flares to lock its line, then commits to a straight run through you. It locks at the flare, so a step sideways beats it.</p>
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Flying</span><span class="wfact-v">Ignores the ground: pits and walls do not route it. It is still hit by everything a walker is.</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.7 m/s</b> live-run base, from authored 7.2 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:4%"></i></span><span class="wmeter-v">8</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:29%"></i></span><span class="wmeter-v">6</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:94%"></i></span><span class="wmeter-v">7.7<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-loomer" data-tier="special" data-behavior="bomber" data-s-roster="51" data-s-name="loomer" data-s-hp="24" data-s-damage="6.8" data-s-xp="6">
+      <article class="wcard" id="e-loomer" data-tier="special" data-behavior="bomber" data-s-roster="51" data-s-name="loomer" data-s-hp="24" data-s-damage="6.8" data-s-xp="6" data-s-speed="3.74">
         <div class="wcard-h">
           <h4>Loomer</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Bomber</span>
+          <span class="wtag ink-gold">Speed &times;1.1</span>
           <span class="wtag ink-cyan">Flying</span>
         </div>
         <p class="wgloss">Hovers high and never closes, drawing a ring on the ground before it drops something onto that spot.</p>
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Flying</span><span class="wfact-v">Ignores the ground: pits and walls do not route it. It is still hit by everything a walker is.</span></div>
-          
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.74 m/s</b> live-run base, from authored 3.4 m/s at &times;1.1</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:13%"></i></span><span class="wmeter-v">24</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">6.8</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">6</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:46%"></i></span><span class="wmeter-v">3.74<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article>
-      <article class="wcard" id="e-jumper" data-tier="special" data-behavior="jumper" data-s-roster="52" data-s-name="jumper" data-s-hp="16" data-s-damage="7" data-s-xp="4">
+      <article class="wcard" id="e-jumper" data-tier="special" data-behavior="jumper" data-s-roster="52" data-s-name="jumper" data-s-hp="16" data-s-damage="7" data-s-xp="4" data-s-speed="7.062">
         <div class="wcard-h">
           <h4>Jumper</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-violet">Special</span>
           <span class="wtag ink-cyan">Jumper</span>
-          
+          <span class="wtag ink-gold">Speed &times;1.07</span>
+
         </div>
         <p class="wgloss">Crouches, flashes, then arcs over the ground between you. It gets past the line you thought was holding.</p>
         <div class="wfacts">
-          
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">Gloom Marsh, Scorchdune, Neon Necropolis, Ember Wastes, Void Rift, Hellmouth, Gilded Canyon, Frostreach Pines, Shiverpeak Summit and Sunken Sands <span class="wsub">from the start</span>; Neon Meadow, Glimmer Orchard, Mirage Flats and Meadowfall <span class="wsub">from 4:00</span></span></div>
-          
-          
-          
-          
-          
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 4:00</span></span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.06 m/s</b> live-run base, from authored 6.6 m/s at &times;1.07</span></div>
+
         </div>
         <div class="wmeters">
           <div class="wmeter"><span class="wmeter-k">Health</span><span class="wmeter-t"><i style="width:8%"></i></span><span class="wmeter-v">16</span></div>
           <div class="wmeter"><span class="wmeter-k">Contact</span><span class="wmeter-t"><i style="width:34%"></i></span><span class="wmeter-v">7</span></div>
           <div class="wmeter"><span class="wmeter-k">XP</span><span class="wmeter-t"><i style="width:27%"></i></span><span class="wmeter-v">4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:86%"></i></span><span class="wmeter-v">7.06<span class="wmeter-u"> m/s</span></span></div>
         </div>
-        
+
       </article></div>
     </section>
     <section class="wgroup" data-group="miniboss" id="g-miniboss">
       <div class="wgroup-h"><h3>Minibosses</h3><span class="wgroup-n">5</span></div>
       <p class="wgroup-note">Not rolled from a spawn table. They arrive on a rotation, on the clock, and the boss director owns their numbers and their movement.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-bruiser" data-tier="miniboss" data-behavior="tank" data-s-roster="12" data-s-name="bruiser" data-s-hp="440" data-s-damage="21.25" data-s-xp="60">
+      <article class="wcard" id="e-bruiser" data-tier="miniboss" data-behavior="tank" data-s-roster="12" data-s-name="bruiser"    data-s-speed="6.48">
         <div class="wcard-h">
           <h4>Bruiser</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Miniboss</span>
           <span class="wtag ink-cyan">Tank</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.48 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:79%"></i></span><span class="wmeter-v">6.48<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-warden" data-tier="miniboss" data-behavior="charger" data-s-roster="13" data-s-name="warden" data-s-hp="805" data-s-damage="34" data-s-xp="90">
+      <article class="wcard" id="e-warden" data-tier="miniboss" data-behavior="charger" data-s-roster="13" data-s-name="warden"    data-s-speed="5.4">
         <div class="wcard-h">
           <h4>Warden</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Miniboss</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>5.4 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:66%"></i></span><span class="wmeter-v">5.4<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-ravager" data-tier="miniboss" data-behavior="tank" data-s-roster="14" data-s-name="ravager" data-s-hp="600" data-s-damage="27.2" data-s-xp="75">
+      <article class="wcard" id="e-ravager" data-tier="miniboss" data-behavior="tank" data-s-roster="14" data-s-name="ravager"    data-s-speed="6.912">
         <div class="wcard-h">
           <h4>Ravager</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Miniboss</span>
           <span class="wtag ink-cyan">Tank</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.91 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:85%"></i></span><span class="wmeter-v">6.91<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-harrier" data-tier="miniboss" data-behavior="charger" data-s-roster="15" data-s-name="harrier" data-s-hp="520" data-s-damage="25.5" data-s-xp="80">
+      <article class="wcard" id="e-harrier" data-tier="miniboss" data-behavior="charger" data-s-roster="15" data-s-name="harrier"    data-s-speed="7.2317">
         <div class="wcard-h">
           <h4>Harrier</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Miniboss</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>7.23 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:89%"></i></span><span class="wmeter-v">7.23<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-maw" data-tier="miniboss" data-behavior="chaser" data-s-roster="45" data-s-name="the maw" data-s-hp="200000" data-s-damage="38.25" data-s-xp="0">
+      <article class="wcard" id="e-maw" data-tier="miniboss" data-behavior="chaser" data-s-roster="45" data-s-name="the maw"    data-s-speed="4.104">
         <div class="wcard-h">
           <h4>The Maw</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-gold">Miniboss</span>
           <span class="wtag ink-cyan">Chaser</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          
-          
+
+
           <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>4.1 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:50%"></i></span><span class="wmeter-v">4.1<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article></div>
     </section>
     <section class="wgroup" data-group="boss" id="g-boss">
       <div class="wgroup-h"><h3>Bosses</h3><span class="wgroup-n">10</span></div>
       <p class="wgroup-note">The run’s punctuation, scheduled per level rather than rolled. Their movement is directed rather than run off the behaviour below.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-thistlemaw" data-tier="boss" data-behavior="charger" data-s-roster="16" data-s-name="thistlemaw" data-s-hp="13000" data-s-damage="38.25" data-s-xp="400">
+      <article class="wcard" id="e-thistlemaw" data-tier="boss" data-behavior="charger" data-s-roster="16" data-s-name="thistlemaw"    data-s-speed="3.456">
         <div class="wcard-h">
           <h4>Thistlemaw</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into Neon Meadow, Gloom Marsh, Glimmer Orchard, Mirage Flats and Meadowfall</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.46 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">3.46<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-ramhorn" data-tier="boss" data-behavior="charger" data-s-roster="17" data-s-name="ramhorn" data-s-hp="42000" data-s-damage="46.75" data-s-xp="900">
+      <article class="wcard" id="e-ramhorn" data-tier="boss" data-behavior="charger" data-s-roster="17" data-s-name="ramhorn"    data-s-speed="6.8299">
         <div class="wcard-h">
           <h4>Ramhorn</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into Neon Meadow, Gloom Marsh, Scorchdune, Glimmer Orchard, Mirage Flats, Gilded Canyon, Frostreach Pines, Shiverpeak Summit and Meadowfall</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.83 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:84%"></i></span><span class="wmeter-v">6.83<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-kingbloom" data-tier="boss" data-behavior="spitter" data-s-roster="18" data-s-name="king bloom" data-s-hp="96000" data-s-damage="55.25" data-s-xp="1800">
+      <article class="wcard" id="e-kingbloom" data-tier="boss" data-behavior="spitter" data-s-roster="18" data-s-name="king bloom"    data-s-speed="3.24">
         <div class="wcard-h">
           <h4>King Bloom</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Spitter</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>18:00</b> into Neon Meadow, Gloom Marsh, Glimmer Orchard, Mirage Flats and Meadowfall</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>18:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.24 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">3.24<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-tidebound" data-tier="boss" data-behavior="tank" data-s-roster="19" data-s-name="tidebound colossus" data-s-hp="13500" data-s-damage="38.25" data-s-xp="450">
+      <article class="wcard" id="e-tidebound" data-tier="boss" data-behavior="tank" data-s-roster="19" data-s-name="tidebound colossus"    data-s-speed="3.024">
         <div class="wcard-h">
           <h4>Tidebound Colossus</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Tank</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into Scorchdune, Neon Necropolis, Ember Wastes, Void Rift, Hellmouth, Gilded Canyon, Frostreach Pines, Shiverpeak Summit and Sunken Sands</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.02 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:37%"></i></span><span class="wmeter-v">3.02<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-oilfather" data-tier="boss" data-behavior="spitter" data-s-roster="20" data-s-name="oilfather" data-s-hp="43000" data-s-damage="46.75" data-s-xp="950">
+      <article class="wcard" id="e-oilfather" data-tier="boss" data-behavior="spitter" data-s-roster="20" data-s-name="oilfather"    data-s-speed="3.672">
         <div class="wcard-h">
           <h4>Oilfather</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Spitter</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into Sunken Sands; <b>18:00</b> into Scorchdune, Neon Necropolis, Ember Wastes, Void Rift, Hellmouth, Gilded Canyon, Frostreach Pines and Shiverpeak Summit</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a>; <b>18:00</b> into <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.67 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:45%"></i></span><span class="wmeter-v">3.67<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-archivist" data-tier="boss" data-behavior="sniper" data-s-roster="21" data-s-name="the archivist" data-s-hp="99000" data-s-damage="55.25" data-s-xp="1900">
+      <article class="wcard" id="e-archivist" data-tier="boss" data-behavior="sniper" data-s-roster="21" data-s-name="the archivist"    data-s-speed="2.808">
         <div class="wcard-h">
           <h4>The Archivist</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Sniper</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>18:00</b> into Sunken Sands</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>18:00</b> into <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>2.81 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:34%"></i></span><span class="wmeter-v">2.81<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-gravemonarch" data-tier="boss" data-behavior="sniper" data-s-roster="22" data-s-name="the grave monarch" data-s-hp="101000" data-s-damage="52.7" data-s-xp="1900">
+      <article class="wcard" id="e-gravemonarch" data-tier="boss" data-behavior="sniper" data-s-roster="22" data-s-name="the grave monarch"    data-s-speed="2.916">
         <div class="wcard-h">
           <h4>The Grave Monarch</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Sniper</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into Neon Necropolis</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>2.92 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:36%"></i></span><span class="wmeter-v">2.92<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-cinderlord" data-tier="boss" data-behavior="spitter" data-s-roster="23" data-s-name="the cinderlord" data-s-hp="104000" data-s-damage="54.4" data-s-xp="1950">
+      <article class="wcard" id="e-cinderlord" data-tier="boss" data-behavior="spitter" data-s-roster="23" data-s-name="the cinderlord"    data-s-speed="3.24">
         <div class="wcard-h">
           <h4>The Cinderlord</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Spitter</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into Ember Wastes</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-worlds.html#e-ember">Ember Wastes</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.24 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">3.24<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-nullwarden" data-tier="boss" data-behavior="charger" data-s-roster="24" data-s-name="the null warden" data-s-hp="108000" data-s-damage="56.1" data-s-xp="2050">
+      <article class="wcard" id="e-nullwarden" data-tier="boss" data-behavior="charger" data-s-roster="24" data-s-name="the null warden"    data-s-speed="6.912">
         <div class="wcard-h">
           <h4>The Null Warden</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into Void Rift</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-worlds.html#e-rift">Void Rift</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>6.91 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:85%"></i></span><span class="wmeter-v">6.91<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article>
-      <article class="wcard" id="e-disregent" data-tier="boss" data-behavior="charger" data-s-roster="25" data-s-name="the regent of dis" data-s-hp="115000" data-s-damage="59.5" data-s-xp="2200">
+      <article class="wcard" id="e-disregent" data-tier="boss" data-behavior="charger" data-s-roster="25" data-s-name="the regent of dis"    data-s-speed="3.24">
         <div class="wcard-h">
           <h4>The Regent of Dis</h4>
-          
+
         </div>
-        
+
         <div class="wtags">
           <span class="wtag ink-pink">Boss</span>
           <span class="wtag ink-cyan">Charger</span>
-          
+          <span class="wtag">Base speed unchanged</span>
+
         </div>
-        
+
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into Hellmouth</span></div>
-          
-          
-          
-          
-          
-          <div class="wfact"><span class="wfact-k">Numbers</span><span class="wfact-v">Set by the boss director at spawn, not by the roster.</span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-worlds.html#e-inferno">Hellmouth</a></span></div>
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Speed profile</span><span class="wfact-v"><b>3.24 m/s</b> live-run base, unchanged by the live-run band</span></div>
+          <div class="wfact"><span class="wfact-k">Combat stats</span><span class="wfact-v"><b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.</span></div>
         </div>
-        
-        
+        <div class="wmeters">
+
+
+
+          <div class="wmeter"><span class="wmeter-k">Profile speed</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">3.24<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
       </article></div>
-    </section>
+    </section></div>
   </main>
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 14:02 UTC from <code>main@c4d4c20b</code>,
+  Generated 2026-08-03 20:59 UTC from <code>game@d2b39395</code>,
   content derived from <code>data/game-data.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
@@ -1834,8 +2192,9 @@ document.querySelectorAll('.wfacet-row').forEach((row) => {
   const facet = row.dataset.facet;
   active[facet] = 'all';
   row.querySelectorAll('.wf').forEach((btn) => btn.addEventListener('click', () => {
-    row.querySelectorAll('.wf').forEach((b) => b.classList.remove('is-active'));
+    row.querySelectorAll('.wf').forEach((b) => { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
     btn.classList.add('is-active');
+    btn.setAttribute('aria-pressed', 'true');
     active[facet] = btn.dataset.value;
     apply();
   }));
@@ -1843,7 +2202,11 @@ document.querySelectorAll('.wfacet-row').forEach((row) => {
 function apply() {
   let shown = 0;
   for (const c of cards) {
-    const ok = Object.entries(active).every(([k, v]) => v === 'all' || c.dataset[k] === v);
+    const ok = Object.entries(active).every(([k, v]) => {
+      if (v === 'all') return true;
+      const row = document.querySelector('.wfacet-row[data-facet="' + k + '"]');
+      return row?.dataset.multi === '1' ? String(c.dataset[k] || '').split(' ').includes(v) : c.dataset[k] === v;
+    });
     c.dataset.hidden = ok ? '0' : '1';
     if (ok) shown++;
   }
@@ -1855,7 +2218,21 @@ function apply() {
   });
   const el = document.getElementById('wcount');
   if (el) el.textContent = shown === cards.length ? cards.length + ' shown' : shown + ' of ' + cards.length + ' shown';
+  const empty = document.getElementById('wempty');
+  if (empty) empty.hidden = shown !== 0;
 }
+function resetFilters() {
+  document.querySelectorAll('.wfacet-row').forEach((row) => {
+    row.querySelectorAll('.wf').forEach((b) => {
+      const selected = b.dataset.value === 'all';
+      b.classList.toggle('is-active', selected);
+      b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    });
+    active[row.dataset.facet] = 'all';
+  });
+  apply();
+}
+document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
 if (sortSel) sortSel.addEventListener('change', () => {
@@ -1866,6 +2243,9 @@ if (sortSel) sortSel.addEventListener('change', () => {
     [...grid.children]
       .sort((a, b) => {
         const x = a.dataset[prop], y = b.dataset[prop];
+        if (x == null && y == null) return 0;
+        if (x == null) return 1;
+        if (y == null) return -1;
         const cmp = isText ? String(x).localeCompare(String(y)) : (Number(x) - Number(y));
         return desc ? -cmp : cmp;
       })
@@ -1877,39 +2257,197 @@ apply();
 
 const searchInput = document.getElementById('search');
 const srPanel = document.getElementById('sr-panel');
+const searchStatus = document.getElementById('sr-status');
+const SEARCH_LIMIT = 30;
 let searchIndex = [];
-fetch('./search-index.json').then((r) => r.ok ? r.json() : []).then((data) => { searchIndex = data; }).catch(() => { searchIndex = []; });
+let searchState = 'loading';
+let renderedHits = [];
+let activeResult = -1;
+
+function setSearchStatus(message) {
+  if (searchStatus) searchStatus.textContent = message;
+}
+
+function setSearchOpen(open) {
+  srPanel.classList.toggle('open', open);
+  searchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!open) {
+    activeResult = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function showSearchMessage(message, announcement = message) {
+  renderedHits = [];
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  const empty = document.createElement('div');
+  empty.className = 'sr-empty';
+  empty.setAttribute('role', 'option');
+  empty.setAttribute('aria-disabled', 'true');
+  empty.textContent = message;
+  srPanel.append(empty);
+  setSearchStatus(announcement);
+  setSearchOpen(true);
+}
+
+const normalized = (value) => String(value || '').trim().toLowerCase();
+const hasWordPrefix = (value, query) => value.split(/\s+/).some((word) => word.startsWith(query));
+
+/* Ranking is deliberately source-aware. Exact and prefix title matches are
+ * always first; after those, a generated wiki route/card beats a generic
+ * change-log body match. This is what makes a short query such as "core" land
+ * on Core weapons and its cards instead of a commit that happened to say core. */
+function searchRank(item, query) {
+  const title = normalized(item.title);
+  const text = normalized(item.text);
+  const type = normalized(item.type);
+  const wikiResult = normalized(item.href).startsWith('wiki');
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 10;
+  if (wikiResult && hasWordPrefix(title, query)) return 20;
+  if (wikiResult && title.includes(query)) return 30;
+  if (wikiResult && (text.startsWith(query) || type.startsWith(query))) return 40;
+  if (wikiResult && (hasWordPrefix(text, query) || hasWordPrefix(type, query))) return 45;
+  if (wikiResult) return 50;
+  if (title.includes(query)) return 60;
+  if (text.startsWith(query) || type.startsWith(query) || hasWordPrefix(text, query) || hasWordPrefix(type, query)) return 70;
+  return type === 'change' ? 90 : 80;
+}
+
+function setActiveResult(next) {
+  const options = [...srPanel.querySelectorAll('.sr-item')];
+  if (!options.length) return;
+  activeResult = (next + options.length) % options.length;
+  options.forEach((option, index) => {
+    const active = index === activeResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  const selected = options[activeResult];
+  searchInput.setAttribute('aria-activedescendant', selected.id);
+  selected.scrollIntoView({ block: 'nearest' });
+}
 
 function renderResults(query) {
   const q = query.trim().toLowerCase();
-  if (q.length < 2) { srPanel.classList.remove('open'); srPanel.innerHTML = ''; return; }
-  const hits = searchIndex.filter((it) => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 30);
-  if (hits.length === 0) {
-    srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
-  } else {
-    srPanel.innerHTML = hits.map((it) => `<a class="sr-item" href="${it.href}"><span class="sr-kind">${it.type}</span><span class="sr-title">${it.title}</span></a>`).join('');
+  if (q.length < 2) {
+    renderedHits = [];
+    srPanel.replaceChildren();
+    setSearchOpen(false);
+    setSearchStatus('Enter at least two characters to search.');
+    return;
   }
-  srPanel.classList.add('open');
+  if (searchState === 'loading') {
+    showSearchMessage('Loading the search index...', 'Search is still loading.');
+    return;
+  }
+  if (searchState === 'error') {
+    showSearchMessage('Search is unavailable right now. Reload the page to try again.', 'Search could not load. Reload the page to try again.');
+    return;
+  }
+
+  const ranked = searchIndex
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => normalized(item.title + ' ' + item.text + ' ' + item.type).includes(q))
+    .sort((a, b) => searchRank(a.item, q) - searchRank(b.item, q)
+      || normalized(a.item.title).localeCompare(normalized(b.item.title))
+      || a.index - b.index);
+  renderedHits = ranked.slice(0, SEARCH_LIMIT).map(({ item }) => item);
+  if (renderedHits.length === 0) {
+    showSearchMessage('No matches for "' + query.trim() + '". Try a weapon, character, world, or dev-log term.', 'No search results for ' + query.trim() + '.');
+    return;
+  }
+
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  renderedHits.forEach((item, index) => {
+    const link = document.createElement('a');
+    link.className = 'sr-item';
+    link.id = 'sr-option-' + index;
+    link.href = String(item.href || '');
+    link.tabIndex = -1;
+    link.setAttribute('role', 'option');
+    link.setAttribute('aria-selected', 'false');
+    const kind = document.createElement('span');
+    kind.className = 'sr-kind';
+    kind.textContent = String(item.type || 'result');
+    const title = document.createElement('span');
+    title.className = 'sr-title';
+    title.textContent = String(item.title || 'Untitled');
+    link.append(kind, title);
+    srPanel.append(link);
+  });
+  const shown = renderedHits.length;
+  const total = ranked.length;
+  setSearchStatus((shown < total ? 'Showing ' + shown + ' of ' + total : total) + (total === 1 ? ' search result' : ' search results') + ' for ' + query.trim() + '.');
+  setSearchOpen(true);
 }
 searchInput.addEventListener('input', (e) => renderResults(e.target.value));
 searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
-document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) srPanel.classList.remove('open'); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (searchInput.value.trim().length < 2) return;
+    e.preventDefault();
+    if (!srPanel.classList.contains('open')) renderResults(searchInput.value);
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    setActiveResult(activeResult < 0 ? (direction > 0 ? 0 : renderedHits.length - 1) : activeResult + direction);
+    return;
+  }
+  if (e.key === 'Enter' && renderedHits.length && srPanel.classList.contains('open')) {
+    e.preventDefault();
+    const options = [...srPanel.querySelectorAll('.sr-item')];
+    const selected = options[activeResult >= 0 ? activeResult : 0];
+    selected?.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (srPanel.classList.contains('open')) e.preventDefault();
+    setSearchOpen(false);
+    setSearchStatus('Search suggestions closed.');
+  }
+  if (e.key === 'Tab') setSearchOpen(false);
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
-  srPanel.classList.remove('open');
+  setSearchOpen(false);
   const href = a.getAttribute('href') || '';
   const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
   const target = hash ? document.getElementById(hash) : null;
-  if (target) { 
+  if (target) {
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
-        row.querySelectorAll('.wf').forEach((b) => b.classList.toggle('is-active', b.dataset.value === 'all'));
+        row.querySelectorAll('.wf').forEach((b) => {
+          const selected = b.dataset.value === 'all';
+          b.classList.toggle('is-active', selected);
+          b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
         active[row.dataset.facet] = 'all';
       });
       apply();
     } }
 });
+
+fetch('./search-index.json')
+  .then((response) => {
+    if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+    return response.json();
+  })
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error('Search index is not an array');
+    searchIndex = data;
+    searchState = 'ready';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  })
+  .catch(() => {
+    searchIndex = [];
+    searchState = 'error';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  });
 
 
 </script>

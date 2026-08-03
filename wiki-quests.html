@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WHOMP quests and rewards</title>
+<meta name="description" content="Quests and rewards: Every chain, objective, giver, response and validated reward. Every value generated from the game's own data.">
+<link rel="icon" href="whomp-icon.svg">
+<style>
+
+:root{
+  --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
+  --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
+  --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --edge:1px solid rgba(255,243,207,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:radial-gradient(ellipse 120% 80% at 50% -10%,var(--lift),var(--ink) 60%) no-repeat,var(--ink);
+  color:var(--body); font-family:var(--font); line-height:1.6;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+a{color:var(--cyan)}
+button{font-family:var(--font)}
+
+/* THE CHROMATIC OFFSET IS THE SIGNATURE, carried from the icon to type:
+   cyan right-and-down, pink left-and-down, cream face on top. Flat offsets,
+   zero blur, matching the de-BOO flat-plinth doctrine the game already uses. */
+.chroma{
+  color:var(--cream); font-weight:900; letter-spacing:-.02em;
+  text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
+}
+
+/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
+   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
+   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
+   comment explains 1000 exceeds the heaviest real weight of the system
+   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
+   The retro chromatic layering is two ::before/::after copies of the word
+   via content:attr(data-wordmark), every offset and shadow expressed in em
+   rather than px so the layering scales WITH the clamped font-size and holds
+   together at every viewport width instead of drifting apart. SACRED, same
+   as the game's own comment on this block: a frozen copy, not a reference,
+   do not tokenize.
+
+   NOTE 2026-07-30: a Chromium variable-font interpolation fix briefly replaced
+   this stack with a static Black face. The director judged the resulting face
+   worse and it was reverted, here and in the game together, so both surfaces
+   stay identical. The squish and seam report on narrow Android is therefore
+   still OPEN, and any future fix must preserve this face rather than swap it. */
+.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
+  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+  /* PAINT ORDER IS LOAD BEARING. letter-spacing is negative, so glyphs OVERLAP,
+     and a per-glyph stroke would otherwise draw the M's dark outline straight
+     across the O's cream face. That is the seam the director reported, not a
+     font problem. paint-order lays every stroke down first, so they merge into
+     one silhouette, then every fill on top of all of them. Tight tracking and
+     the outline both survive; the lines through the letters do not. */
+  paint-order:stroke fill;
+  text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
+  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
+.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+@keyframes whomp-wordmark-hit{
+  0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
+  2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
+  5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
+}
+@media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
+  border:var(--edge);background:rgba(255,243,207,.04);font-size:.82rem;color:var(--body);
+  font-variant-numeric:tabular-nums;
+}
+.chip b{color:var(--cream);font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
+.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+
+.btn{
+  display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
+  font-weight:700;color:var(--ink);background:var(--sweep);border:0;cursor:pointer;
+  box-shadow:0 4px 0 #7a1440; transition:transform .12s ease,box-shadow .12s ease;font-size:1rem;
+}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 #7a1440}
+.btn.ghost{background:none;color:var(--cream);border:var(--edge);box-shadow:0 4px 0 rgba(0,0,0,.4)}
+.btn.small{padding:9px 18px;font-size:.82rem;box-shadow:none}
+
+.rule{height:3px;border-radius:2px;background:var(--sweep);opacity:.85;margin-bottom:26px;max-width:120px}
+
+.arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+.arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
+.arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
+.arc p{margin:0;font-size:.88rem;color:var(--dim)}
+
+/* SIGN-IN, reused from the game's own accounts worker so one account covers
+   both surfaces. Same worker, same client id, same session shape. */
+.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:16px 0 0}
+.authbar-name{color:var(--cream);font-weight:700;font-size:.85rem}
+
+.spoiler{cursor:pointer;border-radius:4px;padding:0 2px;background:rgba(255,243,207,.08);color:transparent;text-shadow:0 0 0 transparent;transition:color .12s ease}
+.spoiler::selection{color:transparent}
+.spoiler.revealed{color:var(--cream);background:none}
+.spoiler:not(.revealed)::after{content:"spoiler, click to reveal";color:var(--dim);font-style:italic}
+.spoiler.revealed::after{content:""}
+
+footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);font-size:.82rem;text-align:center}
+footer code{color:var(--body)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* NOTHING may make the page itself scroll sideways, on ANY page. A floor rather
+   than a fix: the per-element fixes are real but the next long token will arrive
+   somewhere nobody predicted, and this was reported twice on mobile before it got
+   one. Lives in SHARED_CSS because the second report was on the log while the wiki
+   pages had no protection at all. */
+html,body{max-width:100%;overflow-x:hidden}
+
+
+.searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
+  color:var(--cream);font-family:var(--font);font-size:1rem}
+.searchbox::placeholder{color:var(--dim)}
+.searchbox:focus{outline:2px solid var(--cyan);outline-offset:2px}
+.sr-panel{position:absolute;left:24px;right:24px;top:calc(100% + 6px);background:var(--lift);border:var(--edge);
+  border-radius:12px;max-height:60vh;overflow:auto;z-index:20;box-shadow:0 12px 32px rgba(0,0,0,.5);display:none}
+.sr-panel.open{display:block}
+.sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
+.sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
+.sr-item:first-child{border-top:0}
+.sr-item:hover,.sr-item:focus,.sr-item.is-active,.sr-item[aria-selected="true"]{background:rgba(36,240,255,.08);outline:none}
+.sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--gold);margin-right:8px}
+.sr-title{color:var(--cream)}
+.sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+
+.wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
+.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
+.wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
+.wside{width:220px;max-height:calc(100vh - 40px);overflow-y:auto;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px;padding-right:5px}
+.wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
+.wside a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
+.wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
+.wside a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--cyan)}
+.wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
+.wmain{flex:1;min-width:0}
+
+/* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
+   that it cannot go stale, and a reader has no way to know that unless the page
+   says so. Said once per page, quietly, near the top. */
+.wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
+  background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
+.wprov b{color:var(--cream);font-weight:700}
+/* THE OMISSIONS BOX. What the page will not tell you and why. A wiki that just
+   leaves a column out reads as incomplete; one that says "this number exists and
+   here is why publishing it would be a lie" reads as trustworthy. */
+.womit{border:var(--edge);border-left:3px solid var(--gold);border-radius:10px;padding:12px 16px;
+  background:rgba(255,207,63,.035);color:var(--dim);font-size:.83rem;margin:0 0 24px;line-height:1.55}
+.womit b{color:var(--gold);font-weight:700}
+
+.wbar{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;margin-bottom:16px}
+.wfacet{display:flex;flex-direction:column;gap:6px}
+.wfacet-h{color:var(--dim);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wfacet-row{display:flex;flex-wrap:wrap;gap:6px}
+.wf{padding:6px 13px;border-radius:999px;border:var(--edge);background:none;color:var(--dim);cursor:pointer;
+  font-size:.79rem;font-family:var(--font)}
+.wf:hover{color:var(--cream)}
+.wf.is-active{color:var(--cream);border-color:var(--cyan);background:rgba(36,240,255,.08)}
+.wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
+  font-family:var(--font);font-size:.82rem}
+.wcount{color:var(--dim);font-size:.82rem;margin:0 0 18px;font-variant-numeric:tabular-nums}
+.wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
+.wempty b{display:block;color:var(--cream);margin-bottom:8px}
+.wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+
+.wgroup{margin-bottom:34px}
+.wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
+.wgroup-h h3{margin:0;font-size:1.15rem;color:var(--cream)}
+.wgroup-n{color:var(--dim);font-size:.8rem;font-variant-numeric:tabular-nums}
+.wgroup-note{color:var(--dim);font-size:.86rem;margin:0 0 14px;max-width:74ch}
+.wgroup[data-empty="1"]{display:none}
+
+.wgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.wcard{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025);
+  display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
+.wcard[data-hidden="1"]{display:none}
+.wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wdesc{margin:0;font-size:.9rem;color:var(--body)}
+.wgloss{margin:0;font-size:.88rem;color:var(--dim)}
+.wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
+.wequation{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:9px;background:rgba(36,240,255,.04);font-size:.9rem}
+.wequation a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wequation b{color:var(--gold)}
+.wswatch{display:inline-block;width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,255,255,.25);vertical-align:-2px;margin-right:5px}
+
+.wtags{display:flex;flex-wrap:wrap;gap:6px}
+.wtag{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
+  border-radius:6px;border:var(--edge);color:var(--dim)}
+.wtag.ink-cyan{color:var(--cyan);border-color:rgba(36,240,255,.35)}
+.wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
+.wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
+.wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
+
+.wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
+.wfact{display:flex;gap:10px;font-size:.85rem;align-items:baseline}
+.wfact-k{flex:none;width:96px;color:var(--dim);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase}
+.wfact-v{flex:1;min-width:0;overflow-wrap:break-word;color:var(--body)}
+.wfact-v b{color:var(--cream);font-weight:700;font-variant-numeric:tabular-nums}
+.wfact-v a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wfact-v a:hover{border-bottom-color:var(--cyan)}
+.wfact-v .wsub{color:var(--dim);font-size:.92em}
+
+.wraw{border-top:var(--edge);padding-top:8px;color:var(--dim);font-size:.78rem}
+.wraw summary{cursor:pointer;color:var(--cyan);font-weight:700;list-style-position:outside;margin-left:15px}
+.wraw summary span{color:var(--dim);font-weight:400;margin-left:5px;font-variant-numeric:tabular-nums}
+.wraw dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:5px 12px;margin:10px 0 0}
+.wraw dl div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,243,207,.05);padding:3px 0}
+.wraw dt,.wraw dd{margin:0;overflow-wrap:anywhere}
+.wraw dd{color:var(--body);text-align:right;font-variant-numeric:tabular-nums}
+.wschedule ol{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.wschedule li{padding-left:3px;color:var(--body)}
+.wschedule li a{color:var(--cyan);text-decoration:none}
+.wschedule li span{color:var(--dim);margin-left:6px}
+.wschedule li code{float:right;margin-left:8px}
+
+.wfeature{border:var(--edge);border-radius:14px;padding:20px;margin:0 0 24px;background:linear-gradient(135deg,rgba(36,240,255,.05),rgba(177,75,255,.035));color:var(--body)}
+.wfeature h3{margin:2px 0 8px;color:var(--cream);font-size:1.2rem}
+.wfeature p{margin:7px 0;color:var(--dim);font-size:.86rem}
+.wfeature .eyebrow{color:var(--gold);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wmethod-grid,.wbuild-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:14px 0}
+.wmethod-grid>div,.wbuild-grid>article{border:var(--edge);border-radius:10px;padding:12px;background:rgba(6,4,14,.34)}
+.wmethod-grid b,.wmethod-grid span,.wmethod-grid code{display:block}
+.wmethod-grid span{color:var(--body);font-size:.82rem;margin:5px 0}
+.wbuild-grid h4{margin:10px 0 5px;font-size:.9rem;line-height:1.5}
+.wbuild-grid h4 a,.wbuild-grid li a{color:var(--cyan);text-decoration:none}
+.wbuild-grid ol{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:.78rem}
+
+/* COMPARISON METERS. The bar is relative to the biggest value in THIS roster and
+   the real number is always printed beside it, so the bar is a sorting aid and
+   never the claim. Said out loud in the provenance banner. */
+.wmeters{display:flex;flex-direction:column;gap:4px}
+.wmeter{display:flex;align-items:center;gap:8px;font-size:.78rem}
+.wmeter-k{flex:none;width:96px;color:var(--dim);letter-spacing:.05em;text-transform:uppercase;font-size:.68rem}
+.wmeter-t{flex:1;min-width:40px;height:6px;border-radius:3px;background:rgba(255,243,207,.07);overflow:hidden}
+.wmeter-t i{display:block;height:100%;border-radius:3px;background:var(--sweep)}
+.wmeter-v{flex:none;min-width:66px;text-align:right;color:var(--cream);font-variant-numeric:tabular-nums;font-weight:700}
+.wmeter-u{color:var(--dim);font-weight:400}
+
+.whub{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-bottom:12px}
+.whubcard{border:var(--edge);border-radius:14px;padding:20px 22px;background:rgba(255,243,207,.025);
+  text-decoration:none;display:block;transition:border-color .12s ease,transform .12s ease}
+.whubcard:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.2rem}
+.whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
+.whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
+.whubsection{margin:0 0 34px;scroll-margin-top:24px}
+.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+.whubsection-h h3{margin:0;color:var(--cream);font-size:1.08rem}
+.whubsection-h span{color:var(--dim);font-size:.75rem}
+@media (max-width:760px){
+  .wshell{flex-direction:column;gap:18px}
+  .wside{width:100%;max-height:none;position:static;overflow:visible;padding:0}
+  .wgrid{grid-template-columns:1fr}
+  .wfact-k,.wmeter-k{width:84px}
+  .wraw dl{grid-template-columns:1fr}
+  .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
+  .wfeature{padding:16px}
+  .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+}
+@media (max-width:420px){
+  .wcard{padding:14px}
+  .wfact{flex-direction:column;gap:2px}
+  .wfact-k{width:auto}
+  .wmeter{display:grid;grid-template-columns:80px 1fr auto}
+}
+@media (prefers-reduced-motion:reduce){.whubcard{transition:none}}
+.wf:focus-visible,.wsort:focus-visible,.wside a:focus-visible,.wraw summary:focus-visible,.wempty button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+.wside-section{border-top:1px solid rgba(255,243,207,.06)}
+.wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
+  font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
+.wside-section summary:hover{background:rgba(255,243,207,.04)}
+.wside-section summary::marker{color:var(--cyan)}
+.wside-section summary span{float:right;color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums}
+.wside-section[open] summary{color:var(--cream)}
+.wside-links{padding:0 0 5px 7px}
+.wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside a.wiki-home{display:flex;align-items:center;gap:10px;padding:7px 10px 12px;margin:0 0 4px;border-bottom:var(--edge)}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
+.wiki-home-copy b{color:var(--cream);font-size:.94rem;letter-spacing:.02em}
+.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:4px}
+@media(max-width:760px){
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
+  .wside a.wiki-home{width:100%;padding:8px 10px 13px}
+  .wside-section summary{padding:12px}
+  .wside-links{padding-left:8px}
+  .wside-links a{padding:10px 12px}
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand .wm{margin:0}
+.brand h1{font-size:1.6rem;margin:0}
+.subtag{color:var(--dim);font-size:.85rem;margin:2px 0 0}
+h2{font-size:1.5rem;margin:0 0 6px}
+.lede{color:var(--dim);margin:0 0 20px;font-size:.92rem;max-width:78ch}
+footer a{color:var(--cyan);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="wtopbar">
+
+<div class="authbar">
+  <span id="ab-signedout">
+    <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
+  </span>
+  <span id="ab-signedin" style="display:none">
+    <span class="authbar-name" id="ab-name"></span>
+    <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
+  </span>
+</div>
+  <div class="wtopbar-row">
+    <a class="brand" href="index.html">
+      <span>
+        <h1 class="chroma">WHOMP quests and rewards</h1>
+        <p class="subtag">Every chain, objective, giver, response and validated reward.</p>
+      </span>
+    </a>
+    <div class="chips"><span class="chip"><span class="dot stale"></span>
+  live <b>c4d4c20b</b></span>
+  <span class="chip">version <b>0.6.0</b></span></div>
+  </div>
+</div>
+
+
+<div class="searchwrap" role="search">
+  <label class="searchlabel" for="search">Search WHOMP</label>
+  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+    role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
+    aria-controls="sr-panel" aria-describedby="sr-status">
+  <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
+  <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
+</div>
+
+<div class="wshell">
+  <nav class="wside">
+
+    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
+      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
+      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
+    </a>
+    <span class="wside-h">Wiki</span>
+    <a href="wiki.html">All guides</a>
+    <details class="wside-section">
+      <summary>Buildcraft <span>13</span></summary>
+      <div class="wside-links">
+        <a href="wiki-weapons.html">Weapons</a>
+        <a href="wiki-cores.html">Core weapons</a>
+        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-tiers.html">Weapon tiers</a>
+        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tomes.html">Tomes</a>
+        <a href="wiki-relics.html">Relics</a>
+        <a href="wiki-legendaries.html">Legendary upgrades</a>
+        <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-utilities.html">Utility abilities</a>
+        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-evolutions.html">Evolution recipes</a>
+        <a href="wiki-jump-augments.html">Jump augments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Heroes <span>3</span></summary>
+      <div class="wside-links">
+        <a href="wiki-characters.html">Characters</a>
+        <a href="wiki-innates.html">Innates</a>
+        <a href="wiki-signatures.html">Signatures</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>World <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-bestiary.html">Bestiary</a>
+        <a href="wiki-worlds.html">Campaign worlds</a>
+        <a href="wiki-expeditions.html">Expeditions</a>
+        <a href="wiki-modes.html">Run modes</a>
+        <a href="wiki-world-events.html">Rare world events</a>
+        <a href="wiki-ambient-events.html">Ambient events</a>
+      </div>
+    </details>
+    <details class="wside-section" open>
+      <summary>Progression <span>6</span></summary>
+      <div class="wside-links">
+        <a href="wiki-achievements.html">Achievements</a>
+        <a href="wiki-quests.html" class="is-here" aria-current="page">Quests and rewards</a>
+        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-ship-cores.html">Ship cores</a>
+        <a href="wiki-ship-systems.html">Ship systems</a>
+        <a href="wiki-ship-fragments.html">Ship fragments</a>
+      </div>
+    </details>
+    <details class="wside-section">
+      <summary>Collection <span>2</span></summary>
+      <div class="wside-links">
+        <a href="wiki-wearables.html">Wearables</a>
+        <a href="wiki-cosmetics.html">Cosmetic styles</a>
+      </div>
+    </details>
+    <span class="wside-h">Elsewhere</span>
+    <a href="log.html#views">Dev log</a>
+    <a href="index.html">&larr; Back to WHOMP</a>
+    <div class="stat">24 quests · 7 chains · 7 titles, read straight out of the game</div>
+  </nav>
+  <main class="wmain">
+    <div class="rule"></div>
+    <h2 class="chroma">Quests and rewards</h2>
+    <p class="lede">Quest cards preserve the registry’s authored request and reaction lines, exact objective contract, previous and next links, and reward target. The title gallery is derived from the same chain metadata.</p>
+
+    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
+      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+      and dead relations before it writes a page. Source: <code>src/data/quests.ts#QUESTS</code>.
+      Optional director notes have <b>0 of 24</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+
+
+
+
+    <section class="wfeature" aria-labelledby="quest-earned-titles">
+      <div><span class="eyebrow">Chain rewards</span><h3 id="quest-earned-titles">Earned titles</h3></div>
+      <div class="wbuild-grid">
+        <article>
+            <span class="wtag ink-violet">Thorn order</span>
+            <h4>Thorn Collector</h4>
+            <p>A title. It rides your run card and nothing else.</p>
+            <p>Chain: <a href="wiki-quests.html#e-thornThree">Three Thorns</a>, <a href="wiki-quests.html#e-fivePods">Five More Pods</a> and <a href="wiki-quests.html#e-stiffCollar">A Stiff Collar</a></p>
+          </article><article>
+            <span class="wtag ink-violet">Trophy coat</span>
+            <h4>The Coat's Errand Runner</h4>
+            <p>A title. Half a coat, a whole reputation.</p>
+            <p>Chain: <a href="wiki-quests.html#e-shinyBit">The Shiny Bit</a>, <a href="wiki-quests.html#e-brightTrim">Bright Trim</a> and <a href="wiki-quests.html#e-twoShoulders">Two Shoulders</a></p>
+          </article><article>
+            <span class="wtag ink-violet">The dares</span>
+            <h4>The Dare Taker</h4>
+            <p>A title. Somebody was watching, and now everybody knows.</p>
+            <p>Chain: <a href="wiki-quests.html#e-theBigCrab">The Big Crab</a>, <a href="wiki-quests.html#e-theLanternDare">The Lantern Dare</a> and <a href="wiki-quests.html#e-theHiddenOne">The Hidden One</a></p>
+          </article><article>
+            <span class="wtag ink-violet">The larder</span>
+            <h4>The Larder Filler</h4>
+            <p>A title. The shelf is full and nobody asked how.</p>
+            <p>Chain: <a href="wiki-quests.html#e-sourCaps">Four Sour Caps</a>, <a href="wiki-quests.html#e-theDeepShelf">The Deep Shelf</a> and <a href="wiki-quests.html#e-theEggRun">The Egg Run</a></p>
+          </article><article>
+            <span class="wtag ink-violet">The claim</span>
+            <h4>The Assayer</h4>
+            <p>A title. Somebody finally checked, and the answer was no.</p>
+            <p>Chain: <a href="wiki-quests.html#e-theColourInIt">The Colour In It</a>, <a href="wiki-quests.html#e-theDeepSeam">The Deep Seam</a>, <a href="wiki-quests.html#e-whatIsUnderIt">What Is Under It</a> and <a href="wiki-quests.html#e-theAssay">The Assay</a></p>
+          </article><article>
+            <span class="wtag ink-violet">The overdue list</span>
+            <h4>In Good Standing</h4>
+            <p>A title. Your account is clear. This is rare and she noticed.</p>
+            <p>Chain: <a href="wiki-quests.html#e-theOverdueOne">The Overdue One</a>, <a href="wiki-quests.html#e-theMarginalia">The Marginalia</a>, <a href="wiki-quests.html#e-theRestrictedShelf">The Restricted Shelf</a> and <a href="wiki-quests.html#e-theArchivistsTrade">The Archivist's Trade</a></p>
+          </article><article>
+            <span class="wtag ink-violet">The stray</span>
+            <h4>The Stray's Friend</h4>
+            <p>A title. One dog told every other dog, and now they all know.</p>
+            <p>Chain: <a href="wiki-quests.html#e-aDogOutThere">A Dog Out There</a>, <a href="wiki-quests.html#e-theDogOnMyClaim">The Dog On My Claim</a>, <a href="wiki-quests.html#e-theDogsRecord">The Dog's Record</a> and <a href="wiki-quests.html#e-theOneItPicked">The One It Picked</a></p>
+          </article>
+      </div>
+    </section>
+
+    <div class="wbar">
+      <div class="wfacet">
+        <span class="wfacet-h">Giver</span>
+        <div class="wfacet-row" data-facet="giver" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="tailor" aria-pressed="false" aria-controls="wiki-groups">The Tailor <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="child" aria-pressed="false" aria-controls="wiki-groups">The Kid <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="librarian" aria-pressed="false" aria-controls="wiki-groups">The Ghost Librarian <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="prospector" aria-pressed="false" aria-controls="wiki-groups">The Prospector <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="baker" aria-pressed="false" aria-controls="wiki-groups">The Baker <span style="opacity:.5">3</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h">Objective type</span>
+        <div class="wfacet-row" data-facet="target" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="scavengerRun" aria-pressed="false" aria-controls="wiki-groups">Scavenger run <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="trophyHunt" aria-pressed="false" aria-controls="wiki-groups">Trophy hunt <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="lostThing" aria-pressed="false" aria-controls="wiki-groups">Lost thing <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="fragileDelivery" aria-pressed="false" aria-controls="wiki-groups">Fragile delivery <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="pupRescue" aria-pressed="false" aria-controls="wiki-groups">Pup rescue <span style="opacity:.5">2</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h">Reward</span>
+        <div class="wfacet-row" data-facet="reward" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="wearable" aria-pressed="false" aria-controls="wiki-groups">Wearable <span style="opacity:.5">13</span></button><button class="wf" type="button" data-value="gold" aria-pressed="false" aria-controls="wiki-groups">Gold <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="title" aria-pressed="false" aria-controls="wiki-groups">Title <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="unlock" aria-pressed="false" aria-controls="wiki-groups">Unlock <span style="opacity:.5">1</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h">Sort</span>
+        <select class="wsort" id="wsort" aria-label="Sort Quests and rewards">
+          <option value="roster" data-desc="0" data-text="0">Registry order</option><option value="chain" data-desc="0" data-text="0">Chain step</option><option value="name" data-desc="0" data-text="1">Name</option>
+        </select>
+      </div></div>
+    <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
+    <div class="wempty" id="wempty" hidden>
+      <b>No entries match these filters.</b>
+      <button type="button" id="wreset">Reset filters</button>
+    </div>
+
+    <div id="wiki-groups">
+    <section class="wgroup" data-group="thornOrder" id="g-thornOrder">
+      <div class="wgroup-h"><h3>Thorn order</h3><span class="wgroup-n">3</span></div>
+      <p class="wgroup-note">3 source-ordered steps.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-thornThree" data-giver="tailor" data-target="scavengerRun" data-reward="wearable" data-s-roster="0" data-s-chain="1" data-s-name="three thorns">
+        <div class="wcard-h">
+          <h4>Three Thorns</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 1 of 3</span><span class="wtag ink-violet">The Tailor</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Find three thorns in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Tailor</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Three thorns from that flytrap thing. Don't ask.<br>I need them for a frame and I am not explaining further.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>3</b> thorns</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-thornShades">Thorn Shades</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">You did not ask. I appreciate that in a person.<br>Sit down. These are yours now.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-fivePods">Five More Pods</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-fivePods" data-giver="tailor" data-target="scavengerRun" data-reward="wearable" data-s-roster="1" data-s-chain="2" data-s-name="five more pods">
+        <div class="wcard-h">
+          <h4>Five More Pods</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 2 of 3</span><span class="wtag ink-violet">The Tailor</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Find five seed pods in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Tailor</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Now five seed pods. Same plant. It has forgiven you by now.<br>Wool needs something to argue with while it dries.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>5</b> seed pods</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-knitCap">Knit Cap</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">It had not forgiven you. Wear the cap anyway.<br>The lump on the left is a design choice.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-thornThree">Three Thorns</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-stiffCollar">A Stiff Collar</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-stiffCollar" data-giver="tailor" data-target="trophyHunt" data-reward="wearable" data-s-roster="2" data-s-chain="3" data-s-name="a stiff collar">
+        <div class="wcard-h">
+          <h4>A Stiff Collar</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 3 of 3</span><span class="wtag ink-violet">The Tailor</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Down one named boss.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Tailor</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Bring me a piece of something with a name. I want a stiff collar.<br>Nameless things go soft in the wash.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>trophyHunt</code>, count <b>1</b> named bosses</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-brambleRuff">Bramble Ruff</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Stiff enough. Hold still while I fit it round your neck.<br>If it itches, that is the bramble doing its job.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-fivePods">Five More Pods</a></span></div>
+
+        </div>
+
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="trophyCoat" id="g-trophyCoat">
+      <div class="wgroup-h"><h3>Trophy coat</h3><span class="wgroup-n">3</span></div>
+      <p class="wgroup-note">3 source-ordered steps.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-shinyBit" data-giver="tailor" data-target="trophyHunt" data-reward="wearable" data-s-roster="3" data-s-chain="101" data-s-name="the shiny bit">
+        <div class="wcard-h">
+          <h4>The Shiny Bit</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 1 of 3</span><span class="wtag ink-violet">The Tailor</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Down one named boss.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Tailor</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Down the big one and bring me the shiny bit. I am building a coat.<br>The coat has been a rumour here for two winters.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>trophyHunt</code>, count <b>1</b> named bosses</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-longScarf">Long Scarf</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">That is the shiny bit. The coat is going to be loud.<br>Take the scarf while I think about sleeves.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-brightTrim">Bright Trim</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-brightTrim" data-giver="tailor" data-target="scavengerRun" data-reward="wearable" data-s-roster="4" data-s-chain="102" data-s-name="bright trim">
+        <div class="wcard-h">
+          <h4>Bright Trim</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 2 of 3</span><span class="wtag ink-violet">The Tailor</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Find four bright scraps in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Tailor</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Four bright scraps off the ground. The coat wants trim.<br>It has opinions now, which is a bad sign in a coat.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>4</b> bright scraps</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-ribbonTail">Ribbon Tail</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Trim acquired. The coat is now more of a weather event.<br>You get the ribbon. The coat gets everything else.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-shinyBit">The Shiny Bit</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-twoShoulders">Two Shoulders</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-twoShoulders" data-giver="tailor" data-target="trophyHunt" data-reward="wearable" data-s-roster="5" data-s-chain="103" data-s-name="two shoulders">
+        <div class="wcard-h">
+          <h4>Two Shoulders</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 3 of 3</span><span class="wtag ink-violet">The Tailor</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Down two named bosses.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Tailor</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Two more named things. A coat has two shoulders.<br>Do not come back with one of them and a promise.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>trophyHunt</code>, count <b>2</b> named bosses</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-halfCape">Half Cape</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">The coat is finished. I am giving you half of it.<br>I am keeping the half with the pockets in it.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-brightTrim">Bright Trim</a></span></div>
+
+        </div>
+
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="theDares" id="g-theDares">
+      <div class="wgroup-h"><h3>The dares</h3><span class="wgroup-n">3</span></div>
+      <p class="wgroup-note">3 source-ordered steps.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-theBigCrab" data-giver="child" data-target="trophyHunt" data-reward="wearable" data-s-roster="6" data-s-chain="201" data-s-name="the big crab">
+        <div class="wcard-h">
+          <h4>The Big Crab</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 1 of 3</span><span class="wtag ink-violet">The Kid</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Down one named boss.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Kid</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Everyone says you cannot touch the big one. I said you could.<br>So now you have to, because I already told them you would.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>trophyHunt</code>, count <b>1</b> named bosses</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-dareMedal">Dare Medal</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">You touched it. I watched the whole thing from the fence.<br>This is a medal. I made it out of a jar lid and some string.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theLanternDare">The Lantern Dare</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theLanternDare" data-giver="child" data-target="fragileDelivery" data-reward="wearable" data-s-roster="7" data-s-chain="202" data-s-name="the lantern dare">
+        <div class="wcard-h">
+          <h4>The Lantern Dare</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 2 of 3</span><span class="wtag ink-violet">The Kid</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Finish a run with the lantern uncracked.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Kid</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Take my lantern out there and bring it back not broken.<br>It is the good one, so this counts for more than the last one.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>fragileDelivery</code>, count <b>1</b> lanterns delivered</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-paperCrown">Paper Crown</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Not one crack in it. Nobody else even took it out of the yard.<br>You get the crown. I am the one who decides about crowns.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theBigCrab">The Big Crab</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theHiddenOne">The Hidden One</a></span></div>
+        </div>
+        <details class="wraw"><summary>Additional objective parameters <span>2</span></summary><dl><div><dt><code>cargo</code></dt><dd>lantern</dd></div><div><dt><code>hitsPerCrack</code></dt><dd>4</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-theHiddenOne" data-giver="child" data-target="lostThing" data-reward="title" data-s-roster="8" data-s-chain="203" data-s-name="the hidden one">
+        <div class="wcard-h">
+          <h4>The Hidden One</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 3 of 3</span><span class="wtag ink-violet">The Kid</span><span class="wtag ink-gold">Title</span></div>
+        <p class="wdesc">Find the one thing the map is hiding.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Kid</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">There is one thing out there that nobody has ever got to.<br>It is up high. That is the whole reason it is still up there.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>lostThing</code>, count <b>1</b> hidden things</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>The Dare Taker</b> <span class="wsub">A title. Somebody was watching, and now everybody knows.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">You got to it. I am going to be talking about this for a year.<br>You do not get a thing for this one. You get called something.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theLanternDare">The Lantern Dare</a></span></div>
+
+        </div>
+
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="theLarder" id="g-theLarder">
+      <div class="wgroup-h"><h3>The larder</h3><span class="wgroup-n">3</span></div>
+      <p class="wgroup-note">3 source-ordered steps.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-sourCaps" data-giver="baker" data-target="scavengerRun" data-reward="wearable" data-s-roster="9" data-s-chain="301" data-s-name="four sour caps">
+        <div class="wcard-h">
+          <h4>Four Sour Caps</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 1 of 3</span><span class="wtag ink-violet">The Baker</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Find four sour caps in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Baker</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Four sour caps. The pale ones, off the ground, not off a stalk.<br>They go in a loaf that I am not describing to you.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>4</b> sour caps</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-flourApron">Flour Apron</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Four. The loaf will be correct now.<br>Take the apron. Everything I own is covered in flour anyway.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theDeepShelf">The Deep Shelf</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theDeepShelf" data-giver="baker" data-target="lostThing" data-reward="wearable" data-s-roster="10" data-s-chain="302" data-s-name="the deep shelf">
+        <div class="wcard-h">
+          <h4>The Deep Shelf</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 2 of 3</span><span class="wtag ink-violet">The Baker</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Find the one thing the map is hiding.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Baker</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Something out there is worth putting on the deep shelf.<br>I will know it when you hand it to me. You will not.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>lostThing</code>, count <b>1</b> hidden things</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-eggCap">Egg Cap</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">That is exactly it. Do not ask me what it is for.<br>This cap is shaped like an egg. So is your head, roughly.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-sourCaps">Four Sour Caps</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theEggRun">The Egg Run</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theEggRun" data-giver="baker" data-target="fragileDelivery" data-reward="title" data-s-roster="11" data-s-chain="303" data-s-name="the egg run">
+        <div class="wcard-h">
+          <h4>The Egg Run</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 3 of 3</span><span class="wtag ink-violet">The Baker</span><span class="wtag ink-gold">Title</span></div>
+        <p class="wdesc">Finish a run with the egg uncracked.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Baker</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">One egg. It goes out with you and it comes back whole.<br>I have three of these left and two of them are opinions.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>fragileDelivery</code>, count <b>1</b> eggs delivered</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>The Larder Filler</b> <span class="wsub">A title. The shelf is full and nobody asked how.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Whole. I did not think that was going to happen today.<br>There is nothing left to give you, so I am giving you a name.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theDeepShelf">The Deep Shelf</a></span></div>
+
+        </div>
+        <details class="wraw"><summary>Additional objective parameters <span>2</span></summary><dl><div><dt><code>cargo</code></dt><dd>egg</dd></div><div><dt><code>hitsPerCrack</code></dt><dd>3</dd></div></dl></details>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="theClaim" id="g-theClaim">
+      <div class="wgroup-h"><h3>The claim</h3><span class="wgroup-n">4</span></div>
+      <p class="wgroup-note">4 source-ordered steps.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-theColourInIt" data-giver="prospector" data-target="scavengerRun" data-reward="gold" data-s-roster="12" data-s-chain="401" data-s-name="the colour in it">
+        <div class="wcard-h">
+          <h4>The Colour In It</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 1 of 4</span><span class="wtag ink-violet">The Prospector</span><span class="wtag ink-gold">Gold</span></div>
+        <p class="wdesc">Find five coloured stones in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Prospector</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Five stones with the colour in them. You will know the colour.<br>Everyone knows the colour. Nobody has ever been able to describe it.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>5</b> coloured stones</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>120g</b> <span class="wsub">Gold. Counted twice, by a man who counts badly.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Four of these are quartz. The fifth one is also quartz.<br>Here is a hundred and twenty. That is the claim being generous.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theDeepSeam">The Deep Seam</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theDeepSeam" data-giver="prospector" data-target="lostThing" data-reward="wearable" data-s-roster="13" data-s-chain="402" data-s-name="the deep seam">
+        <div class="wcard-h">
+          <h4>The Deep Seam</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 2 of 4</span><span class="wtag ink-violet">The Prospector</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Find the one thing the map is hiding.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Prospector</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">There is a seam out there and it is higher up than a seam should be.<br>Geology has been wrong before. Usually about me.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>lostThing</code>, count <b>1</b> hidden things</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-panHat">Pan Hat</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">That is the seam. That is not gold. I am choosing to stay hopeful.<br>Take the pan. I have three and I only ever wash the one.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theColourInIt">The Colour In It</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-whatIsUnderIt">What Is Under It</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-whatIsUnderIt" data-giver="prospector" data-target="trophyHunt" data-reward="gold" data-s-roster="14" data-s-chain="403" data-s-name="what is under it">
+        <div class="wcard-h">
+          <h4>What Is Under It</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 3 of 4</span><span class="wtag ink-violet">The Prospector</span><span class="wtag ink-gold">Gold</span></div>
+        <p class="wdesc">Down two named bosses.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Prospector</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Two big ones are sitting on my claim and neither one pays rent.<br>I have asked politely. I have asked twice. Now it is your problem.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>trophyHunt</code>, count <b>2</b> named bosses</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>260g</b> <span class="wsub">Gold. It came out of a pocket. He would rather not say which.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Both of them. The claim is quiet in a way I do not entirely trust.<br>Two hundred and sixty. Do not ask which pocket it came out of.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theDeepSeam">The Deep Seam</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theAssay">The Assay</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theAssay" data-giver="prospector" data-target="scavengerRun" data-reward="title" data-s-roster="15" data-s-chain="404" data-s-name="the assay">
+        <div class="wcard-h">
+          <h4>The Assay</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 4 of 4</span><span class="wtag ink-violet">The Prospector</span><span class="wtag ink-gold">Title</span></div>
+        <p class="wdesc">Find six assay samples in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Prospector</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Six samples. Good ones. I am finally going to have this thing tested.<br>I have avoided doing this for eleven years and I am ready now.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>6</b> assay samples</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>The Assayer</b> <span class="wsub">A title. Somebody finally checked, and the answer was no.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">The report is back. There has never been gold here. Not once.<br>I have no money left, so I am giving you the name instead.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-whatIsUnderIt">What Is Under It</a></span></div>
+
+        </div>
+
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="theOverdueList" id="g-theOverdueList">
+      <div class="wgroup-h"><h3>The overdue list</h3><span class="wgroup-n">4</span></div>
+      <p class="wgroup-note">4 source-ordered steps.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-theOverdueOne" data-giver="librarian" data-target="lostThing" data-reward="wearable" data-s-roster="16" data-s-chain="501" data-s-name="the overdue one">
+        <div class="wcard-h">
+          <h4>The Overdue One</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 1 of 4</span><span class="wtag ink-violet">The Ghost Librarian</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Find the one thing the map is hiding.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Ghost Librarian</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">One book left this building in 1806 and has not been seen since.<br>It is up somewhere high. Books climb, given enough time alone.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>lostThing</code>, count <b>1</b> hidden things</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-readingSpecs">Reading Spectacles</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Returned. Two hundred and twenty years late, which I will waive.<br>Take the spectacles. Their previous owner has stopped needing them.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theMarginalia">The Marginalia</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theMarginalia" data-giver="librarian" data-target="scavengerRun" data-reward="gold" data-s-roster="17" data-s-chain="502" data-s-name="the marginalia">
+        <div class="wcard-h">
+          <h4>The Marginalia</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 2 of 4</span><span class="wtag ink-violet">The Ghost Librarian</span><span class="wtag ink-gold">Gold</span></div>
+        <p class="wdesc">Find four margin notes in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Ghost Librarian</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Four loose margin notes. Somebody has been writing in my books.<br>I would like the notes. I would also like a word with the somebody.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>4</b> margin notes</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>140g</b> <span class="wsub">Gold. From the fines drawer. The fines drawer is never audited.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">This handwriting is mine. I have no memory of any of this.<br>A hundred and forty, out of a fines drawer nobody audits.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theOverdueOne">The Overdue One</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theRestrictedShelf">The Restricted Shelf</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theRestrictedShelf" data-giver="librarian" data-target="trophyHunt" data-reward="gold" data-s-roster="18" data-s-chain="503" data-s-name="the restricted shelf">
+        <div class="wcard-h">
+          <h4>The Restricted Shelf</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 3 of 4</span><span class="wtag ink-violet">The Ghost Librarian</span><span class="wtag ink-gold">Gold</span></div>
+        <p class="wdesc">Down one named boss.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Ghost Librarian</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Something named is standing between me and the restricted shelf.<br>It has been standing there for a while. It is not reading.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>trophyHunt</code>, count <b>1</b> named bosses</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>200g</b> <span class="wsub">Gold. A library should not have this much of it lying around.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">The shelf is reachable. Everything on it is about the same subject.<br>Two hundred. I would rather not explain why a library has this.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theMarginalia">The Marginalia</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theArchivistsTrade">The Archivist's Trade</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theArchivistsTrade" data-giver="librarian" data-target="fragileDelivery" data-reward="title" data-s-roster="19" data-s-chain="504" data-s-name="the archivist's trade">
+        <div class="wcard-h">
+          <h4>The Archivist's Trade</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 4 of 4</span><span class="wtag ink-violet">The Ghost Librarian</span><span class="wtag ink-gold">Title</span></div>
+        <p class="wdesc">Finish a run with the lantern uncracked.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Ghost Librarian</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Carry my reading lamp out and bring it back lit. The Archivist trades.<br>He wants light. I want a book back. Neither of us wants to discuss it.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>fragileDelivery</code>, count <b>1</b> lanterns delivered</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>In Good Standing</b> <span class="wsub">A title. Your account is clear. This is rare and she noticed.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Not a chip in it. He handed the book over without one word.<br>Your account is clear. I am writing that down where people can see it.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theRestrictedShelf">The Restricted Shelf</a></span></div>
+
+        </div>
+        <details class="wraw"><summary>Additional objective parameters <span>2</span></summary><dl><div><dt><code>cargo</code></dt><dd>lantern</dd></div><div><dt><code>hitsPerCrack</code></dt><dd>5</dd></div></dl></details>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="theStray" id="g-theStray">
+      <div class="wgroup-h"><h3>The stray</h3><span class="wgroup-n">4</span></div>
+      <p class="wgroup-note">4 source-ordered steps.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-aDogOutThere" data-giver="child" data-target="pupRescue" data-reward="wearable" data-s-roster="20" data-s-chain="601" data-s-name="a dog out there">
+        <div class="wcard-h">
+          <h4>A Dog Out There</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 1 of 4</span><span class="wtag ink-violet">The Kid</span><span class="wtag ink-gold">Wearable</span></div>
+        <p class="wdesc">Bring the stray home from one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Kid</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">There is a dog out there and I have seen it twice and nobody believes me.<br>Bring it back and then they will have to believe both of us.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>pupRescue</code>, count <b>1</b> strays home</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-wearables.html#e-pupBandana">Pup Bandana</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">That is the dog. That is the exact dog. I was right in front of everyone.<br>It came off its neck when it shook. You should have it, I think.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theDogOnMyClaim">The Dog On My Claim</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theDogOnMyClaim" data-giver="prospector" data-target="scavengerRun" data-reward="gold" data-s-roster="21" data-s-chain="602" data-s-name="the dog on my claim">
+        <div class="wcard-h">
+          <h4>The Dog On My Claim</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 2 of 4</span><span class="wtag ink-violet">The Prospector</span><span class="wtag ink-gold">Gold</span></div>
+        <p class="wdesc">Find three buried things in one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Prospector</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Your dog has buried three of my things and will not say where.<br>It has been digging all week and it has found more than I have.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>scavengerRun</code>, count <b>3</b> buried things</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>180g</b> <span class="wsub">Gold. A finder's fee, paid to the wrong species by mistake.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">A spoon, a boot and my second-best pan. Better instincts than mine.<br>A hundred and eighty. Consider it a finder's fee for the dog.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-aDogOutThere">A Dog Out There</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theDogsRecord">The Dog's Record</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theDogsRecord" data-giver="librarian" data-target="lostThing" data-reward="gold" data-s-roster="22" data-s-chain="603" data-s-name="the dog's record">
+        <div class="wcard-h">
+          <h4>The Dog's Record</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 3 of 4</span><span class="wtag ink-violet">The Ghost Librarian</span><span class="wtag ink-gold">Gold</span></div>
+        <p class="wdesc">Find the one thing the map is hiding.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Ghost Librarian</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">Your dog is in one of my books. I would like the rest of that book.<br>It is an old book, it is somewhere high, and it is about hauntings.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>lostThing</code>, count <b>1</b> hidden things</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><b>220g</b> <span class="wsub">Gold. Hush money, from a woman who is technically a ghost.</span></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">Here it is. Same dog, same markings, four hundred years ago.<br>Two hundred and twenty. I would advise you not to tell the child.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theDogOnMyClaim">The Dog On My Claim</a></span></div>
+          <div class="wfact"><span class="wfact-k">Next</span><span class="wfact-v"><a href="wiki-quests.html#e-theOneItPicked">The One It Picked</a></span></div>
+        </div>
+
+
+      </article>
+      <article class="wcard" id="e-theOneItPicked" data-giver="child" data-target="pupRescue" data-reward="unlock" data-s-roster="23" data-s-chain="604" data-s-name="the one it picked">
+        <div class="wcard-h">
+          <h4>The One It Picked</h4>
+
+        </div>
+
+        <div class="wtags"><span class="wtag ink-cyan">Step 4 of 4</span><span class="wtag ink-violet">The Kid</span><span class="wtag ink-gold">Unlock</span></div>
+        <p class="wdesc">Bring the stray home from one run.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Giver</span><span class="wfact-v"><b>The Kid</b></span></div>
+          <div class="wfact"><span class="wfact-k">Request</span><span class="wfact-v">The library lady told me what it is. I already knew. I named it first.<br>Go and get it one more time. This time it is not going to leave.</span></div>
+          <div class="wfact"><span class="wfact-k">Target</span><span class="wfact-v"><code>pupRescue</code>, count <b>1</b> strays home</span></div>
+          <div class="wfact"><span class="wfact-k">Reward</span><span class="wfact-v"><a href="wiki-weapons.html#e-blackSquirrel">Ghost Pup</a></span></div>
+          <div class="wfact"><span class="wfact-k">Reaction</span><span class="wfact-v">It is not going anywhere. It picked you, and it is very stubborn.<br>It comes with you now. Into the actual fighting. I have checked.</span></div>
+          <div class="wfact"><span class="wfact-k">Previous</span><span class="wfact-v"><a href="wiki-quests.html#e-theDogsRecord">The Dog's Record</a></span></div>
+
+        </div>
+
+
+      </article></div>
+    </section></div>
+  </main>
+</div>
+
+<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
+  Generated 2026-08-03 20:59 UTC from <code>game@d2b39395</code>,
+  content derived from <code>data/game-data.json</code>.
+  <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
+</footer>
+
+<script type="module">
+import { getUser, onChange, signIn, signOut } from './bin/auth.js';
+const show = (el, visible) => { if (el) el.style.display = visible ? '' : 'none'; };
+function renderAuth(user) {
+  const signedIn = user !== null;
+  show(document.getElementById('ab-signedout'), !signedIn);
+  show(document.getElementById('ab-signedin'), signedIn);
+  if (signedIn) {
+    const name = user.displayName || user.email;
+    const el = document.getElementById('ab-name');
+    if (el) el.textContent = name;
+  }
+  window.__whompUser = user;
+  document.dispatchEvent(new CustomEvent('whomp-auth', { detail: user }));
+}
+async function runSignIn(button) {
+  button.disabled = true;
+  try { await signIn(); } finally { button.disabled = false; }
+}
+document.getElementById('ab-signin')?.addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('ab-signout')?.addEventListener('click', () => signOut());
+onChange(renderAuth);
+renderAuth(getUser());
+</script>
+<script type="module">
+
+// ---- facets ----
+const cards = [...document.querySelectorAll('.wcard')];
+const active = {};
+document.querySelectorAll('.wfacet-row').forEach((row) => {
+  const facet = row.dataset.facet;
+  active[facet] = 'all';
+  row.querySelectorAll('.wf').forEach((btn) => btn.addEventListener('click', () => {
+    row.querySelectorAll('.wf').forEach((b) => { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-pressed', 'true');
+    active[facet] = btn.dataset.value;
+    apply();
+  }));
+});
+function apply() {
+  let shown = 0;
+  for (const c of cards) {
+    const ok = Object.entries(active).every(([k, v]) => {
+      if (v === 'all') return true;
+      const row = document.querySelector('.wfacet-row[data-facet="' + k + '"]');
+      return row?.dataset.multi === '1' ? String(c.dataset[k] || '').split(' ').includes(v) : c.dataset[k] === v;
+    });
+    c.dataset.hidden = ok ? '0' : '1';
+    if (ok) shown++;
+  }
+  document.querySelectorAll('.wgroup').forEach((g) => {
+    const visible = [...g.querySelectorAll('.wcard')].filter((c) => c.dataset.hidden !== '1').length;
+    g.dataset.empty = visible ? '0' : '1';
+    const n = g.querySelector('.wgroup-n');
+    if (n) n.textContent = visible;
+  });
+  const el = document.getElementById('wcount');
+  if (el) el.textContent = shown === cards.length ? cards.length + ' shown' : shown + ' of ' + cards.length + ' shown';
+  const empty = document.getElementById('wempty');
+  if (empty) empty.hidden = shown !== 0;
+}
+function resetFilters() {
+  document.querySelectorAll('.wfacet-row').forEach((row) => {
+    row.querySelectorAll('.wf').forEach((b) => {
+      const selected = b.dataset.value === 'all';
+      b.classList.toggle('is-active', selected);
+      b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    });
+    active[row.dataset.facet] = 'all';
+  });
+  apply();
+}
+document.getElementById('wreset')?.addEventListener('click', resetFilters);
+// ---- sort ----
+const sortSel = document.getElementById('wsort');
+if (sortSel) sortSel.addEventListener('change', () => {
+  const opt = sortSel.selectedOptions[0];
+  const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
+  const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
+  document.querySelectorAll('.wgrid').forEach((grid) => {
+    [...grid.children]
+      .sort((a, b) => {
+        const x = a.dataset[prop], y = b.dataset[prop];
+        if (x == null && y == null) return 0;
+        if (x == null) return 1;
+        if (y == null) return -1;
+        const cmp = isText ? String(x).localeCompare(String(y)) : (Number(x) - Number(y));
+        return desc ? -cmp : cmp;
+      })
+      .forEach((k) => grid.appendChild(k));
+  });
+});
+apply();
+// ---- search: clear the filters before jumping, so a hit is never display:none ----
+
+const searchInput = document.getElementById('search');
+const srPanel = document.getElementById('sr-panel');
+const searchStatus = document.getElementById('sr-status');
+const SEARCH_LIMIT = 30;
+let searchIndex = [];
+let searchState = 'loading';
+let renderedHits = [];
+let activeResult = -1;
+
+function setSearchStatus(message) {
+  if (searchStatus) searchStatus.textContent = message;
+}
+
+function setSearchOpen(open) {
+  srPanel.classList.toggle('open', open);
+  searchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!open) {
+    activeResult = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function showSearchMessage(message, announcement = message) {
+  renderedHits = [];
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  const empty = document.createElement('div');
+  empty.className = 'sr-empty';
+  empty.setAttribute('role', 'option');
+  empty.setAttribute('aria-disabled', 'true');
+  empty.textContent = message;
+  srPanel.append(empty);
+  setSearchStatus(announcement);
+  setSearchOpen(true);
+}
+
+const normalized = (value) => String(value || '').trim().toLowerCase();
+const hasWordPrefix = (value, query) => value.split(/\s+/).some((word) => word.startsWith(query));
+
+/* Ranking is deliberately source-aware. Exact and prefix title matches are
+ * always first; after those, a generated wiki route/card beats a generic
+ * change-log body match. This is what makes a short query such as "core" land
+ * on Core weapons and its cards instead of a commit that happened to say core. */
+function searchRank(item, query) {
+  const title = normalized(item.title);
+  const text = normalized(item.text);
+  const type = normalized(item.type);
+  const wikiResult = normalized(item.href).startsWith('wiki');
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 10;
+  if (wikiResult && hasWordPrefix(title, query)) return 20;
+  if (wikiResult && title.includes(query)) return 30;
+  if (wikiResult && (text.startsWith(query) || type.startsWith(query))) return 40;
+  if (wikiResult && (hasWordPrefix(text, query) || hasWordPrefix(type, query))) return 45;
+  if (wikiResult) return 50;
+  if (title.includes(query)) return 60;
+  if (text.startsWith(query) || type.startsWith(query) || hasWordPrefix(text, query) || hasWordPrefix(type, query)) return 70;
+  return type === 'change' ? 90 : 80;
+}
+
+function setActiveResult(next) {
+  const options = [...srPanel.querySelectorAll('.sr-item')];
+  if (!options.length) return;
+  activeResult = (next + options.length) % options.length;
+  options.forEach((option, index) => {
+    const active = index === activeResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  const selected = options[activeResult];
+  searchInput.setAttribute('aria-activedescendant', selected.id);
+  selected.scrollIntoView({ block: 'nearest' });
+}
+
+function renderResults(query) {
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) {
+    renderedHits = [];
+    srPanel.replaceChildren();
+    setSearchOpen(false);
+    setSearchStatus('Enter at least two characters to search.');
+    return;
+  }
+  if (searchState === 'loading') {
+    showSearchMessage('Loading the search index...', 'Search is still loading.');
+    return;
+  }
+  if (searchState === 'error') {
+    showSearchMessage('Search is unavailable right now. Reload the page to try again.', 'Search could not load. Reload the page to try again.');
+    return;
+  }
+
+  const ranked = searchIndex
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => normalized(item.title + ' ' + item.text + ' ' + item.type).includes(q))
+    .sort((a, b) => searchRank(a.item, q) - searchRank(b.item, q)
+      || normalized(a.item.title).localeCompare(normalized(b.item.title))
+      || a.index - b.index);
+  renderedHits = ranked.slice(0, SEARCH_LIMIT).map(({ item }) => item);
+  if (renderedHits.length === 0) {
+    showSearchMessage('No matches for "' + query.trim() + '". Try a weapon, character, world, or dev-log term.', 'No search results for ' + query.trim() + '.');
+    return;
+  }
+
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  renderedHits.forEach((item, index) => {
+    const link = document.createElement('a');
+    link.className = 'sr-item';
+    link.id = 'sr-option-' + index;
+    link.href = String(item.href || '');
+    link.tabIndex = -1;
+    link.setAttribute('role', 'option');
+    link.setAttribute('aria-selected', 'false');
+    const kind = document.createElement('span');
+    kind.className = 'sr-kind';
+    kind.textContent = String(item.type || 'result');
+    const title = document.createElement('span');
+    title.className = 'sr-title';
+    title.textContent = String(item.title || 'Untitled');
+    link.append(kind, title);
+    srPanel.append(link);
+  });
+  const shown = renderedHits.length;
+  const total = ranked.length;
+  setSearchStatus((shown < total ? 'Showing ' + shown + ' of ' + total : total) + (total === 1 ? ' search result' : ' search results') + ' for ' + query.trim() + '.');
+  setSearchOpen(true);
+}
+searchInput.addEventListener('input', (e) => renderResults(e.target.value));
+searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (searchInput.value.trim().length < 2) return;
+    e.preventDefault();
+    if (!srPanel.classList.contains('open')) renderResults(searchInput.value);
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    setActiveResult(activeResult < 0 ? (direction > 0 ? 0 : renderedHits.length - 1) : activeResult + direction);
+    return;
+  }
+  if (e.key === 'Enter' && renderedHits.length && srPanel.classList.contains('open')) {
+    e.preventDefault();
+    const options = [...srPanel.querySelectorAll('.sr-item')];
+    const selected = options[activeResult >= 0 ? activeResult : 0];
+    selected?.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (srPanel.classList.contains('open')) e.preventDefault();
+    setSearchOpen(false);
+    setSearchStatus('Search suggestions closed.');
+  }
+  if (e.key === 'Tab') setSearchOpen(false);
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
+srPanel.addEventListener('click', (e) => {
+  const a = e.target.closest('.sr-item');
+  if (!a) return;
+  setSearchOpen(false);
+  const href = a.getAttribute('href') || '';
+  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
+  const target = hash ? document.getElementById(hash) : null;
+  if (target) {
+    if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
+      document.querySelectorAll('.wfacet-row').forEach((row) => {
+        row.querySelectorAll('.wf').forEach((b) => {
+          const selected = b.dataset.value === 'all';
+          b.classList.toggle('is-active', selected);
+          b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
+        active[row.dataset.facet] = 'all';
+      });
+      apply();
+    } }
+});
+
+fetch('./search-index.json')
+  .then((response) => {
+    if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+    return response.json();
+  })
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error('Search index is not an array');
+    searchIndex = data;
+    searchState = 'ready';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  })
+  .catch(() => {
+    searchIndex = [];
+    searchState = 'error';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  });
+
+
+</script>
+</body>
+</html>

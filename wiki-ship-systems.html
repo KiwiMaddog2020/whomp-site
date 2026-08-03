@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP core weapons</title>
-<meta name="description" content="Core weapons: The one you aim yourself. Every value generated from the game's own data.">
+<title>WHOMP ship systems</title>
+<meta name="description" content="Ship systems: Every socket, its core and the complete rebuild ladder. Every value generated from the game's own data.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -336,8 +336,8 @@ footer a{color:var(--cyan);text-decoration:none}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP core weapons</h1>
-        <p class="subtag">The one you aim yourself.</p>
+        <h1 class="chroma">WHOMP ship systems</h1>
+        <p class="subtag">Every socket, its core and the complete rebuild ladder.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale"></span>
@@ -365,11 +365,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
-    <details class="wside-section" open>
+    <details class="wside-section">
       <summary>Buildcraft <span>13</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
-        <a href="wiki-cores.html" class="is-here" aria-current="page">Core weapons</a>
+        <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
         <a href="wiki-tiers.html">Weapon tiers</a>
         <a href="wiki-builds.html">Measured builds</a>
@@ -402,14 +402,14 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-ambient-events.html">Ambient events</a>
       </div>
     </details>
-    <details class="wside-section">
+    <details class="wside-section" open>
       <summary>Progression <span>6</span></summary>
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
         <a href="wiki-shop.html">Meta shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
-        <a href="wiki-ship-systems.html">Ship systems</a>
+        <a href="wiki-ship-systems.html" class="is-here" aria-current="page">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
       </div>
     </details>
@@ -423,60 +423,59 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">8 entries, read straight out of the game</div>
+    <div class="stat">10 sockets · 4 rebuild tiers, read straight out of the game</div>
   </nav>
   <main class="wmain">
     <div class="rule"></div>
-    <h2 class="chroma">Core weapons</h2>
-    <p class="lede">A core weapon is the weapon under your hand, and picking one is the only decision that shapes a whole run before it starts. All 8 are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.</p>
+    <h2 class="chroma">Ship systems</h2>
+    <p class="lede">The ship topology contract validates exactly one recovered core per socket, marks the heart socket, preserves recovery order and publishes 4 rebuild thresholds with a lookup for every source-listed core count from 0 through 10.</p>
 
     <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
       <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/coreWeapons.ts#CORE_WEAPONS</code>.
-      Optional director notes have <b>0 of 8</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      and dead relations before it writes a page. Source: <code>src/data/shipSystems.ts#CORE_SOCKET_SYSTEMS</code>.
+      Optional director notes have <b>0 of 10</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
 
-    <p class="womit">No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these 8 lives outside the shared artifact, so this page will not retype private constants. The reserved evolution labels in the registry are not a playable mechanic and are not presented as available or upcoming content. <b>Aim and forgiveness values describe targeting generosity only</b>; they do not imply damage strength. The pip count is shown because the game suite pins it against the real clip size.</p>
+    <p class="womit"><b>Fragments do not occupy these sockets.</b> The canonical contract exposes route labels for fragments but deliberately does not claim a fragment-to-socket relation.</p>
 
 
-    <section class="wfeature" aria-labelledby="aim-policy">
-      <div><span class="eyebrow">Global core mechanic</span><h3 id="aim-policy">Aim-assist policy</h3></div>
-      <div class="wmethod-grid">
-        <div><b>Off</b><span>Assist scale</span><code>0</code></div><div><b>Light</b><span>Assist scale</span><code>0.6</code></div><div><b>Full</b><span>Assist scale</span><code>1</code></div>
-        <div><b>Light</b><span>Default assist level</span><code>light</code></div>
-        <div><b>Light</b><span>Duel normalization</span><code>light</code></div>
-        <div><b>11.02 m</b><span>Minimum acquisition range</span><code>minimumRangeM</code></div>
-        <div><b><a href="wiki-cores.html#e-glaive">Glaive</a></b><span>Range-floor exemption</span><code>minimumRangeExempt</code></div>
+    <section class="wfeature" aria-labelledby="ship-rebuild-tiers">
+      <div><span class="eyebrow">Canonical topology</span><h3 id="ship-rebuild-tiers">Rebuild tiers and fragment route labels</h3></div>
+      <div class="wbuild-grid">
+        <article>
+          <span class="wtag ink-gold">Tier 1 at 1 cores</span>
+          <h4>First light</h4>
+          <p>Two repair bays wear fresh alloy against the weathered skin, the doorway gets a threshold plate, and one conduit relights along the flank.</p>
+        </article><article>
+          <span class="wtag ink-gold">Tier 2 at 3 cores</span>
+          <h4>The spine holds</h4>
+          <p>Five bays panelled, the deck plates re-seated over the two holes inside, a second conduit run lit the length of the hull.</p>
+        </article><article>
+          <span class="wtag ink-gold">Tier 3 at 6 cores</span>
+          <h4>She stands</h4>
+          <p>Eight bays panelled, the dorsal rent patched over, the snapped strut braced back under her, and the navigation lamp stops guttering and holds.</p>
+        </article><article>
+          <span class="wtag ink-gold">Tier 4 at 9 cores</span>
+          <h4>Ready to answer</h4>
+          <p>Every bay bright, the fin crack splinted, both nacelle cowls re-hung, the ramp re-treaded, the pad cleats catching light, and the light inside turns warm.</p>
+        </article>
       </div>
-      <p>These are targeting-assistance and forgiveness parameters. They are not damage values, weapon-strength scores or measured rankings.</p>
-      <details class="wraw"><summary>Aim-policy provenance <span>4</span></summary><dl><div><dt><code>profiles</code></dt><dd>src/sim/forgiveness.ts#FORGIVENESS</dd></div><div><dt><code>assist</code></dt><dd>src/sim/forgiveness.ts#AIM_ASSIST_*</dd></div><div><dt><code>duelAssist</code></dt><dd>src/sim/forgiveness.ts#DUEL_AIM_ASSIST</dd></div><div><dt><code>rangeFloor</code></dt><dd>src/sim/forgiveness.ts#AIMED_CORE_MIN_RANGE_*</dd></div></dl></details>
+      <details class="wraw"><summary>Rebuild tier by recovered core count <span>11</span></summary><dl><div><dt><code>0 cores</code></dt><dd>tier 0</dd></div><div><dt><code>1 cores</code></dt><dd>tier 1</dd></div><div><dt><code>2 cores</code></dt><dd>tier 1</dd></div><div><dt><code>3 cores</code></dt><dd>tier 2</dd></div><div><dt><code>4 cores</code></dt><dd>tier 2</dd></div><div><dt><code>5 cores</code></dt><dd>tier 2</dd></div><div><dt><code>6 cores</code></dt><dd>tier 3</dd></div><div><dt><code>7 cores</code></dt><dd>tier 3</dd></div><div><dt><code>8 cores</code></dt><dd>tier 3</dd></div><div><dt><code>9 cores</code></dt><dd>tier 4</dd></div><div><dt><code>10 cores</code></dt><dd>tier 4</dd></div></dl></details>
+      <details class="wraw"><summary>Fragment route labels <span>3</span></summary><dl><div><dt><code>fragment_rim</code></dt><dd>RIM ISLETS</dd></div><div><dt><code>fragment_underway</code></dt><dd>THE UNDERWAY</dd></div><div><dt><code>fragment_rooftop</code></dt><dd>ROOFTOP RUN</dd></div></dl></details>
+      <details class="wraw"><summary>Topology provenance <span>4</span></summary><dl><div><dt><code>sockets</code></dt><dd>src/data/shipSystems.ts#CORE_SOCKET_SYSTEMS</dd></div><div><dt><code>fragments</code></dt><dd>src/data/shipSystems.ts#SHIP_FRAGMENT_LABELS</dd></div><div><dt><code>rebuildTiers</code></dt><dd>src/data/shipSystems.ts#REBUILD_TIERS</dd></div><div><dt><code>rebuildLookup</code></dt><dd>src/data/shipSystems.ts#rebuildTierFor</dd></div></dl></details>
     </section>
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Rhythm</span>
-        <div class="wfacet-row" data-facet="cadence" data-multi="0">
+        <span class="wfacet-h">Heart socket</span>
+        <div class="wfacet-row" data-facet="heart" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="charge" aria-pressed="false" aria-controls="wiki-groups">Charge <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="clip" aria-pressed="false" aria-controls="wiki-groups">Clip <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="cooldown" aria-pressed="false" aria-controls="wiki-groups">Cooldown <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="drain" aria-pressed="false" aria-controls="wiki-groups">Drain <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="heat" aria-pressed="false" aria-controls="wiki-groups">Heat <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="lock" aria-pressed="false" aria-controls="wiki-groups">Lock <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spin" aria-pressed="false" aria-controls="wiki-groups">Spin <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="windup" aria-pressed="false" aria-controls="wiki-groups">Windup <span style="opacity:.5">1</span></button>
-        </div>
-      </div>
-      <div class="wfacet">
-        <span class="wfacet-h">Asks you for</span>
-        <div class="wfacet-row" data-facet="feel" data-multi="0">
-          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="commitment" aria-pressed="false" aria-controls="wiki-groups">Commitment <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="conviction" aria-pressed="false" aria-controls="wiki-groups">Conviction <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="leading" aria-pressed="false" aria-controls="wiki-groups">Leading <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="nerve" aria-pressed="false" aria-controls="wiki-groups">Nerve <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="painting" aria-pressed="false" aria-controls="wiki-groups">Painting <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="patience" aria-pressed="false" aria-controls="wiki-groups">Patience <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="placement" aria-pressed="false" aria-controls="wiki-groups">Placement <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="spacing" aria-pressed="false" aria-controls="wiki-groups">Spacing <span style="opacity:.5">1</span></button>
-        </div>
-      </div>
-      <div class="wfacet">
-        <span class="wfacet-h">Meter</span>
-        <div class="wfacet-row" data-facet="meter" data-multi="0">
-          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="continuous" aria-pressed="false" aria-controls="wiki-groups">Continuous <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="discrete" aria-pressed="false" aria-controls="wiki-groups">Discrete <span style="opacity:.5">3</span></button>
+          <button class="wf" type="button" data-value="no" aria-pressed="false" aria-controls="wiki-groups">No <span style="opacity:.5">9</span></button><button class="wf" type="button" data-value="yes" aria-pressed="false" aria-controls="wiki-groups">Yes <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h">Sort</span>
-        <select class="wsort" id="wsort" aria-label="Sort Core weapons">
-          <option value="roster" data-desc="0" data-text="0">Selection order</option><option value="name" data-desc="0" data-text="1">Name</option>
+        <select class="wsort" id="wsort" aria-label="Sort Ship systems">
+          <option value="roster" data-desc="0" data-text="0">Socket order</option><option value="name" data-desc="0" data-text="1">Label</option>
         </select>
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
@@ -486,144 +485,153 @@ footer a{color:var(--cyan);text-decoration:none}
     </div>
 
     <div id="wiki-groups">
-    <section class="wgroup" data-group="all" id="g-all">
-      <div class="wgroup-h"><h3>Core selection</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">In the source picker’s selectOrder. This is display order, not a ladder.</p>
+    <section class="wgroup" data-group="heart" id="g-heart">
+      <div class="wgroup-h"><h3>Heart socket</h3><span class="wgroup-n">1</span></div>
+      <p class="wgroup-note">The one socket marked as the ship’s heart by source metadata.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-scattergun" data-cadence="clip" data-feel="spacing" data-meter="discrete" data-s-roster="0" data-s-name="scattergun">
+      <article class="wcard" id="e-memory" data-heart="yes" data-s-roster="3" data-s-name="memory archive">
         <div class="wcard-h">
-          <h4>Scattergun</h4>
-          <span class="wcard-accent" style="background:#ff9a33"></span>
+          <h4>MEMORY ARCHIVE</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Clip</span><span class="wtag ink-pink">Spacing</span></div>
-        <p class="wdesc">Two barrels, then a reload you can feel. Meaty up close.</p>
-        <p class="wgloss">A couple of shells, then a reload you have to survive. The empty clip is the whole design.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Spacing</b>, knowing exactly how far away you are.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>2</b> pips marked SHELLS, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a>, which is where its damage is anchored</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span><span class="wtag ink-pink">Heart</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>memory</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-memoryCore">Memory Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>4</b> of 10</span></div>
+      </div>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="systems" id="g-systems">
+      <div class="wgroup-h"><h3>System sockets</h3><span class="wgroup-n">9</span></div>
+      <p class="wgroup-note">Every remaining validated core socket.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-navigation" data-heart="no" data-s-roster="0" data-s-name="navigation">
+        <div class="wcard-h">
+          <h4>NAVIGATION</h4>
+
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.62 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>11.53 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.4 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.62 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.3 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.26 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.55 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.16 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.35 unitless</dd></div></dl></details>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>navigation</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-navCore">Navigation Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>1</b> of 10</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-longbow" data-cadence="charge" data-feel="leading" data-meter="continuous" data-s-roster="1" data-s-name="longbow">
+      <article class="wcard" id="e-lifeSupport" data-heart="no" data-s-roster="1" data-s-name="life support">
         <div class="wcard-h">
-          <h4>Longbow</h4>
-          <span class="wcard-accent" style="background:#ffcf3f"></span>
+          <h4>LIFE SUPPORT</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Charge</span><span class="wtag ink-pink">Leading</span></div>
-        <p class="wdesc">Draw, lead the target, release. Full draw punches through.</p>
-        <p class="wgloss">Hold to draw, release to fire. A partial draw still goes off, just weaker, so the question is always whether you had time for the full one.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Leading</b>, firing where they are going to be, not where they are.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAW fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-spectralArrows">Spectral Arrows</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.46 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>19 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.34 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.56 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.26 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.2 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.45 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.11 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.3 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>lifeSupport</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-lifeCore">Life Support Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>2</b> of 10</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-mortar" data-cadence="cooldown" data-feel="placement" data-meter="discrete" data-s-roster="2" data-s-name="mortar">
+      <article class="wcard" id="e-coolant" data-heart="no" data-s-roster="2" data-s-name="coolant loop">
         <div class="wcard-h">
-          <h4>Mortar</h4>
-          <span class="wcard-accent" style="background:#ff8f3c"></span>
+          <h4>COOLANT LOOP</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Cooldown</span><span class="wtag ink-pink">Placement</span></div>
-        <p class="wdesc">Lob a shell onto the ground you pick. Patience, then a crater.</p>
-        <p class="wgloss">One shot, a flat wait, then another. The shell takes time to land, so you are aiming at where they will be.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Placement</b>, choosing the spot before the moment.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>1</b> pip marked SHELL, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-meteorStrike">Meteor Strike</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.7 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>17 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.55 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.8 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.45 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.24 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.4 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>coolant</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-coolantCore">Coolant Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>3</b> of 10</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-laser" data-cadence="heat" data-feel="painting" data-meter="continuous" data-s-roster="3" data-s-name="sweepbeam">
+      <article class="wcard" id="e-ignition" data-heart="no" data-s-roster="4" data-s-name="ignition">
         <div class="wcard-h">
-          <h4>Sweepbeam</h4>
-          <span class="wcard-accent" style="background:#e0203f"></span>
+          <h4>IGNITION</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Heat</span><span class="wtag ink-pink">Painting</span></div>
-        <p class="wdesc">A hot line you steer. It bites while you hold it, and it runs hot.</p>
-        <p class="wgloss">Keeps firing while you hold it and builds heat while it does. Overheat and it locks you out until it cools.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Painting</b>, holding on target and staying on it.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous HEAT fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-deathray">Deathray</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.3 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>12.75 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.3 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.52 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.22 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.14 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.7 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.09 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.32 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>ignition</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-ignitionCore">Ignition Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>5</b> of 10</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-glaive" data-cadence="windup" data-feel="commitment" data-meter="continuous" data-s-roster="4" data-s-name="glaive">
+      <article class="wcard" id="e-foldDrive" data-heart="no" data-s-roster="5" data-s-name="fold drive">
         <div class="wcard-h">
-          <h4>Glaive</h4>
-          <span class="wcard-accent" style="background:#e8dcc0"></span>
+          <h4>FOLD DRIVE</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Windup</span><span class="wtag ink-pink">Commitment</span></div>
-        <p class="wdesc">Wind it up and sweep everything in front of you. No taking it back.</p>
-        <p class="wgloss">Commits to a windup before the sweep lands, and chains into a second swing if you keep it going. Once it starts you cannot take it back.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Commitment</b>, deciding early and not flinching.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SWING fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-photonScythe">Photon Scythe</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>1.9 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>4.2 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.45 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.7 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.35 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.5 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.4 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>foldDrive</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-foldCore">Fold Drive Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>6</b> of 10</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-arcCaster" data-cadence="lock" data-feel="patience" data-meter="discrete" data-s-roster="5" data-s-name="arc caster">
+      <article class="wcard" id="e-shielding" data-heart="no" data-s-roster="6" data-s-name="hull shielding">
         <div class="wcard-h">
-          <h4>Arc Caster</h4>
-          <span class="wcard-accent" style="background:#ea5cff"></span>
+          <h4>HULL SHIELDING</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Lock</span><span class="wtag ink-pink">Patience</span></div>
-        <p class="wdesc">Hold a target until the charge takes. Then it jumps, and jumps again.</p>
-        <p class="wgloss">Builds a lock only while you keep a target inside the cone, and loses it if you switch. Then it spends the lock.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Patience</b>, waiting for the shot instead of taking the one on offer.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v"><b>4</b> pips marked LOCK, spent one at a time</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-chainLightning">Chain Lightning</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.58 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>14 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.36 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.58 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.28 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.22 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.5 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.07 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.34 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>shielding</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-shieldCore">Shielding Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>7</b> of 10</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-frostLance" data-cadence="spin" data-feel="conviction" data-meter="continuous" data-s-roster="6" data-s-name="frost lance">
+      <article class="wcard" id="e-greenhouse" data-heart="no" data-s-roster="7" data-s-name="greenhouse">
         <div class="wcard-h">
-          <h4>Frost Lance</h4>
-          <span class="wcard-accent" style="background:#2f9dff"></span>
+          <h4>GREENHOUSE</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Spin</span><span class="wtag ink-pink">Conviction</span></div>
-        <p class="wdesc">Spin it up, hold it as long as you like, and put a line through the room.</p>
-        <p class="wgloss">Spins up to a gate rather than a scale. Releasing early gives you nothing at all, so there is no partial credit.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Conviction</b>, backing your read all the way through.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous SPIN fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-voidRailgun">Void Railgun</a>, which is where its damage is anchored</span></div>
-        </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.26 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>20 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.32 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.54 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.24 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.06 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.2 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.08 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.3 unitless</dd></div></dl></details>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>greenhouse</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-gardenCore">Greenhouse Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>8</b> of 10</span></div>
+      </div>
 
       </article>
-      <article class="wcard" id="e-tether" data-cadence="drain" data-feel="nerve" data-meter="continuous" data-s-roster="7" data-s-name="tether">
+      <article class="wcard" id="e-reclaimer" data-heart="no" data-s-roster="8" data-s-name="water reclaimer">
         <div class="wcard-h">
-          <h4>Tether</h4>
-          <span class="wcard-accent" style="background:#6a3dff"></span>
+          <h4>WATER RECLAIMER</h4>
+
         </div>
 
-        <div class="wtags"><span class="wtag ink-cyan">Drain</span><span class="wtag ink-pink">Nerve</span></div>
-        <p class="wdesc">Hook something and let it fill. The longer you dare hold it, the worse the snap.</p>
-        <p class="wgloss">Attach and hold. It pays out at the release, so letting go early forfeits what you had built.</p>
-        <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Asks you for</span><span class="wfact-v"><b>Nerve</b>, standing in it one beat longer than feels wise.</span></div>
-          <div class="wfact"><span class="wfact-k">Meter</span><span class="wfact-v">a continuous DRAIN fill rather than countable shots</span></div>
-          <div class="wfact"><span class="wfact-k">Built on</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a>, which is where its damage is anchored</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>reclaimer</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-tideCore">Water Reclaimer Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>9</b> of 10</span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-cartography" data-heart="no" data-s-roster="9" data-s-name="cartography">
+        <div class="wcard-h">
+          <h4>CARTOGRAPHY</h4>
+
         </div>
-        <details class="wraw"><summary>Aim &amp; forgiveness <span>9 runtime fields</span></summary><dl><div><dt><code>acquireConeRad</code></dt><dd>0.66 rad</dd></div><div><dt><code>acquireRangeM</code></dt><dd>11.02 m</dd></div><div><dt><code>bodyPadM</code></dt><dd>0.48 m</dd></div><div><dt><code>minHitRadiusM</code></dt><dd>0.72 m</dd></div><div><dt><code>rescueRadM</code></dt><dd>0.34 m</dd></div><div><dt><code>magnetismConeRad</code></dt><dd>0.24 rad</dd></div><div><dt><code>magnetismPull</code></dt><dd>0.6 unitless</dd></div><div><dt><code>centerMassGraceRad</code></dt><dd>0.2 rad</dd></div><div><dt><code>minQuality</code></dt><dd>0.38 unitless</dd></div></dl></details>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ship socket</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Socket id</span><span class="wfact-v"><code>cartography</code></span></div>
+        <div class="wfact"><span class="wfact-k">Recovered core</span><span class="wfact-v"><a href="wiki-ship-cores.html#e-chartCore">Cartography Core</a></span></div>
+        <div class="wfact"><span class="wfact-k">Recovery order</span><span class="wfact-v"><b>10</b> of 10</span></div>
+      </div>
 
       </article></div>
     </section></div>
