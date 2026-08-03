@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP relics</title>
-<meta name="description" content="Relics: Stackable finds, with every trade written down. Every value generated from the game's own data.">
+<meta name="description" content="Relics: Stackable finds, with every trade written down. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -144,6 +144,8 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -155,6 +157,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -196,9 +201,27 @@ html,body{max-width:100%;overflow-x:hidden}
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -280,6 +303,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -321,6 +346,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
 
@@ -340,8 +366,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Stackable finds, with every trade written down.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -357,7 +383,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
@@ -365,22 +391,23 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
-    <details class="wside-section" open>
-      <summary>Buildcraft <span>13</span></summary>
+    <details class="wside-section is-current-section" open>
+      <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
-        <a href="wiki-tiers.html">Weapon tiers</a>
-        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
+        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html" class="is-here" aria-current="page">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
         <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-shrine-movement.html">Shrine movement</a>
         <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
         <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Jump augments</a>
+        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
       </div>
     </details>
     <details class="wside-section">
@@ -425,15 +452,17 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">36 entries, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Relics</span></nav>
     <h2 class="chroma">Relics</h2>
     <p class="lede">Relics are stackable run pickups. Their cards carry the game description, rarity, stack ceiling, source stat payload and whether the arena draft includes them.</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@f748df98</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>src/data/relics.ts#RELICS</code>.
-      Optional director notes have <b>0 of 36</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      Optional director notes have <b>0 of 36</b> coverage, so these cards use canonical mechanics and authored registry copy only.
+      This route also uses <b>36</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>a59f1b6e0f545c629f981d73e6dc7292cded6d20fee1047d8ed5211052a918d1</code>, source <code>50a75325582effd57c54007c375996e109b685dc692f42e0b67b09cda9fd2d2a</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
 
     <p class="womit">There is no relic tier letter here. The measurement artifact explicitly does not cover relics because a relic needs a reference build and chest-economy model before its delta means anything. The roster is complete; the ranking is honestly unmeasured.</p>
 
@@ -441,28 +470,28 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Rarity</span>
-        <div class="wfacet-row" data-facet="rarity" data-multi="0">
+        <span class="wfacet-h" id="facet-relics-rarity">Rarity</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-relics-rarity" data-facet="rarity" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="common" aria-pressed="false" aria-controls="wiki-groups">Common <span style="opacity:.5">11</span></button><button class="wf" type="button" data-value="rare" aria-pressed="false" aria-controls="wiki-groups">Rare <span style="opacity:.5">11</span></button><button class="wf" type="button" data-value="epic" aria-pressed="false" aria-controls="wiki-groups">Epic <span style="opacity:.5">9</span></button><button class="wf" type="button" data-value="legendary" aria-pressed="false" aria-controls="wiki-groups">Legendary <span style="opacity:.5">5</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Effect source</span>
-        <div class="wfacet-row" data-facet="effect" data-multi="0">
+        <span class="wfacet-h" id="facet-relics-effect">Effect source</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-relics-effect" data-facet="effect" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="stat payload" aria-pressed="false" aria-controls="wiki-groups">Stat payload <span style="opacity:.5">21</span></button><button class="wf" type="button" data-value="runtime event" aria-pressed="false" aria-controls="wiki-groups">Runtime event <span style="opacity:.5">15</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Arena draft</span>
-        <div class="wfacet-row" data-facet="arena" data-multi="0">
+        <span class="wfacet-h" id="facet-relics-arena">Arena draft</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-relics-arena" data-facet="arena" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="not included" aria-pressed="false" aria-controls="wiki-groups">Not included <span style="opacity:.5">19</span></button><button class="wf" type="button" data-value="included" aria-pressed="false" aria-controls="wiki-groups">Included <span style="opacity:.5">17</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Relics">
           <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="stacks" data-desc="1" data-text="0">Max stacks</option>
         </select>
@@ -478,11 +507,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Common</h3><span class="wgroup-n">11</span></div>
       <p class="wgroup-note">Base rarity weight 58.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-moldySandwich" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="0" data-s-name="forager's ration" data-s-stacks="8">
+      <article class="wcard" id="e-moldySandwich" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="0" data-s-name="forager's ration" data-s-stacks="8">
         <div class="wcard-h">
           <h4>Forager's Ration</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:moldySandwich" data-visual-use="entry">
+    <img src="wiki-assets/relics/moldy-sandwich.png" width="128" height="128" alt="Canonical in-game relic glyph for Forager's Ration." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+6 Max HP</p>
@@ -494,11 +527,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>maxHp</code></dt><dd>6</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-crackedDrumstick" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="1" data-s-name="splintered wand" data-s-stacks="6">
+      <article class="wcard" id="e-crackedDrumstick" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="1" data-s-name="splintered wand" data-s-stacks="6">
         <div class="wcard-h">
           <h4>Splintered Wand</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:crackedDrumstick" data-visual-use="entry">
+    <img src="wiki-assets/relics/cracked-drumstick.png" width="128" height="128" alt="Canonical in-game relic glyph for Splintered Wand." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+2% Attack Speed</p>
@@ -510,11 +547,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>atkSpeed</code></dt><dd>0.02</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-blownAmp" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="2" data-s-name="cracked power core" data-s-stacks="6">
+      <article class="wcard" id="e-blownAmp" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="2" data-s-name="cracked power core" data-s-stacks="6">
         <div class="wcard-h">
           <h4>Cracked Power Core</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:blownAmp" data-visual-use="entry">
+    <img src="wiki-assets/relics/blown-amp.png" width="128" height="128" alt="Canonical in-game relic glyph for Cracked Power Core." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+3% Damage</p>
@@ -526,11 +567,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>damage</code></dt><dd>0.03</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-frayedCable" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="3" data-s-name="frayed conduit" data-s-stacks="6">
+      <article class="wcard" id="e-frayedCable" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="3" data-s-name="frayed conduit" data-s-stacks="6">
         <div class="wcard-h">
           <h4>Frayed Conduit</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:frayedCable" data-visual-use="entry">
+    <img src="wiki-assets/relics/frayed-cable.png" width="128" height="128" alt="Canonical in-game relic glyph for Frayed Conduit." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+4% Projectile Speed</p>
@@ -542,11 +587,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>projSpeed</code></dt><dd>0.04</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-setlistScrap" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="4" data-s-name="scout's notes" data-s-stacks="5">
+      <article class="wcard" id="e-setlistScrap" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="4" data-s-name="scout's notes" data-s-stacks="5">
         <div class="wcard-h">
           <h4>Scout's Notes</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:setlistScrap" data-visual-use="entry">
+    <img src="wiki-assets/relics/setlist-scrap.png" width="128" height="128" alt="Canonical in-game relic glyph for Scout's Notes." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+3% XP Gain</p>
@@ -558,11 +607,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>xpGain</code></dt><dd>0.03</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-guitarPick" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="5" data-s-name="lucky fang" data-s-stacks="6">
+      <article class="wcard" id="e-guitarPick" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="5" data-s-name="lucky fang" data-s-stacks="6">
         <div class="wcard-h">
           <h4>Lucky Fang</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:guitarPick" data-visual-use="entry">
+    <img src="wiki-assets/relics/guitar-pick.png" width="128" height="128" alt="Canonical in-game relic glyph for Lucky Fang." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+2% Crit Chance</p>
@@ -574,11 +627,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>critChance</code></dt><dd>0.02</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-ductTape" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="6" data-s-name="field repair kit" data-s-stacks="5">
+      <article class="wcard" id="e-ductTape" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="6" data-s-name="field repair kit" data-s-stacks="5">
         <div class="wcard-h">
           <h4>Field Repair Kit</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:ductTape" data-visual-use="entry">
+    <img src="wiki-assets/relics/duct-tape.png" width="128" height="128" alt="Canonical in-game relic glyph for Field Repair Kit." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+1 Armor (halves damage taken)</p>
@@ -590,11 +647,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>armor</code></dt><dd>1</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-merchCoin" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="7" data-s-name="tarnished coin" data-s-stacks="6">
+      <article class="wcard" id="e-merchCoin" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="7" data-s-name="tarnished coin" data-s-stacks="6">
         <div class="wcard-h">
           <h4>Tarnished Coin</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:merchCoin" data-visual-use="entry">
+    <img src="wiki-assets/relics/merch-coin.png" width="128" height="128" alt="Canonical in-game relic glyph for Tarnished Coin." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+4% Gold Gain</p>
@@ -606,11 +667,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>goldGain</code></dt><dd>0.04</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-stageLightGel" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="8" data-s-name="prism shard" data-s-stacks="6">
+      <article class="wcard" id="e-stageLightGel" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="8" data-s-name="prism shard" data-s-stacks="6">
         <div class="wcard-h">
           <h4>Prism Shard</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:stageLightGel" data-visual-use="entry">
+    <img src="wiki-assets/relics/stage-light-gel.png" width="128" height="128" alt="Canonical in-game relic glyph for Prism Shard." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+4% Pickup Range</p>
@@ -622,11 +687,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>pickup</code></dt><dd>0.04</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-wornTourShirt" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="9" data-s-name="weathered cloak" data-s-stacks="5">
+      <article class="wcard" id="e-wornTourShirt" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="9" data-s-name="weathered cloak" data-s-stacks="5">
         <div class="wcard-h">
           <h4>Weathered Cloak</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:wornTourShirt" data-visual-use="entry">
+    <img src="wiki-assets/relics/worn-tour-shirt.png" width="128" height="128" alt="Canonical in-game relic glyph for Weathered Cloak." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+0.2/s Regen</p>
@@ -638,11 +707,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>regen</code></dt><dd>0.2</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-popFilter" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="10" data-s-name="ward mesh" data-s-stacks="5">
+      <article class="wcard" id="e-popFilter" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="10" data-s-name="ward mesh" data-s-stacks="5">
         <div class="wcard-h">
           <h4>Ward Mesh</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:popFilter" data-visual-use="entry">
+    <img src="wiki-assets/relics/pop-filter.png" width="128" height="128" alt="Canonical in-game relic glyph for Ward Mesh." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+4 Shield Capacity</p>
@@ -659,11 +732,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Rare</h3><span class="wgroup-n">11</span></div>
       <p class="wgroup-note">Base rarity weight 27.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-reverbPedal" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="11" data-s-name="echo stone" data-s-stacks="4">
+      <article class="wcard" id="e-reverbPedal" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="11" data-s-name="echo stone" data-s-stacks="4">
         <div class="wcard-h">
           <h4>Echo Stone</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:reverbPedal" data-visual-use="entry">
+    <img src="wiki-assets/relics/reverb-pedal.png" width="128" height="128" alt="Canonical in-game relic glyph for Echo Stone." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+6% Effect Duration</p>
@@ -675,11 +752,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>effectDuration</code></dt><dd>0.06</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-spareStrings" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="12" data-s-name="giant's thread" data-s-stacks="4">
+      <article class="wcard" id="e-spareStrings" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="12" data-s-name="giant's thread" data-s-stacks="4">
         <div class="wcard-h">
           <h4>Giant's Thread</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:spareStrings" data-visual-use="entry">
+    <img src="wiki-assets/relics/spare-strings.png" width="128" height="128" alt="Canonical in-game relic glyph for Giant's Thread." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+5% Weapon Size</p>
@@ -691,11 +772,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>weaponSize</code></dt><dd>0.05</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-roadieGloves" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="13" data-s-name="pathfinder gloves" data-s-stacks="5">
+      <article class="wcard" id="e-roadieGloves" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="13" data-s-name="pathfinder gloves" data-s-stacks="5">
         <div class="wcard-h">
           <h4>Pathfinder Gloves</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:roadieGloves" data-visual-use="entry">
+    <img src="wiki-assets/relics/roadie-gloves.png" width="128" height="128" alt="Canonical in-game relic glyph for Pathfinder Gloves." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">-6% Boost Cooldown</p>
@@ -707,11 +792,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>boostCd</code></dt><dd>0.06</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-energyDrink" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="14" data-s-name="energy drink case" data-s-stacks="5">
+      <article class="wcard" id="e-energyDrink" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="14" data-s-name="energy drink case" data-s-stacks="5">
         <div class="wcard-h">
           <h4>Energy Drink Case</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:energyDrink" data-visual-use="entry">
+    <img src="wiki-assets/relics/energy-drink.png" width="128" height="128" alt="Canonical in-game relic glyph for Energy Drink Case." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+3% Move Speed</p>
@@ -723,11 +812,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>moveSpeed</code></dt><dd>0.03</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-backstagePass" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="15" data-s-name="merchant's seal" data-s-stacks="3">
+      <article class="wcard" id="e-backstagePass" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="15" data-s-name="merchant's seal" data-s-stacks="3">
         <div class="wcard-h">
           <h4>Merchant's Seal</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:backstagePass" data-visual-use="entry">
+    <img src="wiki-assets/relics/backstage-pass.png" width="128" height="128" alt="Canonical in-game relic glyph for Merchant's Seal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">-8% Merchant Prices (cap -24%)</p>
@@ -739,11 +832,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-feedbackLoop" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="16" data-s-name="resonance loop" data-s-stacks="3">
+      <article class="wcard" id="e-feedbackLoop" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="16" data-s-name="resonance loop" data-s-stacks="3">
         <div class="wcard-h">
           <h4>Resonance Loop</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:feedbackLoop" data-visual-use="entry">
+    <img src="wiki-assets/relics/feedback-loop.png" width="128" height="128" alt="Canonical in-game relic glyph for Resonance Loop." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">Burn/Freeze/Shock +10% duration</p>
@@ -755,11 +852,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-fogMachine" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="17" data-s-name="fog machine" data-s-stacks="2">
+      <article class="wcard" id="e-fogMachine" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="17" data-s-name="fog machine" data-s-stacks="2">
         <div class="wcard-h">
           <h4>Fog Machine</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:fogMachine" data-visual-use="entry">
+    <img src="wiki-assets/relics/fog-machine.png" width="128" height="128" alt="Canonical in-game relic glyph for Fog Machine." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">Enemy projectiles 6% slower</p>
@@ -771,11 +872,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-extraVerse" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="18" data-s-name="scholar's echo" data-s-stacks="4">
+      <article class="wcard" id="e-extraVerse" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="18" data-s-name="scholar's echo" data-s-stacks="4">
         <div class="wcard-h">
           <h4>Scholar's Echo</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:extraVerse" data-visual-use="entry">
+    <img src="wiki-assets/relics/extra-verse.png" width="128" height="128" alt="Canonical in-game relic glyph for Scholar's Echo." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">+5% double XP-gem chance</p>
@@ -787,11 +892,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-cursedSetlist" data-rarity="rare" data-effect="stat payload" data-arena="not included" data-s-roster="19" data-s-name="cursed ledger" data-s-stacks="3">
+      <article class="wcard" id="e-cursedSetlist" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="not included" data-s-roster="19" data-s-name="cursed ledger" data-s-stacks="3">
         <div class="wcard-h">
           <h4>Cursed Ledger</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:cursedSetlist" data-visual-use="entry">
+    <img src="wiki-assets/relics/cursed-setlist.png" width="128" height="128" alt="Canonical in-game relic glyph for Cursed Ledger." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+8% XP / -4% Gold gain</p>
@@ -803,11 +912,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>xpGain</code></dt><dd>0.08</dd></div><div><dt><code>goldGain</code></dt><dd>-0.04</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-feedbackScreamer" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="20" data-s-name="bossbane sigil" data-s-stacks="2">
+      <article class="wcard" id="e-feedbackScreamer" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="20" data-s-name="bossbane sigil" data-s-stacks="2">
         <div class="wcard-h">
           <h4>Bossbane Sigil</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:feedbackScreamer" data-visual-use="entry">
+    <img src="wiki-assets/relics/feedback-screamer.png" width="128" height="128" alt="Canonical in-game relic glyph for Bossbane Sigil." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">+12% dmg to bosses / +8% dmg from them</p>
@@ -819,11 +932,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-evpRecorder" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="21" data-s-name="spirit vessel" data-s-stacks="2">
+      <article class="wcard" id="e-evpRecorder" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="21" data-s-name="spirit vessel" data-s-stacks="2">
         <div class="wcard-h">
           <h4>Spirit Vessel</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:evpRecorder" data-visual-use="entry">
+    <img src="wiki-assets/relics/evp-recorder.png" width="128" height="128" alt="Canonical in-game relic glyph for Spirit Vessel." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">+1 ghost soft-cap</p>
@@ -840,11 +957,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Epic</h3><span class="wgroup-n">9</span></div>
       <p class="wgroup-note">Base rarity weight 12.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-overdrivenAmp" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="22" data-s-name="overcharged core" data-s-stacks="2">
+      <article class="wcard" id="e-overdrivenAmp" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="22" data-s-name="overcharged core" data-s-stacks="2">
         <div class="wcard-h">
           <h4>Overcharged Core</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:overdrivenAmp" data-visual-use="entry">
+    <img src="wiki-assets/relics/overdriven-amp.png" width="128" height="128" alt="Canonical in-game relic glyph for Overcharged Core." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+10% Damage / -5% Max HP</p>
@@ -856,11 +977,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>damage</code></dt><dd>0.1</dd></div><div><dt><code>maxHpMult</code></dt><dd>-0.05</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-pyroRig" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="23" data-s-name="volatile furnace" data-s-stacks="1">
+      <article class="wcard" id="e-pyroRig" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="23" data-s-name="volatile furnace" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Volatile Furnace</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:pyroRig" data-visual-use="entry">
+    <img src="wiki-assets/relics/pyro-rig.png" width="128" height="128" alt="Canonical in-game relic glyph for Volatile Furnace." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">Burn ticks +30% / +10% contact dmg taken</p>
@@ -872,11 +997,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-bassDrop" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="24" data-s-name="quake heart" data-s-stacks="1">
+      <article class="wcard" id="e-bassDrop" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="24" data-s-name="quake heart" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Quake Heart</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:bassDrop" data-visual-use="entry">
+    <img src="wiki-assets/relics/bass-drop.png" width="128" height="128" alt="Canonical in-game relic glyph for Quake Heart." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">Shockwave knockback every 12s</p>
@@ -888,11 +1017,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-crowdSurfPads" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="25" data-s-name="momentum greaves" data-s-stacks="1">
+      <article class="wcard" id="e-crowdSurfPads" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="25" data-s-name="momentum greaves" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Momentum Greaves</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:crowdSurfPads" data-visual-use="entry">
+    <img src="wiki-assets/relics/crowd-surf-pads.png" width="128" height="128" alt="Canonical in-game relic glyph for Momentum Greaves." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">+20% Move Speed 2s after a hit</p>
@@ -904,11 +1037,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-bootlegRecording" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="26" data-s-name="forbidden codex" data-s-stacks="1">
+      <article class="wcard" id="e-bootlegRecording" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="26" data-s-name="forbidden codex" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Forbidden Codex</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:bootlegRecording" data-visual-use="entry">
+    <img src="wiki-assets/relics/bootleg-recording.png" width="128" height="128" alt="Canonical in-game relic glyph for Forbidden Codex." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">+1 level-up card</p>
@@ -920,11 +1057,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-goldenKazoo" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="27" data-s-name="golden idol" data-s-stacks="1">
+      <article class="wcard" id="e-goldenKazoo" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="27" data-s-name="golden idol" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Golden Idol</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:goldenKazoo" data-visual-use="entry">
+    <img src="wiki-assets/relics/golden-kazoo.png" width="128" height="128" alt="Canonical in-game relic glyph for Golden Idol." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">10% of gold pickups also drop XP</p>
@@ -936,11 +1077,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-heavyCab" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="28" data-s-name="bastion plate" data-s-stacks="1">
+      <article class="wcard" id="e-heavyCab" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="28" data-s-name="bastion plate" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Bastion Plate</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:heavyCab" data-visual-use="entry">
+    <img src="wiki-assets/relics/heavy-cab.png" width="128" height="128" alt="Canonical in-game relic glyph for Bastion Plate." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+2 Armor (big damage cut), +10% Weapon Size / -5% Move Speed</p>
@@ -952,11 +1097,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>3</span></summary><dl><div><dt><code>armor</code></dt><dd>2</dd></div><div><dt><code>weaponSize</code></dt><dd>0.1</dd></div><div><dt><code>moveSpeed</code></dt><dd>-0.05</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-strobeRig" data-rarity="epic" data-effect="stat payload" data-arena="not included" data-s-roster="29" data-s-name="blink engine" data-s-stacks="1">
+      <article class="wcard" id="e-strobeRig" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="not included" data-s-roster="29" data-s-name="blink engine" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Blink Engine</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:strobeRig" data-visual-use="entry">
+    <img src="wiki-assets/relics/strobe-rig.png" width="128" height="128" alt="Canonical in-game relic glyph for Blink Engine." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+10% Attack Speed / -8% Pickup Range</p>
@@ -968,11 +1117,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>atkSpeed</code></dt><dd>0.1</dd></div><div><dt><code>pickup</code></dt><dd>-0.08</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-signatureSolo" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="30" data-s-name="duelist's crest" data-s-stacks="1">
+      <article class="wcard" id="e-signatureSolo" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="30" data-s-name="duelist's crest" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Duelist's Crest</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:signatureSolo" data-visual-use="entry">
+    <img src="wiki-assets/relics/signature-solo.png" width="128" height="128" alt="Canonical in-game relic glyph for Duelist's Crest." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+20% Crit Damage</p>
@@ -989,11 +1142,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Legendary</h3><span class="wgroup-n">5</span></div>
       <p class="wgroup-note">Base rarity weight 3.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-platinumRecord" data-rarity="legendary" data-effect="stat payload" data-arena="included" data-s-roster="31" data-s-name="astral prism" data-s-stacks="2">
+      <article class="wcard" id="e-platinumRecord" tabindex="-1" data-rarity="legendary" data-effect="stat payload" data-arena="included" data-s-roster="31" data-s-name="astral prism" data-s-stacks="2">
         <div class="wcard-h">
           <h4>Astral Prism</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:platinumRecord" data-visual-use="entry">
+    <img src="wiki-assets/relics/platinum-record.png" width="128" height="128" alt="Canonical in-game relic glyph for Astral Prism." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Stat effect</span></div>
       <p class="wdesc">+1 Projectile</p>
@@ -1005,11 +1162,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>bonusProjectiles</code></dt><dd>1</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-encoreFlare" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="32" data-s-name="phoenix flare" data-s-stacks="1">
+      <article class="wcard" id="e-encoreFlare" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="32" data-s-name="phoenix flare" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Phoenix Flare</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:encoreFlare" data-visual-use="entry">
+    <img src="wiki-assets/relics/encore-flare.png" width="128" height="128" alt="Canonical in-game relic glyph for Phoenix Flare." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">Revive once per run at 50% HP</p>
@@ -1021,11 +1182,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-masterTape" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="33" data-s-name="prime blueprint" data-s-stacks="1">
+      <article class="wcard" id="e-masterTape" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="33" data-s-name="prime blueprint" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Prime Blueprint</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:masterTape" data-visual-use="entry">
+    <img src="wiki-assets/relics/master-tape.png" width="128" height="128" alt="Canonical in-game relic glyph for Prime Blueprint." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">Evolved weapons +10% damage</p>
@@ -1037,11 +1202,15 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-tourBus" data-rarity="legendary" data-effect="runtime event" data-arena="included" data-s-roster="34" data-s-name="wayfarer's compass" data-s-stacks="1">
+      <article class="wcard" id="e-tourBus" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="included" data-s-roster="34" data-s-name="wayfarer's compass" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Wayfarer's Compass</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:tourBus" data-visual-use="entry">
+    <img src="wiki-assets/relics/tour-bus.png" width="128" height="128" alt="Canonical in-game relic glyph for Wayfarer's Compass." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">+12% Move Speed, +1 Boost Charge</p>
@@ -1053,11 +1222,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>moveSpeed</code></dt><dd>0.12</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-goldMasterDisc" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="35" data-s-name="gilded hourglass" data-s-stacks="1">
+      <article class="wcard" id="e-goldMasterDisc" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="35" data-s-name="gilded hourglass" data-s-stacks="1">
         <div class="wcard-h">
           <h4>Gilded Hourglass</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:goldMasterDisc" data-visual-use="entry">
+    <img src="wiki-assets/relics/gold-master-disc.png" width="128" height="128" alt="Canonical in-game relic glyph for Gilded Hourglass." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
       <p class="wdesc">+25% Gold, chest costs escalate 25% slower</p>
@@ -1074,8 +1247,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>,
-  content derived from <code>data/game-data.json</code>.
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>,
+  content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -1155,7 +1328,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -1171,7 +1345,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -1183,6 +1368,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -1336,9 +1536,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
         row.querySelectorAll('.wf').forEach((b) => {
@@ -1349,7 +1553,9 @@ srPanel.addEventListener('click', (e) => {
         active[row.dataset.facet] = 'all';
       });
       apply();
-    } }
+    }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')

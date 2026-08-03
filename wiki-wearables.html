@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP wearables</title>
-<meta name="description" content="Wearables: Cosmetic pieces, anchors and trail behavior. Every value generated from the game's own data.">
+<meta name="description" content="Wearables: Cosmetic pieces, anchors and trail behavior. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -144,6 +144,8 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -155,6 +157,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -196,9 +201,27 @@ html,body{max-width:100%;overflow-x:hidden}
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -280,6 +303,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -321,6 +346,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
 
@@ -340,8 +366,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Cosmetic pieces, anchors and trail behavior.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -357,7 +383,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
@@ -366,21 +392,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
     <details class="wside-section">
-      <summary>Buildcraft <span>13</span></summary>
+      <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
-        <a href="wiki-tiers.html">Weapon tiers</a>
-        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
+        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
         <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-shrine-movement.html">Shrine movement</a>
         <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
         <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Jump augments</a>
+        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
       </div>
     </details>
     <details class="wside-section">
@@ -413,7 +440,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-ship-fragments.html">Ship fragments</a>
       </div>
     </details>
-    <details class="wside-section" open>
+    <details class="wside-section is-current-section" open>
       <summary>Collection <span>2</span></summary>
       <div class="wside-links">
         <a href="wiki-wearables.html" class="is-here" aria-current="page">Wearables</a>
@@ -425,15 +452,17 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">13 entries, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Wearables</span></nav>
     <h2 class="chroma">Wearables</h2>
     <p class="lede">Wearables are cosmetic attachments. The registry defines their anchor, blurb, source colors and whether they add trails; those are the only claims this page makes.</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@f748df98</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>src/data/wearables.ts#WEARABLES</code>.
-      Optional director notes have <b>0 of 13</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      Optional director notes have <b>0 of 13</b> coverage, so these cards use canonical mechanics and authored registry copy only.
+      This route also uses <b>13</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>a59f1b6e0f545c629f981d73e6dc7292cded6d20fee1047d8ed5211052a918d1</code>, source <code>50a75325582effd57c54007c375996e109b685dc692f42e0b67b09cda9fd2d2a</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
 
 
 
@@ -441,21 +470,21 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Anchor</span>
-        <div class="wfacet-row" data-facet="anchor" data-multi="0">
+        <span class="wfacet-h" id="facet-wearables-anchor">Anchor</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-wearables-anchor" data-facet="anchor" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="neck" aria-pressed="false" aria-controls="wiki-groups">Neck <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="head" aria-pressed="false" aria-controls="wiki-groups">Head <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="eyes" aria-pressed="false" aria-controls="wiki-groups">Eyes <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="back" aria-pressed="false" aria-controls="wiki-groups">Back <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="hip" aria-pressed="false" aria-controls="wiki-groups">Hip <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Trails</span>
-        <div class="wfacet-row" data-facet="trails" data-multi="0">
+        <span class="wfacet-h" id="facet-wearables-trails">Trails</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-wearables-trails" data-facet="trails" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="no" aria-pressed="false" aria-controls="wiki-groups">No <span style="opacity:.5">12</span></button><button class="wf" type="button" data-value="yes" aria-pressed="false" aria-controls="wiki-groups">Yes <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Wearables">
           <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option>
         </select>
@@ -471,11 +500,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Eyes</h3><span class="wgroup-n">2</span></div>
       <p class="wgroup-note">Anchored to the eye slot.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-thornShades" data-anchor="eyes" data-trails="no" data-s-roster="0" data-s-name="thorn shades">
+      <article class="wcard" id="e-thornShades" tabindex="-1" data-anchor="eyes" data-trails="no" data-s-roster="0" data-s-name="thorn shades">
         <div class="wcard-h">
           <h4>Thorn Shades</h4>
           <span class="wcard-accent" style="background:#2fd6c8"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:thornShades" data-visual-use="entry">
+    <img src="wiki-assets/wearables/thorn-shades-256w.png" srcset="wiki-assets/wearables/thorn-shades-256w.png 256w, wiki-assets/wearables/thorn-shades-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Thorn Shades worn by Capsule Signal." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Eyes</span></div>
       <p class="wdesc">Cosmetic. Dark lenses, thorn-wire arms.</p>
@@ -485,11 +518,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-readingSpecs" data-anchor="eyes" data-trails="no" data-s-roster="11" data-s-name="reading spectacles">
+      <article class="wcard" id="e-readingSpecs" tabindex="-1" data-anchor="eyes" data-trails="no" data-s-roster="11" data-s-name="reading spectacles">
         <div class="wcard-h">
           <h4>Reading Spectacles</h4>
           <span class="wcard-accent" style="background:#8fd8c4"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:readingSpecs" data-visual-use="entry">
+    <img src="wiki-assets/wearables/reading-specs-256w.png" srcset="wiki-assets/wearables/reading-specs-256w.png 256w, wiki-assets/wearables/reading-specs-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Reading Spectacles worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Eyes</span></div>
       <p class="wdesc">Cosmetic. Half-moon lenses on a chain, quietly disapproving.</p>
@@ -504,11 +541,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Head</h3><span class="wgroup-n">4</span></div>
       <p class="wgroup-note">Anchored to the head slot.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-knitCap" data-anchor="head" data-trails="no" data-s-roster="1" data-s-name="knit cap">
+      <article class="wcard" id="e-knitCap" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="1" data-s-name="knit cap">
         <div class="wcard-h">
           <h4>Knit Cap</h4>
           <span class="wcard-accent" style="background:#e8cfa0"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:knitCap" data-visual-use="entry">
+    <img src="wiki-assets/wearables/knit-cap-256w.png" srcset="wiki-assets/wearables/knit-cap-256w.png 256w, wiki-assets/wearables/knit-cap-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Knit Cap worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
       <p class="wdesc">Cosmetic. Ribbed wool with a folded brim.</p>
@@ -518,11 +559,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-paperCrown" data-anchor="head" data-trails="no" data-s-roster="7" data-s-name="paper crown">
+      <article class="wcard" id="e-paperCrown" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="7" data-s-name="paper crown">
         <div class="wcard-h">
           <h4>Paper Crown</h4>
           <span class="wcard-accent" style="background:#4bb3d4"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:paperCrown" data-visual-use="entry">
+    <img src="wiki-assets/wearables/paper-crown-256w.png" srcset="wiki-assets/wearables/paper-crown-256w.png 256w, wiki-assets/wearables/paper-crown-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Paper Crown worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
       <p class="wdesc">Cosmetic. Folded once, creased twice, worn for good.</p>
@@ -532,11 +577,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-eggCap" data-anchor="head" data-trails="no" data-s-roster="9" data-s-name="egg cap">
+      <article class="wcard" id="e-eggCap" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="9" data-s-name="egg cap">
         <div class="wcard-h">
           <h4>Egg Cap</h4>
           <span class="wcard-accent" style="background:#c9a06a"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:eggCap" data-visual-use="entry">
+    <img src="wiki-assets/wearables/egg-cap-256w.png" srcset="wiki-assets/wearables/egg-cap-256w.png 256w, wiki-assets/wearables/egg-cap-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Egg Cap worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
       <p class="wdesc">Cosmetic. Shaped like an egg, on purpose, apparently.</p>
@@ -546,11 +595,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-panHat" data-anchor="head" data-trails="no" data-s-roster="10" data-s-name="pan hat">
+      <article class="wcard" id="e-panHat" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="10" data-s-name="pan hat">
         <div class="wcard-h">
           <h4>Pan Hat</h4>
           <span class="wcard-accent" style="background:#e0b64a"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:panHat" data-visual-use="entry">
+    <img src="wiki-assets/wearables/pan-hat-256w.png" srcset="wiki-assets/wearables/pan-hat-256w.png 256w, wiki-assets/wearables/pan-hat-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Pan Hat worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
       <p class="wdesc">Cosmetic. A prospecting pan, worn as headwear, unwashed.</p>
@@ -565,11 +618,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Back</h3><span class="wgroup-n">1</span></div>
       <p class="wgroup-note">Anchored to the back slot.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-halfCape" data-anchor="back" data-trails="no" data-s-roster="5" data-s-name="half cape">
+      <article class="wcard" id="e-halfCape" tabindex="-1" data-anchor="back" data-trails="no" data-s-roster="5" data-s-name="half cape">
         <div class="wcard-h">
           <h4>Half Cape</h4>
           <span class="wcard-accent" style="background:#ffcf3f"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:halfCape" data-visual-use="entry">
+    <img src="wiki-assets/wearables/half-cape-256w.png" srcset="wiki-assets/wearables/half-cape-256w.png 256w, wiki-assets/wearables/half-cape-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Half Cape worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Back</span></div>
       <p class="wdesc">Cosmetic. Half a coat, worn as a whole cape.</p>
@@ -584,11 +641,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Other anchors</h3><span class="wgroup-n">6</span></div>
       <p class="wgroup-note">Every remaining canonical anchor.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-longScarf" data-anchor="neck" data-trails="no" data-s-roster="2" data-s-name="long scarf">
+      <article class="wcard" id="e-longScarf" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="2" data-s-name="long scarf">
         <div class="wcard-h">
           <h4>Long Scarf</h4>
           <span class="wcard-accent" style="background:#d9c07a"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:longScarf" data-visual-use="entry">
+    <img src="wiki-assets/wearables/long-scarf-256w.png" srcset="wiki-assets/wearables/long-scarf-256w.png 256w, wiki-assets/wearables/long-scarf-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Long Scarf worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
       <p class="wdesc">Cosmetic. Wrapped twice, still too long.</p>
@@ -598,11 +659,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-ribbonTail" data-anchor="neck" data-trails="yes" data-s-roster="3" data-s-name="ribbon tail">
+      <article class="wcard" id="e-ribbonTail" tabindex="-1" data-anchor="neck" data-trails="yes" data-s-roster="3" data-s-name="ribbon tail">
         <div class="wcard-h">
           <h4>Ribbon Tail</h4>
           <span class="wcard-accent" style="background:#ffe0f0"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:ribbonTail" data-visual-use="entry">
+    <img src="wiki-assets/wearables/ribbon-tail-256w.png" srcset="wiki-assets/wearables/ribbon-tail-256w.png 256w, wiki-assets/wearables/ribbon-tail-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Rear presentation view of the canonical in-game Ribbon Tail worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit rear camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. The rear presentation view is used because this wearable's canonical trail is mounted behind the reference avatar.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span><span class="wtag ink-violet">Trails</span></div>
       <p class="wdesc">Cosmetic. A trailing ribbon that chases the turn.</p>
@@ -612,11 +677,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-brambleRuff" data-anchor="neck" data-trails="no" data-s-roster="4" data-s-name="bramble ruff">
+      <article class="wcard" id="e-brambleRuff" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="4" data-s-name="bramble ruff">
         <div class="wcard-h">
           <h4>Bramble Ruff</h4>
           <span class="wcard-accent" style="background:#d8c39a"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:brambleRuff" data-visual-use="entry">
+    <img src="wiki-assets/wearables/bramble-ruff-256w.png" srcset="wiki-assets/wearables/bramble-ruff-256w.png 256w, wiki-assets/wearables/bramble-ruff-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Bramble Ruff worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
       <p class="wdesc">Cosmetic. A stiff collar the tailor is proud of.</p>
@@ -626,11 +695,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-dareMedal" data-anchor="neck" data-trails="no" data-s-roster="6" data-s-name="dare medal">
+      <article class="wcard" id="e-dareMedal" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="6" data-s-name="dare medal">
         <div class="wcard-h">
           <h4>Dare Medal</h4>
           <span class="wcard-accent" style="background:#f2d067"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:dareMedal" data-visual-use="entry">
+    <img src="wiki-assets/wearables/dare-medal-256w.png" srcset="wiki-assets/wearables/dare-medal-256w.png 256w, wiki-assets/wearables/dare-medal-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Dare Medal worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
       <p class="wdesc">Cosmetic. A jar lid on a string, awarded seriously.</p>
@@ -640,11 +713,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-flourApron" data-anchor="hip" data-trails="no" data-s-roster="8" data-s-name="flour apron">
+      <article class="wcard" id="e-flourApron" tabindex="-1" data-anchor="hip" data-trails="no" data-s-roster="8" data-s-name="flour apron">
         <div class="wcard-h">
           <h4>Flour Apron</h4>
           <span class="wcard-accent" style="background:#7d5334"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:flourApron" data-visual-use="entry">
+    <img src="wiki-assets/wearables/flour-apron-256w.png" srcset="wiki-assets/wearables/flour-apron-256w.png 256w, wiki-assets/wearables/flour-apron-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Flour Apron worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Hip</span></div>
       <p class="wdesc">Cosmetic. Canvas, two ties, permanently dusted.</p>
@@ -654,11 +731,15 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-pupBandana" data-anchor="neck" data-trails="no" data-s-roster="12" data-s-name="pup bandana">
+      <article class="wcard" id="e-pupBandana" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="12" data-s-name="pup bandana">
         <div class="wcard-h">
           <h4>Pup Bandana</h4>
           <span class="wcard-accent" style="background:#f0dcc0"></span>
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:pupBandana" data-visual-use="entry">
+    <img src="wiki-assets/wearables/pup-bandana-256w.png" srcset="wiki-assets/wearables/pup-bandana-256w.png 256w, wiki-assets/wearables/pup-bandana-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Pup Bandana worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Classic base with canonical wearable neutral pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
       <p class="wdesc">Cosmetic. It was the dog's. The dog has decided it is yours.</p>
@@ -673,8 +754,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>,
-  content derived from <code>data/game-data.json</code>.
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>,
+  content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -754,7 +835,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -770,7 +852,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -782,6 +875,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -935,9 +1043,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
         row.querySelectorAll('.wf').forEach((b) => {
@@ -948,7 +1060,9 @@ srPanel.addEventListener('click', (e) => {
         active[row.dataset.facet] = 'all';
       });
       apply();
-    } }
+    }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')

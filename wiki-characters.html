@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP characters</title>
-<meta name="description" content="Characters: Base stats, starting kit and movement identity. Every value generated from the game's own data.">
+<meta name="description" content="Characters: Loadout suggestions and source-authored identity inputs. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -144,6 +144,8 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -155,6 +157,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -196,9 +201,27 @@ html,body{max-width:100%;overflow-x:hidden}
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -280,6 +303,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -321,6 +346,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
 
@@ -337,11 +363,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP characters</h1>
-        <p class="subtag">Base stats, starting kit and movement identity.</p>
+        <p class="subtag">Loadout suggestions and source-authored identity inputs.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -357,7 +383,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
@@ -366,24 +392,25 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
     <details class="wside-section">
-      <summary>Buildcraft <span>13</span></summary>
+      <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
-        <a href="wiki-tiers.html">Weapon tiers</a>
-        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
+        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
         <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-shrine-movement.html">Shrine movement</a>
         <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
         <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Jump augments</a>
+        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
       </div>
     </details>
-    <details class="wside-section" open>
+    <details class="wside-section is-current-section" open>
       <summary>Heroes <span>3</span></summary>
       <div class="wside-links">
         <a href="wiki-characters.html" class="is-here" aria-current="page">Characters</a>
@@ -425,32 +452,49 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">11 entries, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Characters</span></nav>
     <h2 class="chroma">Characters</h2>
-    <p class="lede">Each character card composes the canonical character, starting-weapon, innate and signature registries. Base health, speed and might are printed as stored, with no normalized score hiding the trade.</p>
+    <p class="lede">Each character card composes the canonical character, suggested-weapon, innate and signature registries. The weapon id is a default-loadout suggestion, not an unconditional solo-campaign pickup. Health is the run-start base before bonuses; speed is a relative-to-6 identity input, not metres per second; might is a multiplicative identity input, not final damage.</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@f748df98</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>src/data/characters.ts#CHARACTERS</code>.
-      Optional director notes have <b>0 of 11</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      Optional director notes have <b>0 of 11</b> coverage, so these cards use canonical mechanics and authored registry copy only.
+      This route also uses <b>11</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>a59f1b6e0f545c629f981d73e6dc7292cded6d20fee1047d8ed5211052a918d1</code>, source <code>50a75325582effd57c54007c375996e109b685dc692f42e0b67b09cda9fd2d2a</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
 
 
 
 
+    <section class="wfeature" aria-labelledby="character-base-inputs">
+      <div><span class="eyebrow">Runtime interpretation</span><h3 id="character-base-inputs">Loadout suggestion and authored identity inputs</h3></div>
+      <p>startWeaponId is a character loadout suggestion and Battle/build identity, not an unconditional campaign starting pickup.</p><p>The standard solo campaign begins with the aimed core only; its first automatic weapon comes from the live draft.</p><p>Other synthetic and multiplayer contexts apply their own explicit loadout or world grant policy.</p>
+      <details class="wraw"><summary>Suggested-weapon provenance <span>5</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/characters.ts#CHARACTERS[*].startWeaponId</dd></div><div><dt><code>soloConsumer</code></dt><dd>src/engine.ts#createRun</dd></div><div><dt><code>coopConsumer</code></dt><dd>src/coop/seatFactory.ts#createSeat</dd></div><div><dt><code>botConsumer</code></dt><dd>src/sim/botKit.ts#buildBotKit</dd></div><div><dt><code>progressionConsumer</code></dt><dd>src/sim/progression.ts#Progression.constructor</dd></div></dl></details>
+      <div class="wmethod-row">
+        <b>Max hp</b><span>Seeds run-start max health before permanent shop bonuses and live-run changes.</span>
+        <details class="wraw"><summary>Max hp provenance <span>3</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/characters.ts#CHARACTERS[*].baseStats.maxHp</dd></div><div><dt><code>runConsumer</code></dt><dd>src/engine.ts#createRun</dd></div><div><dt><code>permanentBonus</code></dt><dd>src/sim/progression.ts#Progression.maxHpBonus</dd></div></dl></details>
+      </div><div class="wmethod-row">
+        <b>Speed</b><span>Divided by the reference to form a character identity multiplier; it is not final movement speed in m/s.</span>
+        <details class="wraw"><summary>Speed provenance <span>4</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/characters.ts#CHARACTERS[*].baseStats.speed</dd></div><div><dt><code>reference</code></dt><dd>src/data/characters.ts#CHARACTER_SPEED_REFERENCE</dd></div><div><dt><code>runConsumer</code></dt><dd>src/engine.ts#createRun</dd></div><div><dt><code>movementSink</code></dt><dd>src/sim/player.ts#PlayerController.update</dd></div></dl></details>
+      </div><div class="wmethod-row">
+        <b>Might</b><span>Enters Progression as the multiplicative character identity term before build, shrine, relic and other live modifiers.</span>
+        <details class="wraw"><summary>Might provenance <span>3</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/characters.ts#CHARACTERS[*].baseStats.might</dd></div><div><dt><code>runConsumer</code></dt><dd>src/engine.ts#createRun</dd></div><div><dt><code>statSink</code></dt><dd>src/sim/progression.ts#Progression.recomputeStats</dd></div></dl></details>
+      </div>
+    </section>
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Starting weapon</span>
-        <div class="wfacet-row" data-facet="weapon" data-multi="0">
+        <span class="wfacet-h" id="facet-characters-weapon">Suggested weapon</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-characters-weapon" data-facet="weapon" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="energyBolt" aria-pressed="false" aria-controls="wiki-groups">Energy Bolt <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="plasmaOrbit" aria-pressed="false" aria-controls="wiki-groups">Plasma Shield <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="shotgun" aria-pressed="false" aria-controls="wiki-groups">Shotgun <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="beam" aria-pressed="false" aria-controls="wiki-groups">Beam <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="boomerang" aria-pressed="false" aria-controls="wiki-groups">Boomerang <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="flameThrower" aria-pressed="false" aria-controls="wiki-groups">Flame Thrower <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="iceShard" aria-pressed="false" aria-controls="wiki-groups">Ice Shards <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="pulseMine" aria-pressed="false" aria-controls="wiki-groups">Pulse Mine <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Characters">
-          <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="health" data-desc="1" data-text="0">Base health</option><option value="speed" data-desc="1" data-text="0">Base speed</option><option value="might" data-desc="1" data-text="0">Base might</option>
+          <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="health" data-desc="1" data-text="0">Run-start health base</option><option value="speed" data-desc="1" data-text="0">Speed identity input (relative to 6)</option><option value="might" data-desc="1" data-text="0">Damage identity multiplier input</option>
         </select>
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
@@ -464,179 +508,245 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Character roster</h3><span class="wgroup-n">11</span></div>
       <p class="wgroup-note">The complete selectable roster in source order.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-bonkrat" data-weapon="plasmaOrbit" data-access="from the start" data-s-roster="0" data-s-name="capsule signal" data-s-health="100" data-s-speed="6" data-s-might="1">
+      <article class="wcard" id="e-bonkrat" tabindex="-1" data-weapon="plasmaOrbit" data-access="from the start" data-s-roster="0" data-s-name="capsule signal" data-s-health="100" data-s-speed="6" data-s-might="1">
         <div class="wcard-h">
           <h4>Capsule Signal</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:bonkrat" data-visual-use="entry">
+    <img src="wiki-assets/characters/bonkrat-256w.png" srcset="wiki-assets/characters/bonkrat-256w.png 256w, wiki-assets/characters/bonkrat-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Capsule Signal. Lights the boosters and grins through the visor." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Lights the boosters and grins through the visor.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-boosterSchool">Booster School</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-megaDash">Mega-Dash</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-wispmother" data-weapon="flameThrower" data-access="from the start" data-s-roster="1" data-s-name="grim hex" data-s-health="70" data-s-speed="6.8" data-s-might="1.1">
+      <article class="wcard" id="e-wispmother" tabindex="-1" data-weapon="flameThrower" data-access="from the start" data-s-roster="1" data-s-name="grim hex" data-s-health="70" data-s-speed="6.8" data-s-might="1.1">
         <div class="wcard-h">
           <h4>Grim Hex</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:wispmother" data-visual-use="entry">
+    <img src="wiki-assets/characters/wispmother-256w.png" srcset="wiki-assets/characters/wispmother-256w.png 256w, wiki-assets/characters/wispmother-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Grim Hex. Made of glass. Hexes anyway." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Made of glass. Hexes anyway.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-flameThrower">Flame Thrower</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-flameThrower">Flame Thrower</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-cruelFate">Cruel Fate</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-blink">The Debt</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>70</b> health, <b>6.8</b> speed, <b>1.1</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>70 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.8</b> authored input; runtime identity multiplier <b>&times;1.13</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.1</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-cragjaw" data-weapon="energyBolt" data-access="from the start" data-s-roster="2" data-s-name="orbital mechanic" data-s-health="150" data-s-speed="5" data-s-might="1.05">
+      <article class="wcard" id="e-cragjaw" tabindex="-1" data-weapon="energyBolt" data-access="from the start" data-s-roster="2" data-s-name="orbital mechanic" data-s-health="150" data-s-speed="5" data-s-might="1.05">
         <div class="wcard-h">
           <h4>Orbital Mechanic</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:cragjaw" data-visual-use="entry">
+    <img src="wiki-assets/characters/cragjaw-256w.png" srcset="wiki-assets/characters/cragjaw-256w.png 256w, wiki-assets/characters/cragjaw-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Orbital Mechanic. Heavy boots. Comes down like a dropped wrench." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Heavy boots. Comes down like a dropped wrench.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-loadBearing">Load Bearing</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-groundSlam">Crater</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>150</b> health, <b>5</b> speed, <b>1.05</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>150 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5</b> authored input; runtime identity multiplier <b>&times;0.83</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.05</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-hookline" data-weapon="shotgun" data-access="from the start" data-s-roster="3" data-s-name="bubblehead" data-s-health="95" data-s-speed="6.6" data-s-might="0.95">
+      <article class="wcard" id="e-hookline" tabindex="-1" data-weapon="shotgun" data-access="from the start" data-s-roster="3" data-s-name="bubblehead" data-s-health="95" data-s-speed="6.6" data-s-might="0.95">
         <div class="wcard-h">
           <h4>Bubblehead</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:hookline" data-visual-use="entry">
+    <img src="wiki-assets/characters/hookline-256w.png" srcset="wiki-assets/characters/hookline-256w.png 256w, wiki-assets/characters/hookline-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Bubblehead. Sealed in glass. Reels straight toward the fight." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Sealed in glass. Reels straight toward the fight.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-lineTension">Line Tension</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-grapple">Grapple</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>95</b> health, <b>6.6</b> speed, <b>0.95</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>95 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.6</b> authored input; runtime identity multiplier <b>&times;1.1</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-slipstream" data-weapon="boomerang" data-access="from the start" data-s-roster="4" data-s-name="apprentice" data-s-health="85" data-s-speed="7.2" data-s-might="0.9">
+      <article class="wcard" id="e-slipstream" tabindex="-1" data-weapon="boomerang" data-access="from the start" data-s-roster="4" data-s-name="apprentice" data-s-health="85" data-s-speed="7.2" data-s-might="0.9">
         <div class="wcard-h">
           <h4>Apprentice</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:slipstream" data-visual-use="entry">
+    <img src="wiki-assets/characters/slipstream-256w.png" srcset="wiki-assets/characters/slipstream-256w.png 256w, wiki-assets/characters/slipstream-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Apprentice. First week on the job. Never stops running." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">First week on the job. Never stops running.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-boomerang">Boomerang</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-boomerang">Boomerang</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-quickFeet">Quick Feet</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-momentumDrift">Miscast</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>85</b> health, <b>7.2</b> speed, <b>0.9</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>85 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>7.2</b> authored input; runtime identity multiplier <b>&times;1.2</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-echoKnight" data-weapon="iceShard" data-access="from the start" data-s-roster="5" data-s-name="elder star" data-s-health="100" data-s-speed="6" data-s-might="0.95">
+      <article class="wcard" id="e-echoKnight" tabindex="-1" data-weapon="iceShard" data-access="from the start" data-s-roster="5" data-s-name="elder star" data-s-health="100" data-s-speed="6" data-s-might="0.95">
         <div class="wcard-h">
           <h4>Elder Star</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:echoKnight" data-visual-use="entry">
+    <img src="wiki-assets/characters/echo-knight-256w.png" srcset="wiki-assets/characters/echo-knight-256w.png 256w, wiki-assets/characters/echo-knight-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Elder Star. Casts twice. Once now, once a heartbeat later." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Casts twice. Once now, once a heartbeat later.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-iceShard">Ice Shards</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-iceShard">Ice Shards</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-lastingSpell">Lasting Spell</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-afterimage">Afterimage</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>0.95</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-graviton" data-weapon="energyBolt" data-access="from the start" data-s-roster="6" data-s-name="event horizon" data-s-health="135" data-s-speed="5.4" data-s-might="1">
+      <article class="wcard" id="e-graviton" tabindex="-1" data-weapon="energyBolt" data-access="from the start" data-s-roster="6" data-s-name="event horizon" data-s-health="135" data-s-speed="5.4" data-s-might="1">
         <div class="wcard-h">
           <h4>Event Horizon</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:graviton" data-visual-use="entry">
+    <img src="wiki-assets/characters/graviton-256w.png" srcset="wiki-assets/characters/graviton-256w.png 256w, wiki-assets/characters/graviton-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Event Horizon. The horde falls inward. It was always going to." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">The horde falls inward. It was always going to.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-criticalMass">Critical Mass</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-eventHorizon">Event Horizon</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>135</b> health, <b>5.4</b> speed, <b>1</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>135 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.4</b> authored input; runtime identity multiplier <b>&times;0.9</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-sentinel" data-weapon="pulseMine" data-access="from the start" data-s-roster="7" data-s-name="sentinel" data-s-health="100" data-s-speed="6" data-s-might="1">
+      <article class="wcard" id="e-sentinel" tabindex="-1" data-weapon="pulseMine" data-access="from the start" data-s-roster="7" data-s-name="sentinel" data-s-health="100" data-s-speed="6" data-s-might="1">
         <div class="wcard-h">
           <h4>Sentinel</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:sentinel" data-visual-use="entry">
+    <img src="wiki-assets/characters/sentinel-256w.png" srcset="wiki-assets/characters/sentinel-256w.png 256w, wiki-assets/characters/sentinel-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Sentinel. Plants the shield where the trouble is headed." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Plants the shield where the trouble is headed.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-reserveAegis">Reserve Aegis</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-sentinelGuard">Aegis</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-berserker" data-weapon="shotgun" data-access="from the start" data-s-roster="8" data-s-name="berserker" data-s-health="100" data-s-speed="6" data-s-might="1">
+      <article class="wcard" id="e-berserker" tabindex="-1" data-weapon="shotgun" data-access="from the start" data-s-roster="8" data-s-name="berserker" data-s-health="100" data-s-speed="6" data-s-might="1">
         <div class="wcard-h">
           <h4>Berserker</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:berserker" data-visual-use="entry">
+    <img src="wiki-assets/characters/berserker-256w.png" srcset="wiki-assets/characters/berserker-256w.png 256w, wiki-assets/characters/berserker-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Berserker. Counts to one, then runs through the answer." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Counts to one, then runs through the answer.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-shotgun">Shotgun</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-redline">Redline</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-berserkerRush">Redline</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-puppeteer" data-weapon="beam" data-access="from the start" data-s-roster="9" data-s-name="puppeteer" data-s-health="100" data-s-speed="6" data-s-might="1">
+      <article class="wcard" id="e-puppeteer" tabindex="-1" data-weapon="beam" data-access="from the start" data-s-roster="9" data-s-name="puppeteer" data-s-health="100" data-s-speed="6" data-s-might="1">
         <div class="wcard-h">
           <h4>Puppeteer</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:puppeteer" data-visual-use="entry">
+    <img src="wiki-assets/characters/puppeteer-256w.png" srcset="wiki-assets/characters/puppeteer-256w.png 256w, wiki-assets/characters/puppeteer-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Puppeteer. Never fights alone. Technically." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Never fights alone. Technically.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-longStrings">Long Strings</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-puppetSentry">Marionette</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>100</b> health, <b>6</b> speed, <b>1</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article>
-      <article class="wcard" id="e-medic" data-weapon="plasmaOrbit" data-access="from the start" data-s-roster="10" data-s-name="medic" data-s-health="110" data-s-speed="5.8" data-s-might="0.9">
+      <article class="wcard" id="e-medic" tabindex="-1" data-weapon="plasmaOrbit" data-access="from the start" data-s-roster="10" data-s-name="medic" data-s-health="110" data-s-speed="5.8" data-s-might="0.9">
         <div class="wcard-h">
           <h4>Medic</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:medic" data-visual-use="entry">
+    <img src="wiki-assets/characters/medic-256w.png" srcset="wiki-assets/characters/medic-256w.png 256w, wiki-assets/characters/medic-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Medic. Drops a clinic wherever the panic gets loudest." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Drops a clinic wherever the panic gets loudest.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Starting weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-bedsideManner">Bedside Manner</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-triageBeacon">Triage Beacon</a></span></div>
-        <div class="wfact"><span class="wfact-k">Base stats</span><span class="wfact-v"><b>110</b> health, <b>5.8</b> speed, <b>0.9</b> might</span></div>
+        <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>110 hp</b>, before shop and other run-start bonuses</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.8</b> authored input; runtime identity multiplier <b>&times;0.97</b>, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b> in the multiplicative damage product, not final damage</span></div>
       </div>
 
       </article></div>
@@ -645,8 +755,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>,
-  content derived from <code>data/game-data.json</code>.
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>,
+  content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -726,7 +836,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -742,7 +853,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -754,6 +876,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -907,9 +1044,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
         row.querySelectorAll('.wf').forEach((b) => {
@@ -920,7 +1061,9 @@ srPanel.addEventListener('click', (e) => {
         active[row.dataset.facet] = 'all';
       });
       apply();
-    } }
+    }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')

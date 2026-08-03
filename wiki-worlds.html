@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP campaign worlds</title>
-<meta name="description" content="Campaign worlds: The arenas, unlock chain and encounter schedules. Every value generated from the game's own data.">
+<meta name="description" content="Campaign worlds: Arenas, unlock chain, authored tables and cadence evidence. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -144,6 +144,8 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -155,6 +157,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -196,9 +201,27 @@ html,body{max-width:100%;overflow-x:hidden}
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -280,6 +303,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -321,6 +346,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
 
@@ -337,11 +363,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP campaign worlds</h1>
-        <p class="subtag">The arenas, unlock chain and encounter schedules.</p>
+        <p class="subtag">Arenas, unlock chain, authored tables and cadence evidence.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -357,7 +383,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
@@ -366,21 +392,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
     <details class="wside-section">
-      <summary>Buildcraft <span>13</span></summary>
+      <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
-        <a href="wiki-tiers.html">Weapon tiers</a>
-        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
+        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
         <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-shrine-movement.html">Shrine movement</a>
         <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
         <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Jump augments</a>
+        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
       </div>
     </details>
     <details class="wside-section">
@@ -391,7 +418,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-signatures.html">Signatures</a>
       </div>
     </details>
-    <details class="wside-section" open>
+    <details class="wside-section is-current-section" open>
       <summary>World <span>6</span></summary>
       <div class="wside-links">
         <a href="wiki-bestiary.html">Bestiary</a>
@@ -425,44 +452,53 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">12 entries, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Campaign worlds</span></nav>
     <h2 class="chroma">Campaign worlds</h2>
-    <p class="lede">Every campaign world card joins its authored identity to the exact tuning, surfaces, fixtures, unlock relation, spawn schedule, boss schedule and recovered ship core in the shared artifact.</p>
+    <p class="lede">Every campaign world card joins its authored identity to tuning, surfaces, fixtures, unlock relation, spawn table, authored signature-boss slots and recovered ship core. The shared encounter contract adds automatic-miniboss interval and reservation evidence without inventing identity or exact spawn time.</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@f748df98</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>src/data/levels.ts#CAMPAIGN_LEVELS</code>.
-      Optional director notes have <b>0 of 12</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      Optional director notes have <b>0 of 12</b> coverage, so these cards use canonical mechanics and authored registry copy only.
+      This route also uses <b>12</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>a59f1b6e0f545c629f981d73e6dc7292cded6d20fee1047d8ed5211052a918d1</code>, source <code>50a75325582effd57c54007c375996e109b685dc692f42e0b67b09cda9fd2d2a</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
 
-    <p class="womit"><b>Schedule times are converted only while the shared pace scale is valid.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks.</p>
+    <p class="womit"><b>These surfaces do not form an exact encounter timeline.</b> The per-world tables publish authored rows; the cadence contract publishes an interval and reservation rule while explicitly withholding automatic-miniboss identity and actual spawn time. Authored schedule times are converted only while the shared pace scale is valid. The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks.</p>
 
 
+    <section class="wfeature" aria-labelledby="campaign-encounter-schedule">
+      <div><span class="eyebrow">Cadence evidence</span><h3 id="campaign-encounter-schedule">Authored tables plus automatic-miniboss cadence context</h3></div>
+      <p>The exported interval is <b>150 seconds</b> on the Mode-profiled-cadence-seconds. In the unified profile that is <b>1:30</b> elapsed before the pacing bank and <b>1:30</b> in endless play. These are independently derived phase intervals, not exact encounter timestamps or miniboss identities.</p>
+      <p>BossDirector advances the automatic miniboss cadence on the mode-profiled cadence clock.</p><p>Before the finite bank, real elapsed spacing derives from the run profile pace scale; after Keep Going, it derives independently from the endless cadence multiplier.</p><p>A cadence beat matching an authored or mode-profiled signature-boss slot is reserved for that signature and does not add an automatic miniboss.</p><p>Authored level bosses[] rows and spawnTable rows do not contain these automatic miniboss cadence beats.</p>
+      <p class="womit">This is cadence evidence, not an exact at-time encounter schedule: automatic miniboss identity and actual spawn time are not exported.</p>
+      <details class="wraw"><summary>Encounter-schedule provenance <span>4</span></summary><dl><div><dt><code>cadence</code></dt><dd>src/data/spawn.ts#SPAWN_DIRECTOR.minibossEverySec</dd></div><div><dt><code>cadenceClock</code></dt><dd>src/data/runModes.ts#cadenceSecForPace</dd></div><div><dt><code>consumer</code></dt><dd>src/sim/bosses.ts#BossDirector.schedule</dd></div><div><dt><code>signatureReservation</code></dt><dd>src/data/spawn.ts#signatureSlotReservesCadenceBeat</dd></div></dl></details>
+    </section>
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Availability</span>
-        <div class="wfacet-row" data-facet="access" data-multi="0">
+        <span class="wfacet-h" id="facet-worlds-access">Availability</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-worlds-access" data-facet="access" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="unlockable" aria-pressed="false" aria-controls="wiki-groups">Unlockable <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="from the start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">2</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Water surface</span>
-        <div class="wfacet-row" data-facet="water" data-multi="0">
+        <span class="wfacet-h" id="facet-worlds-water">Water surface</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-worlds-water" data-facet="water" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="present" aria-pressed="false" aria-controls="wiki-groups">Present <span style="opacity:.5">9</span></button><button class="wf" type="button" data-value="absent" aria-pressed="false" aria-controls="wiki-groups">Absent <span style="opacity:.5">3</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Oil surface</span>
-        <div class="wfacet-row" data-facet="oil" data-multi="0">
+        <span class="wfacet-h" id="facet-worlds-oil">Oil surface</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-worlds-oil" data-facet="oil" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="absent" aria-pressed="false" aria-controls="wiki-groups">Absent <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="present" aria-pressed="false" aria-controls="wiki-groups">Present <span style="opacity:.5">4</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Campaign worlds">
           <option value="roster" data-desc="0" data-text="0">World order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="hp" data-desc="1" data-text="0">Health multiplier</option><option value="pressure" data-desc="1" data-text="0">Spawn-rate multiplier</option>
         </select>
@@ -478,11 +514,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Campaign route</h3><span class="wgroup-n">10</span></div>
       <p class="wgroup-note">World ids named by the canonical campaign list.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-meadow" data-access="from the start" data-water="present" data-oil="absent" data-s-roster="0" data-s-name="neon meadow" data-s-hp="1" data-s-pressure="1">
+      <article class="wcard" id="e-meadow" tabindex="-1" data-access="from the start" data-water="present" data-oil="absent" data-s-roster="0" data-s-name="neon meadow" data-s-hp="1" data-s-pressure="1">
         <div class="wcard-h">
           <h4>Neon Meadow</h4>
           <span class="wcard-accent" style="background:#6dffb0"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:meadow" data-visual-use="entry">
+    <img src="wiki-assets/levels/meadow.png" width="384" height="72" alt="Authored world palette strip for Neon Meadow." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Grass</span><span class="wtag ink-cyan">Water</span><span class="wtag ink-gold">From the start</span></div>
       <p class="wdesc">Where it all begins.</p>
@@ -496,14 +536,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1</dd></div><div><dt><code>dmgMult</code></dt><dd>1</dd></div><div><dt><code>speedMult</code></dt><dd>1</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>10</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 35</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>from the start</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>from the start</span><code>weight 25</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>2:24 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>4:00 into a real run</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-marsh" data-access="from the start" data-water="present" data-oil="absent" data-s-roster="1" data-s-name="gloom marsh" data-s-hp="1.15" data-s-pressure="1">
+      <article class="wcard" id="e-marsh" tabindex="-1" data-access="from the start" data-water="present" data-oil="absent" data-s-roster="1" data-s-name="gloom marsh" data-s-hp="1.15" data-s-pressure="1">
         <div class="wcard-h">
           <h4>Gloom Marsh</h4>
           <span class="wcard-accent" style="background:#42e0a8"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:marsh" data-visual-use="entry">
+    <img src="wiki-assets/levels/marsh.png" width="384" height="72" alt="Authored world palette strip for Gloom Marsh." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Grass</span><span class="wtag ink-cyan">Water</span><span class="wtag ink-gold">From the start</span></div>
       <p class="wdesc">Tanky, slow, relentless.</p>
@@ -517,14 +561,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.15</dd></div><div><dt><code>dmgMult</code></dt><dd>1</dd></div><div><dt><code>speedMult</code></dt><dd>0.92</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>11</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 30</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:12 into a real run</span><code>weight 32</code></li><li><a href="wiki-bestiary.html#e-mireBeast">Mire Beast</a> <span>0:12 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:27 into a real run</span><code>weight 22</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:54 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-sinkTick">Sink Tick</a> <span>0:45 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 26</code></li><li><a href="wiki-bestiary.html#e-bogHopper">Bog Hopper</a> <span>1:30 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-desert" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="2" data-s-name="scorchdune" data-s-hp="1.1" data-s-pressure="1.05">
+      <article class="wcard" id="e-desert" tabindex="-1" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="2" data-s-name="scorchdune" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
           <h4>Scorchdune</h4>
           <span class="wcard-accent" style="background:#f5c542"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:desert" data-visual-use="entry">
+    <img src="wiki-assets/levels/desert.png" width="384" height="72" alt="Authored world palette strip for Scorchdune." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Water</span></div>
       <p class="wdesc">Bring water. It won't help.</p>
@@ -538,14 +586,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.1</dd></div><div><dt><code>dmgMult</code></dt><dd>1.05</dd></div><div><dt><code>speedMult</code></dt><dd>1.05</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.05</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>14</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 28</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-dustDevil">Dust Devil</a> <span>0:09 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:18 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-mirageRunner">Mirage Runner</a> <span>0:27 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:36 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-duneScarab">Dune Scarab</a> <span>0:45 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-duneStinger">Dune Stinger</a> <span>1:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>3:00 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-necropolis" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="3" data-s-name="neon necropolis" data-s-hp="1" data-s-pressure="1.1">
+      <article class="wcard" id="e-necropolis" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="3" data-s-name="neon necropolis" data-s-hp="1" data-s-pressure="1.1">
         <div class="wcard-h">
           <h4>Neon Necropolis</h4>
           <span class="wcard-accent" style="background:#9d7bff"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:necropolis" data-visual-use="entry">
+    <img src="wiki-assets/levels/necropolis.png" width="384" height="72" alt="Authored world palette strip for Neon Necropolis." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Water</span><span class="wtag ink-cyan">Oil</span></div>
       <p class="wdesc">The swarm never rests.</p>
@@ -559,14 +611,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1</dd></div><div><dt><code>dmgMult</code></dt><dd>1</dd></div><div><dt><code>speedMult</code></dt><dd>1</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>12</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 25</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:18 into a real run</span><code>weight 40</code></li><li><a href="wiki-bestiary.html#e-graveMite">Grave Mite</a> <span>0:27 into a real run</span><code>weight 22</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:36 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-boneDrifter">Bone Drifter</a> <span>0:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-gravecaller">Gravecaller</a> <span>1:12 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-tombWisp">Tomb Wisp</a> <span>1:48 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-wraith">Wraith</a> <span>3:36 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-gravecaller">Gravecaller</a> <span>8:00 into a real run</span><code>weight 0.6</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-gravemonarch">The Grave Monarch</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-gravemonarch">The Grave Monarch</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-ember" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="4" data-s-name="ember wastes" data-s-hp="0.9" data-s-pressure="1">
+      <article class="wcard" id="e-ember" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="4" data-s-name="ember wastes" data-s-hp="0.9" data-s-pressure="1">
         <div class="wcard-h">
           <h4>Ember Wastes</h4>
           <span class="wcard-accent" style="background:#ff8033"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:ember" data-visual-use="entry">
+    <img src="wiki-assets/levels/ember.png" width="384" height="72" alt="Authored world palette strip for Ember Wastes." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Water</span><span class="wtag ink-cyan">Oil</span></div>
       <p class="wdesc">Fast, fragile, on fire.</p>
@@ -580,14 +636,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>0.9</dd></div><div><dt><code>dmgMult</code></dt><dd>1</dd></div><div><dt><code>speedMult</code></dt><dd>1.12</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>12</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 22</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:12 into a real run</span><code>weight 45</code></li><li><a href="wiki-bestiary.html#e-emberSparkling">Ember Sparkling</a> <span>0:24 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:36 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-cinderMoth">Cinder Moth</a> <span>0:42 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-cinderWisp">Cinder Wisp</a> <span>1:12 into a real run</span><code>weight 26</code></li><li><a href="wiki-bestiary.html#e-magmaLurch">Magma Lurch</a> <span>2:00 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>2:24 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-cinderWisp">Cinder Wisp</a> <span>8:00 into a real run</span><code>weight 0.95</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-cinderlord">The Cinderlord</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-cinderlord">The Cinderlord</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-rift" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="5" data-s-name="void rift" data-s-hp="1.2" data-s-pressure="1.1">
+      <article class="wcard" id="e-rift" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="5" data-s-name="void rift" data-s-hp="1.2" data-s-pressure="1.1">
         <div class="wcard-h">
           <h4>Void Rift</h4>
           <span class="wcard-accent" style="background:#d43cff"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:rift" data-visual-use="entry">
+    <img src="wiki-assets/levels/rift.png" width="384" height="72" alt="Authored world palette strip for Void Rift." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Water</span><span class="wtag ink-cyan">Oil</span></div>
       <p class="wdesc">Everything, all at once.</p>
@@ -601,14 +661,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.2</dd></div><div><dt><code>dmgMult</code></dt><dd>1.1</dd></div><div><dt><code>speedMult</code></dt><dd>1</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>14</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 22</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 8</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:18 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>0:36 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:36 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:54 into a real run</span><code>weight 30</code></li><li><a href="wiki-bestiary.html#e-riftSkitter">Rift Skitter</a> <span>1:00 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-phaseBlinker">Phase Blinker</a> <span>2:00 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-voidSniper">Void Sniper</a> <span>3:00 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-voidChaser">Void Chaser</a> <span>3:24 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>4:12 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-cinderWisp">Cinder Wisp</a> <span>4:48 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-voidSniper">Void Sniper</a> <span>8:00 into a real run</span><code>weight 0.5</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-nullwarden">The Null Warden</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-nullwarden">The Null Warden</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-inferno" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="6" data-s-name="hellmouth" data-s-hp="1.25" data-s-pressure="1.12">
+      <article class="wcard" id="e-inferno" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="6" data-s-name="hellmouth" data-s-hp="1.25" data-s-pressure="1.12">
         <div class="wcard-h">
           <h4>Hellmouth</h4>
           <span class="wcard-accent" style="background:#ff3316"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:inferno" data-visual-use="entry">
+    <img src="wiki-assets/levels/inferno.png" width="384" height="72" alt="Authored world palette strip for Hellmouth." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Water</span><span class="wtag ink-cyan">Oil</span></div>
       <p class="wdesc">Abandon all hope.</p>
@@ -622,14 +686,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.25</dd></div><div><dt><code>dmgMult</code></dt><dd>1.15</dd></div><div><dt><code>speedMult</code></dt><dd>1</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.12</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>16</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 24</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>from the start</span><code>weight 24</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>from the start</span><code>weight 30</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>from the start</span><code>weight 30</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-cindersworn">Cindersworn</a> <span>from the start</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-brimTick">Brim Tick</a> <span>0:18 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>0:36 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-cinderWisp">Cinder Wisp</a> <span>0:54 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>1:12 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-hellstalker">Hellstalker</a> <span>1:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-wraith">Wraith</a> <span>2:24 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>3:00 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-voidSniper">Void Sniper</a> <span>3:36 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-voidSniper">Void Sniper</a> <span>8:00 into a real run</span><code>weight 0.5</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-disregent">The Regent of Dis</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-disregent">The Regent of Dis</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-glimmerOrchard" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="7" data-s-name="glimmer orchard" data-s-hp="1" data-s-pressure="1">
+      <article class="wcard" id="e-glimmerOrchard" tabindex="-1" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="7" data-s-name="glimmer orchard" data-s-hp="1" data-s-pressure="1">
         <div class="wcard-h">
           <h4>Glimmer Orchard</h4>
           <span class="wcard-accent" style="background:#f3a8bd"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:glimmerOrchard" data-visual-use="entry">
+    <img src="wiki-assets/levels/glimmer-orchard.png" width="384" height="72" alt="Authored world palette strip for Glimmer Orchard." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Grass</span><span class="wtag ink-cyan">Water</span></div>
       <p class="wdesc">Morning grows in rows.</p>
@@ -643,14 +711,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1</dd></div><div><dt><code>dmgMult</code></dt><dd>1</dd></div><div><dt><code>speedMult</code></dt><dd>1</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>10</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 35</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>from the start</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>from the start</span><code>weight 25</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>2:24 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>4:00 into a real run</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-suncoastShallows" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="8" data-s-name="mirage flats" data-s-hp="1" data-s-pressure="1">
+      <article class="wcard" id="e-suncoastShallows" tabindex="-1" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="8" data-s-name="mirage flats" data-s-hp="1" data-s-pressure="1">
         <div class="wcard-h">
           <h4>Mirage Flats</h4>
           <span class="wcard-accent" style="background:#39cfd0"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:suncoastShallows" data-visual-use="entry">
+    <img src="wiki-assets/levels/suncoast-shallows.png" width="384" height="72" alt="Authored world palette strip for Mirage Flats." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Water</span></div>
       <p class="wdesc">Some of it is even real.</p>
@@ -664,14 +736,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1</dd></div><div><dt><code>dmgMult</code></dt><dd>1</dd></div><div><dt><code>speedMult</code></dt><dd>1</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>10</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 35</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>from the start</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>from the start</span><code>weight 25</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>2:24 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>4:00 into a real run</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-gildedCanyon" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="9" data-s-name="gilded canyon" data-s-hp="1.1" data-s-pressure="1.05">
+      <article class="wcard" id="e-gildedCanyon" tabindex="-1" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="9" data-s-name="gilded canyon" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
           <h4>Gilded Canyon</h4>
           <span class="wcard-accent" style="background:#e6a64f"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:gildedCanyon" data-visual-use="entry">
+    <img src="wiki-assets/levels/gilded-canyon.png" width="384" height="72" alt="Authored world palette strip for Gilded Canyon." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"></div>
       <p class="wdesc">Chase the last light.</p>
@@ -685,7 +761,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.1</dd></div><div><dt><code>dmgMult</code></dt><dd>1.05</dd></div><div><dt><code>speedMult</code></dt><dd>1.05</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.05</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>14</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 28</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-dustDevil">Dust Devil</a> <span>0:09 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:18 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-mirageRunner">Mirage Runner</a> <span>0:27 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:36 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-duneScarab">Dune Scarab</a> <span>0:45 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-duneStinger">Dune Stinger</a> <span>1:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>3:00 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article></div>
     </section>
@@ -693,11 +769,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Additional campaign worlds</h3><span class="wgroup-n">2</span></div>
       <p class="wgroup-note">Registered campaign worlds outside the primary campaign id list.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-frostreachPines" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="10" data-s-name="frostreach pines" data-s-hp="1.1" data-s-pressure="1.05">
+      <article class="wcard" id="e-frostreachPines" tabindex="-1" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="10" data-s-name="frostreach pines" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
           <h4>Frostreach Pines</h4>
           <span class="wcard-accent" style="background:#9fd8f0"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:frostreachPines" data-visual-use="entry">
+    <img src="wiki-assets/levels/frostreach-pines.png" width="384" height="72" alt="Authored world palette strip for Frostreach Pines." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"></div>
       <p class="wdesc">The trail only goes one way. Up.</p>
@@ -711,14 +791,18 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.1</dd></div><div><dt><code>dmgMult</code></dt><dd>1.05</dd></div><div><dt><code>speedMult</code></dt><dd>1.05</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.05</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>14</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 28</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-dustDevil">Dust Devil</a> <span>0:09 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:18 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-mirageRunner">Mirage Runner</a> <span>0:27 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:36 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-duneScarab">Dune Scarab</a> <span>0:45 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-duneStinger">Dune Stinger</a> <span>1:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>3:00 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-shiverpeakSummit" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="11" data-s-name="shiverpeak summit" data-s-hp="1.1" data-s-pressure="1.05">
+      <article class="wcard" id="e-shiverpeakSummit" tabindex="-1" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="11" data-s-name="shiverpeak summit" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
           <h4>Shiverpeak Summit</h4>
           <span class="wcard-accent" style="background:#5f93b4"></span>
         </div>
+        <figure class="wvisual wvisual-palette-strip" data-visual-key="levels:shiverpeakSummit" data-visual-use="entry">
+    <img src="wiki-assets/levels/shiverpeak-summit.png" width="384" height="72" alt="Authored world palette strip for Shiverpeak Summit." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
+  </figure>
 
       <div class="wtags"></div>
       <p class="wdesc">The lake at the top of the world, and it is frozen solid.</p>
@@ -732,7 +816,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.1</dd></div><div><dt><code>dmgMult</code></dt><dd>1.05</dd></div><div><dt><code>speedMult</code></dt><dd>1.05</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.05</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>14</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 28</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-dustDevil">Dust Devil</a> <span>0:09 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:18 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-mirageRunner">Mirage Runner</a> <span>0:27 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:36 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-duneScarab">Dune Scarab</a> <span>0:45 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-duneStinger">Dune Stinger</a> <span>1:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>3:00 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article></div>
     </section></div>
@@ -740,8 +824,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>,
-  content derived from <code>data/game-data.json</code>.
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>,
+  content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -821,7 +905,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -837,7 +922,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -849,6 +945,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -1002,9 +1113,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
         row.querySelectorAll('.wf').forEach((b) => {
@@ -1015,7 +1130,9 @@ srPanel.addEventListener('click', (e) => {
         active[row.dataset.facet] = 'all';
       });
       apply();
-    } }
+    }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')

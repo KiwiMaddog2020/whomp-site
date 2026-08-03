@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP weapons</title>
-<meta name="description" content="Weapons: The half of your build that fires itself. Every value generated from the game's own data.">
+<meta name="description" content="Weapons: The half of your build that fires itself. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -144,6 +144,8 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -155,6 +157,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -196,9 +201,27 @@ html,body{max-width:100%;overflow-x:hidden}
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -280,6 +303,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -321,6 +346,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
 
@@ -340,8 +366,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">The half of your build that fires itself.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -357,7 +383,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
@@ -365,22 +391,23 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
-    <details class="wside-section" open>
-      <summary>Buildcraft <span>13</span></summary>
+    <details class="wside-section is-current-section" open>
+      <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html" class="is-here" aria-current="page">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
-        <a href="wiki-tiers.html">Weapon tiers</a>
-        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
+        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
         <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-shrine-movement.html">Shrine movement</a>
         <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
         <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Jump augments</a>
+        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
       </div>
     </details>
     <details class="wside-section">
@@ -425,15 +452,17 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">33 entries, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Weapons</span></nav>
     <h2 class="chroma">Weapons</h2>
     <p class="lede">Weapons fire on their own. You are offered them as you level, you level them up, and 8 of them are terminal forms reached with the right tome and a boss chest. The weapon you aim by hand is the core weapon, and it has its own page.</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@f748df98</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>src/data/weapons.ts#WEAPONS</code>.
-      Optional director notes have <b>0 of 33</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      Optional director notes have <b>0 of 33</b> coverage, so these cards use canonical mechanics and authored registry copy only.
+      This route also uses <b>33</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>a59f1b6e0f545c629f981d73e6dc7292cded6d20fee1047d8ed5211052a918d1</code>, source <code>50a75325582effd57c54007c375996e109b685dc692f42e0b67b09cda9fd2d2a</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
 
     <p class="womit">There is no damage-per-second column here, and that is deliberate. The game does not compute one: your might and crit multiply the damage, your attack speed divides the interval, and half of these do not have "damage times shots per second" semantics in the first place. A beam ramps the longer it holds, chain jumps land a flat share of the first hit, the shotgun pays more up close. A single number would be wrong on most of these cards, so the page gives you the base figures and the growth rule and lets you compare like with like. <b>Element is a look, not a rule</b>: it picks the effect tint and nothing in the game reads it for damage, resistance or status.</p>
 
@@ -441,28 +470,28 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Element</span>
-        <div class="wfacet-row" data-facet="element" data-multi="0">
+        <span class="wfacet-h" id="facet-weapons-element">Element</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-weapons-element" data-facet="element" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="holy" aria-pressed="false" aria-controls="wiki-groups">Holy <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="void" aria-pressed="false" aria-controls="wiki-groups">Void <span style="opacity:.5">7</span></button><button class="wf" type="button" data-value="fire" aria-pressed="false" aria-controls="wiki-groups">Fire <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="physical" aria-pressed="false" aria-controls="wiki-groups">Physical <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="lightning" aria-pressed="false" aria-controls="wiki-groups">Lightning <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="ice" aria-pressed="false" aria-controls="wiki-groups">Ice <span style="opacity:.5">3</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">How it fires</span>
-        <div class="wfacet-row" data-facet="pattern" data-multi="0">
+        <span class="wfacet-h" id="facet-weapons-pattern">How it fires</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-weapons-pattern" data-facet="pattern" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="cone" aria-pressed="false" aria-controls="wiki-groups">Cone <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="pierceLine" aria-pressed="false" aria-controls="wiki-groups">Pierce line <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="randomAoE" aria-pressed="false" aria-controls="wiki-groups">Random AoE <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="beam" aria-pressed="false" aria-controls="wiki-groups">Beam <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="aura" aria-pressed="false" aria-controls="wiki-groups">Aura <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="boomerang" aria-pressed="false" aria-controls="wiki-groups">Boomerang <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="burstNearest" aria-pressed="false" aria-controls="wiki-groups">Burst nearest <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="chain" aria-pressed="false" aria-controls="wiki-groups">Chain <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="orbit" aria-pressed="false" aria-controls="wiki-groups">Orbit <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="petUnits" aria-pressed="false" aria-controls="wiki-groups">Pet units <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="blackHole" aria-pressed="false" aria-controls="wiki-groups">Black hole <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="homing" aria-pressed="false" aria-controls="wiki-groups">Homing <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meleeArc" aria-pressed="false" aria-controls="wiki-groups">Melee arc <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meteor" aria-pressed="false" aria-controls="wiki-groups">Meteor <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="pathEcho" aria-pressed="false" aria-controls="wiki-groups">Path echo <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="ricochet" aria-pressed="false" aria-controls="wiki-groups">Ricochet <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Availability</span>
-        <div class="wfacet-row" data-facet="access" data-multi="0">
+        <span class="wfacet-h" id="facet-weapons-access">Availability</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-weapons-access" data-facet="access" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="achievement" aria-pressed="false" aria-controls="wiki-groups">Achievement <span style="opacity:.5">15</span></button><button class="wf" type="button" data-value="start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="evolution" aria-pressed="false" aria-controls="wiki-groups">Evolution <span style="opacity:.5">8</span></button>
+          <button class="wf" type="button" data-value="achievement" aria-pressed="false" aria-controls="wiki-groups">Achievement <span style="opacity:.5">14</span></button><button class="wf" type="button" data-value="start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="evolution" aria-pressed="false" aria-controls="wiki-groups">Evolution <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="quest-or-achievement" aria-pressed="false" aria-controls="wiki-groups">Quest or achievement <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Weapons">
           <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="damage" data-desc="1" data-text="0">Base damage</option><option value="range" data-desc="1" data-text="0">Range</option><option value="cadence" data-desc="0" data-text="0">Fire interval</option>
         </select>
@@ -476,13 +505,17 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="base" id="g-base">
       <div class="wgroup-h"><h3>Base weapons</h3><span class="wgroup-n">25</span></div>
-      <p class="wgroup-note">What the level-up offer draws from, plus the ones a character brings with them. 10 are available on a fresh save; the rest are behind an achievement, and each card says which.</p>
+      <p class="wgroup-note">What the level-up offer draws from. 10 are available on a fresh save; the rest use the quest and/or achievement routes listed on each card. Character weapon ids are suggestions, not campaign starting grants.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-energyBolt" data-element="holy" data-pattern="pierceLine" data-access="start" data-s-roster="0" data-s-name="energy bolt" data-s-damage="9.6" data-s-range="21.45" data-s-cadence="560">
+      <article class="wcard" id="e-energyBolt" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="start" data-s-roster="0" data-s-name="energy bolt" data-s-damage="9.6" data-s-range="21.45" data-s-cadence="560">
         <div class="wcard-h">
           <h4>Energy Bolt</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:energyBolt" data-visual-use="entry">
+    <img src="wiki-assets/weapons/energy-bolt.png" width="128" height="128" alt="Canonical in-game weapon glyph for Energy Bolt." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -492,7 +525,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Auto-fires at the nearest enemy.</p>
         <p class="wgloss">Leads its target and fires a small volley in a straight line, punching through a limited number of enemies per shot.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-cragjaw">Orbital Mechanic</a> and <a href="wiki-characters.html#e-graviton">Event Horizon</a> start with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-cragjaw">Orbital Mechanic</a> and <a href="wiki-characters.html#e-graviton">Event Horizon</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>560</b> ms between shots <span class="wsub">, 503.78 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4.5%</b> damage per level <span class="wsub">, 12.62 damage at 8</span></span></div>
@@ -506,11 +540,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-plasmaOrbit" data-element="physical" data-pattern="orbit" data-access="start" data-s-roster="1" data-s-name="plasma shield" data-s-damage="14"  data-s-cadence="250">
+      <article class="wcard" id="e-plasmaOrbit" tabindex="-1" data-element="physical" data-pattern="orbit" data-access="start" data-s-roster="1" data-s-name="plasma shield" data-s-damage="14"  data-s-cadence="250">
         <div class="wcard-h">
           <h4>Plasma Shield</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:plasmaOrbit" data-visual-use="entry">
+    <img src="wiki-assets/weapons/plasma-orbit.png" width="128" height="128" alt="Canonical in-game weapon glyph for Plasma Shield." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -520,7 +558,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Orbiting shield blocks and damages.</p>
         <p class="wgloss">Bodies circle you continuously and hurt whatever they sweep through. Nothing to aim and no downtime.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-bonkrat">Capsule Signal</a> and <a href="wiki-characters.html#e-medic">Medic</a> start with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-bonkrat">Capsule Signal</a> and <a href="wiki-characters.html#e-medic">Medic</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>250</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>2</b> orbs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 17.92 damage at 8</span></span></div>
@@ -534,11 +573,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-spiritOrbs" data-element="void" data-pattern="homing" data-access="achievement" data-s-roster="2" data-s-name="ghost orbs" data-s-damage="14.25" data-s-range="30" data-s-cadence="1080">
+      <article class="wcard" id="e-spiritOrbs" tabindex="-1" data-element="void" data-pattern="homing" data-access="achievement" data-s-roster="2" data-s-name="ghost orbs" data-s-damage="14.25" data-s-range="30" data-s-cadence="1080">
         <div class="wcard-h">
           <h4>Ghost Orbs</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:spiritOrbs" data-visual-use="entry">
+    <img src="wiki-assets/weapons/spirit-orbs.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ghost Orbs." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -548,7 +591,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Homing spirit projectiles.</p>
         <p class="wgloss">Shots pick a target as they leave you and steer toward it.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-firstBlood">First Blood</a> (150 kills in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-firstBlood">First Blood</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1080</b> ms between shots <span class="wsub">, 971.58 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Wisp</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14%</b> damage per level <span class="wsub">, 28.21 damage at 8</span></span></div>
@@ -562,11 +606,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-boomerang" data-element="physical" data-pattern="boomerang" data-access="start" data-s-roster="3" data-s-name="boomerang" data-s-damage="10.8" data-s-range="9" data-s-cadence="2100">
+      <article class="wcard" id="e-boomerang" tabindex="-1" data-element="physical" data-pattern="boomerang" data-access="start" data-s-roster="3" data-s-name="boomerang" data-s-damage="10.8" data-s-range="9" data-s-cadence="2100">
         <div class="wcard-h">
           <h4>Boomerang</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:boomerang" data-visual-use="entry">
+    <img src="wiki-assets/weapons/boomerang.png" width="128" height="128" alt="Canonical in-game weapon glyph for Boomerang." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -576,7 +624,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Returns to you. Hits twice.</p>
         <p class="wgloss">Thrown out, then it comes back, and it can hit on both legs of the trip.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-slipstream">Apprentice</a> starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-slipstream">Apprentice</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2100</b> ms between shots <span class="wsub">, 1889.18 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+9.4%</b> damage per level <span class="wsub">, 17.91 damage at 8</span></span></div>
@@ -590,11 +639,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-meteorStrike" data-element="fire" data-pattern="meteor" data-access="achievement" data-s-roster="4" data-s-name="meteor strike" data-s-damage="12.5" data-s-range="17" data-s-cadence="2100">
+      <article class="wcard" id="e-meteorStrike" tabindex="-1" data-element="fire" data-pattern="meteor" data-access="achievement" data-s-roster="4" data-s-name="meteor strike" data-s-damage="12.5" data-s-range="17" data-s-cadence="2100">
         <div class="wcard-h">
           <h4>Meteor Strike</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:meteorStrike" data-visual-use="entry">
+    <img src="wiki-assets/weapons/meteor-strike.png" width="128" height="128" alt="Canonical in-game weapon glyph for Meteor Strike." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -604,7 +657,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Explosive impacts from the sky.</p>
         <p class="wgloss">Paints a shadow on the ground, then drops a strike into it a moment later. You are hitting a place, not a target.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-marshCleared">Marsh Cleared</a> (Clear Gloom Marsh), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-marshCleared">Marsh Cleared</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2100</b> ms between shots <span class="wsub">, 1889.18 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Orb</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14.3%</b> damage per level <span class="wsub">, 25.01 damage at 8</span></span></div>
@@ -618,11 +672,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-chainLightning" data-element="lightning" data-pattern="chain" data-access="achievement" data-s-roster="5" data-s-name="chain lightning" data-s-damage="18" data-s-range="21.45" data-s-cadence="1320">
+      <article class="wcard" id="e-chainLightning" tabindex="-1" data-element="lightning" data-pattern="chain" data-access="achievement" data-s-roster="5" data-s-name="chain lightning" data-s-damage="18" data-s-range="21.45" data-s-cadence="1320">
         <div class="wcard-h">
           <h4>Chain Lightning</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:chainLightning" data-visual-use="entry">
+    <img src="wiki-assets/weapons/chain-lightning.png" width="128" height="128" alt="Canonical in-game weapon glyph for Chain Lightning." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -632,7 +690,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Lightning jumps between enemies.</p>
         <p class="wgloss">Hits one enemy at full damage, then jumps to the nearest one it has not hit yet, each jump landing a flat share of the first.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-exterminator">Exterminator</a> (4,000 kills lifetime), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-exterminator">Exterminator</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1320</b> ms between shots <span class="wsub">, 1187.48 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> arcs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6.8%</b> damage per level <span class="wsub">, 26.57 damage at 8</span></span></div>
@@ -646,11 +705,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-iceShard" data-element="ice" data-pattern="cone" data-access="start" data-s-roster="6" data-s-name="ice shards" data-s-damage="7.7" data-s-range="21.45" data-s-cadence="840">
+      <article class="wcard" id="e-iceShard" tabindex="-1" data-element="ice" data-pattern="cone" data-access="start" data-s-roster="6" data-s-name="ice shards" data-s-damage="7.7" data-s-range="21.45" data-s-cadence="840">
         <div class="wcard-h">
           <h4>Ice Shards</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:iceShard" data-visual-use="entry">
+    <img src="wiki-assets/weapons/ice-shard.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ice Shards." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -660,7 +723,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Freezing projectiles that slow.</p>
         <p class="wgloss">Throws a converging volley of shards that also slows what they hit.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-echoKnight">Elder Star</a> starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-echoKnight">Elder Star</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>840</b> ms between shots <span class="wsub">, 755.67 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>2</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6%</b> damage per level <span class="wsub">, 10.93 damage at 8</span></span></div>
@@ -674,11 +738,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-toxicAura" data-element="physical" data-pattern="aura" data-access="start" data-s-roster="7" data-s-name="toxic aura" data-s-damage="7.2"  data-s-cadence="1400">
+      <article class="wcard" id="e-toxicAura" tabindex="-1" data-element="physical" data-pattern="aura" data-access="start" data-s-roster="7" data-s-name="toxic aura" data-s-damage="7.2"  data-s-cadence="1400">
         <div class="wcard-h">
           <h4>Toxic Aura</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:toxicAura" data-visual-use="entry">
+    <img src="wiki-assets/weapons/toxic-aura.png" width="128" height="128" alt="Canonical in-game weapon glyph for Toxic Aura." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -689,6 +757,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Poisons what it touches instead of hitting it once, so the damage keeps arriving after the enemy has left the field.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>1400</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6%</b> damage per level <span class="wsub">, 10.22 damage at 8</span></span></div>
@@ -702,11 +771,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-ricochetDisc" data-element="physical" data-pattern="ricochet" data-access="achievement" data-s-roster="8" data-s-name="ricochet disc" data-s-damage="15.25" data-s-range="21.45" data-s-cadence="1600">
+      <article class="wcard" id="e-ricochetDisc" tabindex="-1" data-element="physical" data-pattern="ricochet" data-access="achievement" data-s-roster="8" data-s-name="ricochet disc" data-s-damage="15.25" data-s-range="21.45" data-s-cadence="1600">
         <div class="wcard-h">
           <h4>Ricochet Disc</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:ricochetDisc" data-visual-use="entry">
+    <img src="wiki-assets/weapons/ricochet-disc.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ricochet Disc." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -716,7 +789,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Disc bounces between enemies.</p>
         <p class="wgloss">A disc thrown at a lead, then bouncing on to a budget of further targets that grows with level.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-bigSpender">Big Spender</a> (Earn 3,500 gold in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-bigSpender">Big Spender</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1600</b> ms between shots <span class="wsub">, 1439.37 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> discs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6.4%</b> damage per level <span class="wsub">, 22.08 damage at 8</span></span></div>
@@ -730,11 +804,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-beam" data-element="void" data-pattern="beam" data-access="start" data-s-roster="9" data-s-name="beam" data-s-damage="6.4" data-s-range="9" data-s-cadence="100">
+      <article class="wcard" id="e-beam" tabindex="-1" data-element="void" data-pattern="beam" data-access="start" data-s-roster="9" data-s-name="beam" data-s-damage="6.4" data-s-range="9" data-s-cadence="100">
         <div class="wcard-h">
           <h4>Beam</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:beam" data-visual-use="entry">
+    <img src="wiki-assets/weapons/beam.png" width="128" height="128" alt="Canonical in-game weapon glyph for Beam." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -744,7 +822,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Splash beams that ramp up over time.</p>
         <p class="wgloss">Holds persistent locks on targets and ramps its damage the longer a lock survives, with splash around where it lands.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-puppeteer">Puppeteer</a> starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-puppeteer">Puppeteer</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>100</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Beam</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 8.64 damage at 8</span></span></div>
@@ -758,11 +837,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-shotgun" data-element="fire" data-pattern="burstNearest" data-access="start" data-s-roster="10" data-s-name="shotgun" data-s-damage="7.7" data-s-range="9" data-s-cadence="1485">
+      <article class="wcard" id="e-shotgun" tabindex="-1" data-element="fire" data-pattern="burstNearest" data-access="start" data-s-roster="10" data-s-name="shotgun" data-s-damage="7.7" data-s-range="9" data-s-cadence="1485">
         <div class="wcard-h">
           <h4>Shotgun</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:shotgun" data-visual-use="entry">
+    <img src="wiki-assets/weapons/shotgun.png" width="128" height="128" alt="Canonical in-game weapon glyph for Shotgun." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -772,7 +855,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Spread shot. Deadly up close.</p>
         <p class="wgloss">A pellet volley that hits much harder up close than far away. The spread is the range limit.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-berserker">Berserker</a> and <a href="wiki-characters.html#e-hookline">Bubblehead</a> start with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-berserker">Berserker</a> and <a href="wiki-characters.html#e-hookline">Bubblehead</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1485</b> ms between shots <span class="wsub">, 1289.17 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>6</b> bolts per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 10.4 damage at 8</span></span></div>
@@ -786,11 +870,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-gravityWell" data-element="void" data-pattern="blackHole" data-access="achievement" data-s-roster="11" data-s-name="gravity well" data-s-damage="3" data-s-range="30" data-s-cadence="4200">
+      <article class="wcard" id="e-gravityWell" tabindex="-1" data-element="void" data-pattern="blackHole" data-access="achievement" data-s-roster="11" data-s-name="gravity well" data-s-damage="3" data-s-range="30" data-s-cadence="4200">
         <div class="wcard-h">
           <h4>Gravity Well</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:gravityWell" data-visual-use="entry">
+    <img src="wiki-assets/weapons/gravity-well.png" width="128" height="128" alt="Canonical in-game weapon glyph for Gravity Well." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -800,7 +888,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Black hole pulls and crushes enemies.</p>
         <p class="wgloss">Drops a well that drags enemies inward and ticks damage into them while it lasts.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-survivor20">Endurance</a> (Survive 20:00 in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-survivor20">Endurance</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>4200</b> ms between shots <span class="wsub">, 3778.36 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Orb</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 4.05 damage at 8</span></span></div>
@@ -814,11 +903,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-encore" data-element="ice" data-pattern="pathEcho" data-access="achievement" data-s-roster="12" data-s-name="echo" data-s-damage="6"  data-s-cadence="300">
+      <article class="wcard" id="e-encore" tabindex="-1" data-element="ice" data-pattern="pathEcho" data-access="achievement" data-s-roster="12" data-s-name="echo" data-s-damage="6"  data-s-cadence="300">
         <div class="wcard-h">
           <h4>Echo</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:encore" data-visual-use="entry">
+    <img src="wiki-assets/weapons/encore.png" width="128" height="128" alt="Canonical in-game weapon glyph for Echo." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -828,7 +921,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">It's you, but it already left. Now it brought friends.</p>
         <p class="wgloss">A lashing chain of nodes that trails the path you walked, heaviest at the front and tapering to the tail.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-emberCleared">Ember Cleared</a> (Clear Ember Wastes), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-emberCleared">Ember Cleared</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>300</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Wisp</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level, compounding <span class="wsub">, 8.44 damage at 8</span></span></div>
@@ -842,11 +936,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-photonScythe" data-element="void" data-pattern="meleeArc" data-access="achievement" data-s-roster="13" data-s-name="photon scythe" data-s-damage="14.4" data-s-range="9" data-s-cadence="950">
+      <article class="wcard" id="e-photonScythe" tabindex="-1" data-element="void" data-pattern="meleeArc" data-access="achievement" data-s-roster="13" data-s-name="photon scythe" data-s-damage="14.4" data-s-range="9" data-s-cadence="950">
         <div class="wcard-h">
           <h4>Photon Scythe</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:photonScythe" data-visual-use="entry">
+    <img src="wiki-assets/weapons/photon-scythe.png" width="128" height="128" alt="Canonical in-game weapon glyph for Photon Scythe." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -856,7 +954,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Reaps the front and both flanks. No survivors, no paperwork.</p>
         <p class="wgloss">Sweeps a wide arc around you facing the way you are moving, leaving only a gap directly behind.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-perfectionist">Perfectionist</a> (Max any weapon), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-perfectionist">Perfectionist</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>950</b> ms between shots <span class="wsub">, 713.88 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level, compounding <span class="wsub">, 20.26 damage at 8</span></span></div>
@@ -870,11 +969,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-voidRailgun" data-element="void" data-pattern="pierceLine" data-access="achievement" data-s-roster="14" data-s-name="void railgun" data-s-damage="24" data-s-range="17" data-s-cadence="2700">
+      <article class="wcard" id="e-voidRailgun" tabindex="-1" data-element="void" data-pattern="pierceLine" data-access="achievement" data-s-roster="14" data-s-name="void railgun" data-s-damage="24" data-s-range="17" data-s-cadence="2700">
         <div class="wcard-h">
           <h4>Void Railgun</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:voidRailgun" data-visual-use="entry">
+    <img src="wiki-assets/weapons/void-railgun.png" width="128" height="128" alt="Canonical in-game weapon glyph for Void Railgun." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -884,7 +987,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Picks the biggest thing in the room. Deletes the line behind it.</p>
         <p class="wgloss">Charges, then fires an instant line down the whole length of its range. The charge is the cost and the lockout after it is the risk.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-riftCleared">Rift Cleared</a> (Clear the Void Rift), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-riftCleared">Rift Cleared</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2700</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Beam</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14%</b> damage per level, compounding <span class="wsub">, 60.05 damage at 8</span></span></div>
@@ -898,11 +1002,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-lighthouse" data-element="physical" data-pattern="beam" data-access="achievement" data-s-roster="15" data-s-name="faultline" data-s-damage="16" data-s-range="17" data-s-cadence="2300">
+      <article class="wcard" id="e-lighthouse" tabindex="-1" data-element="physical" data-pattern="beam" data-access="achievement" data-s-roster="15" data-s-name="faultline" data-s-damage="16" data-s-range="17" data-s-cadence="2300">
         <div class="wcard-h">
           <h4>Faultline</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:lighthouse" data-visual-use="entry">
+    <img src="wiki-assets/weapons/lighthouse.png" width="128" height="128" alt="Canonical in-game weapon glyph for Faultline." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -912,7 +1020,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">The ground remembers. It heaves them up, then lets go.</p>
         <p class="wgloss">Ruptures the ground in a line rather than firing a beam, throwing up pillars along it.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-keeper">Keeper</a> (Activate 3 shrines in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-keeper">Keeper</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2300</b> ms between shots <span class="wsub">, 1858.36 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+6%</b> damage per level, compounding <span class="wsub">, 24.06 damage at 8</span></span></div>
@@ -926,11 +1035,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-stormSentry" data-element="lightning" data-pattern="petUnits" data-access="achievement" data-s-roster="16" data-s-name="storm sentry" data-s-damage="11.9" data-s-range="17" data-s-cadence="5200">
+      <article class="wcard" id="e-stormSentry" tabindex="-1" data-element="lightning" data-pattern="petUnits" data-access="achievement" data-s-roster="16" data-s-name="storm sentry" data-s-damage="11.9" data-s-range="17" data-s-cadence="5200">
         <div class="wcard-h">
           <h4>Storm Sentry</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:stormSentry" data-visual-use="entry">
+    <img src="wiki-assets/weapons/storm-sentry.png" width="128" height="128" alt="Canonical in-game weapon glyph for Storm Sentry." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -940,7 +1053,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Deploys a small opinionated cloud. It roves. It zaps.</p>
         <p class="wgloss">Plants a sentry that holds a position and zaps what comes near it, for as long as it lives.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-necroCleared">Necropolis Cleared</a> (Clear Neon Necropolis), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-necroCleared">Necropolis Cleared</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>5200</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level, compounding <span class="wsub">, 16.74 damage at 8</span></span></div>
@@ -954,11 +1068,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-blackSquirrel" data-element="physical" data-pattern="petUnits" data-access="achievement" data-s-roster="17" data-s-name="ghost pup" data-s-damage="11.3" data-s-range="13" data-s-cadence="2500">
+      <article class="wcard" id="e-blackSquirrel" tabindex="-1" data-element="physical" data-pattern="petUnits" data-access="quest-or-achievement" data-s-roster="17" data-s-name="ghost pup" data-s-damage="11.3" data-s-range="13" data-s-cadence="2500">
         <div class="wcard-h">
           <h4>Ghost Pup</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:blackSquirrel" data-visual-use="entry">
+    <img src="wiki-assets/weapons/black-squirrel.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ghost Pup." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -968,7 +1086,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">A loyal little haunt. It winds up, pounces, and drifts back to your side.</p>
         <p class="wgloss">Sends out a pack that chases, pounces, and comes back to you.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-quests.html#e-theOneItPicked">The One It Picked</a>, then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-quests.html#e-theOneItPicked">The One It Picked</a> and <a href="wiki-achievements.html#e-packHunter">Pack Hunter</a>, then it joins the level-up pool. Either route independently makes it available.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2500</b> ms between shots <span class="wsub">, 2249.02 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Wisp</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+10.4%</b> damage per level <span class="wsub">, 19.53 damage at 8</span></span></div>
@@ -982,11 +1101,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-thunderStrike" data-element="lightning" data-pattern="randomAoE" data-access="achievement" data-s-roster="18" data-s-name="lightning strike" data-s-damage="24" data-s-range="9" data-s-cadence="1200">
+      <article class="wcard" id="e-thunderStrike" tabindex="-1" data-element="lightning" data-pattern="randomAoE" data-access="achievement" data-s-roster="18" data-s-name="lightning strike" data-s-damage="24" data-s-range="9" data-s-cadence="1200">
         <div class="wcard-h">
           <h4>Lightning Strike</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:thunderStrike" data-visual-use="entry">
+    <img src="wiki-assets/weapons/thunder-strike.png" width="128" height="128" alt="Canonical in-game weapon glyph for Lightning Strike." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -996,7 +1119,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">The sky files a grievance. Directly.</p>
         <p class="wgloss">Calls strikes down out of the sky, instantly, at points near you.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-bossDown">Boss Down</a> (Kill 5 bosses lifetime), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-bossDown">Boss Down</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1200</b> ms between shots <span class="wsub">, 1079.53 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+14%</b> damage per level <span class="wsub">, 47.52 damage at 8</span></span></div>
@@ -1010,11 +1134,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-voidDaggers" data-element="void" data-pattern="chain" data-access="achievement" data-s-roster="19" data-s-name="void daggers" data-s-damage="8.5" data-s-range="17" data-s-cadence="960">
+      <article class="wcard" id="e-voidDaggers" tabindex="-1" data-element="void" data-pattern="chain" data-access="achievement" data-s-roster="19" data-s-name="void daggers" data-s-damage="8.5" data-s-range="17" data-s-cadence="960">
         <div class="wcard-h">
           <h4>Void Daggers</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:voidDaggers" data-visual-use="entry">
+    <img src="wiki-assets/weapons/void-daggers.png" width="128" height="128" alt="Canonical in-game weapon glyph for Void Daggers." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -1024,7 +1152,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">They arrive from the side you were not watching.</p>
         <p class="wgloss">Strikes the nearest few enemies to YOU at full damage each. It does not hop between them, so it does not care how they are spaced.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-survivor10">Survivor</a> (Survive 10:00 in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-survivor10">Survivor</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>960</b> ms between shots <span class="wsub">, 863.62 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 10.88 damage at 8</span></span></div>
@@ -1038,11 +1167,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-flameThrower" data-element="fire" data-pattern="cone" data-access="start" data-s-roster="20" data-s-name="flame thrower" data-s-damage="3.85" data-s-range="9" data-s-cadence="144">
+      <article class="wcard" id="e-flameThrower" tabindex="-1" data-element="fire" data-pattern="cone" data-access="start" data-s-roster="20" data-s-name="flame thrower" data-s-damage="3.85" data-s-range="9" data-s-cadence="144">
         <div class="wcard-h">
           <h4>Flame Thrower</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:flameThrower" data-visual-use="entry">
+    <img src="wiki-assets/weapons/flame-thrower.png" width="128" height="128" alt="Canonical in-game weapon glyph for Flame Thrower." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -1052,7 +1185,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Cone of fire damage.</p>
         <p class="wgloss">Holds a sustained cone in front of you with a smoothed aim, so it keeps burning as you turn.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-wispmother">Grim Hex</a> starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-wispmother">Grim Hex</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>144</b> ms between shots <span class="wsub">, 129.54 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 4.93 damage at 8</span></span></div>
@@ -1066,11 +1200,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-spectralArrows" data-element="holy" data-pattern="pierceLine" data-access="achievement" data-s-roster="21" data-s-name="spectral arrows" data-s-damage="5.8" data-s-range="17" data-s-cadence="500">
+      <article class="wcard" id="e-spectralArrows" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="achievement" data-s-roster="21" data-s-name="spectral arrows" data-s-damage="5.8" data-s-range="17" data-s-cadence="500">
         <div class="wcard-h">
           <h4>Spectral Arrows</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:spectralArrows" data-visual-use="entry">
+    <img src="wiki-assets/weapons/spectral-arrows.png" width="128" height="128" alt="Canonical in-game weapon glyph for Spectral Arrows." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -1080,7 +1218,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Rapid arrows that leave damage trails.</p>
         <p class="wgloss">Fires arrows in bursts that pierce, and leaves damage on the ground along the path they took.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-taskmaster">Taskmaster</a> (Complete 3 directives in one run), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-taskmaster">Taskmaster</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>500</b> ms between shots <span class="wsub">, 449.8 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 7.42 damage at 8</span></span></div>
@@ -1094,11 +1233,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-starField" data-element="holy" data-pattern="randomAoE" data-access="start" data-s-roster="22" data-s-name="star field" data-s-damage="3.2"  data-s-cadence="500">
+      <article class="wcard" id="e-starField" tabindex="-1" data-element="holy" data-pattern="randomAoE" data-access="start" data-s-roster="22" data-s-name="star field" data-s-damage="3.2"  data-s-cadence="500">
         <div class="wcard-h">
           <h4>Star Field</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:starField" data-visual-use="entry">
+    <img src="wiki-assets/weapons/star-field.png" width="128" height="128" alt="Canonical in-game weapon glyph for Star Field." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -1109,6 +1252,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Fills the area around you with falling stars, out to a radius that grows as it levels.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>500</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>3</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+4%</b> damage per level <span class="wsub">, 4.1 damage at 8</span></span></div>
@@ -1122,11 +1266,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-pulseMine" data-element="fire" data-pattern="randomAoE" data-access="start" data-s-roster="23" data-s-name="pulse mine" data-s-damage="12.5" data-s-range="21.45" data-s-cadence="2000">
+      <article class="wcard" id="e-pulseMine" tabindex="-1" data-element="fire" data-pattern="randomAoE" data-access="start" data-s-roster="23" data-s-name="pulse mine" data-s-damage="12.5" data-s-range="21.45" data-s-cadence="2000">
         <div class="wcard-h">
           <h4>Pulse Mine</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:pulseMine" data-visual-use="entry">
+    <img src="wiki-assets/weapons/pulse-mine.png" width="128" height="128" alt="Canonical in-game weapon glyph for Pulse Mine." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -1136,7 +1284,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Drops mines that explode on contact.</p>
         <p class="wgloss">Drops mines behind you that arm, wait, and go off when something comes close enough.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v"><a href="wiki-characters.html#e-sentinel">Sentinel</a> starts with it. In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">In the level-up pool from the first run.</span></div>
+          <div class="wfact"><span class="wfact-k">Suggested by</span><span class="wfact-v"><a href="wiki-characters.html#e-sentinel">Sentinel</a> as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only</span></div>
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2000</b> ms between shots <span class="wsub">, 1799.22 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Orb</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+15%</b> damage per level <span class="wsub">, 25.62 damage at 8</span></span></div>
@@ -1150,11 +1299,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-boomBox" data-element="holy" data-pattern="aura" data-access="achievement" data-s-roster="24" data-s-name="boom box" data-s-damage="10"  data-s-cadence="1440">
+      <article class="wcard" id="e-boomBox" tabindex="-1" data-element="holy" data-pattern="aura" data-access="achievement" data-s-roster="24" data-s-name="boom box" data-s-damage="10"  data-s-cadence="1440">
         <div class="wcard-h">
           <h4>Boom Box</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:boomBox" data-visual-use="entry">
+    <img src="wiki-assets/weapons/boom-box.png" width="128" height="128" alt="Canonical in-game weapon glyph for Boom Box." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
 
@@ -1164,7 +1317,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wdesc">Blasts every nearby enemy with an expanding sound wave.</p>
         <p class="wgloss">A field around you that ticks damage into whatever is standing in it. Always on, never aimed.</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-emberAscend">Forged in Fire</a> (Reach level 30 in Ember Wastes), then it joins the level-up pool.</span></div>
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-emberAscend">Forged in Fire</a>, then it joins the level-up pool.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1440</b> ms between shots <span class="wsub">, 1295.44 at level 8</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>8</b> max, <b>+5%</b> damage per level <span class="wsub">, 13.5 damage at 8</span></span></div>
@@ -1183,11 +1337,15 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Evolutions</h3><span class="wgroup-n">8</span></div>
       <p class="wgroup-note">Terminal forms, never offered directly. Each one is the payoff for maxing a specific weapon, holding its paired tome, and opening a boss chest. Turning it down is not permanent, the offer comes back at the next one.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-novaLance" data-element="holy" data-pattern="pierceLine" data-access="evolution" data-s-roster="25" data-s-name="nova lance" data-s-damage="19.5672" data-s-range="21.45" data-s-cadence="647.7182143255357">
+      <article class="wcard" id="e-novaLance" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="evolution" data-s-roster="25" data-s-name="nova lance" data-s-damage="19.5672" data-s-range="21.45" data-s-cadence="647.7182143255357">
         <div class="wcard-h">
           <h4>Nova Lance</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:novaLance" data-visual-use="entry">
+    <img src="wiki-assets/weapons/nova-lance.png" width="128" height="128" alt="Canonical in-game weapon glyph for Nova Lance." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1198,6 +1356,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Leads its target and fires a small volley in a straight line, punching through a limited number of enemies per shot.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-powerTome">Tome of Power</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>647.72</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Bolt</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1211,11 +1370,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-ringOfRuin" data-element="lightning" data-pattern="orbit" data-access="evolution" data-s-roster="26" data-s-name="ring of ruin" data-s-damage="15.36"  data-s-cadence="250">
+      <article class="wcard" id="e-ringOfRuin" tabindex="-1" data-element="lightning" data-pattern="orbit" data-access="evolution" data-s-roster="26" data-s-name="ring of ruin" data-s-damage="15.36"  data-s-cadence="250">
         <div class="wcard-h">
           <h4>Ring of Ruin</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:ringOfRuin" data-visual-use="entry">
+    <img src="wiki-assets/weapons/ring-of-ruin.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ring of Ruin." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1226,6 +1389,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Bodies circle you continuously and hurt whatever they sweep through. Nothing to aim and no downtime.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-sizeTome">Tome of Magnitude</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>250</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> orbs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1239,11 +1403,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-hellscatter" data-element="fire" data-pattern="burstNearest" data-access="evolution" data-s-roster="27" data-s-name="hellscatter" data-s-damage="8.108100000000002" data-s-range="13" data-s-cadence="1289.1664168713792">
+      <article class="wcard" id="e-hellscatter" tabindex="-1" data-element="fire" data-pattern="burstNearest" data-access="evolution" data-s-roster="27" data-s-name="hellscatter" data-s-damage="8.108100000000002" data-s-range="13" data-s-cadence="1289.1664168713792">
         <div class="wcard-h">
           <h4>Hellscatter</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:hellscatter" data-visual-use="entry">
+    <img src="wiki-assets/weapons/hellscatter.png" width="128" height="128" alt="Canonical in-game weapon glyph for Hellscatter." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1254,6 +1422,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">A pellet volley that hits much harder up close than far away. The spread is the range limit.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-shotgun">Shotgun</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-attackSpeedTome">Tome of Haste</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1289.17</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>10</b> bolts per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1267,11 +1436,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-dragonsBreath" data-element="fire" data-pattern="cone" data-access="evolution" data-s-roster="28" data-s-name="dragon's breath" data-s-damage="4.928" data-s-range="13.5" data-s-cadence="129.54364286510713">
+      <article class="wcard" id="e-dragonsBreath" tabindex="-1" data-element="fire" data-pattern="cone" data-access="evolution" data-s-roster="28" data-s-name="dragon's breath" data-s-damage="4.928" data-s-range="13.5" data-s-cadence="129.54364286510713">
         <div class="wcard-h">
           <h4>Dragon's Breath</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:dragonsBreath" data-visual-use="entry">
+    <img src="wiki-assets/weapons/dragons-breath.png" width="128" height="128" alt="Canonical in-game weapon glyph for Dragon's Breath." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1282,6 +1455,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Holds a sustained cone in front of you with a smoothed aim, so it keeps burning as you turn.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-flameThrower">Flame Thrower</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-persistTome">Tome of Persistence</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>129.54</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Arc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1295,11 +1469,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-glacierLance" data-element="ice" data-pattern="cone" data-access="evolution" data-s-roster="29" data-s-name="glacier lance" data-s-damage="12.574099999999998" data-s-range="21.45" data-s-cadence="755.6712500464582">
+      <article class="wcard" id="e-glacierLance" tabindex="-1" data-element="ice" data-pattern="cone" data-access="evolution" data-s-roster="29" data-s-name="glacier lance" data-s-damage="12.574099999999998" data-s-range="21.45" data-s-cadence="755.6712500464582">
         <div class="wcard-h">
           <h4>Glacier Lance</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:glacierLance" data-visual-use="entry">
+    <img src="wiki-assets/weapons/glacier-lance.png" width="128" height="128" alt="Canonical in-game weapon glyph for Glacier Lance." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1310,6 +1488,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Throws a converging volley of shards that also slows what they hit.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-iceShard">Ice Shards</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-velocityTome">Tome of Velocity</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>755.67</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1323,11 +1502,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-constellation" data-element="holy" data-pattern="randomAoE" data-access="evolution" data-s-roster="30" data-s-name="constellation" data-s-damage="6.144"  data-s-cadence="500">
+      <article class="wcard" id="e-constellation" tabindex="-1" data-element="holy" data-pattern="randomAoE" data-access="evolution" data-s-roster="30" data-s-name="constellation" data-s-damage="6.144"  data-s-cadence="500">
         <div class="wcard-h">
           <h4>Constellation</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:constellation" data-visual-use="entry">
+    <img src="wiki-assets/weapons/constellation.png" width="128" height="128" alt="Canonical in-game weapon glyph for Constellation." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1338,6 +1521,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Fills the area around you with falling stars, out to a radius that grows as it levels.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-starField">Star Field</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-luckTome">Tome of Fortune</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>500</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>5</b> shards per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1351,11 +1535,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-deathray" data-element="void" data-pattern="beam" data-access="evolution" data-s-roster="31" data-s-name="deathray" data-s-damage="11.232000000000001" data-s-range="13.95" data-s-cadence="100">
+      <article class="wcard" id="e-deathray" tabindex="-1" data-element="void" data-pattern="beam" data-access="evolution" data-s-roster="31" data-s-name="deathray" data-s-damage="11.232000000000001" data-s-range="13.95" data-s-cadence="100">
         <div class="wcard-h">
           <h4>Deathray</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:deathray" data-visual-use="entry">
+    <img src="wiki-assets/weapons/deathray.png" width="128" height="128" alt="Canonical in-game weapon glyph for Deathray." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1366,6 +1554,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Holds persistent locks on targets and ramps its damage the longer a lock survives, with splash around where it lands.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-beam">Beam</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-critTome">Tome of Precision</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>100</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Beam</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1379,11 +1568,15 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-goldReaver" data-element="holy" data-pattern="boomerang" data-access="evolution" data-s-roster="32" data-s-name="gold reaver" data-s-damage="21.752959999999998" data-s-range="13" data-s-cadence="1889.1781251161456">
+      <article class="wcard" id="e-goldReaver" tabindex="-1" data-element="holy" data-pattern="boomerang" data-access="evolution" data-s-roster="32" data-s-name="gold reaver" data-s-damage="21.752959999999998" data-s-range="13" data-s-cadence="1889.1781251161456">
         <div class="wcard-h">
           <h4>Gold Reaver</h4>
 
         </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:goldReaver" data-visual-use="entry">
+    <img src="wiki-assets/weapons/gold-reaver.png" width="128" height="128" alt="Canonical in-game weapon glyph for Gold Reaver." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+  </figure>
 
         <div class="wtags">
           <span class="wtag ink-gold">Evolution</span>
@@ -1394,6 +1587,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Thrown out, then it comes back, and it can hit on both legs of the trip.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-boomerang">Boomerang</a> to level <b>8</b> while holding <a href="wiki-tomes.html#e-midasTome">Tome of Riches</a>, then open a boss chest.</span></div>
+
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1889.18</b> ms between shots</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v">Arrives finished, it does not level.</span></div>
@@ -1412,8 +1606,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>,
-  content derived from <code>data/game-data.json</code>.
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>,
+  content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -1493,7 +1687,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -1509,7 +1704,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -1521,6 +1727,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -1674,9 +1895,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
         row.querySelectorAll('.wf').forEach((b) => {
@@ -1687,7 +1912,9 @@ srPanel.addEventListener('click', (e) => {
         active[row.dataset.facet] = 'all';
       });
       apply();
-    } }
+    }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')

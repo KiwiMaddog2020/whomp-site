@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP innates</title>
-<meta name="description" content="Innates: The passive rule each character brings. Every value generated from the game's own data.">
+<meta name="description" content="Innates: The passive rule each character brings. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -144,6 +144,8 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -155,6 +157,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -196,9 +201,27 @@ html,body{max-width:100%;overflow-x:hidden}
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -280,6 +303,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -321,6 +346,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
 
@@ -340,8 +366,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">The passive rule each character brings.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -357,7 +383,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
@@ -366,24 +392,25 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
     <details class="wside-section">
-      <summary>Buildcraft <span>13</span></summary>
+      <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
-        <a href="wiki-tiers.html">Weapon tiers</a>
-        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
+        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
         <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-shrine-movement.html">Shrine movement</a>
         <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
         <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Jump augments</a>
+        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
       </div>
     </details>
-    <details class="wside-section" open>
+    <details class="wside-section is-current-section" open>
       <summary>Heroes <span>3</span></summary>
       <div class="wside-links">
         <a href="wiki-characters.html">Characters</a>
@@ -425,15 +452,17 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">11 entries, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Innates</span></nav>
     <h2 class="chroma">Innates</h2>
     <p class="lede">Innates are character-bound passive rules. The character-select sentence is canonical copy; base, growth and cap are read from the same registry row.</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@f748df98</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>src/data/characterInnates.ts#CHARACTER_INNATES</code>.
-      Optional director notes have <b>0 of 11</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      Optional director notes have <b>0 of 11</b> coverage, so these cards use canonical mechanics and authored registry copy only.
+      </p>
 
 
 
@@ -441,21 +470,21 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Effect</span>
-        <div class="wfacet-row" data-facet="effect" data-multi="0">
+        <span class="wfacet-h" id="facet-innates-effect">Effect</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-innates-effect" data-facet="effect" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="boostRecharge" aria-pressed="false" aria-controls="wiki-groups">Boost recharge <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="controlledTargetDamage" aria-pressed="false" aria-controls="wiki-groups">Controlled target damage <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="crowdDefense" aria-pressed="false" aria-controls="wiki-groups">Crowd defense <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="enemyDisplacement" aria-pressed="false" aria-controls="wiki-groups">Enemy displacement <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="groundedDefense" aria-pressed="false" aria-controls="wiki-groups">Grounded defense <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="healingAndRevive" aria-pressed="false" aria-controls="wiki-groups">Healing and revive <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="missingHealthDamage" aria-pressed="false" aria-controls="wiki-groups">Missing health damage <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="moveSpeed" aria-pressed="false" aria-controls="wiki-groups">Move speed <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="ownedDuration" aria-pressed="false" aria-controls="wiki-groups">Owned duration <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="shieldCapacity" aria-pressed="false" aria-controls="wiki-groups">Shield capacity <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="weaponReach" aria-pressed="false" aria-controls="wiki-groups">Weapon reach <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Value kind</span>
-        <div class="wfacet-row" data-facet="value" data-multi="0">
+        <span class="wfacet-h" id="facet-innates-value">Value kind</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-innates-value" data-facet="value" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="fraction" aria-pressed="false" aria-controls="wiki-groups">Fraction <span style="opacity:.5">10</span></button><button class="wf" type="button" data-value="flatShield" aria-pressed="false" aria-controls="wiki-groups">Flat shield <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Innates">
           <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option>
         </select>
@@ -471,11 +500,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Innate roster</h3><span class="wgroup-n">11</span></div>
       <p class="wgroup-note">One source entry per character-bound innate.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-boosterSchool" data-effect="boostRecharge" data-value="fraction" data-s-roster="0" data-s-name="booster school">
+      <article class="wcard" id="e-boosterSchool" tabindex="-1" data-effect="boostRecharge" data-value="fraction" data-s-roster="0" data-s-name="booster school">
         <div class="wcard-h">
           <h4>Booster School</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Boost recharge</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Boost recharge time is 8% shorter. Improves by 0.5% per level, up to 16%.</p>
@@ -486,11 +516,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-cruelFate" data-effect="controlledTargetDamage" data-value="fraction" data-s-roster="1" data-s-name="cruel fate">
+      <article class="wcard" id="e-cruelFate" tabindex="-1" data-effect="controlledTargetDamage" data-value="fraction" data-s-roster="1" data-s-name="cruel fate">
         <div class="wcard-h">
           <h4>Cruel Fate</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Controlled target damage</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Deal 6% more damage to slowed, rooted, or stunned enemies. Improves by 0.5% per level, up to 14%.</p>
@@ -501,11 +532,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-loadBearing" data-effect="groundedDefense" data-value="fraction" data-s-roster="2" data-s-name="load bearing">
+      <article class="wcard" id="e-loadBearing" tabindex="-1" data-effect="groundedDefense" data-value="fraction" data-s-roster="2" data-s-name="load bearing">
         <div class="wcard-h">
           <h4>Load Bearing</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Grounded defense</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">While grounded, take 4% less enemy damage and knockback. Improves by 0.25% per level, up to 8%.</p>
@@ -516,11 +548,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-lineTension" data-effect="enemyDisplacement" data-value="fraction" data-s-roster="3" data-s-name="line tension">
+      <article class="wcard" id="e-lineTension" tabindex="-1" data-effect="enemyDisplacement" data-value="fraction" data-s-roster="3" data-s-name="line tension">
         <div class="wcard-h">
           <h4>Line Tension</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Enemy displacement</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Your pulls and knockback move enemies 6% farther. Improves by 0.3% per level, up to 11%.</p>
@@ -531,11 +564,12 @@ footer a{color:var(--cyan);text-decoration:none}
         <details class="wraw"><summary>Context parameters <span>1</span></summary><dl><div><dt><code>rivalEffectScale</code></dt><dd>0.5</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-quickFeet" data-effect="moveSpeed" data-value="fraction" data-s-roster="4" data-s-name="quick feet">
+      <article class="wcard" id="e-quickFeet" tabindex="-1" data-effect="moveSpeed" data-value="fraction" data-s-roster="4" data-s-name="quick feet">
         <div class="wcard-h">
           <h4>Quick Feet</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Move speed</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Move 4% faster. Improves by 0.3% per level, up to 9%.</p>
@@ -546,11 +580,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-lastingSpell" data-effect="ownedDuration" data-value="fraction" data-s-roster="5" data-s-name="lasting spell">
+      <article class="wcard" id="e-lastingSpell" tabindex="-1" data-effect="ownedDuration" data-value="fraction" data-s-roster="5" data-s-name="lasting spell">
         <div class="wcard-h">
           <h4>Lasting Spell</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Owned duration</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Your signature and timed weapon effects last 6% longer. Improves by 0.3% per level, up to 11%.</p>
@@ -561,11 +596,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-criticalMass" data-effect="crowdDefense" data-value="fraction" data-s-roster="6" data-s-name="critical mass">
+      <article class="wcard" id="e-criticalMass" tabindex="-1" data-effect="crowdDefense" data-value="fraction" data-s-roster="6" data-s-name="critical mass">
         <div class="wcard-h">
           <h4>Critical Mass</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Crowd defense</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Each hostile within 7m reduces enemy damage taken by 1%, up to five hostiles. Improves by 0.05% per level, up to 1.75% each. Rival players count as three hostiles.</p>
@@ -576,11 +612,12 @@ footer a{color:var(--cyan);text-decoration:none}
         <details class="wraw"><summary>Context parameters <span>3</span></summary><dl><div><dt><code>hostileRadiusM</code></dt><dd>7</dd></div><div><dt><code>hostileMassCap</code></dt><dd>5</dd></div><div><dt><code>rivalHostileMass</code></dt><dd>3</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-reserveAegis" data-effect="shieldCapacity" data-value="flatShield" data-s-roster="7" data-s-name="reserve aegis">
+      <article class="wcard" id="e-reserveAegis" tabindex="-1" data-effect="shieldCapacity" data-value="flatShield" data-s-roster="7" data-s-name="reserve aegis">
         <div class="wcard-h">
           <h4>Reserve Aegis</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Shield capacity</span><span class="wtag ink-violet">Flat shield</span></div>
         <p class="wdesc">Gain 8 maximum shield. Gain 0.5 more per level, up to 16.</p>
@@ -591,11 +628,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-redline" data-effect="missingHealthDamage" data-value="fraction" data-s-roster="8" data-s-name="redline">
+      <article class="wcard" id="e-redline" tabindex="-1" data-effect="missingHealthDamage" data-value="fraction" data-s-roster="8" data-s-name="redline">
         <div class="wcard-h">
           <h4>Redline</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Missing health damage</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Gain up to 12% more damage as health falls. The maximum improves by 0.5% per level, up to 20%.</p>
@@ -606,11 +644,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-longStrings" data-effect="weaponReach" data-value="fraction" data-s-roster="9" data-s-name="long strings">
+      <article class="wcard" id="e-longStrings" tabindex="-1" data-effect="weaponReach" data-value="fraction" data-s-roster="9" data-s-name="long strings">
         <div class="wcard-h">
           <h4>Long Strings</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Weapon reach</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Your weapons and puppet reach 5% farther. Improves by 0.3% per level, up to 10%.</p>
@@ -621,11 +660,12 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
       </article>
-      <article class="wcard" id="e-bedsideManner" data-effect="healingAndRevive" data-value="fraction" data-s-roster="10" data-s-name="bedside manner">
+      <article class="wcard" id="e-bedsideManner" tabindex="-1" data-effect="healingAndRevive" data-value="fraction" data-s-roster="10" data-s-name="bedside manner">
         <div class="wcard-h">
           <h4>Bedside Manner</h4>
 
         </div>
+
 
         <div class="wtags"><span class="wtag ink-cyan">Healing and revive</span><span class="wtag ink-violet">Fraction</span></div>
         <p class="wdesc">Healing you give or receive is 10% stronger, and you revive allies 10% faster. Both improve by 0.5% per level, up to 18%.</p>
@@ -641,8 +681,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>,
-  content derived from <code>data/game-data.json</code>.
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>,
+  content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -722,7 +762,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -738,7 +779,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -750,6 +802,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -903,9 +970,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
         row.querySelectorAll('.wf').forEach((b) => {
@@ -916,7 +987,9 @@ srPanel.addEventListener('click', (e) => {
         active[row.dataset.facet] = 'all';
       });
       apply();
-    } }
+    }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')

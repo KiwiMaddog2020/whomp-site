@@ -286,8 +286,8 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -1153,8 +1153,8 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>.
-  Live build <code>c4d4c20b</code> (a deploy is pending).
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>.
+  Live build <code>f748df98</code> (current).
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
   <div class="stat">721 player-visible changes in the last 7 days, across 7 active days, 1064 internal-only commits filtered out</div>
@@ -1267,6 +1267,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -1420,9 +1435,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
   // if the anchor is inside the full log, switch to that view first
   if (panes.full && panes.full.contains(target)) {
     vtabs.forEach((t) => { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
@@ -1430,7 +1449,9 @@ srPanel.addEventListener('click', (e) => {
     panes.concise.hidden = true; panes.full.hidden = false;
     document.querySelectorAll('#view-full .row[data-kind]').forEach((row) => { row.dataset.hidden = '0'; });
     kindChips.forEach((c) => c.classList.toggle('is-active', c.dataset.kind === 'all'));
-  } }
+  }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')

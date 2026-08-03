@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP achievements</title>
-<meta name="description" content="Achievements: Every goal and every payload it unlocks. Every value generated from the game's own data.">
+<meta name="description" content="Achievements: Every goal and every payload it unlocks. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -144,6 +144,8 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -155,6 +157,9 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -196,9 +201,27 @@ html,body{max-width:100%;overflow-x:hidden}
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -280,6 +303,8 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -321,6 +346,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
 
@@ -340,8 +366,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Every goal and every payload it unlocks.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot stale"></span>
-  live <b>c4d4c20b</b></span>
+    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
+  live <b>f748df98</b> · current wiki source</span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -357,7 +383,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
@@ -366,21 +392,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
     <details class="wside-section">
-      <summary>Buildcraft <span>13</span></summary>
+      <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Power soft knees</a>
-        <a href="wiki-tiers.html">Weapon tiers</a>
-        <a href="wiki-builds.html">Measured builds</a>
+        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
+        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
         <a href="wiki-blessings.html">Shrine blessings</a>
+        <a href="wiki-shrine-movement.html">Shrine movement</a>
         <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">Boss ultimates</a>
+        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
         <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Jump augments</a>
+        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
       </div>
     </details>
     <details class="wside-section">
@@ -402,7 +429,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-ambient-events.html">Ambient events</a>
       </div>
     </details>
-    <details class="wside-section" open>
+    <details class="wside-section is-current-section" open>
       <summary>Progression <span>6</span></summary>
       <div class="wside-links">
         <a href="wiki-achievements.html" class="is-here" aria-current="page">Achievements</a>
@@ -425,15 +452,17 @@ footer a{color:var(--cyan);text-decoration:none}
     <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">26 entries, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Achievements</span></nav>
     <h2 class="chroma">Achievements</h2>
     <p class="lede">The achievement registry is the unlock ladder. Cards show the canonical requirement, measurement kind, optional world condition and every unlock payload with a live link to its destination.</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@d2b39395</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@f748df98</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>src/data/achievements.ts#ACHIEVEMENTS</code>.
-      Optional director notes have <b>0 of 26</b> coverage, so these cards use canonical mechanics and authored registry copy only.</p>
+      Optional director notes have <b>0 of 26</b> coverage, so these cards use canonical mechanics and authored registry copy only.
+      </p>
 
 
 
@@ -441,28 +470,28 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div class="wbar">
       <div class="wfacet">
-        <span class="wfacet-h">Kind</span>
-        <div class="wfacet-row" data-facet="kind" data-multi="0">
+        <span class="wfacet-h" id="facet-achievements-kind">Kind</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-achievements-kind" data-facet="kind" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="runStat" aria-pressed="false" aria-controls="wiki-groups">Run stat <span style="opacity:.5">12</span></button><button class="wf" type="button" data-value="event" aria-pressed="false" aria-controls="wiki-groups">Event <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="lifetime" aria-pressed="false" aria-controls="wiki-groups">Lifetime <span style="opacity:.5">6</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Reward</span>
-        <div class="wfacet-row" data-facet="reward" data-multi="0">
+        <span class="wfacet-h" id="facet-achievements-reward">Reward</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-achievements-reward" data-facet="reward" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="weapon" aria-pressed="false" aria-controls="wiki-groups">Weapon <span style="opacity:.5">15</span></button><button class="wf" type="button" data-value="passive" aria-pressed="false" aria-controls="wiki-groups">Passive <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="sprite" aria-pressed="false" aria-controls="wiki-groups">Sprite <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="none" aria-pressed="false" aria-controls="wiki-groups">None <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">World-specific</span>
-        <div class="wfacet-row" data-facet="world" data-multi="0">
+        <span class="wfacet-h" id="facet-achievements-world">World-specific</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-achievements-world" data-facet="world" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           <button class="wf" type="button" data-value="no" aria-pressed="false" aria-controls="wiki-groups">No <span style="opacity:.5">17</span></button><button class="wf" type="button" data-value="yes" aria-pressed="false" aria-controls="wiki-groups">Yes <span style="opacity:.5">9</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Achievements">
           <option value="roster" data-desc="0" data-text="0">Ladder order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="target" data-desc="1" data-text="0">Target</option>
         </select>
@@ -478,11 +507,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Single-run goals</h3><span class="wgroup-n">12</span></div>
       <p class="wgroup-note">Measured inside one run.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-firstBlood" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="0" data-s-name="first blood" data-s-target="150">
+      <article class="wcard" id="e-firstBlood" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="0" data-s-name="first blood" data-s-target="150">
         <div class="wcard-h">
           <h4>First Blood</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">150 kills in one run</p>
@@ -493,11 +523,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-survivor10" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="1" data-s-name="survivor" data-s-target="600">
+      <article class="wcard" id="e-survivor10" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="1" data-s-name="survivor" data-s-target="600">
         <div class="wcard-h">
           <h4>Survivor</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">Survive 10:00 in one run</p>
@@ -508,11 +539,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-bigSpender" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="2" data-s-name="big spender" data-s-target="3500">
+      <article class="wcard" id="e-bigSpender" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="2" data-s-name="big spender" data-s-target="3500">
         <div class="wcard-h">
           <h4>Big Spender</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">Earn 3,500 gold in one run</p>
@@ -523,11 +555,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-packHunter" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="4" data-s-name="pack hunter" data-s-target="800">
+      <article class="wcard" id="e-packHunter" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="4" data-s-name="pack hunter" data-s-target="800">
         <div class="wcard-h">
           <h4>Pack Hunter</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">800 kills in one run</p>
@@ -538,11 +571,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-taskmaster" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="6" data-s-name="taskmaster" data-s-target="3">
+      <article class="wcard" id="e-taskmaster" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="6" data-s-name="taskmaster" data-s-target="3">
         <div class="wcard-h">
           <h4>Taskmaster</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">Complete 3 directives in one run</p>
@@ -553,11 +587,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-survivor20" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="7" data-s-name="endurance" data-s-target="1200">
+      <article class="wcard" id="e-survivor20" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="7" data-s-name="endurance" data-s-target="1200">
         <div class="wcard-h">
           <h4>Endurance</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">Survive 20:00 in one run</p>
@@ -568,11 +603,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-keeper" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="8" data-s-name="keeper" data-s-target="3">
+      <article class="wcard" id="e-keeper" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="8" data-s-name="keeper" data-s-target="3">
         <div class="wcard-h">
           <h4>Keeper</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">Activate 3 shrines in one run</p>
@@ -583,11 +619,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-emberAscend" data-kind="runStat" data-reward="weapon" data-world="yes" data-s-roster="9" data-s-name="forged in fire" data-s-target="30">
+      <article class="wcard" id="e-emberAscend" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="yes" data-s-roster="9" data-s-name="forged in fire" data-s-target="30">
         <div class="wcard-h">
           <h4>Forged in Fire</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span><span class="wtag ink-violet">Ember Wastes</span></div>
       <p class="wdesc">Reach level 30 in Ember Wastes</p>
@@ -598,11 +635,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-marshLong" data-kind="runStat" data-reward="passive" data-world="yes" data-s-roster="19" data-s-name="marsh endurance" data-s-target="900">
+      <article class="wcard" id="e-marshLong" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="yes" data-s-roster="19" data-s-name="marsh endurance" data-s-target="900">
         <div class="wcard-h">
           <h4>Marsh Endurance</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span><span class="wtag ink-violet">Gloom Marsh</span></div>
       <p class="wdesc">Survive 15:00 in Gloom Marsh</p>
@@ -613,11 +651,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-highLevel15" data-kind="runStat" data-reward="passive" data-world="no" data-s-roster="20" data-s-name="ascendant" data-s-target="18">
+      <article class="wcard" id="e-highLevel15" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="no" data-s-roster="20" data-s-name="ascendant" data-s-target="18">
         <div class="wcard-h">
           <h4>Ascendant</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">Reach level 18 in one run</p>
@@ -628,11 +667,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-necroLong" data-kind="runStat" data-reward="passive" data-world="yes" data-s-roster="21" data-s-name="grave vigil" data-s-target="1500">
+      <article class="wcard" id="e-necroLong" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="yes" data-s-roster="21" data-s-name="grave vigil" data-s-target="1500">
         <div class="wcard-h">
           <h4>Grave Vigil</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span><span class="wtag ink-violet">Neon Necropolis</span></div>
       <p class="wdesc">Survive 25:00 in Neon Necropolis</p>
@@ -643,11 +683,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-slaughter300" data-kind="runStat" data-reward="passive" data-world="no" data-s-roster="22" data-s-name="slaughter" data-s-target="300">
+      <article class="wcard" id="e-slaughter300" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="no" data-s-roster="22" data-s-name="slaughter" data-s-target="300">
         <div class="wcard-h">
           <h4>Slaughter</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Run stat</span></div>
       <p class="wdesc">300 kills in one run</p>
@@ -663,11 +704,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Lifetime goals</h3><span class="wgroup-n">6</span></div>
       <p class="wgroup-note">Measured across the save.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-bossDown" data-kind="lifetime" data-reward="weapon" data-world="no" data-s-roster="3" data-s-name="boss down" data-s-target="5">
+      <article class="wcard" id="e-bossDown" tabindex="-1" data-kind="lifetime" data-reward="weapon" data-world="no" data-s-roster="3" data-s-name="boss down" data-s-target="5">
         <div class="wcard-h">
           <h4>Boss Down</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Lifetime</span></div>
       <p class="wdesc">Kill 5 bosses lifetime</p>
@@ -678,11 +720,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-exterminator" data-kind="lifetime" data-reward="weapon" data-world="no" data-s-roster="5" data-s-name="exterminator" data-s-target="4000">
+      <article class="wcard" id="e-exterminator" tabindex="-1" data-kind="lifetime" data-reward="weapon" data-world="no" data-s-roster="5" data-s-name="exterminator" data-s-target="4000">
         <div class="wcard-h">
           <h4>Exterminator</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Lifetime</span></div>
       <p class="wdesc">4,000 kills lifetime</p>
@@ -693,11 +736,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-lucky" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="17" data-s-name="lucky" data-s-target="18">
+      <article class="wcard" id="e-lucky" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="17" data-s-name="lucky" data-s-target="18">
         <div class="wcard-h">
           <h4>Lucky</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Lifetime</span></div>
       <p class="wdesc">Open 18 chests lifetime</p>
@@ -708,11 +752,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-bossSlayer" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="18" data-s-name="boss slayer" data-s-target="20">
+      <article class="wcard" id="e-bossSlayer" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="18" data-s-name="boss slayer" data-s-target="20">
         <div class="wcard-h">
           <h4>Boss Slayer</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Lifetime</span></div>
       <p class="wdesc">Kill 20 bosses lifetime</p>
@@ -723,11 +768,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-tycoon" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="23" data-s-name="tycoon" data-s-target="15000">
+      <article class="wcard" id="e-tycoon" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="23" data-s-name="tycoon" data-s-target="15000">
         <div class="wcard-h">
           <h4>Tycoon</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Lifetime</span></div>
       <p class="wdesc">Earn 15,000 gold lifetime</p>
@@ -738,11 +784,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-phoenix" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="24" data-s-name="phoenix" data-s-target="5">
+      <article class="wcard" id="e-phoenix" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="24" data-s-name="phoenix" data-s-target="5">
         <div class="wcard-h">
           <h4>Phoenix</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Lifetime</span></div>
       <p class="wdesc">Perish 5 times</p>
@@ -758,11 +805,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgroup-h"><h3>Milestones</h3><span class="wgroup-n">8</span></div>
       <p class="wgroup-note">Completed by a named event rather than a counter.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-perfectionist" data-kind="event" data-reward="weapon" data-world="no" data-s-roster="10" data-s-name="perfectionist" data-s-target="0">
+      <article class="wcard" id="e-perfectionist" tabindex="-1" data-kind="event" data-reward="weapon" data-world="no" data-s-roster="10" data-s-name="perfectionist" data-s-target="0">
         <div class="wcard-h">
           <h4>Perfectionist</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span></div>
       <p class="wdesc">Max any weapon</p>
@@ -773,11 +821,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-meadowCleared" data-kind="event" data-reward="none" data-world="yes" data-s-roster="11" data-s-name="meadow cleared" data-s-target="0">
+      <article class="wcard" id="e-meadowCleared" tabindex="-1" data-kind="event" data-reward="none" data-world="yes" data-s-roster="11" data-s-name="meadow cleared" data-s-target="0">
         <div class="wcard-h">
           <h4>Meadow Cleared</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span><span class="wtag ink-violet">Neon Meadow</span></div>
       <p class="wdesc">Clear the Neon Meadow</p>
@@ -788,11 +837,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-marshCleared" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="12" data-s-name="marsh cleared" data-s-target="0">
+      <article class="wcard" id="e-marshCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="12" data-s-name="marsh cleared" data-s-target="0">
         <div class="wcard-h">
           <h4>Marsh Cleared</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span><span class="wtag ink-violet">Gloom Marsh</span></div>
       <p class="wdesc">Clear Gloom Marsh</p>
@@ -803,11 +853,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-necroCleared" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="13" data-s-name="necropolis cleared" data-s-target="0">
+      <article class="wcard" id="e-necroCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="13" data-s-name="necropolis cleared" data-s-target="0">
         <div class="wcard-h">
           <h4>Necropolis Cleared</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span><span class="wtag ink-violet">Neon Necropolis</span></div>
       <p class="wdesc">Clear Neon Necropolis</p>
@@ -818,11 +869,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-emberCleared" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="14" data-s-name="ember cleared" data-s-target="0">
+      <article class="wcard" id="e-emberCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="14" data-s-name="ember cleared" data-s-target="0">
         <div class="wcard-h">
           <h4>Ember Cleared</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span><span class="wtag ink-violet">Ember Wastes</span></div>
       <p class="wdesc">Clear Ember Wastes</p>
@@ -833,11 +885,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-riftCleared" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="15" data-s-name="rift cleared" data-s-target="0">
+      <article class="wcard" id="e-riftCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="15" data-s-name="rift cleared" data-s-target="0">
         <div class="wcard-h">
           <h4>Rift Cleared</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span><span class="wtag ink-violet">Void Rift</span></div>
       <p class="wdesc">Clear the Void Rift</p>
@@ -848,11 +901,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-infernoCleared" data-kind="event" data-reward="sprite" data-world="yes" data-s-roster="16" data-s-name="hellmouth cleared" data-s-target="0">
+      <article class="wcard" id="e-infernoCleared" tabindex="-1" data-kind="event" data-reward="sprite" data-world="yes" data-s-roster="16" data-s-name="hellmouth cleared" data-s-target="0">
         <div class="wcard-h">
           <h4>Hellmouth Cleared</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span><span class="wtag ink-violet">Hellmouth</span></div>
       <p class="wdesc">Clear the Hellmouth</p>
@@ -863,11 +917,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-mawSealed" data-kind="event" data-reward="sprite" data-world="no" data-s-roster="25" data-s-name="sealed the hellmouth" data-s-target="0">
+      <article class="wcard" id="e-mawSealed" tabindex="-1" data-kind="event" data-reward="sprite" data-world="no" data-s-roster="25" data-s-name="sealed the hellmouth" data-s-target="0">
         <div class="wcard-h">
           <h4>Sealed the Hellmouth</h4>
 
         </div>
+
 
       <div class="wtags"><span class="wtag ink-cyan">Event</span></div>
       <p class="wdesc">Defeat The Maw</p>
@@ -883,8 +938,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 21:00 UTC from <code>game@d2b39395</code>,
-  content derived from <code>data/game-data.json</code>.
+  Generated 2026-08-03 23:46 UTC from <code>game@f748df98</code>,
+  content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -964,7 +1019,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -980,7 +1036,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -992,6 +1059,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -1145,9 +1227,13 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
   if (target) {
+
     if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
       document.querySelectorAll('.wfacet-row').forEach((row) => {
         row.querySelectorAll('.wf').forEach((b) => {
@@ -1158,7 +1244,9 @@ srPanel.addEventListener('click', (e) => {
         active[row.dataset.facet] = 'all';
       });
       apply();
-    } }
+    }
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')
