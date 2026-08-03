@@ -558,6 +558,8 @@ export function rosterSpecs(D, esc, T = null) {
 
   // ---- weapons ------------------------------------------------------------
   const weaponEntries = W.order.map((id) => W.entries[id]).filter(Boolean);
+  const evolvedWeaponCount = weaponEntries.filter((entry) => entry.evolved).length;
+  const freshBaseWeaponCount = weaponEntries.filter((entry) => !entry.evolved && entry.unlockedFromStart).length;
   const wMax = {
     damage: maxOf(weaponEntries, (e) => e.baseDamage),
     range: maxOf(weaponEntries, (e) => e.range),
@@ -626,14 +628,14 @@ export function rosterSpecs(D, esc, T = null) {
     domain: 'weapons',
     title: 'Weapons',
     tagline: 'The half of your build that fires itself.',
-    lede: 'Weapons fire on their own. You are offered them as you level, you level them up, and eight of them turn into something else entirely if you are holding the right tome when a boss chest opens. The weapon you aim by hand is the core weapon, and it has its own page.',
+    lede: `Weapons fire on their own. You are offered them as you level, you level them up, and ${evolvedWeaponCount} of them are terminal forms reached with the right tome and a boss chest. The weapon you aim by hand is the core weapon, and it has its own page.`,
     omissions: 'There is no damage-per-second column here, and that is deliberate. The game does not compute one: your might and crit multiply the damage, your attack speed divides the interval, and half of these do not have "damage times shots per second" semantics in the first place. A beam ramps the longer it holds, chain jumps land a flat share of the first hit, the shotgun pays more up close. A single number would be wrong on most of these cards, so the page gives you the base figures and the growth rule and lets you compare like with like. <b>Element is a look, not a rule</b>: it picks the effect tint and nothing in the game reads it for damage, resistance or status.',
     entries: weaponEntries,
     groups: [
       {
         key: 'base',
         title: 'Base weapons',
-        note: 'What the level-up offer draws from, plus the ones a character brings with them. Ten are available on a fresh save; the rest are behind an achievement, and each card says which.',
+        note: `What the level-up offer draws from, plus the ones a character brings with them. ${freshBaseWeaponCount} are available on a fresh save; the rest are behind an achievement, and each card says which.`,
         has: (e) => !e.evolved,
       },
       {
@@ -717,8 +719,8 @@ export function rosterSpecs(D, esc, T = null) {
     domain: 'coreWeapons',
     title: 'Core weapons',
     tagline: 'The one you aim yourself.',
-    lede: 'A core weapon is the weapon under your hand, and picking one is the only decision that shapes a whole run before it starts. All eight are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.',
-    omissions: 'No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these eight lives outside the shared artifact, so this page will not retype private constants. The reserved evolution labels in the registry are not a playable mechanic and are not presented as available or upcoming content. <b>Aim and forgiveness values describe targeting generosity only</b>; they do not imply damage strength. The pip count is shown because the game suite pins it against the real clip size.',
+    lede: `A core weapon is the weapon under your hand, and picking one is the only decision that shapes a whole run before it starts. All ${C.count} are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.`,
+    omissions: `No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these ${C.count} lives outside the shared artifact, so this page will not retype private constants. The reserved evolution labels in the registry are not a playable mechanic and are not presented as available or upcoming content. <b>Aim and forgiveness values describe targeting generosity only</b>; they do not imply damage strength. The pip count is shown because the game suite pins it against the real clip size.`,
     featureHtml: aimPolicyFeature,
     entries: coreEntries,
     groups: [{ key: 'all', title: 'Core selection', note: 'In the source picker’s selectOrder. This is display order, not a ladder.', has: () => true }],
@@ -771,8 +773,8 @@ export function rosterSpecs(D, esc, T = null) {
     domain: null,
     sourceKind: 'source mechanic',
     title: 'Power soft knees',
-    tagline: 'The four exported permanent-power dials, without an invented build result.',
-    lede: 'The root powerCeiling contract exposes two knees and two factors. This guide prints the exact field names and values alongside the artifact’s own semantics.',
+    tagline: `${powerCeilingEntries.length} exported permanent-power dials, without an invented build result.`,
+    lede: 'The root powerCeiling contract exposes its knee and factor fields. This guide prints the exact field names and values alongside the artifact’s own semantics.',
     omissions: '<b>No effective-power number is computed here.</b> The contract does not include a build’s permanent attack-speed bonus or crit product, and temporary buffs apply after these curves.',
     featureHtml: powerCeilingFeature,
     sourceLabel: D.powerCeiling.source,
@@ -1000,7 +1002,7 @@ export function rosterSpecs(D, esc, T = null) {
     slug: 'tomes',
     domain: 'passives',
     title: 'Tomes',
-    tagline: 'The stat half of a four-and-four build.',
+    tagline: 'The stat half of your build.',
     lede: 'Tomes level a named player stat. Every card shows the registry description, exact per-level payload, maximum level, unlock route and any weapon evolution recipe that requires it.',
     omissions: 'There is no tome tier letter here. The measurement artifact says a tome is a delta against a reference build, and that reference has not been chosen or measured. A made-up order would turn complete source data into an unsupported claim.',
     entries: passiveEntries,
@@ -1064,7 +1066,7 @@ export function rosterSpecs(D, esc, T = null) {
     slug: 'blessings',
     domain: 'shrineBlessings',
     title: 'Shrine blessings',
-    tagline: 'Twenty shrine outcomes, exactly as authored.',
+    tagline: `${blessingEntries.length} shrine outcomes, exactly as authored.`,
     lede: 'Blessings are the shrine offer pool. Each card carries the source description, target stat, exact value, glyph and color used by the game.',
     entries: blessingEntries,
     groups: [{ key: 'all', title: 'Blessing pool', note: 'All authored shrine outcomes.', has: () => true }],
@@ -1199,7 +1201,7 @@ export function rosterSpecs(D, esc, T = null) {
     domain: 'characters',
     title: 'Characters',
     tagline: 'Base stats, starting kit and movement identity.',
-    lede: 'Each character card composes four canonical registries: the character, starting weapon, innate and signature. Base health, speed and might are printed as stored, with no normalized score hiding the trade.',
+    lede: 'Each character card composes the canonical character, starting-weapon, innate and signature registries. Base health, speed and might are printed as stored, with no normalized score hiding the trade.',
     entries: characterEntries,
     groups: [
       { key: 'start', title: 'Character roster', note: 'The complete selectable roster in source order.', has: () => true },
@@ -1540,6 +1542,10 @@ export function rosterSpecs(D, esc, T = null) {
   };
 
   const shipSystemEntries = ordered(SS, (e) => ({ ...e, name: e.label }));
+  const rebuildCoreCounts = (SS.rebuildTierByCoreCount || []).map((row) => row.coreCount);
+  const rebuildCoreRange = rebuildCoreCounts.length
+    ? ` from ${Math.min(...rebuildCoreCounts)} through ${Math.max(...rebuildCoreCounts)}`
+    : '';
   const shipSystemFeature = `
     <section class="wfeature" aria-labelledby="ship-rebuild-tiers">
       <div><span class="eyebrow">Canonical topology</span><h3 id="ship-rebuild-tiers">Rebuild tiers and fragment route labels</h3></div>
@@ -1560,7 +1566,7 @@ export function rosterSpecs(D, esc, T = null) {
     domain: 'shipSystems',
     title: 'Ship systems',
     tagline: 'Every socket, its core and the complete rebuild ladder.',
-    lede: 'The ship topology contract validates exactly one recovered core per socket, marks the heart socket, preserves recovery order and publishes the four rebuild thresholds with a lookup for every core count from zero through ten.',
+    lede: `The ship topology contract validates exactly one recovered core per socket, marks the heart socket, preserves recovery order and publishes ${SS.rebuildTierCount} rebuild thresholds with a lookup for every source-listed core count${rebuildCoreRange}.`,
     omissions: '<b>Fragments do not occupy these sockets.</b> The canonical contract exposes route labels for fragments but deliberately does not claim a fragment-to-socket relation.',
     featureHtml: shipSystemFeature,
     countLabel: `${SS.count} sockets · ${SS.rebuildTierCount} rebuild tiers`,
@@ -1770,7 +1776,7 @@ export function rosterSpecs(D, esc, T = null) {
     domain: 'wearables',
     title: 'Wearables',
     tagline: 'Cosmetic pieces, anchors and trail behavior.',
-    lede: 'Wearables are cosmetic attachments. The registry defines their anchor, blurb, two colors and whether they add trails; those are the only claims this page makes.',
+    lede: 'Wearables are cosmetic attachments. The registry defines their anchor, blurb, source colors and whether they add trails; those are the only claims this page makes.',
     entries: wearableEntries,
     groups: [
       { key: 'eyes', title: 'Eyes', note: 'Anchored to the eye slot.', has: (e) => e.anchor === 'eyes' },
@@ -1849,7 +1855,7 @@ export function rosterSpecs(D, esc, T = null) {
   };
   const tierFeature = T ? `
     <section class="wfeature" aria-labelledby="measurement-method">
-      <div><span class="eyebrow">Measured, not voted</span><h3 id="measurement-method">Two jobs, two letters</h3></div>
+      <div><span class="eyebrow">Measured, not voted</span><h3 id="measurement-method">Artifact-defined jobs and tiers</h3></div>
       <p>${esc(T.metric.whyTwo)}</p>
       <div class="wmethod-grid">
         ${T.metric.axes.map((axis) => `<div><b>${esc(humanize(axis.key))}</b><span>${esc(axis.what)}</span><code>${esc(axis.unit)}</code></div>`).join('')}
@@ -1862,8 +1868,8 @@ export function rosterSpecs(D, esc, T = null) {
     domain: null,
     sourceKind: 'measurement',
     title: 'Weapon tiers',
-    tagline: 'Two measured jobs, with sample and spread attached.',
-    lede: `${T.coverage.measured} of ${T.coverage.weaponDefs} weapons are measured across ${T.coverage.rows} form-and-level rows. Each letter is relative to its own cohort, so a level-one base weapon is never ranked against an evolution.`,
+    tagline: `${T.metric.axes.length} measured jobs, with sample and spread attached.`,
+    lede: `${T.coverage.measured} of ${T.coverage.weaponDefs} weapons are measured across ${T.coverage.rows} form-and-level rows. Each letter is relative to its artifact-defined cohort, so rows from different cohorts are never ranked against one another.`,
     omissions: `<b>Tomes, relics and characters are named as unmeasured by the artifact.</b> ${Object.entries(T.notCovered).map(([key, reason]) => `<b>${esc(humanize(key))}:</b> ${esc(reason)}`).join(' ')}`,
     featureHtml: tierFeature,
     sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint}`,
@@ -1906,7 +1912,7 @@ export function rosterSpecs(D, esc, T = null) {
   })).sort((a, b) => b.axes.trashClear.median - a.axes.trashClear.median || a.name.localeCompare(b.name));
   const buildFeature = T ? `
     <section class="wfeature" aria-labelledby="measured-builds">
-      <div><span class="eyebrow">Greedy forward selection</span><h3 id="measured-builds">Measured four-weapon builds</h3></div>
+      <div><span class="eyebrow">Greedy forward selection</span><h3 id="measured-builds">Measured build chains</h3></div>
       <p>${esc(T.meta.method)} Each chain starts from a measured solo and adds the best measured next weapon for that axis.</p>
       <div class="wbuild-grid">
         ${T.meta.builds.map((build) => `<article>
@@ -1924,7 +1930,7 @@ export function rosterSpecs(D, esc, T = null) {
     sourceKind: 'measurement',
     title: 'Measured builds',
     tagline: 'Every weapon pair and the build chains the sweep found.',
-    lede: `${T.meta.pairs.length} level-${T.meta.pairLevel} pairs were measured exhaustively on the smaller ${T.sample.meta.seeds}-seed cohort. Pair output, spread and synergy are shown on both axes; the four featured build chains are measured extensions, not hand-picked recommendations.`,
+    lede: `${T.meta.pairs.length} level-${T.meta.pairLevel} pairs were measured exhaustively on the smaller ${T.sample.meta.seeds}-seed cohort. Pair output, spread and synergy are shown on both axes; the ${T.meta.builds.length} featured build chains are measured extensions, not hand-picked recommendations.`,
     omissions: `<b>Pair and build samples use ${T.sample.meta.seeds} seeds, not the ${T.sample.singles.seeds}-seed single-weapon sweep.</b> ${esc(T.meta.partnerQualityNote)}`,
     featureHtml: buildFeature,
     sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint}`,
@@ -2072,10 +2078,9 @@ function renderRosterPage(roster, ctx) {
 
   const body = `
 <div class="wtopbar">
-  ${chrome.AUTHBAR}
+    ${chrome.AUTHBAR}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
-      ${chrome.wordmark(48, `w${roster.slug}`)}
       <span>
         <h1 class="chroma">WHOMP ${esc(roster.title.toLowerCase())}</h1>
         <p class="subtag">${esc(roster.tagline)}</p>
@@ -2232,7 +2237,6 @@ function renderHub(rosters, ctx) {
   ${chrome.AUTHBAR}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
-      ${chrome.wordmark(48, 'whub')}
       <span>
         <h1 class="chroma">WHOMP wiki</h1>
         <p class="subtag">Generated from the game, not written about it.</p>

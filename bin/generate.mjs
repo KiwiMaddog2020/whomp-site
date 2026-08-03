@@ -39,7 +39,7 @@
  *  USAGE: node bin/generate.mjs [--repo ../whomp] [--outdir .] [--offline]
  */
 import { execFileSync } from 'node:child_process';
-import { writeFileSync, readFileSync, readdirSync, existsSync } from 'node:fs';
+import { writeFileSync, readFileSync, readdirSync, existsSync, unlinkSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildWiki, rosterSpecs, WIKI_CSS } from './wiki.mjs';
@@ -142,6 +142,12 @@ function verifyGameArtifact(script, flag, artifact) {
   }
 }
 
+const gameTreeStatus = git('status', '--porcelain=v1', '--untracked-files=all');
+if (gameTreeStatus) {
+  const changedPaths = gameTreeStatus.split('\n').map((line) => line.slice(3)).filter(Boolean);
+  throw new Error(`Refusing to label dirty source data as game@HEAD. Commit or otherwise clear the game checkout first. Dirty paths: ${changedPaths.join(', ')}`);
+}
+
 verifyGameArtifact('data-layer.mjs', '--check', 'data/game-data.json');
 verifyGameArtifact('tier-engine.mjs', '--verify', 'data/tier-rankings.json');
 
@@ -162,6 +168,12 @@ const tierData = JSON.parse(readFileSync(TIER_PATH, 'utf8'));
 if (tierData.schema !== 1) {
   throw new Error(`data/tier-rankings.json is schema ${tierData.schema}, this generator understands schema 1. Update bin/wiki.mjs and this consumer before publishing a moved measurement contract.`);
 }
+
+const DESKTOP_ICON_PATH = join(REPO, 'public/icons/icon.svg');
+if (!existsSync(DESKTOP_ICON_PATH)) {
+  throw new Error(`No canonical WHOMP desktop icon at ${DESKTOP_ICON_PATH}. The wiki navigation will not redraw or approximate it.`);
+}
+const desktopIconSvg = readFileSync(DESKTOP_ICON_PATH, 'utf8');
 
 // ---------------------------------------------------------------- derive: identity
 const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
@@ -562,7 +574,7 @@ const wordmark = (size, id) => `
     <path d="${W_PATH}" stroke="#fff3cf" stroke-width="59"/>
   </g>
 </svg>`;
-const FAVICON = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#06040e"/><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="${W_PATH}" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/><path d="${W_PATH}" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/><path d="${W_PATH}" stroke="#fff3cf" stroke-width="59"/></g></svg>`)}`;
+const FAVICON = 'whomp-icon.svg';
 
 const liveChip = () => `<span class="chip"><span class="dot${live && live.sha === headSha ? '' : ' stale'}"></span>
   ${live ? `live <b>${esc(live.sha)}</b>` : 'live build <b>unverified</b>'}</span>
@@ -999,8 +1011,14 @@ ${WIKI_CSS}
 .wside-section[open] summary{color:var(--cream)}
 .wside-links{padding:0 0 5px 7px}
 .wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside a.wiki-home{display:flex;align-items:center;gap:10px;padding:7px 10px 12px;margin:0 0 4px;border-bottom:var(--edge)}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
+.wiki-home-copy b{color:var(--cream);font-size:.94rem;letter-spacing:.02em}
+.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:4px}
 @media(max-width:760px){
   .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
+  .wside a.wiki-home{width:100%;padding:8px 10px 13px}
   .wside-section summary{padding:12px}
   .wside-links{padding-left:8px}
   .wside-links a{padding:10px 12px}
@@ -1046,6 +1064,10 @@ for (const roster of wikiRosterNav) {
 }
 const currentNavAttrs = (current) => current ? ' class="is-here" aria-current="page"' : '';
 const wikiNav = (here) => `
+    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
+      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
+      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
+    </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html"${currentNavAttrs(here === '')}>All guides</a>
     ${wikiNavSections.map((section) => {
@@ -1643,9 +1665,10 @@ if (brokenLinks.length) {
  * log still updates.
  *
  * So the generator writes what it wrote. The deploy scripts read this and stage
- * that. It is still an explicit list, never a wildcard add (this repo blocks
- * `git add .` on purpose, and a wildcard would happily commit a stray file), it
- * just is not a list anybody has to remember to update. Roster four costs nothing.
+ * that, plus any tracked generated wiki route this run retired. It is still an
+ * explicit list, never a wildcard add (this repo blocks `git add .` on purpose,
+ * and a wildcard would happily commit a stray file), it just is not a list
+ * anybody has to remember to update. Roster four costs nothing.
  *
  * The manifest is NOT itself deployed; it is a build-time handoff between the
  * generator and the deploy script, and it is gitignored. */
@@ -1653,6 +1676,7 @@ const OUTPUTS = [
   { file: 'index.html', body: indexHtml },
   { file: 'log.html', body: logHtml },
   { file: 'search-index.json', body: JSON.stringify(searchIndex) },
+  { file: 'whomp-icon.svg', body: desktopIconSvg },
   ...wiki.pages.map((p) => ({ file: p.file, body: p.html })),
 ];
 /* A filename that needs shell quoting would break the staging loop in the deploy
@@ -1663,8 +1687,34 @@ for (const o of OUTPUTS) {
     throw new Error(`Output filename "${o.file}" is not a plain lowercase name. The deploy scripts stage these by name from the manifest and cannot quote surprises.`);
   }
 }
+
+/* RETIRED ROUTES ARE OUTPUTS TOO, in the only sense deploy cares about: their
+ * deletion must be staged. Both deploy paths consume .site-outputs and call
+ * `git add -- <path>`; a tracked path that no longer exists stages its deletion.
+ * Remove only generated wiki filenames that are absent from this exact model,
+ * and add only tracked retirements to the staging manifest so an untracked stale
+ * preview file cannot make `git add` fail. */
+const outputFiles = OUTPUTS.map((output) => output.file);
+const expectedWikiFiles = new Set(outputFiles.filter((file) => /^wiki.*\.html$/.test(file)));
+const retiredGeneratedWikiFiles = readdirSync(OUTDIR, { withFileTypes: true })
+  .filter((entry) => entry.isFile() && /^wiki.*\.html$/.test(entry.name) && !expectedWikiFiles.has(entry.name))
+  .map((entry) => entry.name)
+  .sort();
+let trackedRetiredWikiFiles = [];
+if (retiredGeneratedWikiFiles.length) {
+  try {
+    trackedRetiredWikiFiles = execFileSync(
+      'git', ['-C', OUTDIR, 'ls-files', '--', ...retiredGeneratedWikiFiles], { encoding: 'utf8' },
+    ).trim().split('\n').filter(Boolean);
+  } catch {
+    // A temporary preview directory is normally not a repository. Its stale
+    // generated files are still removed, but there is no deletion to stage.
+  }
+  for (const file of retiredGeneratedWikiFiles) unlinkSync(join(OUTDIR, file));
+}
 for (const o of OUTPUTS) writeFileSync(join(OUTDIR, o.file), o.body);
-writeFileSync(join(OUTDIR, '.site-outputs'), `${OUTPUTS.map((o) => o.file).join('\n')}\n`);
+const stagingManifest = [...outputFiles, ...trackedRetiredWikiFiles];
+writeFileSync(join(OUTDIR, '.site-outputs'), `${stagingManifest.join('\n')}\n`);
 
 /* VALIDATE THE EXACT CANDIDATE RELEASE. Artifact pins above prove the inputs;
  * this consumer-side contract proves those inputs survived as complete routes,
@@ -1688,6 +1738,9 @@ try {
 }
 
 console.log(`wrote ${OUTPUTS.length} files to ${OUTDIR}`);
+if (retiredGeneratedWikiFiles.length) {
+  console.log(`  retired ${retiredGeneratedWikiFiles.length} stale wiki route(s); ${trackedRetiredWikiFiles.length} deletion(s) added to the staging manifest`);
+}
 console.log(`  game@${headSha}  live=${live ? live.sha : 'unreachable'}`);
 console.log(`  ${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days since ${windowStart}, across ${allDays.length} active days (${filtered} noise commits filtered)`);
 console.log(`  ${arcs.length} arcs, ${backlogTeasers.length} backlog teasers, ${openBugs.length} open bugs, ${notes.length} authored notes`);

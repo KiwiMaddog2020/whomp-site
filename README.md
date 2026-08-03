@@ -105,6 +105,11 @@ one palette, one accessible cross-site search index and one output manifest. It
 is separate only because it grows per guide while the generator grows per
 dev-log feature: two different reasons to change.
 
+The leading wiki-navigation mark is copied byte-for-byte at build time from the
+game's canonical `public/icons/icon.svg`. Wiki pages do not redraw it and do not
+repeat it in their content header; the single icon is an accessible link back to
+the wiki hub on both desktop and narrow layouts.
+
 **Every factual value comes from one of two verified game artifacts:**
 
 - `data/game-data.json` owns the public catalogs, their relations, enemy
@@ -174,8 +179,11 @@ they stage from the manifest the generator writes.
 ### The output manifest
 
 `bin/generate.mjs` writes `.site-outputs`, a plain list of the files it just
-wrote, and both deploy paths stage from it. It is gitignored, because it is a
-build-time handoff rather than site content.
+wrote plus any tracked generated wiki route it retired, and both deploy paths
+stage from it. A missing tracked path is intentional here: `git add -- <path>`
+stages that route's deletion so an old page cannot survive after leaving the
+hub. The manifest is gitignored because it is a build-time handoff rather than
+site content.
 
 This replaced a hand-typed filename list that appeared in **two repos**
 (`bin/deploy-site.sh` here and `bin/deploy-play.sh` in the game). That was

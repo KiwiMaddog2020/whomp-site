@@ -177,15 +177,32 @@ const injectionHtml = injectionModel.pages.find((page) => page.file === 'wiki-we
 requireThat(!injectionHtml.includes(injectionProbe), 'source text reaches generated wiki markup without escaping');
 requireThat(injectionHtml.includes(esc(injectionProbe)), 'escaped source-text mutation is missing from its generated card');
 
+// A source roster can grow without a schema bump. Prove visible magnitudes
+// follow that growth instead of leaving a stale English number in page copy.
+const countData = clone(D);
+const blessingDomain = countData.domains.shrineBlessings;
+const blessingSeed = blessingDomain.entries[blessingDomain.order[0]];
+const countProbeId = '__countProbe';
+blessingDomain.entries[countProbeId] = { ...clone(blessingSeed), id: countProbeId, name: 'Count probe' };
+blessingDomain.order.push(countProbeId);
+blessingDomain.count += 1;
+countData.coverage.entries += 1;
+const countModel = buildWiki({ D: countData, T, esc, chrome, page: ({ body }) => body });
+const countHtml = countModel.pages.find((page) => page.file === 'wiki-blessings.html')?.html || '';
+requireThat(countHtml.includes(`${blessingDomain.count} shrine outcomes`), 'displayed blessing count does not follow the canonical roster');
+requireThat(countHtml.includes(`id="e-${countProbeId}"`), 'expanded blessing roster does not emit its source-id anchor');
+
 const manifestPath = join(OUTDIR, '.site-outputs');
 requireThat(existsSync(manifestPath), `${manifestPath} is missing`);
 const manifest = readFileSync(manifestPath, 'utf8').trim().split('\n').filter(Boolean);
 requireThat(new Set(manifest).size === manifest.length, 'output manifest contains duplicate filenames');
-for (const file of manifest) requireThat(existsSync(join(OUTDIR, file)), `manifest output ${file} is missing`);
-
 const expectedWikiFiles = new Set(model.pages.map((page) => page.file));
 requireThat(expectedWikiFiles.size === model.pages.length, 'model emits duplicate wiki filenames');
-const actualWikiFiles = new Set(manifest.filter((file) => file.startsWith('wiki') && file.endsWith('.html')));
+const retiredManifestFiles = manifest.filter((file) => !existsSync(join(OUTDIR, file)));
+for (const file of retiredManifestFiles) {
+  requireThat(/^wiki.*\.html$/.test(file) && !expectedWikiFiles.has(file), `manifest output ${file} is missing without being a retired wiki route`);
+}
+const actualWikiFiles = new Set(manifest.filter((file) => existsSync(join(OUTDIR, file)) && file.startsWith('wiki') && file.endsWith('.html')));
 requireThat(
   JSON.stringify([...actualWikiFiles].sort()) === JSON.stringify([...expectedWikiFiles].sort()),
   `wiki routes differ from the manifest; expected ${[...expectedWikiFiles].sort().join(', ')}, got ${[...actualWikiFiles].sort().join(', ')}`,
@@ -216,6 +233,18 @@ requireThat(
 );
 
 const hub = readFileSync(join(OUTDIR, 'wiki.html'), 'utf8');
+const iconSourcePath = join(REPO, 'public/icons/icon.svg');
+const iconOutputPath = join(OUTDIR, 'whomp-icon.svg');
+requireThat(existsSync(iconSourcePath) && existsSync(iconOutputPath), 'canonical WHOMP desktop icon is absent from the source or generated output');
+requireThat(readFileSync(iconOutputPath, 'utf8') === readFileSync(iconSourcePath, 'utf8'), 'generated WHOMP icon differs from the canonical desktop asset');
+
+function requireWikiIconContract(html, file) {
+  requireThat((html.match(/class="wiki-home"/g) || []).length === 1, `${file} does not emit exactly one leading wiki-home link`);
+  requireThat(/<a class="wiki-home" href="wiki\.html" aria-label="WHOMP wiki home">/.test(html), `${file} wiki icon is not an accessible hub link`);
+  requireThat((html.match(/<img class="wiki-home-icon" src="whomp-icon\.svg" alt="" width="46" height="46">/g) || []).length === 1, `${file} does not use exactly one canonical wiki navigation icon`);
+  requireThat(!/<svg class="wm"/.test(html), `${file} duplicates the WHOMP mark in page-header content`);
+}
+requireWikiIconContract(hub, 'wiki.html');
 const entryCountLabel = (count) => `${count} ${count === 1 ? 'entry' : 'entries'}`;
 const hubCards = [...hub.matchAll(/<a\s+class="whubcard"\s+href="([^"]+)">([\s\S]*?)<\/a>/g)]
   .map((match) => ({ href: match[1], body: match[2] }));
@@ -234,6 +263,7 @@ for (const roster of rosters) {
   requireThat(hrefCounts.get(file) === 1, `${file} does not have exactly one route-level search entry`);
 
   const html = readFileSync(join(OUTDIR, file), 'utf8');
+  requireWikiIconContract(html, file);
   requireThat(!/(?:undefined|NaN|\[object Object\])/.test(html), `${file} contains an unrenderable JavaScript value`);
   requireThat(!/Not built yet/i.test(html), `${file} still carries the retired deferred-section copy`);
   requireThat(/class="wprov"/.test(html), `${file} has no provenance block`);
