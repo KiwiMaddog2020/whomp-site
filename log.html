@@ -284,7 +284,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot"></span>
-  live <b>3cafe799</b></span>
+  live <b>c4d4c20b</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -362,6 +362,35 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
       
   <div class="day">
+    <h4>2026-08-03</h4>
+    
+    <div class="row" data-kind="fix" id="chg-c4d4c20b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a Codex lane is a clone, so tell the operator to fetch before merging <span class="scope">(protocol)</span></span>
+      <span class="sha">c4d4c20b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5ce5077b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">deferred work belongs on the deploy, not on every commit <span class="scope">(protocol)</span></span>
+      <span class="sha">5ce5077b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2814367f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">one sha per EV marker, so staleness-check can read it <span class="scope">(docs)</span></span>
+      <span class="sha">2814367f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a77541e9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one fence kit, and the stock rail is canon <span class="scope">(hearthwick)</span></span>
+      <span class="sha">a77541e9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-49b2ab9e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a rail's yaw is its own bay's, not its station's <span class="scope">(hearthwick)</span></span>
+      <span class="sha">49b2ab9e</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-02</h4>
     
     <div class="row" data-kind="feat" id="chg-3cafe799">
@@ -373,6 +402,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">a pre-push guard, because every other guard here binds one agent <span class="scope">(protocol)</span></span>
       <span class="sha">fce3442a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e8f076da">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cap workers against live headroom <span class="scope">(gate)</span></span>
+      <span class="sha">e8f076da</span>
     </div>
     <div class="row" data-kind="fix" id="chg-275a0249">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -398,6 +432,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the vitest probe read Sol's brief as a running test suite <span class="scope">(protocol)</span></span>
       <span class="sha">6475e211</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-41b64e79">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">reap failed capture processes <span class="scope">(shot)</span></span>
+      <span class="sha">41b64e79</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-928dfa8c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">derive the campaign balance surface <span class="scope">(tooling)</span></span>
+      <span class="sha">928dfa8c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2d0e67a7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">count failing files before adjudication <span class="scope">(gate)</span></span>
+      <span class="sha">2d0e67a7</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-aed9a15d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">make the Codex queue shell-portable <span class="scope">(tooling)</span></span>
+      <span class="sha">aed9a15d</span>
     </div>
     <div class="row" data-kind="fix" id="chg-b156a729">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -438,32 +492,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">a seat announces the tomes it earned, beside the ones it locked out <span class="scope">(lobby)</span></span>
       <span class="sha">2f1b3804</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3e630cf7">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a co-op seat drafts its own tomes, and the wire carries them <span class="scope">(coop)</span></span>
-      <span class="sha">3e630cf7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7bbf8e6b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the opening's lantern light, its air, and its crowd <span class="scope">(homefall)</span></span>
-      <span class="sha">7bbf8e6b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b101f882">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the arc caster finally draws the chain it is named for <span class="scope">(cores)</span></span>
-      <span class="sha">b101f882</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f1af0c19">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the painted villagers wear hats, because the cast lost its ears <span class="scope">(homefall)</span></span>
-      <span class="sha">f1af0c19</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6a315bc9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the barrel wears the core's own colour, and the tether's snap finally makes one <span class="scope">(cores)</span></span>
-      <span class="sha">6a315bc9</span>
-    </div><div class="row more">+ 51 more that day, not shown</div>
+    </div><div class="row more">+ 56 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-01</h4>
@@ -985,110 +1014,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">2b9e4617</span>
     </div><div class="row more">+ 202 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-07-27</h4>
-    
-    <div class="row" data-kind="fix" id="chg-58afeb69">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ghost wisp emissive takes vColor.rgb + audit catches bare vec4 assigns onto vec3 chunk vars <span class="scope">(fx)</span></span>
-      <span class="sha">58afeb69</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1b81dd3d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wave 2 - the bottom five reborn (daggers, railgun, ghost orbs, arrows, boom box + FieldSpec) <span class="scope">(fx)</span></span>
-      <span class="sha">1b81dd3d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-12f07be5">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">boom box gets a body, and founds the FieldSpec ring toolkit <span class="scope">(weaponfx)</span></span>
-      <span class="sha">12f07be5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f60d746d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">discover updates during long sessions - periodic + refocus checks <span class="scope">(pwa)</span></span>
-      <span class="sha">f60d746d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6a2bf96e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cap sheet splits at patch/backing boundary - 318 z-fights down to 5 pinned (reports 104/107/96) <span class="scope">(hub)</span></span>
-      <span class="sha">6a2bf96e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-eb232b7a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">discover updates during long sessions <span class="scope">(pwa)</span></span>
-      <span class="sha">eb232b7a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-38103767">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">clamp the backing cap's chase at the measured depth, not the entry plane <span class="scope">(hub)</span></span>
-      <span class="sha">38103767</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e1dcd5ae">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">bridge/rim sextet - q-band seal, corridor clearance, capped ends, derived rails, pine crown rotation (reports 97/98/100/101/102/109) <span class="scope">(hub)</span></span>
-      <span class="sha">e1dcd5ae</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1481c2dc">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">spectral arrows become an actual arrow <span class="scope">(weaponfx)</span></span>
-      <span class="sha">1481c2dc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-764e56c3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">rail the deck as soon as it leaves the lobe (report 101) <span class="scope">(hub)</span></span>
-      <span class="sha">764e56c3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7c669136">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ghost orbs get a ghost - faced body, banking, wisp <span class="scope">(weaponfx)</span></span>
-      <span class="sha">7c669136</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4816e850">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">split the cap sheet at the patch/backing boundary so it steps under the plate <span class="scope">(hub)</span></span>
-      <span class="sha">4816e850</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-acd1797f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a bridge marks its own edge, so no barricades on the deck (report 98) <span class="scope">(hub)</span></span>
-      <span class="sha">acd1797f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b0e53d73">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cap the bridge parapets where the run actually ends (report 100) <span class="scope">(hub)</span></span>
-      <span class="sha">b0e53d73</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-71f47a95">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">void railgun - the charge is the weapon, and it goes dark purple <span class="scope">(weaponfx)</span></span>
-      <span class="sha">71f47a95</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2009ffbe">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the Void Gate's wall stands at the terrace, not mid-bridge (report 97) <span class="scope">(hub)</span></span>
-      <span class="sha">2009ffbe</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-731d9b63">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">void daggers arrive from the flank, through a rift <span class="scope">(weaponfx)</span></span>
-      <span class="sha">731d9b63</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a267abae">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the pine crowns stay on their trunk (reports 102, 109) <span class="scope">(hub)</span></span>
-      <span class="sha">a267abae</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b1b374c0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">frost threshold reads the snow line, not a glacial literal (report 95) <span class="scope">(hub)</span></span>
-      <span class="sha">b1b374c0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-244a97ad">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the frost threshold reads the snow line, not a glacial literal <span class="scope">(hub)</span></span>
-      <span class="sha">244a97ad</span>
-    </div><div class="row more">+ 132 more that day, not shown</div>
-  </div>
       
     </div>
   </section>
@@ -1186,11 +1111,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 06:57 UTC from <code>main@3cafe799</code>.
-  Live build <code>3cafe799</code> (current).
+  Generated 2026-08-03 14:02 UTC from <code>main@c4d4c20b</code>.
+  Live build <code>c4d4c20b</code> (current).
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">856 player-visible changes in the last 7 days, across 7 active days, 1186 internal-only commits filtered out</div>
+  <div class="stat">714 player-visible changes in the last 7 days, across 7 active days, 1063 internal-only commits filtered out</div>
 </footer>
 
 
