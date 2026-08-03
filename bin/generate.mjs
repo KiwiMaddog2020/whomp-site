@@ -1712,7 +1712,14 @@ if (retiredGeneratedWikiFiles.length) {
   }
   for (const file of retiredGeneratedWikiFiles) unlinkSync(join(OUTDIR, file));
 }
-for (const o of OUTPUTS) writeFileSync(join(OUTDIR, o.file), o.body);
+/* Optional template rows interpolate as empty strings. Keep their surrounding
+ * indentation out of the committed HTML so generated releases stay clean under
+ * `git diff --check`; non-HTML assets (especially the canonical icon) remain
+ * byte-for-byte untouched. */
+for (const o of OUTPUTS) {
+  const body = o.file.endsWith('.html') ? o.body.replace(/[ \t]+$/gm, '') : o.body;
+  writeFileSync(join(OUTDIR, o.file), body);
+}
 const stagingManifest = [...outputFiles, ...trackedRetiredWikiFiles];
 writeFileSync(join(OUTDIR, '.site-outputs'), `${stagingManifest.join('\n')}\n`);
 
