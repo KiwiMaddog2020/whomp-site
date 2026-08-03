@@ -2,6 +2,10 @@
 
 Decisions are ratified. This is the build order for the next session.
 
+> Historical plan status (2026-08-03): the generated bug source and shared wiki
+> data layer described as open below are now shipped. Public-log gating remains
+> a separate director decision; it is not a missing wiki-data surface.
+
 ## The decisions
 
 1. **Two surfaces.** A short public landing that never grows, and `/log` as a real
@@ -138,14 +142,17 @@ Same fact, no jargon, no em dashes, and it gives a player a reason to care.
    layering, flat plinths and zero blur per the de-BOO doctrine, the icon's radial
    ground.
 
-## Open, deliberately
+## Historical open items and resolution
 
-- Known bugs and in-flight work need a real source. Today they would come from
+- **Resolved:** known bugs and in-flight work needed a real source. At the time
+  they would have come from
   CAMPAIGN's standing debts, which the 2026-07-29 audit found had gone stale
   (reports 141/142 listed open when both were fixed and wired). Deriving them from
   a stale hand-list would publish wrong information to testers. This wants the
-  A13 staleness test first, or an explicit hand-curated list that admits it is one.
-- The shared data layer with A11 (wiki) and A13 (memory index). All three walk the
-  same registries and repo state. Build the layer once or all three drift within a
-  week.
-- No GitHub repo exists yet. Creating and pushing one needs Kevin's word.
+  A13 staleness test first, or an explicit hand-curated list that admits it is
+  one. The site now derives aggregate counts from verified `BUG_INVENTORY.md`.
+- **Resolved:** the shared data layer with A11 (wiki) and A13 (memory index).
+  Schema 7 now exports every public catalog and the site fails closed when a new
+  domain lacks a route.
+- **Resolved:** the GitHub Pages repo exists and is deployed through
+  `bin/deploy-site.sh` with explicit source-push authorization per release.
