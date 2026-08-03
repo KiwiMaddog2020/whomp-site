@@ -284,7 +284,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot"></span>
-  live <b>b156a729</b></span>
+  live <b>3cafe799</b></span>
   <span class="chip">version <b>0.6.0</b></span></div>
   </div>
 </div>
@@ -364,6 +364,41 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-02</h4>
     
+    <div class="row" data-kind="feat" id="chg-3cafe799">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">two more guards that bind every actor, not just the one with hooks <span class="scope">(protocol)</span></span>
+      <span class="sha">3cafe799</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fce3442a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a pre-push guard, because every other guard here binds one agent <span class="scope">(protocol)</span></span>
+      <span class="sha">fce3442a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-275a0249">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a route lid needs standing room, not just depth (report 234) <span class="scope">(hub)</span></span>
+      <span class="sha">275a0249</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-55839044">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the plaza slab joins the ground ladder (report 223) <span class="scope">(hub)</span></span>
+      <span class="sha">55839044</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ad3d636d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a cap that lids a route is rock, not grass (report 234) <span class="scope">(hub)</span></span>
+      <span class="sha">ad3d636d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-02264800">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">every gate mouth draws the same row again (report 240) <span class="scope">(hub)</span></span>
+      <span class="sha">02264800</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6475e211">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the vitest probe read Sol's brief as a running test suite <span class="scope">(protocol)</span></span>
+      <span class="sha">6475e211</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-b156a729">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">three guards caught the build peek, and one of them was reading prose <span class="scope">(guards)</span></span>
@@ -428,42 +463,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the barrel wears the core's own colour, and the tether's snap finally makes one <span class="scope">(cores)</span></span>
       <span class="sha">6a315bc9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d62ad73d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the agent-liveness window was wrong by a factor of twenty-five <span class="scope">(protocol)</span></span>
-      <span class="sha">d62ad73d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f55d1864">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">deferred work gets a date, and the date goes red <span class="scope">(protocol)</span></span>
-      <span class="sha">f55d1864</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-71eb1927">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the retired arena brief lost its destination to the line break <span class="scope">(residuals)</span></span>
-      <span class="sha">71eb1927</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6374c0e1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the train guard was blind to running agents, the thing it exists to demand <span class="scope">(protocol)</span></span>
-      <span class="sha">6374c0e1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7ecade32">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the train guard could not see a gate waiter, and refused a working turn <span class="scope">(protocol)</span></span>
-      <span class="sha">7ecade32</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-713fa606">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the reaper listed a LIVE session as reapable, then exited mid-list <span class="scope">(protocol)</span></span>
-      <span class="sha">713fa606</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-832ade6e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">refuse a frame whose world is behind a modal, and give lanes a way past it <span class="scope">(shot)</span></span>
-      <span class="sha">832ade6e</span>
-    </div><div class="row more">+ 44 more that day, not shown</div>
+    </div><div class="row more">+ 51 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-01</h4>
@@ -1186,11 +1186,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-03 04:17 UTC from <code>main@b156a729</code>.
-  Live build <code>b156a729</code> (current).
+  Generated 2026-08-03 06:57 UTC from <code>main@3cafe799</code>.
+  Live build <code>3cafe799</code> (current).
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">849 player-visible changes in the last 7 days, across 7 active days, 1174 internal-only commits filtered out</div>
+  <div class="stat">856 player-visible changes in the last 7 days, across 7 active days, 1186 internal-only commits filtered out</div>
 </footer>
 
 
