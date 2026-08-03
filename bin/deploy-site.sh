@@ -98,10 +98,15 @@ if [ ! -f .site-outputs ]; then
   echo "ERROR: bin/generate.mjs wrote no .site-outputs manifest, refusing to guess what to stage" >&2
   exit 1
 fi
-# Line-by-line rather than word-splitting: the generator already refuses to emit
-# a filename that is not a plain lowercase name, and this keeps it that way.
+# Line-by-line rather than word-splitting. Revalidate the handoff independently:
+# visual assets use safe nested paths, while absolute paths, traversal, empty
+# segments and shell-significant characters are refused before git sees them.
 while IFS= read -r out; do
   [ -n "$out" ] || continue
+  if [[ ! "$out" =~ ^[a-z0-9][a-z0-9._-]*(/[a-z0-9][a-z0-9._-]*)*$ ]]; then
+    echo "ERROR: unsafe path '$out' in .site-outputs" >&2
+    exit 1
+  fi
   git add -- "$out"
 done < .site-outputs
 if git diff --cached --quiet; then

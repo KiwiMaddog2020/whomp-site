@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 /** THE WHOMP WIKI, the derived half.
  *
  *  Every magnitude on every page in here is READ OUT OF the game repo's
@@ -246,6 +248,8 @@ const FEEL_NOTE = {
 
 // ---------------------------------------------------------------- CSS
 const WIKI_CSS = `
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
 .wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
@@ -257,6 +261,9 @@ const WIKI_CSS = `
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
 .wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
@@ -298,9 +305,27 @@ const WIKI_CSS = `
   display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
 .wdesc{margin:0;font-size:.9rem;color:var(--body)}
 .wgloss{margin:0;font-size:.88rem;color:var(--dim)}
 .wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
@@ -382,6 +407,8 @@ const WIKI_CSS = `
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wside-section:not(.is-current-section){display:none}
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -420,8 +447,49 @@ const patternGloss = (entry) => {
   return table._ || '';
 };
 
+const visualKindLabel = (kind) => ({
+  'runtime-render': 'Canonical runtime render',
+  'runtime-glyph': 'Canonical runtime glyph',
+  'palette-strip': 'Authored palette strip',
+  'evolution-strip': 'Deterministic evolution composition',
+}[kind] || humanize(kind));
+
+const visualIndex = (V) => new Map((V?.entries || []).map((entry) => [`${entry.domain}:${entry.id}`, entry]));
+
+function renderWikiVisual(entry, esc, { primary = false, use = 'entry', compact = false } = {}) {
+  if (!entry) return '';
+  const variants = entry.variants || [];
+  const primaryVariant = variants[0];
+  const responsive = entry.kind === 'runtime-render';
+  const src = visualOutputPath(primaryVariant.path);
+  const srcset = responsive
+    ? ` srcset="${variants.map((variant) => `${esc(visualOutputPath(variant.path))} ${variant.width}w`).join(', ')}" sizes="(max-width:420px) calc(100vw - 60px), 256px"`
+    : '';
+  const loading = primary ? 'eager' : 'lazy';
+  const priority = primary ? ' fetchpriority="high"' : '';
+  const image = `<img src="${esc(src)}"${srcset} width="${primaryVariant.width}" height="${primaryVariant.height}" alt="${esc(entry.alt.text)}" loading="${loading}" decoding="async"${priority} data-pixelated="false">`;
+  if (compact) {
+    return `<span class="wvisual-compact" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">${image}</span>`;
+  }
+  const cameraView = entry.renderContext?.camera?.view || 'front';
+  const renderContext = entry.renderContext && typeof entry.renderContext === 'object'
+    ? `<span><b>Presentation:</b> Isolated production render · ${entry.renderContext.palette?.id === 'toyMeadow' ? 'neutral toyMeadow presentation palette' : 'renderer-owned materials'} · fixed gallery lighting and bounds-fit ${esc(cameraView)} camera · ${esc(humanize(String(entry.renderContext.frame?.mode || 'neutral frame').replace(/[-_]+/g, ' ')))} · not an in-game screenshot or live-world lighting</span>`
+    : '';
+  const limitation = entry.renderContext?.limitation || entry.limitation;
+  return `<figure class="wvisual wvisual-${esc(entry.kind)}" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">
+    ${image}
+    <figcaption><b>${esc(visualKindLabel(entry.kind))}</b><span>${esc(humanize(entry.provenanceClass))} · ${esc(entry.source)}</span>${renderContext}${limitation ? `<span class="wvisual-limit">${esc(limitation)}</span>` : ''}</figcaption>
+  </figure>`;
+}
+
+function renderVisualStrip(refs, index, esc, { use = 'reference', primary = false, label = 'Canonical components' } = {}) {
+  const entries = refs.map((ref) => index.get(`${ref.domain}:${ref.id}`)).filter(Boolean);
+  if (!entries.length) return '';
+  return `<div class="wvisual-strip" aria-label="${esc(label)}">${entries.map((entry, index) => renderWikiVisual(entry, esc, { use, compact: true, primary: primary && index === 0 })).join('')}</div>`;
+}
+
 // ================================================================ THE ROSTERS
-export function rosterSpecs(D, esc, T = null) {
+export function rosterSpecs(D, esc, T = null, V = null) {
   const W = D.domains.weapons;
   const C = D.domains.coreWeapons;
   const E = D.domains.enemies;
@@ -449,6 +517,11 @@ export function rosterSpecs(D, esc, T = null) {
   const SS = D.domains.shipSystems;
   const CO = D.domains.cosmetics;
   const JA = D.domains.jumpAugments;
+  const SM = D.domains.shrineMovement;
+  const MB = T?.measuredBuilds;
+  const buildSample = T?.sample?.builds;
+  const tierEvidenceReady = T?.schema === 2 && !!MB && !!buildSample;
+  const visuals = visualIndex(V);
 
   const levelName = (id) => L.entries[id]?.name || EX.entries[id]?.name || humanize(id);
   const charName = (id) => CH.entries[id]?.name || humanize(id);
@@ -479,6 +552,17 @@ export function rosterSpecs(D, esc, T = null) {
     return `<details class="wraw"><summary>${esc(label)} <span>${rows.length}</span></summary><dl>${rows
       .map(([key, value]) => `<div><dt><code>${esc(key)}</code></dt><dd>${esc(sourceValue(value))}</dd></div>`)
       .join('')}</dl></details>`;
+  };
+  const rangePlot = (reading, label, unit, sampleN = reading?.n) => {
+    if (![reading?.p10, reading?.median, reading?.p90].every(Number.isFinite)) return '';
+    const span = reading.p90 - reading.p10;
+    const medianPosition = span > 0 ? Math.max(0, Math.min(100, ((reading.median - reading.p10) / span) * 100)) : 50;
+    const accessible = `${label}: P10 ${num(reading.p10)}, median ${num(reading.median)}, P90 ${num(reading.p90)} ${unit}; n=${sampleN}. Local row scale; fixture limitations are listed above.`;
+    return `<div class="wrange" role="img" aria-label="${esc(accessible)}">
+      <span class="wrange-track" style="--median:${num(medianPosition, 1)}%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 ${num(reading.p10)}</span><span>median ${num(reading.median)}</span><span>P90 ${num(reading.p90)} ${esc(unit)}</span></span>
+      <span class="wrange-limit">n=${num(sampleN)} · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
+    </div>`;
   };
   const compactObject = (obj, format = (key, value) => `${humanize(key)} ${num(value)}`) => Object
     .entries(obj || {})
@@ -524,21 +608,6 @@ export function rosterSpecs(D, esc, T = null) {
   const clockNote = PACE
     ? `The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as ${mmss(600)} in the level tables lands about <b>${mmss(600 / PACE)}</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the ${mmss(BANK_PACE / PACE)} mark where the pacing banks.`
     : 'The run modes no longer agree on their pace scale, so the times below are the game’s raw schedule figures and are deliberately not converted into minutes of play.';
-
-  /* THE UNLOCK INVERSION, derived here rather than assumed. `unlockedFromStart`
-   * covers only 10 of the 25 base weapons; the other 15 are gated behind an
-   * achievement, and the edge is stored on the ACHIEVEMENT (`unlocks.weapon`),
-   * not on the weapon. Same inversion the data layer does for spawn tables, done
-   * here because the artifact does not ship this one yet. Worth handing upstream:
-   * refs.unlockedBy belongs in bin/data-layer.mjs, next to refs.donorForCores. */
-  const unlockedBy = new Map();
-  for (const a of Object.values(A.entries)) {
-    const wid = a.unlocks?.weapon;
-    if (wid) {
-      if (!unlockedBy.has(wid)) unlockedBy.set(wid, []);
-      unlockedBy.get(wid).push(a);
-    }
-  }
 
   /* THE EVOLUTION RECIPE comes from the `evolutions` domain, which carries all
    * three parts of every row (base, tome, evolved) for all eight.
@@ -607,19 +676,18 @@ export function rosterSpecs(D, esc, T = null) {
       const base = W.entries[r.evolvesFrom];
       return `Take ${cardLink('weapons', r.evolvesFrom, esc(weaponName(r.evolvesFrom)))} to level <b>${base?.maxLevel ?? '?'}</b>${tome ? ` while holding ${cardLink('tomes', tome, esc(passiveName(tome)))}` : ''}, then open a boss chest.`;
     }
-    const starts = r.startingCharacters?.length
-      ? `${list(r.startingCharacters.map((id) => cardLink('characters', id, esc(charName(id)))))} start${r.startingCharacters.length === 1 ? 's' : ''} with it. `
-      : '';
-    if (e.unlockedFromStart) return `${starts}In the level-up pool from the first run.`;
-    const quests = r.unlockedByQuests || [];
-    if (quests.length) {
-      return `${starts}Unlocked by ${list(quests.map((id) => cardLink('quests', id, esc(questName(id)))))}, then it joins the level-up pool.`;
+    if (e.unlockedFromStart) return 'In the level-up pool from the first run.';
+    const questIds = r.unlockedByQuests || [];
+    const achievementIds = r.unlockedByAchievements || [];
+    const routes = [
+      ...questIds.map((id) => cardLink('quests', id, esc(questName(id)))),
+      ...achievementIds.map((id) => cardLink('achievements', id, esc(A.entries[id]?.name || humanize(id)))),
+    ];
+    if (routes.length) {
+      const independence = routes.length > 1 ? ' Either route independently makes it available.' : '';
+      return `Unlocked by ${list(routes)}, then it joins the level-up pool.${independence}`;
     }
-    const ach = unlockedBy.get(e.id) || [];
-    if (ach.length) {
-      return `${starts}Unlocked by ${list(ach.map((row) => cardLink('achievements', row.id, esc(row.name))))}${ach.length === 1 ? ` (${esc(ach[0].desc)})` : ''}, then it joins the level-up pool.`;
-    }
-    return starts || '';
+    return '';
   };
 
   const weaponsRoster = {
@@ -635,7 +703,7 @@ export function rosterSpecs(D, esc, T = null) {
       {
         key: 'base',
         title: 'Base weapons',
-        note: `What the level-up offer draws from, plus the ones a character brings with them. ${freshBaseWeaponCount} are available on a fresh save; the rest are behind an achievement, and each card says which.`,
+        note: `What the level-up offer draws from. ${freshBaseWeaponCount} are available on a fresh save; the rest use the quest and/or achievement routes listed on each card. Character weapon ids are suggestions, not campaign starting grants.`,
         has: (e) => !e.evolved,
       },
       {
@@ -648,7 +716,21 @@ export function rosterSpecs(D, esc, T = null) {
     facets: [
       { key: 'element', label: 'Element', of: (e) => e.element },
       { key: 'pattern', label: 'How it fires', of: (e) => e.pattern },
-      { key: 'access', label: 'Availability', of: (e) => (e.evolved ? 'evolution' : e.unlockedFromStart ? 'start' : 'achievement'), name: (v) => ({ start: 'From the start', achievement: 'Achievement', evolution: 'Evolution' }[v] || v) },
+      {
+        key: 'access',
+        label: 'Availability',
+        of: (e) => {
+          if (e.evolved) return 'evolution';
+          if (e.unlockedFromStart) return 'start';
+          const refs = W.refs[e.id] || {};
+          if (refs.unlockedByQuests?.length && refs.unlockedByAchievements?.length) return 'quest-or-achievement';
+          return refs.unlockedByQuests?.length ? 'quest' : 'achievement';
+        },
+        name: (v) => ({
+          start: 'From the start', quest: 'Quest', achievement: 'Achievement',
+          'quest-or-achievement': 'Quest or achievement', evolution: 'Evolution',
+        }[v] || v),
+      },
     ],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => weaponEntries.indexOf(e) },
@@ -676,6 +758,7 @@ export function rosterSpecs(D, esc, T = null) {
         ${patternGloss(e) ? `<p class="wgloss">${patternGloss(e)}</p>` : ''}
         <div class="wfacts">
           ${fact('How you get it', weaponAcquire(e))}
+          ${r.suggestedByCharacters?.length ? fact('Suggested by', `${list(r.suggestedByCharacters.map((id) => cardLink('characters', id, esc(charName(id)))))} as a default automatic-weapon identity; the standard solo campaign still starts with the aimed core only`) : ''}
           ${fact('Cadence', isTicker(e)
     ? `ticks every <b>${num(cadenceMs(e))}</b> ms`
     : `<b>${num(e.fireRateMs)}</b> ms between shots${cMax ? ` <span class="wsub">, ${num(cMax)} at level ${e.maxLevel}</span>` : ''}`)}
@@ -719,7 +802,7 @@ export function rosterSpecs(D, esc, T = null) {
     domain: 'coreWeapons',
     title: 'Core weapons',
     tagline: 'The one you aim yourself.',
-    lede: `A core weapon is the weapon under your hand, and picking one is the only decision that shapes a whole run before it starts. All ${C.count} are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.`,
+    lede: `A core weapon is the aimed weapon under your hand. Picking one locks in that aimed-weapon slot before a run starts. All ${C.count} are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.`,
     omissions: `No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these ${C.count} lives outside the shared artifact, so this page will not retype private constants. The reserved evolution labels in the registry are not a playable mechanic and are not presented as available or upcoming content. <b>Aim and forgiveness values describe targeting generosity only</b>; they do not imply damage strength. The pip count is shown because the game suite pins it against the real clip size.`,
     featureHtml: aimPolicyFeature,
     entries: coreEntries,
@@ -807,7 +890,7 @@ export function rosterSpecs(D, esc, T = null) {
     hp: maxOf(statEntries, (e) => e.hp),
     damage: maxOf(statEntries, (e) => e.damage),
     xp: maxOf(statEntries, (e) => e.xp),
-    speed: maxOf(enemyEntries, (e) => E.refs[e.id]?.speedProfile?.liveRunBaseMps),
+    speed: maxOf(statEntries, (e) => E.refs[e.id]?.speedProfile?.liveRunBaseMps),
   };
 
   const speedPolicyFeature = `
@@ -821,6 +904,18 @@ export function rosterSpecs(D, esc, T = null) {
         </div>`).join('')}
       </div>
       ${sourceParams(E.speedPolicy.provenance, 'Speed provenance')}
+    </section>`;
+  const enemyScalingFeature = `
+    <section class="wfeature" aria-labelledby="enemy-scaling-policy">
+      <div><span class="eyebrow">Independent live-run clocks</span><h3 id="enemy-scaling-policy">Health, contact damage and kill XP scale separately</h3></div>
+      <p>These are three different runtime steps, not one shared enemy-level curve.</p>
+      <div class="wmethod-grid">
+        <div><b>Spawn health</b><span>Every 25 seconds</span><code>+ ${pct(E.scaling.hpPer25s)}</code></div>
+        <div><b>Contact damage</b><span>Every 30 seconds</span><code>+ ${pct(E.scaling.damagePer30s)}</code></div>
+        <div><b>Kill XP reward</b><span>Every 120 build-clock seconds</span><code>+ ${pct(E.scaling.xpPer120s)}</code></div>
+      </div>
+      <p>Ordinary SpawnDirector wave health is resolved from its base before level/external multipliers and may also receive the mode-owned opening enemy HP bonus. Bosses, recurring minibosses, elites, set pieces and direct-spawn systems are excluded from that opening lever. Contact damage has its own elapsed-time step. Kill XP uses its separate build-clock step, then player and global XP multipliers apply.</p>
+      ${sourceParams(E.scaling, 'Canonical scaling increments')}
     </section>`;
 
   /* WHERE YOU MEET IT. The question a bestiary exists to answer, and it is
@@ -893,20 +988,22 @@ export function rosterSpecs(D, esc, T = null) {
     slug: 'bestiary',
     domain: 'enemies',
     title: 'Bestiary',
-    tagline: 'Everything that wants to touch you.',
-    lede: 'Every kind in the game, what it does, and where it turns up. Health, contact damage and XP are the values a kind starts a run with, before elapsed time, the level’s own multipliers and the opening grace period all scale them up, so read them against each other rather than as what you will meet at minute twelve.',
-    omissions: `<b>Every time on this page is minutes of real play.</b> ${clockNote} <b>Live-run speed is a base, not a final chase speed.</b> The canonical policy says timed and per-instance multipliers still apply after the value shown here. <b>Boss and miniboss health and damage are UNMEASURED.</b> Runtime authority is private, multi-stage and mode-dependent, so the registry values for those two tiers are not published as encounter stats.`,
-    featureHtml: speedPolicyFeature,
+    tagline: 'Every canonical enemy kind, from horde units to encounter threats.',
+    lede: 'Every kind in the game and where it turns up, with behavior and contextual stats only where the canonical runtime contract supports them. For basic and special enemies, health, contact damage and kill XP are starting values; each follows its own runtime scaling clock.',
+    omissions: `<b>Every time on this page is minutes of real play.</b> ${clockNote} For basic and special enemies, <b>live-run speed is a base, not a final chase speed</b>; timed and per-instance multipliers still apply. <b>Boss and miniboss health, damage, behavior and final chase speed are UNMEASURED.</b> Their director authority is private, multi-stage and mode-dependent, so registry placeholders and partial bases are not published as encounter facts.`,
+    featureHtml: `${enemyScalingFeature}${speedPolicyFeature}`,
     entries: enemyEntries,
     groups: [
-      { key: 'basic', title: 'Basic', note: 'The bulk of a run, and the only tier that can be promoted to an elite. Individually not the problem; the count is the problem.', has: (e) => e.tier === 'basic' },
-      { key: 'special', title: 'Special', note: 'Kinds that change how a fight works rather than adding to its size. This is also the only tier where the listed behaviour actually runs, which is why the rest of this page is quieter about movement.', has: (e) => e.tier === 'special' },
-      { key: 'miniboss', title: 'Minibosses', note: 'Not rolled from a spawn table. They arrive on a rotation, on the clock, and the boss director owns their numbers and their movement.', has: (e) => e.tier === 'miniboss' },
+      { key: 'basic', title: 'Basic', note: 'The bulk of a run, and the only tier that can be promoted to an elite. Their listed basic behaviour runs in live combat; individually not the problem, the count is the problem.', has: (e) => e.tier === 'basic' },
+      { key: 'special', title: 'Special', note: 'Kinds that change how a fight works rather than adding to its size. Their listed special behaviour also runs in live combat.', has: (e) => e.tier === 'special' },
+      { key: 'miniboss', title: 'Minibosses', note: 'Bruiser, Warden, Ravager and Harrier are the recurring automatic-cadence pool. The Maw is a separate authored set-piece; it is not another cadence roll. The boss director owns their contextual numbers and movement.', has: (e) => e.tier === 'miniboss' },
       { key: 'boss', title: 'Bosses', note: 'The run’s punctuation, scheduled per level rather than rolled. Their movement is directed rather than run off the behaviour below.', has: (e) => e.tier === 'boss' },
     ],
     facets: [
       { key: 'tier', label: 'Tier', of: (e) => e.tier },
-      { key: 'behavior', label: 'Behaviour', of: (e) => e.behavior },
+      /* Boss/miniboss movement belongs to the director, not this registry
+         placeholder. Returning null also keeps it out of card data attributes. */
+      { key: 'behavior', label: 'Live behaviour', of: (e) => statTiers.has(e.tier) ? e.behavior : null },
     ],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => enemyEntries.indexOf(e) },
@@ -914,21 +1011,21 @@ export function rosterSpecs(D, esc, T = null) {
       { key: 'hp', label: 'Published health', of: (e) => statTiers.has(e.tier) ? e.hp : undefined, desc: true },
       { key: 'damage', label: 'Published contact damage', of: (e) => statTiers.has(e.tier) ? e.damage : undefined, desc: true },
       { key: 'xp', label: 'Published XP', of: (e) => statTiers.has(e.tier) ? e.xp : undefined, desc: true },
-      { key: 'speed', label: 'Live-run base speed', of: (e) => E.refs[e.id]?.speedProfile?.liveRunBaseMps, desc: true },
+      { key: 'speed', label: 'Published live-run base speed', of: (e) => statTiers.has(e.tier) ? E.refs[e.id]?.speedProfile?.liveRunBaseMps : undefined, desc: true },
     ],
-    searchText: (e) => `${e.tier} ${e.behavior} enemy monster`,
+    searchText: (e) => `${e.tier} ${statTiers.has(e.tier) ? e.behavior : ''} enemy monster`,
     card: (e) => {
       const r = E.refs[e.id] || {};
       const where = enemyWhere(e);
       const boss = enemyBoss(e);
       const showStats = statTiers.has(e.tier);
       const showBehaviour = showStats && BEHAVIOR_NOTE[e.behavior];
-      const speed = r.speedProfile;
+      const speed = showStats ? r.speedProfile : null;
       return `
         <div class="wtags">
           ${tag(esc(humanize(e.tier)), e.tier === 'boss' ? 'pink' : e.tier === 'miniboss' ? 'gold' : e.tier === 'special' ? 'violet' : '')}
-          ${tag(esc(humanize(e.behavior)), 'cyan')}
-          ${speed?.liveRunBandApplied ? tag(`Speed &times;${num(speed.liveRunMultiplier)}`, 'gold') : tag('Base speed unchanged', '')}
+          ${showStats ? tag(esc(humanize(e.behavior)), 'cyan') : ''}
+          ${speed ? (speed.liveRunBandApplied ? tag(`Speed &times;${num(speed.liveRunMultiplier)}`, 'gold') : tag('Base speed unchanged', '')) : ''}
           ${e.flying ? tag('Flying', 'cyan') : ''}
         </div>
         ${showBehaviour ? `<p class="wgloss">${BEHAVIOR_NOTE[e.behavior]}</p>` : ''}
@@ -940,7 +1037,7 @@ export function rosterSpecs(D, esc, T = null) {
           ${arr(r.splitsInto).length ? fact('Leaves behind', `${e.onDeath?.split?.count > 1 ? `<b>${e.onDeath.split.count}</b> ` : ''}${list(arr(r.splitsInto).map((s) => cardLink('bestiary', s, esc(enemyName(s) + (e.onDeath?.split?.count > 1 ? 's' : '')))))} when it dies`) : ''}
           ${e.flying ? fact('Flying', 'Ignores the ground: pits and walls do not route it. It is still hit by everything a walker is.') : ''}
           ${speed ? fact('Speed profile', `<b>${num(speed.liveRunBaseMps)} ${esc(E.speedPolicy.unit)}</b> live-run base${speed.liveRunBandApplied ? `, from authored ${num(speed.authoredBaseMps)} ${esc(E.speedPolicy.unit)} at &times;${num(speed.liveRunMultiplier)}` : ', unchanged by the live-run band'}`) : ''}
-          ${!showStats ? fact('Combat stats', '<b>UNMEASURED</b>: contextual health and damage are set through private, multi-stage runtime authority.') : ''}
+          ${!showStats ? fact('Contextual mechanics', '<b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.') : ''}
         </div>
         <div class="wmeters">
           ${showStats ? meter('Health', e.hp, eMax.hp) : ''}
@@ -997,6 +1094,11 @@ export function rosterSpecs(D, esc, T = null) {
     if (!evolutionsByPassive.has(row.passiveId)) evolutionsByPassive.set(row.passiveId, []);
     evolutionsByPassive.get(row.passiveId).push(row);
   }
+  const passiveAccess = (entry) => {
+    if (entry.unlockedFromStart) return 'from the start';
+    if (P.refs[entry.id]?.runtimeUnlock) return 'signature-boss milestone';
+    return 'achievement';
+  };
   const tomesRoster = {
     section: 'Buildcraft',
     slug: 'tomes',
@@ -1008,10 +1110,11 @@ export function rosterSpecs(D, esc, T = null) {
     entries: passiveEntries,
     groups: [
       { key: 'start', title: 'Available from the start', note: 'In the tome pool on a fresh save.', has: (e) => e.unlockedFromStart },
-      { key: 'earned', title: 'Achievement unlocks', note: 'Each card links to the achievement that adds it.', has: (e) => !e.unlockedFromStart },
+      { key: 'milestone', title: 'Campaign milestone unlock', note: 'Permanently joins future draft pools after the canonical signature-boss milestone.', has: (e) => !!P.refs[e.id]?.runtimeUnlock },
+      { key: 'earned', title: 'Achievement unlocks', note: 'Each card links to the achievement that adds it.', has: (e) => !e.unlockedFromStart && !P.refs[e.id]?.runtimeUnlock },
     ],
     facets: [
-      { key: 'access', label: 'Availability', of: (e) => e.unlockedFromStart ? 'from the start' : 'achievement' },
+      { key: 'access', label: 'Availability', of: passiveAccess },
       { key: 'stat', label: 'Stat', of: (e) => e.stat },
     ],
     sorts: [
@@ -1019,18 +1122,25 @@ export function rosterSpecs(D, esc, T = null) {
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
       { key: 'levels', label: 'Max level', of: (e) => e.maxLevel, desc: true },
     ],
-    searchText: (e) => `${e.desc} ${e.stat} tome passive ${e.unlockedFromStart ? 'start' : 'achievement'}`,
+    searchText: (e) => `${e.desc} ${e.stat} tome passive ${passiveAccess(e)} ${P.refs[e.id]?.runtimeUnlock?.description || ''}`,
     card: (e) => {
       const unlocks = inverseUnlocks.get(`passive:${e.id}`) || [];
       const recipes = evolutionsByPassive.get(e.id) || [];
+      const runtimeUnlock = P.refs[e.id]?.runtimeUnlock;
+      const availability = runtimeUnlock
+        ? `${esc(runtimeUnlock.description)} <span class="wsub">${esc(humanize(runtimeUnlock.scope))} · ${runtimeUnlock.requiredMilestones} milestone · ${runtimeUnlock.permanent ? 'permanent' : 'run-scoped'} · ${esc(humanize(runtimeUnlock.availability))}</span>`
+        : unlocks.length
+          ? list(unlocks.map((row) => cardLink('achievements', row.id, esc(row.name))))
+          : 'In the tome pool from the first run.';
       return `
-        <div class="wtags">${tag(esc(humanize(e.stat)), 'cyan')}${tag(e.unlockedFromStart ? 'From the start' : 'Achievement', e.unlockedFromStart ? '' : 'gold')}</div>
+        <div class="wtags">${tag(esc(humanize(e.stat)), 'cyan')}${tag(esc(humanize(passiveAccess(e))), e.unlockedFromStart ? '' : 'gold')}</div>
         <p class="wdesc">${esc(e.desc)}</p>
         <div class="wfacts">
           ${fact('Levels', `<b>${e.maxLevel}</b> max, source payload <b>${num(e.perLevel)}</b> per level${e.shieldRegenPerLevel !== undefined ? `, shield regen <b>${num(e.shieldRegenPerLevel)}</b> per level` : ''}`)}
-          ${unlocks.length ? fact('Unlocked by', list(unlocks.map((row) => cardLink('achievements', row.id, esc(row.name))))) : fact('Availability', 'In the tome pool from the first run.')}
+          ${fact(runtimeUnlock ? 'Runtime unlock' : unlocks.length ? 'Unlocked by' : 'Availability', availability)}
           ${recipes.length ? fact('Evolution key', list(recipes.map((row) => `${cardLink('weapons', row.baseId, esc(weaponName(row.baseId)))} into ${cardLink('weapons', row.evolvedId, esc(weaponName(row.evolvedId)))}`))) : ''}
-        </div>`;
+        </div>
+        ${runtimeUnlock ? sourceParams(runtimeUnlock.provenance, 'Runtime-unlock provenance') : ''}`;
     },
   };
 
@@ -1061,15 +1171,23 @@ export function rosterSpecs(D, esc, T = null) {
 
   // ---- shrine blessings ---------------------------------------------------
   const blessingEntries = ordered(BL);
+  const shrineRuntimeFeature = (id) => `
+    <section class="wfeature" aria-labelledby="${id}">
+      <div><span class="eyebrow">World-shrine activation contract</span><h3 id="${id}">Blessing trio, legendary replacement and movement offering</h3></div>
+      <p>A qualifying normal activation has <b>${num(SM.runtime.normalWorldShrineMovementSlots)}</b> movement slot. The gate requires a world shrine and no legendary replacement; directive and merchant blessing offers have no movement slot.</p>
+      ${(SM.runtime.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
+      ${sourceParams(SM.runtime.provenance, 'Shrine runtime provenance')}
+    </section>`;
   const blessingsRoster = {
     section: 'Buildcraft',
     slug: 'blessings',
     domain: 'shrineBlessings',
     title: 'Shrine blessings',
-    tagline: `${blessingEntries.length} shrine outcomes, exactly as authored.`,
-    lede: 'Blessings are the shrine offer pool. Each card carries the source description, target stat, exact value, glyph and color used by the game.',
+    tagline: `${blessingEntries.length} authored blessing options in the shrine's blessing-trio portion.`,
+    lede: 'This registry supplies the blessing trio portion of an activated world shrine. A legendary replacement can return before the blessing menu and movement draw, so these cards are not the complete set of shrine outcomes.',
+    featureHtml: shrineRuntimeFeature('blessing-shrine-runtime'),
     entries: blessingEntries,
-    groups: [{ key: 'all', title: 'Blessing pool', note: 'All authored shrine outcomes.', has: () => true }],
+    groups: [{ key: 'all', title: 'Blessing registry', note: 'All authored options for the blessing trio; movement offerings are catalogued separately.', has: () => true }],
     facets: [{ key: 'stat', label: 'Stat', of: (e) => e.stat }],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => blessingEntries.indexOf(e) },
@@ -1082,6 +1200,36 @@ export function rosterSpecs(D, esc, T = null) {
       <div class="wtags">${tag(esc(humanize(e.stat)), 'cyan')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
       <div class="wfacts">${fact('Source value', `<b>${num(e.value)}</b> applied to <code>${esc(e.stat)}</code>`)}${fact('Glyph', `<b>${esc(e.glyph)}</b>`)}</div>`,
+  };
+
+  // ---- live shrine movement offerings ------------------------------------
+  const shrineMovementEntries = ordered(SM);
+  const shrineMovementRoster = {
+    section: 'Buildcraft',
+    slug: 'shrine-movement',
+    domain: 'shrineMovement',
+    title: 'Shrine movement',
+    tagline: `${shrineMovementEntries.length} live movement offerings from activated world shrines.`,
+    lede: 'After an activated world shrine rolls its blessing trio, it draws one eligible movement offering from this canonical pool unless a legendary replacement already returned. Stack-capped entries leave the pool at cap; the uncapped Extra Jump keeps it non-empty.',
+    featureHtml: shrineRuntimeFeature('movement-shrine-runtime'),
+    entries: shrineMovementEntries,
+    groups: [{ key: 'all', title: 'Live movement offering pool', note: 'Every source-owned world-shrine movement option, in canonical draw order.', has: () => true }],
+    facets: [{ key: 'stat', label: 'Stat', of: (e) => e.stat }],
+    sorts: [
+      { key: 'roster', label: 'Draw order', of: (e) => shrineMovementEntries.indexOf(e) },
+      { key: 'name', label: 'Name', of: (e) => e.name, text: true },
+      { key: 'value', label: 'Source value', of: (e) => e.value, desc: true },
+    ],
+    searchText: (e) => `${e.desc} ${e.stat} shrine movement offering ${e.glyph} ${(SM.runtime.semantics || []).join(' ')}`,
+    accent: (e) => colorHex(e.color),
+    card: (e) => `
+      <div class="wtags">${tag('World-shrine offering', 'gold')}${tag(esc(humanize(e.stat)), 'cyan')}</div>
+      <p class="wdesc">${esc(e.desc)}</p>
+      <div class="wfacts">
+        ${fact('Source value', `<b>${num(e.value)}</b> applied to <code>${esc(e.stat)}</code>`)}
+        ${e.maxStacks !== undefined ? fact('Stack ceiling', `<b>${num(e.maxStacks)}</b>; leaves the eligible pool at cap`) : fact('Stack ceiling', 'Uncapped; remains eligible')}
+        ${fact('Glyph', `<b>${esc(e.glyph)}</b>`)}
+      </div>`,
   };
 
   // ---- utility abilities --------------------------------------------------
@@ -1121,24 +1269,46 @@ export function rosterSpecs(D, esc, T = null) {
       ${sourceParams(e.params)}`,
   };
 
-  // ---- boss ultimate ------------------------------------------------------
+  // ---- player ultimate ----------------------------------------------------
   const ultimateEntries = ordered(UL);
+  const ultimateRuntime = UL.runtime || { owner: '', slot: '', availability: {}, semantics: [] };
+  const ultimateAvailability = ultimateRuntime.availability.fromRunStart
+    ? ultimateRuntime.availability.scope === 'standard-player-run'
+      ? 'Armed from the start in standard player runs'
+      : 'Armed from run start'
+    : ultimateRuntime.availability.requiresBossKill
+      ? 'Armed after a boss kill'
+      : 'Armed by the runtime gate';
+  const ultimateRuntimeFeature = `
+    <section class="wfeature" aria-labelledby="ultimate-runtime">
+      <div><span class="eyebrow">Canonical runtime semantics</span><h3 id="ultimate-runtime">A ${esc(ultimateRuntime.owner)}-held ${esc(ultimateRuntime.slot)}-slot ability</h3></div>
+      <ul>${ultimateRuntime.semantics.map((line) => `<li>${esc(line)}</li>`).join('')}</ul>
+      ${sourceParams(ultimateRuntime.availability || {}, 'Ultimate availability contract')}
+      ${sourceParams(ultimateRuntime.provenance || {}, 'Ultimate runtime provenance')}
+    </section>`;
   const ultimatesRoster = {
     section: 'Buildcraft',
     slug: 'ultimates',
     domain: 'ultimates',
-    title: 'Boss ultimates',
-    tagline: 'The stealable Q-slot registry.',
-    lede: 'This page reflects the complete ultimate registry, including the canonical description, cooldown and source parameter payload.',
+    title: 'WHOMP Ultimate',
+    tagline: `The ${ultimateRuntime.owner}-held ${ultimateRuntime.slot}-slot ability. ${ultimateAvailability}.`,
+    lede: 'The complete canonical ultimate registry and the runtime semantics that define how the player holds and activates it.',
+    featureHtml: ultimateRuntimeFeature,
     entries: ultimateEntries,
-    groups: [{ key: 'all', title: 'Ultimate registry', note: 'Every registered boss ultimate.', has: () => true }],
+    groups: [{ key: 'all', title: `${humanize(ultimateRuntime.owner)} ultimate ability`, note: `Every registered ${ultimateRuntime.owner}-held ${ultimateRuntime.slot}-slot ultimate.`, has: () => true }],
     facets: [],
     sorts: [{ key: 'roster', label: 'Roster order', of: (e) => ultimateEntries.indexOf(e) }],
-    searchText: (e) => `${e.desc} ultimate boss q slot ${Object.keys(e.params || {}).join(' ')}`,
+    searchText: (e) => `${e.desc} ${ultimateRuntime.owner} ultimate ability ${ultimateRuntime.slot} slot ${ultimateAvailability} ${ultimateRuntime.availability.scope || ''} ${ultimateRuntime.semantics.join(' ')} ${Object.keys(e.params || {}).join(' ')}`,
     card: (e) => `
-      <div class="wtags">${tag('Ultimate', 'pink')}</div>
+      <div class="wtags">${tag(`${esc(humanize(ultimateRuntime.owner))} ability`, 'cyan')}${tag(`${esc(ultimateRuntime.slot)} slot`, 'violet')}${tag(esc(ultimateAvailability), 'gold')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
-      <div class="wfacts">${fact('Cooldown', `<b>${cooldown(e.cooldownMs)}</b>`)}</div>
+      <div class="wfacts">
+        ${fact('Owner', `<b>${esc(humanize(ultimateRuntime.owner))}</b>`)}
+        ${fact('Input slot', `<b>${esc(ultimateRuntime.slot)}</b>`)}
+        ${fact('Availability', `<b>${esc(ultimateAvailability)}</b>${ultimateRuntime.availability.requiresBossKill ? '' : ' · no boss kill required'}`)}
+        ${fact('Availability scope', `<b>${esc(humanize(String(ultimateRuntime.availability.scope).replace(/[-_]+/g, ' ')))}</b>`)}
+        ${fact('Registry base cooldown', `<b>${cooldown(e.cooldownMs)}</b>`)}
+      </div>
       ${sourceParams(e.params)}`,
   };
 
@@ -1178,54 +1348,75 @@ export function rosterSpecs(D, esc, T = null) {
     section: 'Buildcraft',
     slug: 'jump-augments',
     domain: 'jumpAugments',
-    title: 'Jump augments',
-    tagline: 'Chest-only movement upgrades.',
-    lede: 'The jump augment registry is small and complete. Each card carries the canonical description, target stat, per-level payload and any level ceiling defined by the source.',
+    title: 'Legacy jump augment aliases',
+    tagline: `${jumpEntries.length} legacy card/progression aliases linked to live Shrine movement offerings.`,
+    lede: `This ${jumpEntries.length}-entry registry preserves older card and progression aliases for Spring Step and Extra Jump. It is an alias surface, not an acquisition rule or the complete live movement pool; each card links to its canonical Shrine movement offering.`,
     entries: jumpEntries,
-    groups: [{ key: 'all', title: 'Augments', note: 'Every registered jump augment.', has: () => true }],
+    groups: [{ key: 'all', title: 'Legacy aliases', note: 'Compatibility aliases only; use Shrine movement for the complete live offering pool.', has: () => true }],
     facets: [{ key: 'stat', label: 'Stat', of: (e) => e.stat }],
     sorts: [{ key: 'roster', label: 'Roster order', of: (e) => jumpEntries.indexOf(e) }],
-    searchText: (e) => `${e.desc} ${e.stat} jump movement augment`,
+    searchText: (e) => `${e.desc} ${e.stat} legacy jump movement augment alias ${SM.entries[JA.refs[e.id]?.shrineMovementOffering]?.name || ''}`,
     accent: (e) => colorHex(e.color),
-    card: (e) => `
-      <div class="wtags">${tag(esc(humanize(e.stat)), 'cyan')}</div>
-      <p class="wdesc">${esc(e.desc)}</p>
-      <div class="wfacts">${fact('Source payload', `<b>${num(e.perLevel)}</b> per level${e.maxLevel ? `, <b>${e.maxLevel}</b> levels max` : ''}`)}</div>`,
+    card: (e) => {
+      const offeringId = JA.refs[e.id]?.shrineMovementOffering;
+      return `
+        <div class="wtags">${tag('Legacy alias', 'gold')}${tag(esc(humanize(e.stat)), 'cyan')}</div>
+        <p class="wdesc">${esc(e.desc)}</p>
+        <div class="wfacts">
+          ${fact('Source payload', `<b>${num(e.perLevel)}</b> per level${e.maxLevel ? `, <b>${e.maxLevel}</b> levels max` : ''}`)}
+          ${fact('Live Shrine offering', cardLink('shrine-movement', offeringId, esc(SM.entries[offeringId]?.name || humanize(offeringId))))}
+        </div>`;
+    },
   };
 
   // ---- characters ---------------------------------------------------------
   const characterEntries = ordered(CH);
+  const characterBaseRuntime = CH.runtime.baseStats;
+  const characterWeaponRuntime = CH.runtime.weaponIdentity;
+  const characterBaseFeature = `
+    <section class="wfeature" aria-labelledby="character-base-inputs">
+      <div><span class="eyebrow">Runtime interpretation</span><h3 id="character-base-inputs">Loadout suggestion and authored identity inputs</h3></div>
+      ${(characterWeaponRuntime.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
+      ${sourceParams(characterWeaponRuntime.provenance, 'Suggested-weapon provenance')}
+      ${Object.entries(characterBaseRuntime).map(([key, contract]) => `<div class="wmethod-row">
+        <b>${esc(humanize(key))}</b><span>${esc(contract.semantics)}</span>
+        ${sourceParams(contract.provenance, `${humanize(key)} provenance`)}
+      </div>`).join('')}
+    </section>`;
   const charactersRoster = {
     section: 'Heroes',
     slug: 'characters',
     domain: 'characters',
     title: 'Characters',
-    tagline: 'Base stats, starting kit and movement identity.',
-    lede: 'Each character card composes the canonical character, starting-weapon, innate and signature registries. Base health, speed and might are printed as stored, with no normalized score hiding the trade.',
+    tagline: 'Loadout suggestions and source-authored identity inputs.',
+    lede: 'Each character card composes the canonical character, suggested-weapon, innate and signature registries. The weapon id is a default-loadout suggestion, not an unconditional solo-campaign pickup. Health is the run-start base before bonuses; speed is a relative-to-6 identity input, not metres per second; might is a multiplicative identity input, not final damage.',
+    featureHtml: characterBaseFeature,
     entries: characterEntries,
     groups: [
       { key: 'start', title: 'Character roster', note: 'The complete selectable roster in source order.', has: () => true },
     ],
     facets: [
-      { key: 'weapon', label: 'Starting weapon', of: (e) => e.startWeaponId, name: weaponName },
+      { key: 'weapon', label: 'Suggested weapon', of: (e) => e.startWeaponId, name: weaponName },
       { key: 'access', label: 'Availability', of: (e) => e.unlockedFromStart ? 'from the start' : 'unlockable' },
     ],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => characterEntries.indexOf(e) },
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
-      { key: 'health', label: 'Base health', of: (e) => e.baseStats?.maxHp, desc: true },
-      { key: 'speed', label: 'Base speed', of: (e) => e.baseStats?.speed, desc: true },
-      { key: 'might', label: 'Base might', of: (e) => e.baseStats?.might, desc: true },
+      { key: 'health', label: 'Run-start health base', of: (e) => e.baseStats?.maxHp, desc: true },
+      { key: 'speed', label: `Speed identity input (relative to ${characterBaseRuntime.speed.reference})`, of: (e) => e.baseStats?.speed, desc: true },
+      { key: 'might', label: 'Damage identity multiplier input', of: (e) => e.baseStats?.might, desc: true },
     ],
     searchText: (e) => `${e.desc} character hero ${weaponName(e.startWeaponId)} ${IN.entries[e.innateId]?.name || ''} ${SG.entries[e.signatureId]?.name || ''}`,
     card: (e) => `
       <div class="wtags">${tag(e.unlockedFromStart ? 'From the start' : 'Unlockable', e.unlockedFromStart ? 'cyan' : 'gold')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
       <div class="wfacts">
-        ${fact('Starting weapon', cardLink('weapons', e.startWeaponId, esc(weaponName(e.startWeaponId))))}
+        ${fact('Suggested weapon', `${cardLink('weapons', e.startWeaponId, esc(weaponName(e.startWeaponId)))} <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span>`)}
         ${fact('Innate', cardLink('innates', e.innateId, esc(IN.entries[e.innateId]?.name || humanize(e.innateId))))}
         ${fact('Signature', cardLink('signatures', e.signatureId, esc(SG.entries[e.signatureId]?.name || humanize(e.signatureId))))}
-        ${fact('Base stats', `<b>${num(e.baseStats?.maxHp)}</b> health, <b>${num(e.baseStats?.speed)}</b> speed, <b>${num(e.baseStats?.might)}</b> might`)}
+        ${fact('Run-start health base', `<b>${num(e.baseStats?.maxHp)} ${esc(characterBaseRuntime.maxHp.unit)}</b>, before shop and other run-start bonuses`)}
+        ${fact(`Speed identity input (relative to ${characterBaseRuntime.speed.reference})`, `<b>${num(e.baseStats?.speed)}</b> authored input; runtime identity multiplier <b>&times;${num(e.baseStats?.speed / characterBaseRuntime.speed.reference)}</b>, not m/s`)}
+        ${fact('Damage identity multiplier input', `<b>&times;${num(e.baseStats?.might)}</b> in the multiplicative damage product, not final damage`)}
       </div>`,
   };
 
@@ -1297,9 +1488,18 @@ export function rosterSpecs(D, esc, T = null) {
   const spawnDetails = (e) => `<details class="wraw wschedule"><summary>Spawn schedule <span>${e.spawnTable?.length || 0}</span></summary><ol>${(e.spawnTable || [])
     .map((row) => `<li>${cardLink('bestiary', row.kindId, esc(enemyName(row.kindId)))} <span>${esc(scheduleTime(row.fromSec))}</span><code>weight ${num(row.weight)}</code></li>`)
     .join('')}</ol></details>`;
-  const bossDetails = (e) => `<details class="wraw wschedule"><summary>Boss schedule <span>${e.bosses?.length || 0}</span></summary><ol>${(e.bosses || [])
+  const bossDetails = (e) => `<details class="wraw wschedule"><summary>Authored signature-boss schedule <span>${e.bosses?.length || 0}</span></summary><ol>${(e.bosses || [])
     .map((row) => `<li>${cardLink('bestiary', row.kindId, esc(enemyName(row.kindId)))} <span>${esc(scheduleTime(row.atSec))}</span>${row.signature ? '<code>signature slot</code>' : ''}</li>`)
     .join('')}</ol></details>`;
+  const encounterSchedule = D.world.encounterSchedule;
+  const encounterScheduleFeature = (id) => `
+    <section class="wfeature" aria-labelledby="${id}">
+      <div><span class="eyebrow">Cadence evidence</span><h3 id="${id}">Authored tables plus automatic-miniboss cadence context</h3></div>
+      <p>The exported interval is <b>${num(encounterSchedule.automaticMinibossCadenceSec)} seconds</b> on the ${esc(humanize(encounterSchedule.cadenceClock))}. In the unified profile that is <b>${mmss(encounterSchedule.unifiedProfilePreBankIntervalElapsedSec)}</b> elapsed before the pacing bank and <b>${mmss(encounterSchedule.unifiedProfileEndlessIntervalElapsedSec)}</b> in endless play. These are independently derived phase intervals, not exact encounter timestamps or miniboss identities.</p>
+      ${(encounterSchedule.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
+      ${(encounterSchedule.limits || []).map((line) => `<p class="womit">${esc(line)}</p>`).join('')}
+      ${sourceParams(encounterSchedule.provenance, 'Encounter-schedule provenance')}
+    </section>`;
   const worldCard = (e, refs) => {
     const surfaceNames = Object.entries(e.surfaces || {}).filter(([, enabled]) => enabled).map(([key]) => humanize(key));
     const unlockedById = refs?.unlockedBy;
@@ -1326,9 +1526,10 @@ export function rosterSpecs(D, esc, T = null) {
     slug: 'worlds',
     domain: 'levels',
     title: 'Campaign worlds',
-    tagline: 'The arenas, unlock chain and encounter schedules.',
-    lede: 'Every campaign world card joins its authored identity to the exact tuning, surfaces, fixtures, unlock relation, spawn schedule, boss schedule and recovered ship core in the shared artifact.',
-    omissions: `<b>Schedule times are converted only while the shared pace scale is valid.</b> ${clockNote}`,
+    tagline: 'Arenas, unlock chain, authored tables and cadence evidence.',
+    lede: 'Every campaign world card joins its authored identity to tuning, surfaces, fixtures, unlock relation, spawn table, authored signature-boss slots and recovered ship core. The shared encounter contract adds automatic-miniboss interval and reservation evidence without inventing identity or exact spawn time.',
+    omissions: `<b>These surfaces do not form an exact encounter timeline.</b> The per-world tables publish authored rows; the cadence contract publishes an interval and reservation rule while explicitly withholding automatic-miniboss identity and actual spawn time. Authored schedule times are converted only while the shared pace scale is valid. ${clockNote}`,
+    featureHtml: encounterScheduleFeature('campaign-encounter-schedule'),
     entries: worldEntries,
     groups: [
       { key: 'campaign', title: 'Campaign route', note: 'World ids named by the canonical campaign list.', has: (e) => (L.campaignLevelIds || []).includes(e.id) },
@@ -1356,9 +1557,10 @@ export function rosterSpecs(D, esc, T = null) {
     slug: 'expeditions',
     domain: 'expeditions',
     title: 'Expeditions',
-    tagline: 'Standalone arenas with complete encounter schedules.',
-    lede: 'Expeditions use the same canonical level shape as campaign worlds but sit in their own source domain. Every spawn, boss, fixture, surface and tuning multiplier is shown from that domain.',
-    omissions: `<b>Schedule times are converted only while the shared pace scale is valid.</b> ${clockNote}`,
+    tagline: 'Standalone arenas with authored tables and cadence evidence.',
+    lede: 'Expeditions use the same canonical level shape as campaign worlds but sit in their own source domain. Every authored spawn, signature boss, fixture, surface and tuning multiplier is shown alongside the limited automatic-miniboss cadence contract.',
+    omissions: `<b>These surfaces do not form an exact encounter timeline.</b> The per-expedition tables publish authored rows; the cadence contract publishes an interval and reservation rule while explicitly withholding automatic-miniboss identity and actual spawn time. Authored schedule times are converted only while the shared pace scale is valid. ${clockNote}`,
+    featureHtml: encounterScheduleFeature('expedition-encounter-schedule'),
     entries: expeditionEntries,
     groups: [{ key: 'all', title: 'Expedition roster', note: 'Every registered expedition.', has: () => true }],
     facets: [{ key: 'access', label: 'Availability', of: (e) => e.unlockedFromStart ? 'from the start' : 'unlockable' }],
@@ -1371,6 +1573,15 @@ export function rosterSpecs(D, esc, T = null) {
   };
 
   // ---- run modes ----------------------------------------------------------
+  const openingEnemyHp = RM.openingEnemyHpBonus;
+  const openingEnemyHpFeature = `
+    <section class="wfeature" aria-labelledby="opening-enemy-hp-policy">
+      <div><span class="eyebrow">Spawn-health contract</span><h3 id="opening-enemy-hp-policy">Opening enemy HP bonus</h3></div>
+      <p>Each mode's <code>${esc(openingEnemyHp.field)}</code> applies only to <b>${esc(humanize(openingEnemyHp.appliesTo))}</b>. It fades <b>${esc(openingEnemyHp.fade)}</b> on the <b>${esc(humanize(openingEnemyHp.fadeClock))}</b> from ${mmss(openingEnemyHp.startsAtPaceSec)} to zero by <b>${mmss(openingEnemyHp.fadesToZeroAtPaceSec)}</b>. In the unified profile that threshold is <b>${mmss(openingEnemyHp.unifiedProfileElapsedSec)}</b> of real play.</p>
+      <details class="wraw"><summary>Excluded spawn authorities <span>${openingEnemyHp.excludes.length}</span></summary><ul>${openingEnemyHp.excludes.map((line) => `<li>${esc(line)}</li>`).join('')}</ul></details>
+      ${(openingEnemyHp.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
+      ${sourceParams(openingEnemyHp.provenance, 'Opening-HP provenance')}
+    </section>`;
   const modeEntries = ordered(RM, (e) => ({ ...e, name: humanize(e.id) }));
   const runModesRoster = {
     section: 'World',
@@ -1379,6 +1590,7 @@ export function rosterSpecs(D, esc, T = null) {
     title: 'Run modes',
     tagline: 'The pacing and movement profiles a run actually reads.',
     lede: 'Run modes are complete configuration profiles. The player-facing timing summary is derived from their pace clock and bank; the full profile remains available as source parameters on each card.',
+    featureHtml: openingEnemyHpFeature,
     entries: modeEntries,
     groups: [{ key: 'all', title: 'Mode profiles', note: 'Every registered run-mode profile.', has: () => true }],
     facets: [
@@ -1386,7 +1598,7 @@ export function rosterSpecs(D, esc, T = null) {
       { key: 'ladder', label: 'Tier ladder', of: (e) => e.tierLadderEnabled ? 'enabled' : 'disabled' },
     ],
     sorts: [{ key: 'roster', label: 'Roster order', of: (e) => modeEntries.indexOf(e) }],
-    searchText: (e) => `${e.id} run mode pace endless movement camera flyers events`,
+    searchText: (e) => `${e.id} run mode pace endless movement camera flyers events opening enemy HP bonus linear fade ${openingEnemyHp.fadesToZeroAtPaceSec} pace seconds unified ${openingEnemyHp.unifiedProfileElapsedSec} elapsed seconds`,
     card: (e) => `
       <div class="wtags">${tag(e.allowFlyers ? 'Flyers enabled' : 'No flyers', 'cyan')}${tag(e.tierLadderEnabled ? 'Tier ladder' : 'No tier ladder', 'violet')}</div>
       <div class="wfacts">
@@ -1394,7 +1606,7 @@ export function rosterSpecs(D, esc, T = null) {
         ${fact('Pacing bank', `<b>${mmss(e.bankAtElapsedSec)}</b> real time`)}
         ${fact('Final horde', `<b>${playClock(e.finalHordeAtPaceSec) || `${e.finalHordeAtPaceSec} pace seconds`}</b>`)}
         ${fact('Victory choice', bool(e.offersVictoryChoice))}
-        ${fact('Opening health bonus', pct(e.openingHpBonusPct))}
+        ${fact('Opening enemy HP bonus', `<b>${pct(e[openingEnemyHp.field])}</b> on ordinary SpawnDirector wave health at run start; ${esc(openingEnemyHp.fade)} fade to <b>0%</b> by ${mmss(openingEnemyHp.fadesToZeroAtPaceSec)} on the mode-profiled pace clock <span class="wsub">(${mmss(openingEnemyHp.unifiedProfileElapsedSec)} real-play equivalent in the unified profile; excluded authorities are listed above)</span>`)}
         ${fact('World events', `<b>${e.earthyWorldEventCount}</b> earthy, <b>${e.otherWorldEventCount}</b> other, ${esc(humanize(e.worldEventSelection))}`)}
       </div>
       ${sourceParams(Object.fromEntries(Object.entries(e).filter(([key]) => !['id', 'name'].includes(key))), 'Complete mode profile')}`,
@@ -1840,41 +2052,53 @@ export function rosterSpecs(D, esc, T = null) {
   };
 
   // ---- measured tier rows -------------------------------------------------
-  const tierRows = (T?.weapons || []).map((row) => ({
+  const tierRows = (tierEvidenceReady ? T.weapons : []).map((row) => ({
     ...row,
     weaponId: row.id,
     id: `${row.id}-${row.form}-l${row.level}`,
     name: `${row.name} · ${row.form === 'evolved' ? 'evolved' : `level ${row.level}`}`,
   }));
+  const axisIsMeasured = (axis) => axis?.status !== 'UNMEASURED';
+  const unmeasuredReason = (axis) => String(axis?.reason || '').replace(/^UNMEASURED:\s*/i, '');
   const tierAxis = (row, key, label) => {
     const axis = row.axes[key];
+    if (!axisIsMeasured(axis)) {
+      return fact(label, `<b>UNMEASURED</b>: ${esc(unmeasuredReason(axis))} No tier or cohort rank is assigned.`);
+    }
     const tierText = axis.volatile
       ? `<b>${esc(axis.tierAtP10)} to ${esc(axis.tierAtP90)}</b> across P10 to P90, median tier <b>${esc(axis.tier)}</b>`
       : `tier <b>${esc(axis.tier)}</b>, stable across P10 to P90`;
-    return `${fact(label, `${tierText}; median <b>${num(axis.median)}</b>, P10 to P90 <b>${num(axis.p10)} to ${num(axis.p90)}</b>; rank <b>${axis.rankInCohort} of ${axis.cohortSize}</b>; n=${axis.n}`)}`;
+    return `${fact(label, `${tierText}; median <b>${num(axis.median)}</b>, P10 to P90 <b>${num(axis.p10)} to ${num(axis.p90)}</b>; competition rank <b>${axis.rankInCohort} of ${axis.cohortSize}</b>, cohort percentile <b>${num(axis.percentileInCohort * 100, 1)}%</b>; n=${axis.n}${rangePlot(axis, label, T.metric.axes.find((candidate) => candidate.key === key)?.unit || '', axis.n)}`)}`;
   };
-  const tierFeature = T ? `
+  const tierFeature = tierEvidenceReady ? `
     <section class="wfeature" aria-labelledby="measurement-method">
-      <div><span class="eyebrow">Measured, not voted</span><h3 id="measurement-method">Artifact-defined jobs and tiers</h3></div>
+      <div><span class="eyebrow">Controlled automatic-weapon simulation</span><h3 id="measurement-method">Artifact-defined fixtures and cohort tiers</h3></div>
       <p>${esc(T.metric.whyTwo)}</p>
       <div class="wmethod-grid">
-        ${T.metric.axes.map((axis) => `<div><b>${esc(humanize(axis.key))}</b><span>${esc(axis.what)}</span><code>${esc(axis.unit)}</code></div>`).join('')}
+        ${T.metric.axes.map((axis) => `<div><b>${esc(axis.label || (axis.key === 'trashClear' ? 'Controlled trash sim' : axis.key === 'bossDamage' ? 'Stationary-target sim' : humanize(axis.key)))}</b><span>${esc(axis.job)} ${esc(axis.what)}</span><code>${esc(axis.unit)}</code></div>`).join('')}
+        ${Object.entries(T.fixtureContract || {}).map(([key, fixture]) => `<div><b>${esc(fixture.name)}</b><span>${esc(fixture.classification)} · ${esc(fixture.control)}</span><code>controlled r=${num(fixture.controlled.radius)}, speed=${num(fixture.controlled.speed)}, hp=${num(fixture.controlled.hp)} · runtime behavior ${fixture.runtimeBehavior ? 'enabled' : 'disabled'}</code></div>`).join('')}
       </div>
       <p class="wsub">${esc(T.metric.whyNotSurvival)}</p>
+      <p class="wsub">${esc(T.executionContract.note)} Workers used: ${num(T.executionContract.workersUsed)} of cap ${num(T.executionContract.workerCap)}; execution-only, not measurement evidence.</p>
+      <details class="wraw"><summary>Evidence and limits <span>${T.limits.length} named limits</span></summary>
+        <dl><div><dt>Fixture fingerprint</dt><dd><code>${esc(T.fingerprint)}</code></dd></div><div><dt>Source-contract digest</dt><dd><code>${esc(T.sourceContract.digest)}</code></dd></div></dl>
+        <ul>${T.limits.map((line) => `<li>${esc(line)}</li>`).join('')}</ul>
+      </details>
     </section>` : '';
-  const tiersRoster = T ? {
+  const tiersRoster = tierEvidenceReady ? {
     section: 'Buildcraft',
     slug: 'tiers',
     domain: null,
-    sourceKind: 'measurement',
-    title: 'Weapon tiers',
-    tagline: `${T.metric.axes.length} measured jobs, with sample and spread attached.`,
-    lede: `${T.coverage.measured} of ${T.coverage.weaponDefs} weapons are measured across ${T.coverage.rows} form-and-level rows. Each letter is relative to its artifact-defined cohort, so rows from different cohorts are never ranked against one another.`,
-    omissions: `<b>Tomes, relics and characters are named as unmeasured by the artifact.</b> ${Object.entries(T.notCovered).map(([key, reason]) => `<b>${esc(humanize(key))}:</b> ${esc(reason)}`).join(' ')}`,
+    sourceKind: 'controlled simulation',
+    title: 'Automatic-weapon sim tiers',
+    tagline: `${T.metric.axes.length} controlled simulation fixtures, with sample and spread attached.`,
+    lede: `${T.coverage.measured} of ${T.coverage.weaponDefs} automatic weapons are represented across ${T.coverage.rows} form-and-level evidence rows in deterministic controlled fixtures. These are laboratory comparisons, not whole-run or human-play rankings. Each assigned letter is relative to its artifact-defined cohort; UNMEASURED axes are excluded rather than forced into the ladder.`,
+    omissions: `<b>Core weapons, tomes, relics and characters are named as unmeasured by the artifact.</b> ${Object.entries(T.notCovered).map(([key, reason]) => `<b>${esc(humanize(key))}:</b> ${esc(reason)}`).join(' ')}`,
     featureHtml: tierFeature,
-    sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint}`,
-    countLabel: `${T.coverage.measured} weapons · ${T.coverage.rows} measured rows`,
+    sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint} · source ${T.sourceContract.digest}`,
+    countLabel: `${T.coverage.measured} weapons · ${T.coverage.rows} evidence rows`,
     entries: tierRows,
+    visualRefs: (entry) => [{ domain: 'weapons', id: entry.weaponId }],
     groups: [
       { key: 'base-1', title: 'Base weapons · level 1', note: `${T.sample.singles.seeds} seeds per row, ranked only against this cohort.`, has: (e) => e.cohort === 'base:1' },
       { key: 'base-4', title: 'Base weapons · level 4', note: `${T.sample.singles.seeds} seeds per row, ranked only against this cohort.`, has: (e) => e.cohort === 'base:4' },
@@ -1884,82 +2108,89 @@ export function rosterSpecs(D, esc, T = null) {
     facets: [
       { key: 'form', label: 'Form', of: (e) => e.form },
       { key: 'level', label: 'Level', of: (e) => String(e.level), name: (v) => `Level ${v}` },
-      { key: 'crowd', label: 'Crowd tier', of: (e) => e.axes.trashClear.tier },
-      { key: 'boss', label: 'Boss tier', of: (e) => e.axes.bossDamage.tier },
-      { key: 'confidence', label: 'Spread', of: (e) => e.axes.trashClear.volatile || e.axes.bossDamage.volatile ? 'volatile' : 'stable' },
+      { key: 'crowd', label: 'Controlled trash tier', of: (e) => axisIsMeasured(e.axes.trashClear) ? e.axes.trashClear.tier : 'UNMEASURED' },
+      { key: 'boss', label: 'Stationary-target tier', of: (e) => axisIsMeasured(e.axes.bossDamage) ? e.axes.bossDamage.tier : 'UNMEASURED' },
+      { key: 'confidence', label: 'Evidence status', of: (e) => Object.values(e.axes).some((axis) => !axisIsMeasured(axis)) ? 'contains UNMEASURED axis' : Object.values(e.axes).some((axis) => axis.volatile) ? 'sample-sensitive tier' : 'tier-consistent in fixture' },
     ],
     sorts: [
-      { key: 'roster', label: 'Cohort rank', of: (e) => e.axes.trashClear.rankInCohort },
+      { key: 'roster', label: 'Controlled trash rank', of: (e) => axisIsMeasured(e.axes.trashClear) ? e.axes.trashClear.rankInCohort : undefined },
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
-      { key: 'crowd', label: 'Crowd median', of: (e) => e.axes.trashClear.median, desc: true },
-      { key: 'boss', label: 'Boss median', of: (e) => e.axes.bossDamage.median, desc: true },
+      { key: 'crowd', label: 'Controlled trash median', of: (e) => axisIsMeasured(e.axes.trashClear) ? e.axes.trashClear.median : undefined, desc: true },
+      { key: 'boss', label: 'Stationary-target median', of: (e) => axisIsMeasured(e.axes.bossDamage) ? e.axes.bossDamage.median : undefined, desc: true },
     ],
-    searchText: (e) => `${e.name} weapon tier ${e.cohort} crowd clear ${e.axes.trashClear.tier} boss damage ${e.axes.bossDamage.tier} ${e.axes.trashClear.volatile || e.axes.bossDamage.volatile ? 'volatile' : 'stable'}`,
+    searchText: (e) => `${e.name} automatic weapon controlled simulation tier ${e.cohort} trash fixture ${axisIsMeasured(e.axes.trashClear) ? e.axes.trashClear.tier : `UNMEASURED ${unmeasuredReason(e.axes.trashClear)}`} stationary target fixture ${axisIsMeasured(e.axes.bossDamage) ? e.axes.bossDamage.tier : `UNMEASURED ${unmeasuredReason(e.axes.bossDamage)}`} ${Object.values(e.axes).some((axis) => axisIsMeasured(axis) && axis.volatile) ? 'sample-sensitive' : 'tier-consistent in fixture'}`,
     card: (e) => `
-      <div class="wtags">${tag(`Crowd ${esc(e.axes.trashClear.tier)}`, e.axes.trashClear.tier === 'S' ? 'gold' : 'cyan')}${tag(`Boss ${esc(e.axes.bossDamage.tier)}`, e.axes.bossDamage.tier === 'S' ? 'gold' : 'pink')}${e.axes.trashClear.volatile || e.axes.bossDamage.volatile ? tag('Volatile', 'violet') : tag('Stable', '')}</div>
+      <div class="wtags">${tag(axisIsMeasured(e.axes.trashClear) ? `Trash sim ${esc(e.axes.trashClear.tier)}` : 'Trash sim UNMEASURED', e.axes.trashClear.tier === 'S' ? 'gold' : 'cyan')}${tag(axisIsMeasured(e.axes.bossDamage) ? `Stationary target ${esc(e.axes.bossDamage.tier)}` : 'Stationary target UNMEASURED', e.axes.bossDamage.tier === 'S' ? 'gold' : 'pink')}${Object.values(e.axes).some((axis) => axisIsMeasured(axis) && axis.volatile) ? tag('Sample-sensitive tier', 'violet') : tag('Tier-consistent where measured', '')}</div>
       <div class="wfacts">
         ${fact('Weapon', cardLink('weapons', e.weaponId, esc(weaponName(e.weaponId))))}
-        ${tierAxis(e, 'trashClear', 'Crowd clear')}
-        ${tierAxis(e, 'bossDamage', 'Boss damage')}
+        ${tierAxis(e, 'trashClear', 'Controlled trash sim')}
+        ${tierAxis(e, 'bossDamage', 'Stationary-target sim')}
       </div>`,
   } : null;
 
   // ---- measured pairs and build chains -----------------------------------
-  const pairEntries = (T?.meta?.pairs || []).map((pair) => ({
+  const pairEntries = (MB?.pairs || []).map((pair) => ({
     ...pair,
     id: pair.ids.join('-'),
     name: pair.ids.map(weaponName).join(' + '),
   })).sort((a, b) => b.axes.trashClear.median - a.axes.trashClear.median || a.name.localeCompare(b.name));
-  const buildFeature = T ? `
+  const selectionBiasLimits = (T?.limits || []).filter((line) => /same(?:[- ]| deterministic seed )cohort|holdout/i.test(line));
+  const attributedRows = (byWeapon, unit) => Object.entries(byWeapon || {}).map(([id, reading]) => `${cardLink('weapons', id, esc(weaponName(id)))}: <b>${num(reading.median)}</b> ${esc(unit)} median${reading.shareOfAttributed ? ` · <b>${pct(reading.shareOfAttributed.median)}</b> of attributed damage` : ''}`).join('<br>');
+  const buildFeature = tierEvidenceReady ? `
     <section class="wfeature" aria-labelledby="measured-builds">
-      <div><span class="eyebrow">Greedy forward selection</span><h3 id="measured-builds">Measured build chains</h3></div>
-      <p>${esc(T.meta.method)} Each chain starts from a measured solo and adds the best measured next weapon for that axis.</p>
+      <div><span class="eyebrow">Controlled-sim search paths</span><h3 id="measured-builds">Greedy automatic-weapon loadout paths</h3></div>
+      <p>${esc(MB.method)} Each path starts from a controlled solo fixture and adds the best measured next automatic weapon for that fixture. It is not a claim about human aiming, terrain, mobility, unlock timing or a complete live run.</p>
       <div class="wbuild-grid">
-        ${T.meta.builds.map((build) => `<article>
-          <span class="wtag ink-${build.axis === 'trashClear' ? 'cyan' : 'pink'}">${esc(build.axis === 'trashClear' ? 'Crowd clear' : 'Boss damage')}</span>
+        ${MB.builds.map((build, buildIndex) => `<article>
+          <span class="wtag ink-${build.axis === 'trashClear' ? 'cyan' : 'pink'}">${esc(build.label)} · ${esc(build.axis === 'trashClear' ? 'controlled trash sim' : 'stationary-target sim')}</span>
           <h4>${build.ids.map((id) => cardLink('weapons', id, esc(weaponName(id)))).join(' + ')}</h4>
-          <p><b>${num(build.median)}</b> ${esc(build.unit)} median, P10 to P90 <b>${num(build.p10)} to ${num(build.p90)}</b>, n=${T.sample.meta.seeds}.</p>
-          <ol>${build.steps.map((step) => `<li>${step.added ? `Add ${cardLink('weapons', step.added, esc(weaponName(step.added)))}: <b>+${num(step.gain)}</b>` : `Seed ${cardLink('weapons', step.ids[0], esc(weaponName(step.ids[0])))}: <b>${num(step.median)}</b>`}</li>`).join('')}</ol>
+          ${renderVisualStrip(build.ids.map((id) => ({ domain: 'weapons', id })), visuals, esc, {
+            use: 'build-feature', primary: buildIndex === 0, label: `${build.label} canonical weapon components`,
+          })}
+          <p><b>${num(build.median)}</b> ${esc(build.unit)} median, P10 to P90 <b>${num(build.p10)} to ${num(build.p90)}</b>, n=${buildSample.seeds}.</p>
+          ${rangePlot(build, `${build.label} ${build.axis}`, build.unit, buildSample.seeds)}
+          <p>${build.requirements.map((requirement) => `${cardLink('weapons', requirement.id, esc(weaponName(requirement.id)))}: ${requirement.unlockedFromStart ? 'available from the start' : requirement.achievementId ? `requires ${cardLink('achievements', requirement.achievementId, esc(requirement.achievementName))}` : 'unlock requirement not represented in this build result'}`).join('<br>')}</p>
+          <ol>${build.steps.map((step) => `<li>${step.added ? `Add ${cardLink('weapons', step.added, esc(weaponName(step.added)))}: measured marginal median <b>${num(step.marginal.median)}</b> ${esc(step.marginal.unit)}, P10 to P90 <b>${num(step.marginal.p10)} to ${num(step.marginal.p90)}</b>${rangePlot(step.marginal, `${step.added} marginal`, step.marginal.unit, step.marginal.n)}` : `Seed ${cardLink('weapons', step.ids[0], esc(weaponName(step.ids[0])))}: total median <b>${num(step.median)}</b> ${esc(build.unit)}`}<br><span class="wsub">${esc(step.attributionLabel)}<br>${attributedRows(step.byWeapon, 'damage/min')}<br>${esc(step.unattributedLabel)} Median <b>${num(step.unattributed.median)}</b> damage/min, P10 to P90 <b>${num(step.unattributed.p10)} to ${num(step.unattributed.p90)}</b>.</span></li>`).join('')}</ol>
         </article>`).join('')}
       </div>
     </section>` : '';
-  const buildsRoster = T ? {
+  const buildsRoster = tierEvidenceReady ? {
     section: 'Buildcraft',
     slug: 'builds',
     domain: null,
-    sourceKind: 'measurement',
-    title: 'Measured builds',
-    tagline: 'Every weapon pair and the build chains the sweep found.',
-    lede: `${T.meta.pairs.length} level-${T.meta.pairLevel} pairs were measured exhaustively on the smaller ${T.sample.meta.seeds}-seed cohort. Pair output, spread and synergy are shown on both axes; the ${T.meta.builds.length} featured build chains are measured extensions, not hand-picked recommendations.`,
-    omissions: `<b>Pair and build samples use ${T.sample.meta.seeds} seeds, not the ${T.sample.singles.seeds}-seed single-weapon sweep.</b> ${esc(T.meta.partnerQualityNote)}`,
+    sourceKind: 'controlled simulation',
+    title: 'Automatic-weapon sim loadouts',
+    tagline: 'Every controlled pair and the greedy loadout paths the fixture found.',
+    lede: `${MB.pairs.length} level-${MB.pairLevel} automatic-weapon pairs were measured exhaustively on a deterministic ${buildSample.seeds}-seed controlled cohort. Pair output, spread, per-weapon attributed damage and the ratio to solo-sum output are shown on both fixtures; the ${MB.builds.length} paths are laboratory search results, not whole-run recommendations.`,
+    omissions: `<b>Pair and build samples use ${buildSample.seeds} seeds, not the ${T.sample.singles.seeds}-seed single-weapon sweep.</b> ${esc(MB.partnerQualityNote)} ${selectionBiasLimits.map((line) => esc(line)).join(' ')} ${esc(T.loadoutContract.orderLimit)} Unlock rows report eligibility only; they do not model when a weapon enters a live run.`,
     featureHtml: buildFeature,
-    sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint}`,
-    countLabel: `${T.meta.pairs.length} measured pairs · ${T.meta.builds.length} build chains`,
+    sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint} · source ${T.sourceContract.digest}`,
+    countLabel: `${MB.pairs.length} controlled pairs · ${MB.builds.length} search paths`,
     entries: pairEntries,
-    groups: [{ key: 'all', title: 'Every measured pair', note: `All unordered pairs across the ${Object.keys(T.meta.solo).length}-weapon base roster, ${T.sample.meta.seeds} seeds per pair.`, has: () => true }],
+    visualRefs: (entry) => entry.ids.map((id) => ({ domain: 'weapons', id })),
+    groups: [{ key: 'all', title: 'Every controlled-sim pair', note: `All unordered pairs across the ${Object.keys(MB.solo).length}-weapon eligible roster, ${buildSample.seeds} deterministic seeds per pair.`, has: () => true }],
     facets: [
       { key: 'weapon', label: 'Includes weapon', of: (e) => e.ids, multi: true, name: weaponName },
-      { key: 'crowd', label: 'Crowd interaction', of: (e) => e.axes.trashClear.synergy >= 1.05 ? 'positive' : e.axes.trashClear.synergy <= 0.95 ? 'negative' : 'near additive' },
     ],
     sorts: [
-      { key: 'crowd', label: 'Crowd output', of: (e) => e.axes.trashClear.median, desc: true },
-      { key: 'crowdSynergy', label: 'Crowd synergy', of: (e) => e.axes.trashClear.synergy, desc: true },
-      { key: 'boss', label: 'Boss output', of: (e) => e.axes.bossDamage.median, desc: true },
-      { key: 'bossSynergy', label: 'Boss synergy', of: (e) => e.axes.bossDamage.synergy, desc: true },
+      { key: 'crowd', label: 'Controlled trash output', of: (e) => e.axes.trashClear.median, desc: true },
+      { key: 'crowdSynergy', label: 'Trash output / solo sum', of: (e) => e.axes.trashClear.synergy, desc: true },
+      { key: 'boss', label: 'Stationary-target output', of: (e) => e.axes.bossDamage.median, desc: true },
+      { key: 'bossSynergy', label: 'Target output / solo sum', of: (e) => e.axes.bossDamage.synergy, desc: true },
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
     ],
-    searchText: (e) => `${e.name} measured weapon pair build synergy crowd clear boss damage`,
+    searchText: (e) => `${e.name} automatic weapon pair controlled simulation loadout trash fixture stationary target fixture solo sum ratio`,
     card: (e) => {
       const axis = (key, label) => {
         const a = e.axes[key];
-        return fact(label, `median <b>${num(a.median)}</b>, P10 to P90 <b>${num(a.p10)} to ${num(a.p90)}</b>; synergy <b>${num(a.synergy)}</b> (${pct(a.synergy - 1)} vs solo sum); n=${a.n}`);
+        return `${fact(label, `median <b>${num(a.median)}</b>, P10 to P90 <b>${num(a.p10)} to ${num(a.p90)}</b>; output / solo sum median <b>${num(a.synergy)}</b> (${pct(a.synergy - 1)}), ratio P10 to P90 <b>${num(a.synergyP10)} to ${num(a.synergyP90)}</b>; n=${a.n}${rangePlot(a, label, T.metric.axes.find((candidate) => candidate.key === key)?.unit || '', a.n)}`)}${fact(`${label} damage attribution`, `${esc(a.attributionLabel)}<br>${attributedRows(a.byWeapon, a.componentUnit)}<br>${esc(a.unattributedLabel)} Median <b>${num(a.unattributed.median)}</b> ${esc(a.componentUnit)}, P10 to P90 <b>${num(a.unattributed.p10)} to ${num(a.unattributed.p90)}</b>.`)}`;
       };
       return `
-        <div class="wtags">${tag('Measured pair', 'cyan')}${e.axes.trashClear.synergy >= 1.05 ? tag('Positive crowd interaction', 'gold') : e.axes.trashClear.synergy <= 0.95 ? tag('Crowd overlap', 'violet') : tag('Near additive', '')}</div>
+        <div class="wtags">${tag('Controlled-sim pair', 'cyan')}${tag('Automatic weapons', 'violet')}</div>
         <div class="wfacts">
           ${fact('Weapons', e.ids.map((id) => cardLink('weapons', id, esc(weaponName(id)))).join(' + '))}
-          ${axis('trashClear', 'Crowd clear')}
-          ${axis('bossDamage', 'Boss damage')}
+          ${axis('trashClear', 'Controlled trash sim')}
+          ${axis('bossDamage', 'Stationary-target sim')}
         </div>`;
     },
   } : null;
@@ -1973,6 +2204,7 @@ export function rosterSpecs(D, esc, T = null) {
     relicsRoster,
     legendariesRoster,
     blessingsRoster,
+    shrineMovementRoster,
     utilitiesRoster,
     ultimatesRoster,
     evolutionsRoster,
@@ -2015,11 +2247,265 @@ function facetValues(roster, facet) {
 const datasetKey = (k) => `s${k.charAt(0).toUpperCase()}${k.slice(1)}`;
 const entryCountLabel = (count) => `${count} ${count === 1 ? 'entry' : 'entries'}`;
 
+/* Search result kinds are player-facing UI, never raw artifact keys. Keep the
+ * complete public-domain map here so a newly routed domain cannot leak a
+ * camelCase implementation name into the combobox. buildWiki validates exact
+ * coverage against domainOrder below. */
+export const SEARCH_TYPE = {
+  weapons: 'weapon',
+  coreWeapons: 'core weapon',
+  enemies: 'enemy',
+  relics: 'relic',
+  levels: 'world',
+  passives: 'tome',
+  characters: 'character',
+  innates: 'innate',
+  signatures: 'signature',
+  expeditions: 'expedition',
+  achievements: 'achievement',
+  runModes: 'run mode',
+  shipCores: 'ship core',
+  shipFragments: 'ship fragment',
+  legendaries: 'legendary upgrade',
+  ultimates: 'ultimate ability',
+  evolutions: 'evolution recipe',
+  shrineBlessings: 'shrine blessing',
+  shrineMovement: 'shrine movement offering',
+  utilities: 'utility ability',
+  wearables: 'wearable',
+  quests: 'quest',
+  shop: 'shop upgrade',
+  worldEvents: 'rare world event',
+  ambientEvents: 'ambient event placement',
+  shipSystems: 'ship system',
+  cosmetics: 'cosmetic style',
+  jumpAugments: 'legacy jump alias',
+};
+
+/* Every path below feeds a visible title, sentence, fact, facet, sort key or
+ * search token on its domain route. Presence is checked after roster shaping,
+ * which also covers derived display fields such as run-mode names and evolution
+ * recipe anchors. This is intentionally narrower than "every artifact field":
+ * a new private/export-only field must not break the wiki, while deleting a
+ * field the wiki actually presents must fail before HTML is written. */
+export const DISPLAY_FIELD_PATHS = Object.freeze({
+  weapons: ['desc', 'pattern', 'element', 'shape', 'baseDamage', 'fireRateMs', 'maxLevel', 'perLevel', 'params', 'unlockedFromStart'],
+  coreWeapons: ['desc', 'feel', 'cadence', 'cadenceLabel', 'meter', 'meterPips', 'color'],
+  passives: ['desc', 'stat', 'perLevel', 'maxLevel', 'unlockedFromStart'],
+  relics: ['icon', 'rarity', 'flavor', 'desc', 'maxStacks'],
+  legendaries: ['icon', 'color', 'desc', 'effect', 'params'],
+  shrineBlessings: ['glyph', 'color', 'desc', 'stat', 'value'],
+  shrineMovement: ['glyph', 'color', 'artColor', 'desc', 'stat', 'value'],
+  utilities: ['glyph', 'color', 'desc', 'cooldownMs', 'implemented', 'unlockedFromStart', 'costGold', 'params'],
+  ultimates: ['desc', 'cooldownMs', 'icon', 'params'],
+  evolutions: ['baseId', 'passiveId', 'evolvedId'],
+  jumpAugments: ['desc', 'stat', 'perLevel', 'color'],
+  characters: ['desc', 'signatureId', 'innateId', 'startWeaponId', 'baseStats.maxHp', 'baseStats.speed', 'baseStats.might', 'unlockedFromStart'],
+  innates: ['effect', 'valueKind', 'base', 'growth', 'cap', 'characterSelectCopy'],
+  signatures: ['desc', 'cooldownMs', 'params'],
+  enemies: ['tier', 'behavior'],
+  levels: ['tagline', 'paletteId', 'cardAccent', 'tuning', 'spawnTable', 'bosses', 'shrineCount', 'launchPads', 'surfaces', 'unlockedFromStart'],
+  expeditions: ['tagline', 'paletteId', 'tuning', 'spawnTable', 'bosses', 'shrineCount', 'launchPads', 'surfaces', 'unlockedFromStart'],
+  runModes: ['paceScale', 'bankAtElapsedSec', 'finalHordeAtPaceSec', 'offersVictoryChoice', 'openingHpBonusPct', 'allowFlyers', 'tierLadderEnabled', 'worldEventSelection', 'earthyWorldEventCount', 'otherWorldEventCount'],
+  worldEvents: ['weight', 'maxPerRun', 'minSpacingM', 'allowedWorlds'],
+  ambientEvents: ['events'],
+  achievements: ['desc', 'kind'],
+  quests: ['giver', 'chainId', 'step', 'title', 'ask', 'objective', 'target.kind', 'target.count', 'reaction', 'reward', 'reward.kind'],
+  shop: ['desc', 'perRank', 'ranks', 'lane', 'band'],
+  shipCores: ['worldId', 'system', 'memoryFlavor'],
+  shipSystems: ['label', 'heart', 'coreId'],
+  shipFragments: ['route', 'system', 'form', 'memoryFlavor'],
+  wearables: ['anchor', 'blurb', 'color', 'accent', 'trails'],
+  cosmetics: ['unlockedFromStart', 'bodyColor', 'rimColor', 'accentColor'],
+});
+
+/* Ref fields are held to a stronger rule than "present if present": each
+ * conditional relation is triggered from its independent owner (achievement,
+ * quest, evolution, character, level, and so on). Deleting the derived backlink
+ * therefore still fails instead of making the condition disappear with it. */
+export const DISPLAY_REF_FIELD_PATHS = Object.freeze({
+  weapons: [
+    { path: 'suggestedByCharacters', when: (entry, D) => Object.values(D.domains.characters.entries).some((row) => row.startWeaponId === entry.id) },
+    { path: 'unlockedByAchievements', when: (entry, D) => Object.values(D.domains.achievements.entries).some((row) => row.unlocks?.weapon === entry.id) },
+    { path: 'unlockedByQuests', when: (entry, D) => Object.values(D.domains.quests.entries).some((row) => row.reward?.weaponId === entry.id) },
+    { path: 'evolvesFrom', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id) },
+    { path: 'evolvesInto', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.baseId === entry.id) },
+    { path: 'donorForCores', when: (entry, D) => Object.values(D.domains.coreWeapons.entries).some((row) => row.donorWeaponId === entry.id) },
+  ],
+  coreWeapons: ['donorWeapon', 'forgiveness'],
+  enemies: [
+    'speedProfile',
+    { path: 'spawnsIn', when: (entry, D) => ['levels', 'expeditions'].some((domain) => Object.values(D.domains[domain].entries).some((row) => row.spawnTable?.some((spawn) => spawn.kindId === entry.id))) },
+    { path: 'bossIn', when: (entry, D) => ['levels', 'expeditions'].some((domain) => Object.values(D.domains[domain].entries).some((row) => row.bosses?.some((boss) => boss.kindId === entry.id))) },
+    { path: 'splitsInto', when: (entry) => !!entry.onDeath?.split?.kindId },
+    { path: 'splitsFrom', when: (entry, D) => Object.values(D.domains.enemies.entries).some((row) => row.onDeath?.split?.kindId === entry.id) },
+  ],
+  relics: ['inArenaPool'],
+  passives: [
+    { path: 'requiredByEvolutions', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.passiveId === entry.id) },
+    { path: 'unlockedByAchievements', when: (entry, D) => Object.values(D.domains.achievements.entries).some((row) => row.unlocks?.passive === entry.id) },
+    { path: 'runtimeUnlock', when: (entry) => entry.id === 'aegisTome' },
+  ],
+  jumpAugments: ['shrineMovementOffering'],
+  characters: ['suggestedWeapon'],
+  innates: ['characters'],
+  signatures: ['characters'],
+  levels: [
+    'enemyNames', 'bossNames',
+    { path: 'unlockedBy', when: (entry, D) => Object.values(D.domains.levels.entries).some((row) => row.unlocks === entry.id) },
+    { path: 'unlocksName', when: (entry) => !!entry.unlocks },
+    { path: 'shipCore', when: (entry, D) => Object.values(D.domains.shipCores.entries).some((row) => row.worldId === entry.id) },
+    { path: 'worldEvents', when: (entry, D) => Object.values(D.domains.worldEvents.entries).some((row) => row.allowedWorlds?.includes(entry.id)) },
+    { path: 'ambientEvents', when: (entry, D) => Object.prototype.hasOwnProperty.call(D.domains.ambientEvents.entries, entry.id) },
+  ],
+  expeditions: [
+    'enemyKinds',
+    { path: 'worldEvents', when: (entry, D) => Object.values(D.domains.worldEvents.entries).some((row) => row.allowedWorlds?.includes(entry.id)) },
+    { path: 'ambientEvents', when: (entry, D) => Object.prototype.hasOwnProperty.call(D.domains.ambientEvents.entries, entry.id) },
+  ],
+  worldEvents: ['campaignLevels', 'expeditions'],
+  ambientEvents: [
+    { path: 'campaignLevel', when: (entry, D) => !!D.domains.levels.entries[entry.id] },
+    { path: 'expedition', when: (entry, D) => !!D.domains.expeditions.entries[entry.id] },
+  ],
+  quests: [
+    'giverName',
+    { path: 'previousQuest', when: (entry) => entry.step > 1 },
+    { path: 'nextQuest', when: (entry, D) => D.domains.quests.chainQuests?.[entry.chainId]?.indexOf(entry.id) < D.domains.quests.chainQuests?.[entry.chainId]?.length - 1 },
+    { path: 'rewardWeapon', when: (entry) => typeof entry.reward?.weaponId === 'string' },
+    { path: 'rewardWearable', when: (entry) => typeof entry.reward?.wearableId === 'string' },
+    { path: 'rewardTitle', when: (entry) => typeof entry.reward?.titleId === 'string' },
+  ],
+  shop: ['ranks', 'totalCost'],
+  shipCores: ['levelName', 'socket', 'socketLabel'],
+  shipSystems: ['coreName'],
+  shipFragments: ['routeLabel'],
+  wearables: [{ path: 'rewardedByQuests', when: (entry, D) => Object.values(D.domains.quests.entries).some((row) => row.reward?.wearableId === entry.id) }],
+  cosmetics: [{ path: 'unlockedByAchievements', when: (entry, D) => Object.values(D.domains.achievements.entries).some((row) => row.unlocks?.sprite === entry.id) }],
+});
+
+/* Domain/root contracts also feed visible features. These paths keep the prose
+ * bound to exported runtime semantics rather than to a hand-copied constant. */
+export const DISPLAY_ROOT_FIELD_PATHS = Object.freeze([
+  'domains.enemies.scaling.hpPer25s',
+  'domains.enemies.scaling.damagePer30s',
+  'domains.enemies.scaling.xpPer120s',
+  'domains.characters.runtime.baseStats.maxHp.role',
+  'domains.characters.runtime.baseStats.maxHp.unit',
+  'domains.characters.runtime.baseStats.maxHp.semantics',
+  'domains.characters.runtime.baseStats.maxHp.provenance',
+  'domains.characters.runtime.baseStats.speed.role',
+  'domains.characters.runtime.baseStats.speed.unit',
+  'domains.characters.runtime.baseStats.speed.reference',
+  'domains.characters.runtime.baseStats.speed.semantics',
+  'domains.characters.runtime.baseStats.speed.provenance',
+  'domains.characters.runtime.baseStats.might.role',
+  'domains.characters.runtime.baseStats.might.unit',
+  'domains.characters.runtime.baseStats.might.semantics',
+  'domains.characters.runtime.baseStats.might.provenance',
+  'domains.characters.runtime.weaponIdentity.field',
+  'domains.characters.runtime.weaponIdentity.role',
+  'domains.characters.runtime.weaponIdentity.standardSoloCampaignGrant',
+  'domains.characters.runtime.weaponIdentity.semantics',
+  'domains.characters.runtime.weaponIdentity.provenance',
+  'domains.shrineMovement.runtime.owner',
+  'domains.shrineMovement.runtime.offerSlot',
+  'domains.shrineMovement.runtime.normalWorldShrineMovementSlots',
+  'domains.shrineMovement.runtime.gate.requiresWorldShrine',
+  'domains.shrineMovement.runtime.gate.requiresNoLegendaryReplacement',
+  'domains.shrineMovement.runtime.semantics',
+  'domains.shrineMovement.runtime.provenance',
+  'domains.runModes.openingEnemyHpBonus.field',
+  'domains.runModes.openingEnemyHpBonus.owner',
+  'domains.runModes.openingEnemyHpBonus.appliesTo',
+  'domains.runModes.openingEnemyHpBonus.excludes',
+  'domains.runModes.openingEnemyHpBonus.fade',
+  'domains.runModes.openingEnemyHpBonus.fadeClock',
+  'domains.runModes.openingEnemyHpBonus.startsAtPaceSec',
+  'domains.runModes.openingEnemyHpBonus.fadesToZeroAtPaceSec',
+  'domains.runModes.openingEnemyHpBonus.unifiedProfileElapsedSec',
+  'domains.runModes.openingEnemyHpBonus.semantics',
+  'domains.runModes.openingEnemyHpBonus.provenance',
+  'world.encounterSchedule.automaticMinibossCadenceSec',
+  'world.encounterSchedule.cadenceClock',
+  'world.encounterSchedule.unifiedProfilePreBankIntervalElapsedSec',
+  'world.encounterSchedule.unifiedProfileEndlessIntervalElapsedSec',
+  'world.encounterSchedule.semantics',
+  'world.encounterSchedule.limits',
+  'world.encounterSchedule.provenance',
+]);
+
+export const DISPLAY_CONDITIONAL_FIELD_PATHS = Object.freeze({
+  weapons: [
+    { path: 'tickRateMs', when: (entry) => entry.fireRateMs === 0 },
+    { path: 'evolved', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id) },
+  ],
+  passives: [{ path: 'shieldRegenPerLevel', when: (entry) => entry.id === 'aegisTome' }],
+  relics: [
+    { path: 'stats', when: (entry) => !entry.event },
+    { path: 'event', when: (entry) => !entry.stats },
+  ],
+  shrineMovement: [{ path: 'maxStacks', when: (entry) => entry.id !== 'extraJump' }],
+  jumpAugments: [{ path: 'maxLevel', when: (entry) => entry.id === 'jumpPower' }],
+  enemies: [
+    { path: 'hp', when: (entry) => ['basic', 'special'].includes(entry.tier) },
+    { path: 'damage', when: (entry) => ['basic', 'special'].includes(entry.tier) },
+    { path: 'xp', when: (entry) => ['basic', 'special'].includes(entry.tier) },
+    { path: 'onDeath.split.count', when: (entry) => !!entry.onDeath?.split?.kindId },
+    { path: 'flying', when: (entry, D) => D.domains.enemies.flyingIds?.includes(entry.id) },
+  ],
+  achievements: [
+    {
+      path: 'unlocks',
+      when: (entry, D) => [
+        ...Object.values(D.domains.weapons.refs || {}).flatMap((refs) => refs?.unlockedByAchievements || []),
+        ...Object.values(D.domains.passives.refs || {}).flatMap((refs) => refs?.unlockedByAchievements || []),
+        ...Object.values(D.domains.cosmetics.refs || {}).flatMap((refs) => refs?.unlockedByAchievements || []),
+        ...Object.values(D.domains.levels.refs || {}).flatMap((refs) => refs?.unlockedByAchievements || []),
+      ].includes(entry.id),
+    },
+    { path: 'levelId', when: (entry) => typeof entry.levelId === 'string' },
+    { path: 'stat', when: (entry) => typeof entry.stat === 'string' },
+    { path: 'target', when: (entry) => entry.target !== undefined },
+  ],
+  quests: [
+    { path: 'reward.amount', when: (entry) => entry.reward?.kind === 'gold' },
+    { path: 'unit', when: (entry) => typeof entry.unit === 'string' },
+  ],
+});
+
+const displayPathValue = (entry, path) => {
+  let value = entry;
+  for (const segment of path.split('.')) {
+    if (value === null || typeof value !== 'object' || !Object.prototype.hasOwnProperty.call(value, segment)) {
+      return { present: false, value: undefined };
+    }
+    value = value[segment];
+  }
+  return { present: value !== undefined, value };
+};
+
+const displayValueIsRenderable = (value) => {
+  if (value === null) return true;
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (typeof value === 'string') return value.trim().length > 0;
+  return ['boolean', 'object'].includes(typeof value);
+};
+
+const NONEMPTY_DISPLAY_ARRAYS = new Set([
+  'levels.spawnTable', 'levels.bosses', 'expeditions.spawnTable', 'expeditions.bosses',
+  'worldEvents.allowedWorlds', 'ambientEvents.events', 'quests.ask', 'quests.reaction',
+]);
+
 function renderRosterPage(roster, ctx) {
-  const { esc, chrome, D } = ctx;
+  const { esc, chrome, D, V } = ctx;
+  const qualifiedTitle = /^WHOMP\b/i.test(roster.title) ? roster.title : `WHOMP ${roster.title.toLowerCase()}`;
   const sourceDomain = roster.domain ? D.domains[roster.domain] : null;
   const noted = sourceDomain?.noted || 0;
   const total = roster.entries.length;
+  const visuals = visualIndex(V);
+  const pageVisualKeys = new Set();
+  let primaryVisualUsed = /<img\b[^>]*\bloading="eager"/.test(roster.featureHtml || '');
 
   const facetBar = roster.facets.map((f) => {
     const values = facetValues(roster, f);
@@ -2027,8 +2513,8 @@ function renderRosterPage(roster, ctx) {
     const label = f.name || humanize;
     return `
       <div class="wfacet">
-        <span class="wfacet-h">${esc(f.label)}</span>
-        <div class="wfacet-row" data-facet="${esc(f.key)}" data-multi="${f.multi ? '1' : '0'}">
+        <span class="wfacet-h" id="facet-${esc(roster.slug)}-${esc(f.key)}">${esc(f.label)}</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-${esc(roster.slug)}-${esc(f.key)}" data-facet="${esc(f.key)}" data-multi="${f.multi ? '1' : '0'}">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
           ${values.map(([v, n]) => `<button class="wf" type="button" data-value="${esc(v)}" aria-pressed="false" aria-controls="wiki-groups">${esc(label(v))} <span style="opacity:.5">${n}</span></button>`).join('')}
         </div>
@@ -2037,7 +2523,7 @@ function renderRosterPage(roster, ctx) {
 
   const sortBar = roster.sorts.length > 1 ? `
       <div class="wfacet">
-        <span class="wfacet-h">Sort</span>
+        <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort ${esc(roster.title)}">
           ${roster.sorts.map((s) => `<option value="${esc(s.key)}" data-desc="${s.desc ? '1' : '0'}" data-text="${s.text ? '1' : '0'}">${esc(s.label)}</option>`).join('')}
         </select>
@@ -2049,8 +2535,8 @@ function renderRosterPage(roster, ctx) {
     const cards = members.map((e) => {
       const facetAttrs = roster.facets.map((f) => {
         const value = f.multi ? arr(f.of(e)).join(' ') : String(f.of(e) ?? '');
-        return `data-${f.key}="${esc(value)}"`;
-      }).join(' ');
+        return value ? `data-${f.key}="${esc(value)}"` : '';
+      }).filter(Boolean).join(' ');
       const sortAttrs = roster.sorts.map((s) => {
         const raw = s.of(e);
         if (raw === undefined || raw === null) return '';
@@ -2058,12 +2544,31 @@ function renderRosterPage(roster, ctx) {
       }).join(' ');
       const accent = roster.accent ? roster.accent(e) : null;
       const note = (sourceDomain?.notes || {})[e.id];
+      const visualRefs = roster.visualRefs
+        ? roster.visualRefs(e)
+        : roster.domain
+          ? [{ domain: roster.domain, id: e.id }]
+          : [];
+      const visualEntries = visualRefs.map((ref) => visuals.get(`${ref.domain}:${ref.id}`)).filter(Boolean);
+      for (const entry of visualEntries) pageVisualKeys.add(entry.assetKey);
+      const isPrimaryVisual = !primaryVisualUsed && visualEntries.length > 0;
+      if (isPrimaryVisual) primaryVisualUsed = true;
+      const visualHtml = roster.visualRefs
+        ? renderVisualStrip(visualRefs, visuals, esc, {
+            use: 'reference',
+            primary: isPrimaryVisual,
+            label: `${e.name} canonical visual components`,
+          })
+        : visualEntries.length === 1
+          ? renderWikiVisual(visualEntries[0], esc, { primary: isPrimaryVisual, use: 'entry' })
+          : '';
       return `
-      <article class="wcard" id="e-${esc(e.id)}" ${facetAttrs} ${sortAttrs}>
+      <article class="wcard" id="e-${esc(e.id)}" tabindex="-1" ${facetAttrs} ${sortAttrs}>
         <div class="wcard-h">
           <h4>${esc(e.name)}</h4>
           ${accent ? `<span class="wcard-accent" style="background:${esc(accent)}"></span>` : ''}
         </div>
+        ${visualHtml}
         ${roster.card(e)}
         ${note ? `<p class="wnote">${esc(note)}</p>` : ''}
       </article>`;
@@ -2082,7 +2587,7 @@ function renderRosterPage(roster, ctx) {
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP ${esc(roster.title.toLowerCase())}</h1>
+        <h1 class="chroma">${esc(qualifiedTitle)}</h1>
         <p class="subtag">${esc(roster.tagline)}</p>
       </span>
     </a>
@@ -2093,21 +2598,23 @@ function renderRosterPage(roster, ctx) {
 ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
     ${chrome.wikiNav(roster.slug)}
     <div class="stat">${esc(roster.countLabel || entryCountLabel(total))}, read straight out of the game</div>
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">${esc(roster.title)}</span></nav>
     <h2 class="chroma">${esc(roster.title)}</h2>
     <p class="lede">${esc(roster.lede)}</p>
 
-    <p class="wprov">Every value on this page is read from a verified generated artifact at build time, against
-      <b>game@${esc(chrome.headSha)}</b>. The generator refuses stale artifacts, missing domains, missing entries
+    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
+      <b>game@${esc(chrome.headSha)}</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
       and dead relations before it writes a page. Source: <code>${esc(roster.sourceLabel || sourceDomain?.source || 'generated measurement artifact')}</code>.
       ${sourceDomain ? (noted === 0
     ? `Optional director notes have <b>0 of ${total}</b> coverage, so these cards use canonical mechanics and authored registry copy only.`
-    : `<b>${noted} of ${total}</b> carry an additional director note.`) : ''}</p>
+    : `<b>${noted} of ${total}</b> carry an additional director note.`) : ''}
+      ${pageVisualKeys.size ? `This route also uses <b>${pageVisualKeys.size}</b> game-owned visual association${pageVisualKeys.size === 1 ? '' : 's'} from <code>data/wiki-visuals.json</code> (content <code>${esc(V.contentFingerprint)}</code>, source <code>${esc(V.sourceFingerprint)}</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.` : ''}</p>
 
     ${roster.omissions ? `<p class="womit">${roster.omissions}</p>` : ''}
 
@@ -2126,7 +2633,7 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
   Generated ${esc(chrome.buildStamp)} from <code>game@${esc(chrome.headSha)}</code>,
-  content derived from <code>${esc(roster.sourceLabel || 'data/game-data.json')}</code>.
+  content derived from <code>${esc(roster.sourceLabel || 'data/game-data.json')}</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>`;
 
@@ -2181,7 +2688,8 @@ function resetFilters() {
 document.getElementById('wreset')?.addEventListener('click', resetFilters);
 // ---- sort ----
 const sortSel = document.getElementById('wsort');
-if (sortSel) sortSel.addEventListener('change', () => {
+function sortCards() {
+  if (!sortSel) return;
   const opt = sortSel.selectedOptions[0];
   const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
   const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
@@ -2197,7 +2705,18 @@ if (sortSel) sortSel.addEventListener('change', () => {
       })
       .forEach((k) => grid.appendChild(k));
   });
-});
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- compact mobile navigation ----
+const currentNavSection = document.querySelector('.wside-section.is-current-section');
+const mobileNav = window.matchMedia('(max-width:760px)');
+function syncCurrentNav() {
+  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+}
+syncCurrentNav();
+mobileNav.addEventListener?.('change', syncCurrentNav);
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 ${chrome.SEARCH_SCRIPT(`
@@ -2217,8 +2736,8 @@ ${chrome.SEARCH_SCRIPT(`
   return {
     file: `wiki-${roster.slug}.html`,
     html: ctx.page({
-      title: `WHOMP ${roster.title.toLowerCase()}`,
-      description: `${roster.title}: ${roster.tagline} Every value generated from the game's own data.`,
+      title: qualifiedTitle,
+      description: `${roster.title}: ${roster.tagline} Canonical facts generated from verified game artifacts.`,
       body,
       script,
     }),
@@ -2227,7 +2746,7 @@ ${chrome.SEARCH_SCRIPT(`
 
 // ================================================================ the hub
 function renderHub(rosters, ctx) {
-  const { esc, chrome, D, T } = ctx;
+  const { esc, chrome, D, T, V } = ctx;
   const sections = [...new Set(rosters.map((r) => r.section))];
   const catalogRosters = rosters.filter((r) => r.domain);
   const catalogEntries = catalogRosters.reduce((sum, r) => sum + r.entries.length, 0);
@@ -2249,19 +2768,19 @@ function renderHub(rosters, ctx) {
 ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
 
 <div class="wshell">
-  <nav class="wside">
+  <nav class="wside" aria-label="Wiki navigation">
     ${chrome.wikiNav('')}
   </nav>
-  <main class="wmain">
+  <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <h2 class="chroma">The wiki</h2>
-    <p class="lede">Every player-facing catalog in the generated public data layer, plus the measurements the simulation can honestly support.</p>
+    <p class="lede">Every player-facing catalog in the generated public data layer, plus the controlled automatic-weapon measurements the simulation can honestly support.</p>
 
     <p class="wprov">This wiki is <b>generated and fail-closed</b>. Every value and relation is read from the
       verified artifacts built from <b>game@${esc(chrome.headSha)}</b>. All <b>${D.coverage.domains}</b> public
-      registries have a route, with <b>${catalogEntries}</b> rendered source entries. The measured section adds
-      <b>${T?.coverage?.rows || 0}</b> weapon tier rows and <b>${T?.meta?.pairs?.length || 0}</b> exhaustive weapon
-      pairs. A stale artifact, unclassified domain, missing card, missing search entry or dead link stops generation.</p>
+      registries have a route, with <b>${catalogEntries}</b> rendered source entries. The controlled-simulation section adds
+      <b>${T?.coverage?.rows || 0}</b> automatic-weapon evidence rows and <b>${T?.measuredBuilds?.pairs?.length || 0}</b> exhaustive controlled
+      pairs. The visual encyclopedia adds <b>${V.coverage.entries}</b> game-owned entry associations and <b>${V.coverage.variants}</b> verified PNG variants within a <b>${V.performanceBudget.totalBytes}</b>-byte aggregate budget. A stale artifact, unclassified domain, missing card, broken visual association, missing search entry or dead link stops generation.</p>
 
     <p class="womit">Where the game has no answer, these pages say so instead of guessing. Several numbers that a
       normal wiki would print are deliberately absent, and each roster explains which ones and why at the top of
@@ -2285,7 +2804,7 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
   Generated ${esc(chrome.buildStamp)} from <code>game@${esc(chrome.headSha)}</code>,
-  content derived from <code>data/game-data.json</code>.
+  content derived from the three verified artifacts <code>data/game-data.json</code>, <code>data/tier-rankings.json</code>, and <code>data/wiki-visuals.json</code>.
   <a href="log.html#views">Dev log</a>
 </footer>`;
 
@@ -2293,19 +2812,546 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
     file: 'wiki.html',
     html: ctx.page({
       title: 'WHOMP wiki',
-      description: 'The complete generated WHOMP wiki: every public source catalog, measured weapon tiers and measured build pairs.',
+      description: 'The complete generated WHOMP wiki: every public source catalog and controlled automatic-weapon simulation surface.',
       body,
       script: chrome.SEARCH_SCRIPT(''),
     }),
   };
 }
 
+// ================================================================ evidence contract
+const HEX_256 = /^[a-f0-9]{64}$/;
+const DAMAGE_ATTRIBUTION_LABEL = 'Damage attribution/share only; not kill credit and not causal marginal contribution.';
+const UNATTRIBUTED_LABEL = 'Damage the controlled sink could not associate with a loadout weapon; published explicitly so attribution cannot fail open.';
+const VISUAL_SOURCE_PREFIX = 'data/wiki-visuals/';
+const VISUAL_OUTPUT_PREFIX = 'wiki-assets/';
+
+const canonicalize = (value) => {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonicalize(value[key])]));
+  }
+  return value;
+};
+const canonicalJson = (value) => JSON.stringify(canonicalize(value));
+const sha256Text = (value) => createHash('sha256').update(value).digest('hex');
+
+export function visualOutputPath(sourcePath) {
+  if (typeof sourcePath !== 'string' || !sourcePath.startsWith(VISUAL_SOURCE_PREFIX)) {
+    throw new Error(`visual asset path must begin ${VISUAL_SOURCE_PREFIX}: ${String(sourcePath)}`);
+  }
+  const tail = sourcePath.slice(VISUAL_SOURCE_PREFIX.length);
+  const parts = tail.split('/');
+  if (!tail || parts.some((part) => !/^[a-z0-9][a-z0-9._-]*$/.test(part) || part === '.' || part === '..')) {
+    throw new Error(`unsafe visual asset path: ${sourcePath}`);
+  }
+  return `${VISUAL_OUTPUT_PREFIX}${parts.join('/')}`;
+}
+
+function visualManifestViolations(D, V) {
+  const violations = [];
+  const named = (value) => typeof value === 'string' && value.trim().length > 0;
+  const plainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+  if (!V || V.schema !== 1) return [`wiki-visuals.json schema 1 is required${V ? `, received ${V.schema}` : ''}`];
+  if (V.generator !== 'node bin/wiki-visuals.mjs') violations.push('visual manifest generator identity is invalid');
+  if (!HEX_256.test(V.sourceFingerprint || '') || !Array.isArray(V.sourceFiles) || V.sourceFiles.length === 0
+    || new Set(V.sourceFiles).size !== V.sourceFiles.length || V.sourceFiles.some((path) => !named(path))) {
+    violations.push('visual manifest source fingerprint or source inventory is invalid');
+  }
+  if (V.provenance?.ownership !== 'repository-controlled-generated-output'
+    || V.provenance?.aiGenerated !== false || V.provenance?.externalAssets !== false
+    || !named(V.provenance?.derivation) || !V.provenance?.license?.classification) {
+    violations.push('visual manifest repository ownership, derivation or license provenance is incomplete');
+  }
+  if (V.performanceBudget?.format !== 'image/png' || V.performanceBudget?.primaryPortraitWidth !== 256
+    || canonicalJson(V.performanceBudget?.responsivePortraitWidths) !== canonicalJson([256, 512])
+    || !Number.isSafeInteger(V.performanceBudget?.totalBytes) || !Number.isSafeInteger(V.performanceBudget?.variantBytes)) {
+    violations.push('visual performance budget does not preserve the PNG and 256/512 responsive contract');
+  }
+  if (!named(V.renderer?.threeRevision) || V.renderer?.pixelRatio !== 1 || V.renderer?.clearAlpha !== 0
+    || canonicalJson(V.renderer?.portraitVariants) !== canonicalJson([
+      { label: '256w', width: 256, height: 288 }, { label: '512w', width: 512, height: 576 },
+    ]) || !named(V.renderer?.browser?.product) || !named(V.renderer?.browser?.userAgent)
+    || !named(V.renderer?.browser?.jsVersion) || !named(V.renderer?.node)
+    || !named(V.renderer?.vite) || !named(V.renderer?.three)) {
+    violations.push('visual renderer does not preserve the transparent deterministic 256/512 capture contract');
+  }
+  const policies = Array.isArray(V.policies) ? V.policies : [];
+  const entries = Array.isArray(V.entries) ? V.entries : [];
+  const unavailable = Array.isArray(V.unavailable) ? V.unavailable : [];
+  if (policies.length === 0 || new Set(policies.map((policy) => policy.domain)).size !== policies.length
+    || policies.some((policy) => !named(policy?.domain))) {
+    violations.push('visual manifest must expose a nonempty set of unique covered domain policies');
+  }
+  if (unavailable.length !== 0) violations.push('visual manifest contains unavailable entries; this release requires complete canonical coverage');
+  const surfaces = Array.isArray(V.surfaceInventory) ? V.surfaceInventory : [];
+  if (surfaces.length === 0 || new Set(surfaces.map((surface) => surface?.surface)).size !== surfaces.length
+    || surfaces.some((surface) => !named(surface?.surface) || !named(surface?.source) || !named(surface?.reason)
+      || !['generated', 'reference-only', 'unavailable', 'excluded'].includes(surface?.status)
+      || (surface.entryIds && (!Array.isArray(surface.entryIds) || new Set(surface.entryIds).size !== surface.entryIds.length)))) {
+    violations.push('visual surface inventory is missing, duplicated or unclassified');
+  }
+  const expected = new Set();
+  for (const policy of policies) {
+    const sourceDomain = D.domains?.[policy.domain];
+    const expectedIds = Array.isArray(policy.expectedIds) ? policy.expectedIds : [];
+    const classifiedSurface = surfaces.find((surface) => surface.surface === policy.domain);
+    if (!sourceDomain || !named(policy.strategy) || new Set(expectedIds).size !== expectedIds.length
+      || canonicalJson([...expectedIds].sort()) !== canonicalJson(Object.keys(sourceDomain.entries || {}).sort())) {
+      violations.push(`visual policy ${policy.domain || '(missing)'} does not exactly cover its canonical game-data domain`);
+    }
+    if (classifiedSurface && classifiedSurface.status !== 'generated') {
+      violations.push(`visual policy ${policy.domain} conflicts with surface inventory status ${classifiedSurface.status}`);
+    }
+    for (const id of expectedIds) expected.add(`${policy.domain}:${id}`);
+  }
+  const entryKeys = new Set();
+  const assetKeys = new Set();
+  const sourcePaths = new Set();
+  const outputPaths = new Set();
+  let variantCount = 0;
+  let totalBytes = 0;
+  for (const entry of entries) {
+    const key = `${entry?.domain}:${entry?.id}`;
+    if (!expected.has(key) || entryKeys.has(key) || entry.assetKey !== key || assetKeys.has(entry.assetKey)) {
+      violations.push(`visual association ${key} is missing, duplicated or outside a canonical policy`);
+    }
+    entryKeys.add(key);
+    assetKeys.add(entry.assetKey);
+    const policy = policies.find((candidate) => candidate.domain === entry?.domain);
+    if (entry.kind !== policy?.strategy || !D.domains?.[entry.domain]?.entries?.[entry.id]
+      || !named(entry.name) || !named(entry.source) || entry.sourceFingerprint !== V.sourceFingerprint
+      || entry.mimeType !== 'image/png' || entry.pixelated !== false || entry.alpha !== true
+      || entry.alt?.decorative !== false || !named(entry.alt?.text) || !named(entry.alt?.source)
+      || !String(entry.alt?.text || '').toLocaleLowerCase().includes(String(entry.name || '').toLocaleLowerCase())) {
+      violations.push(`visual entry ${key} has invalid identity, provenance, alt, MIME, alpha or rendering semantics`);
+    }
+    if (entry.domain === 'cosmetics' && !named(entry.limitation)) violations.push(`visual entry ${key} lacks its cosmetic palette limitation`);
+    const variants = Array.isArray(entry.variants) ? entry.variants : [];
+    if (entry.kind === 'runtime-render') {
+      if (canonicalJson(variants.map(({ label, width, height }) => ({ label, width, height })))
+        !== canonicalJson([{ label: '256w', width: 256, height: 288 }, { label: '512w', width: 512, height: 576 }])) {
+        violations.push(`visual entry ${key} does not have exact 256/512 runtime-render variants`);
+      }
+      const context = entry.renderContext;
+      const paletteValid = plainObject(context?.palette)
+        && (context.palette.id === 'toyMeadow' || context.palette.id === null)
+        && (context.palette.id === 'toyMeadow'
+          ? context.palette.source === 'src/render/palettes.ts#PALETTES.toyMeadow'
+            && /neutral/i.test(context.palette.role || '') && /live world/i.test(context.palette.role || '') && /recolou?r/i.test(context.palette.role || '')
+          : context.palette.source === null && /renderer-owned materials/i.test(context.palette.role || ''));
+      const frameValid = plainObject(context?.frame) && named(context.frame.mode)
+        && (context.frame.clockSec === null || Number.isFinite(context.frame.clockSec))
+        && (context.frame.stateTimeMs === null || Number.isFinite(context.frame.stateTimeMs));
+      const trailingWearable = entry.domain === 'wearables' && D.domains.wearables.entries[entry.id]?.trails === true;
+      const expectedCameraView = trailingWearable ? 'rear' : 'front';
+      if (!plainObject(context)
+        || context.presentation !== 'deterministic-isolated-runtime-render'
+        || !paletteValid
+        || canonicalJson(context.camera) !== canonicalJson({ projection: 'perspective', verticalFovDeg: 34, framing: 'bounds-fit', view: expectedCameraView })
+        || canonicalJson(context.lighting) !== canonicalJson({ mode: 'fixed-neutral-three-light', source: 'src/dev/wikiVisualsGallery.ts#addPortraitLights' })
+        || canonicalJson(context.background) !== canonicalJson({ alpha: 0 })
+        || !frameValid || !named(context.limitation)) {
+        violations.push(`visual entry ${key} lacks the exact isolated runtime render context`);
+      }
+      if (trailingWearable && (!/\brear\b/i.test(entry.alt?.text || '')
+        || !/\brear\b/i.test(context?.limitation || '') || !/\btrail\b/i.test(context?.limitation || ''))) {
+        violations.push(`visual entry ${key} does not explain its rear camera for a trailing wearable`);
+      }
+      if (entry.enemyRenderClass === 'horde' && (context?.frame?.clockSec !== 1 || context?.frame?.stateTimeMs !== 1000)) {
+        violations.push(`visual entry ${key} does not pin the canonical horde portrait frame`);
+      }
+      if (/static|construction|isolated|normalized/i.test(context?.frame?.mode || '')
+        && (context?.frame?.clockSec !== null || context?.frame?.stateTimeMs !== null)) {
+        violations.push(`visual entry ${key} assigns animation time to a static construction pose`);
+      }
+      if (entry.domain === 'shipFragments' && (!/isolated|normalized/i.test(context?.frame?.mode || '')
+        || !/isolated|normalized|world placement/i.test(context?.limitation || ''))) {
+        violations.push(`visual entry ${key} does not disclose isolated normalized ship-fragment placement`);
+      }
+    } else if (variants.length !== 1 || variants[0]?.label !== 'intrinsic') {
+      violations.push(`visual entry ${key} must have exactly one intrinsic glyph/composition variant`);
+    } else if (entry.renderContext !== undefined) {
+      violations.push(`visual entry ${key} assigns runtime render context to a non-runtime visual`);
+    }
+    const primary = variants[0];
+    for (const field of ['path', 'width', 'height', 'byteSize', 'sha256', 'alpha', 'mimeType']) {
+      if (entry[field] !== primary?.[field]) violations.push(`visual entry ${key} primary ${field} differs from its first variant`);
+    }
+    for (const variant of variants) {
+      variantCount++;
+      totalBytes += Number.isSafeInteger(variant?.byteSize) ? variant.byteSize : 0;
+      let outputPath = '';
+      try { outputPath = visualOutputPath(variant?.path); } catch (error) { violations.push(error.message); }
+      if (sourcePaths.has(variant?.path) || (outputPath && outputPaths.has(outputPath))) violations.push(`visual variant ${key}/${variant?.label} has a duplicate path`);
+      sourcePaths.add(variant?.path);
+      if (outputPath) outputPaths.add(outputPath);
+      if (!Number.isSafeInteger(variant?.width) || variant.width < 1 || !Number.isSafeInteger(variant?.height) || variant.height < 1
+        || !Number.isSafeInteger(variant?.byteSize) || variant.byteSize < 1 || variant.byteSize > V.performanceBudget.variantBytes
+        || !HEX_256.test(variant?.sha256 || '') || variant?.mimeType !== 'image/png' || variant?.alpha !== true) {
+        violations.push(`visual variant ${key}/${variant?.label} has invalid dimensions, size, hash, MIME or alpha metadata`);
+      }
+    }
+  }
+  if (entryKeys.size !== expected.size || [...expected].some((key) => !entryKeys.has(key))) {
+    violations.push(`visual entry coverage is ${entryKeys.size}, expected ${expected.size} canonical associations`);
+  }
+  for (const entry of entries) {
+    for (const component of entry.components || []) {
+      if (!entryKeys.has(`${component?.domain}:${component?.id}`)) violations.push(`visual entry ${entry.assetKey} has unresolved component ${component?.domain}:${component?.id}`);
+    }
+  }
+  const byDomain = {};
+  for (const policy of policies) byDomain[policy.domain] = { entries: 0, variants: 0, unavailable: 0, bytes: 0 };
+  for (const entry of entries) {
+    const row = byDomain[entry.domain] || (byDomain[entry.domain] = { entries: 0, variants: 0, unavailable: 0, bytes: 0 });
+    row.entries++;
+    row.variants += entry.variants?.length || 0;
+    row.bytes += (entry.variants || []).reduce((sum, variant) => sum + (variant.byteSize || 0), 0);
+  }
+  const coverage = { domains: policies.length, entries: entries.length, variants: variantCount, unavailable: unavailable.length, bytes: totalBytes, byDomain };
+  if (canonicalJson(V.coverage) !== canonicalJson(coverage) || totalBytes > V.performanceBudget.totalBytes) {
+    violations.push('visual coverage/performance ledger does not match its entries and variants');
+  }
+  if (!HEX_256.test(V.contentFingerprint || '')) violations.push('visual contentFingerprint is invalid');
+  else {
+    const copy = JSON.parse(JSON.stringify(V));
+    delete copy.contentFingerprint;
+    if (V.contentFingerprint !== sha256Text(canonicalJson(copy))) violations.push('visual contentFingerprint does not match manifest content');
+  }
+  return violations;
+}
+
+function tierEvidenceViolations(D, T) {
+  const violations = [];
+  if (!T || T.schema !== 2) return [`tier-rankings.json schema 2 is required${T ? `, received ${T.schema}` : ''}`];
+  const named = (value) => typeof value === 'string' && value.trim().length > 0;
+  const finite = (value) => Number.isFinite(value);
+  const axisDefs = Array.isArray(T.metric?.axes) ? T.metric.axes : [];
+  const axisKeys = axisDefs.map((axis) => axis.key);
+  const axisUnits = new Map(axisDefs.map((axis) => [axis.key, axis.unit]));
+
+  if (T.evidenceKind !== 'automatic-weapon-controlled-simulation') violations.push('tier evidenceKind must identify automatic-weapon controlled simulation');
+  if (JSON.stringify(T.covers) !== JSON.stringify(['automaticWeapons'])) violations.push('tier covers must be exactly automaticWeapons');
+  const expectedNotCovered = ['characters', 'coreWeapons', 'relics', 'tomes'];
+  if (JSON.stringify(Object.keys(T.notCovered || {}).sort()) !== JSON.stringify(expectedNotCovered)
+    || Object.values(T.notCovered || {}).some((reason) => !named(reason))) {
+    violations.push('tier notCovered must name core weapons, tomes, relics and characters with reasons');
+  }
+  if (T.sourceContract?.algorithm !== 'sha256' || !HEX_256.test(T.sourceContract?.digest || '')
+    || !Array.isArray(T.sourceContract?.files) || T.sourceContract.files.length === 0
+    || T.sourceContract.files.some((file) => !named(file?.path) || !HEX_256.test(file?.sha256 || ''))
+    || new Set(T.sourceContract.files.map((file) => file.path)).size !== T.sourceContract.files.length) {
+    violations.push('tier sourceContract is missing its sha256 digest or unique file fingerprints');
+  }
+  if (!named(T.fingerprint) || !Array.isArray(T.limits) || T.limits.length === 0
+    || T.limits.some((line) => !named(line)) || !Array.isArray(T.heldConstant) || T.heldConstant.length === 0) {
+    violations.push('tier fingerprint, held constants or measurement limits are incomplete');
+  }
+  const limitText = (T.limits || []).join(' ');
+  if (!/same(?:[- ]| deterministic seed )cohort/i.test(limitText) || !/holdout/i.test(limitText)) {
+    violations.push('tier limits do not disclose same-cohort greedy selection bias and the absence of holdout validation');
+  }
+  if (!Number.isInteger(T.executionContract?.workersUsed) || T.executionContract.workersUsed <= 0
+    || !Number.isInteger(T.executionContract?.workerCap) || T.executionContract.workerCap !== 4
+    || T.executionContract.workersUsed > T.executionContract.workerCap
+    || T.executionContract.executionOnly !== true || !named(T.executionContract.note)) {
+    violations.push('tier executionContract does not classify bounded worker use as execution-only');
+  }
+  if (axisKeys.length < 2 || new Set(axisKeys).size !== axisKeys.length
+    || axisDefs.some((axis) => !named(axis.key) || !named(axis.unit) || !named(axis.job) || !named(axis.what))) {
+    violations.push('tier metric axes are missing keys, units, jobs or fixture definitions');
+  }
+
+  const fixtures = T.fixtureContract || {};
+  if (JSON.stringify(Object.keys(fixtures).sort()) !== JSON.stringify(['boss', 'trash'])) {
+    violations.push('tier fixtureContract must contain exactly trash and boss fixtures');
+  }
+  for (const [key, fixture] of Object.entries(fixtures)) {
+    const canonicalEnemy = D.domains.enemies?.entries?.[fixture?.id];
+    const numbers = [fixture?.kindIndex, fixture?.authored?.radius, fixture?.authored?.speed, fixture?.authored?.hp,
+      fixture?.controlled?.radius, fixture?.controlled?.speed, fixture?.controlled?.hp];
+    if (!named(fixture?.id) || !named(fixture?.name) || !named(fixture?.tier)
+      || !named(fixture?.classification) || !named(fixture?.control)
+      || !canonicalEnemy || canonicalEnemy.tier !== fixture.tier
+      || numbers.some((value) => !finite(value)) || fixture.runtimeBehavior !== false) {
+      violations.push(`tier ${key} fixture does not expose canonical identity, authored/controlled values and runtimeBehavior=false`);
+    }
+  }
+  if (fixtures.boss?.tier !== 'boss' || !/stationary/i.test(fixtures.boss?.control || '')
+    || !/non-attacking|does not attack/i.test(fixtures.boss?.control || '')
+    || !/behavior|phase/i.test(fixtures.boss?.control || '')) {
+    violations.push('tier stationary-target fixture is not tied to a canonical boss kind with disabled attacks and behavior');
+  }
+
+  const singles = T.sample?.singles;
+  const buildsSample = T.sample?.builds;
+  const sampleValid = (sample, label) => {
+    if (!Number.isInteger(sample?.seeds) || sample.seeds <= 0
+      || !Array.isArray(sample.seedList) || sample.seedList.length !== sample.seeds
+      || new Set(sample.seedList).size !== sample.seedList.length
+      || sample.seedList.some((seed) => !Number.isInteger(seed))
+      || !finite(sample.secondsPerRun) || sample.secondsPerRun <= 0) {
+      violations.push(`${label} sample does not preserve its deterministic seeds and run duration`);
+      return false;
+    }
+    return true;
+  };
+  const singlesValid = sampleValid(singles, 'single-weapon');
+  const buildsValid = sampleValid(buildsSample, 'pair/build');
+
+  const distribution = (reading, expectedN, label, { requireN = true, full = false } = {}) => {
+    if (!reading || typeof reading !== 'object') { violations.push(`${label} has no distribution`); return; }
+    if (requireN && reading.n !== expectedN) violations.push(`${label} sample n=${reading.n} does not match ${expectedN}`);
+    if (!Array.isArray(reading.perSeed) || reading.perSeed.length !== expectedN
+      || reading.perSeed.some((value) => !finite(value))) violations.push(`${label} does not preserve ${expectedN} finite per-seed values`);
+    if (![reading.p10, reading.median, reading.p90].every(finite)
+      || reading.p10 > reading.median || reading.median > reading.p90) violations.push(`${label} has an invalid P10/median/P90 distribution`);
+    if (full && (![reading.min, reading.mean, reading.max].every(finite)
+      || reading.min > reading.p10 || reading.p90 > reading.max)) violations.push(`${label} has an invalid min/mean/max distribution`);
+  };
+
+  const loadout = T.loadoutContract;
+  const weaponDomain = D.domains.weapons;
+  const expectedEligible = (weaponDomain.order || []).filter((id) => !weaponDomain.refs?.[id]?.evolvesFrom).sort();
+  if (!Number.isInteger(loadout?.weaponSlots) || loadout.weaponSlots <= 0
+    || !Array.isArray(loadout?.eligibleIds) || new Set(loadout.eligibleIds).size !== loadout.eligibleIds.length
+    || JSON.stringify([...loadout.eligibleIds].sort()) !== JSON.stringify(expectedEligible)
+    || loadout.insertionOrder !== 'lexicographic-weapon-id' || !named(loadout.orderLimit)
+    || !Number.isInteger(loadout.level) || loadout.level <= 0 || loadout.rarityBonusLevels !== 0) {
+    violations.push('tier loadoutContract does not match the legal automatic-weapon roster, deterministic insertion order and neutral rarity');
+  }
+  const expectedPairRows = expectedEligible.length * (expectedEligible.length - 1) / 2;
+  const buildSize = buildsSample?.buildSize;
+  const buildStartCount = buildsSample?.buildStartCount;
+  const expectedBuildChains = axisKeys.length * (Number.isInteger(buildStartCount) ? buildStartCount : 0);
+  let expectedCandidatesPerChain = 1;
+  if (Number.isInteger(buildSize) && buildSize > 0) {
+    for (let size = 1; size < buildSize; size++) expectedCandidatesPerChain += expectedEligible.length - size;
+  }
+  const expectedTotalCandidates = expectedBuildChains * expectedCandidatesPerChain;
+  const expectedBuildSeconds = (expectedEligible.length + expectedPairRows)
+    * (buildsValid ? buildsSample.seeds : 0) * axisKeys.length * (buildsValid ? buildsSample.secondsPerRun : 0)
+    + expectedTotalCandidates * (buildsValid ? buildsSample.seeds : 0) * (buildsValid ? buildsSample.secondsPerRun : 0);
+  if (!Number.isInteger(buildSize) || buildSize <= 0 || buildSize > loadout?.weaponSlots || buildSize > expectedEligible.length
+    || !Number.isInteger(buildStartCount) || buildStartCount <= 0 || buildStartCount > expectedEligible.length
+    || buildsSample?.level !== loadout?.level || buildsSample?.soloRows !== expectedEligible.length
+    || buildsSample?.pairRows !== expectedPairRows || buildsSample?.buildChains !== expectedBuildChains
+    || buildsSample?.totalCandidateLoadouts !== expectedTotalCandidates
+    || buildsSample?.totalSimulatedSeconds !== expectedBuildSeconds || !named(buildsSample?.note)) {
+    violations.push('pair/build sample accounting does not match the legal roster, axes, build size, candidate loadouts or simulated duration');
+  }
+  const expectedSingleRunsPerRow = (singlesValid ? singles.seeds : 0) * axisKeys.length;
+  const expectedSingleSeconds = (T.coverage?.rows || 0) * expectedSingleRunsPerRow * (singlesValid ? singles.secondsPerRun : 0);
+  if (singles?.rows !== T.coverage?.rows || singles?.runsPerRow !== expectedSingleRunsPerRow
+    || singles?.totalSimulatedSeconds !== expectedSingleSeconds) {
+    violations.push('single-weapon sample accounting does not match evidence rows, axes, seeds or simulated duration');
+  }
+
+  const rows = Array.isArray(T.weapons) ? T.weapons : [];
+  if (T.coverage?.weaponDefs !== weaponDomain.count || T.coverage?.measured !== weaponDomain.count
+    || T.coverage?.rows !== rows.length) violations.push('tier coverage does not cover the complete automatic-weapon roster and evidence rows');
+  const rowIds = new Set();
+  const ranks = new Map();
+  for (const row of rows) {
+    const rowKey = `${row.id}:${row.form}:${row.level}`;
+    if (rowIds.has(rowKey)) violations.push(`tier row ${rowKey} is duplicated`);
+    rowIds.add(rowKey);
+    if (!weaponDomain.entries[row.id] || !named(row.name) || !named(row.form) || !named(row.cohort) || !Number.isInteger(row.level)) {
+      violations.push(`tier row ${rowKey} has no canonical weapon/form/cohort/level identity`);
+    }
+    for (const key of axisKeys) {
+      const reading = row.axes?.[key];
+      distribution(reading, singlesValid ? singles.seeds : 0, `tier row ${rowKey}/${key}`, { full: true });
+      if (reading?.status === 'UNMEASURED') {
+        if (reading.tier !== null || !named(reading.reason)
+          || (reading.rankInCohort !== null && reading.rankInCohort !== undefined)
+          || (reading.percentileInCohort !== null && reading.percentileInCohort !== undefined)) {
+          violations.push(`UNMEASURED tier row ${rowKey}/${key} has a tier/rank or no exact reason`);
+        }
+        continue;
+      }
+      if (!named(reading?.tier) || !Number.isInteger(reading?.rankInCohort) || !Number.isInteger(reading?.cohortSize)
+        || !finite(reading?.percentileInCohort)) {
+        violations.push(`measured tier row ${rowKey}/${key} has no tier or cohort rank`);
+      } else {
+        const cohortKey = `${row.cohort}/${key}`;
+        if (!ranks.has(cohortKey)) ranks.set(cohortKey, []);
+        ranks.get(cohortKey).push(reading);
+      }
+      if (reading?.volatile && (!named(reading.tierAtP10) || !named(reading.tierAtP90) || reading.tierSpan <= 1)) {
+        violations.push(`volatile tier row ${rowKey}/${key} has no visible tier span evidence`);
+      }
+    }
+  }
+  for (const [cohort, readings] of ranks) {
+    const invalid = readings.some((reading) => {
+      const expectedRank = 1 + readings.filter((other) => other.median > reading.median).length;
+      const expectedPercentile = readings.length > 1
+        ? Math.round((1 - (expectedRank - 1) / (readings.length - 1)) * 1000) / 1000
+        : 1;
+      return reading.cohortSize !== readings.length || reading.rankInCohort !== expectedRank
+        || reading.percentileInCohort !== expectedPercentile;
+    });
+    if (invalid) {
+      violations.push(`tier cohort ${cohort} does not use median-based competition ranks and shared tie percentiles`);
+    }
+  }
+
+  const measuredBuilds = T.measuredBuilds;
+  if (!measuredBuilds || !named(measuredBuilds.method) || !Number.isInteger(measuredBuilds.pairLevel)
+    || !named(measuredBuilds.partnerQualityNote) || !measuredBuilds.solo
+    || !Array.isArray(measuredBuilds.pairs) || !Array.isArray(measuredBuilds.builds)) {
+    violations.push('measuredBuilds is missing method, pair level, quality note, solo evidence, pairs or build paths');
+    return violations;
+  }
+  if (measuredBuilds.pairLevel !== loadout?.level) violations.push('measuredBuilds pair level differs from the loadout contract');
+  const eligible = loadout?.eligibleIds || [];
+  if (JSON.stringify(Object.keys(measuredBuilds.solo).sort()) !== JSON.stringify([...eligible].sort())) {
+    violations.push('measuredBuilds solo evidence does not exactly cover eligible weapon ids');
+  }
+  for (const id of eligible) {
+    for (const key of axisKeys) distribution(measuredBuilds.solo?.[id]?.[key], buildsValid ? buildsSample.seeds : 0, `solo ${id}/${key}`, { full: true });
+  }
+  const expectedBuildDescriptors = axisKeys.flatMap((axis) => [...eligible]
+    .sort((a, b) => (measuredBuilds.solo?.[b]?.[axis]?.median ?? -Infinity)
+      - (measuredBuilds.solo?.[a]?.[axis]?.median ?? -Infinity) || a.localeCompare(b))
+    .slice(0, Number.isInteger(buildStartCount) ? buildStartCount : 0)
+    .map((id) => `${axis}/${id}`));
+  const actualBuildDescriptors = measuredBuilds.builds.map((build) => `${build?.axis}/${build?.seededFrom?.[0]}`);
+  if (JSON.stringify(actualBuildDescriptors) !== JSON.stringify(expectedBuildDescriptors)
+    || new Set(actualBuildDescriptors).size !== actualBuildDescriptors.length) {
+    violations.push('measured build chains do not exactly cover the unique top-solo starts on every axis');
+  }
+
+  const pairKeys = new Set();
+  for (const pair of measuredBuilds.pairs) {
+    const ids = pair.ids || [];
+    const pairKey = ids.join('+');
+    if (ids.length !== 2 || new Set(ids).size !== 2 || ids.some((id) => !eligible.includes(id))
+      || JSON.stringify(ids) !== JSON.stringify([...ids].sort()) || pairKeys.has(pairKey)) {
+      violations.push(`measured pair ${pairKey || '(missing ids)'} is duplicated, unordered or ineligible`);
+    }
+    pairKeys.add(pairKey);
+    for (const key of axisKeys) {
+      const reading = pair.axes?.[key];
+      distribution(reading, buildsValid ? buildsSample.seeds : 0, `pair ${pairKey}/${key}`);
+      if (![reading?.soloSum, reading?.synergy, reading?.synergyP10, reading?.synergyP90].every(finite)
+        || reading.synergyP10 > reading.synergy || reading.synergy > reading.synergyP90
+        || !Array.isArray(reading.synergyPerSeed) || reading.synergyPerSeed.length !== buildsSample?.seeds
+        || reading.synergyPerSeed.some((value) => !finite(value)) || reading.componentUnit !== 'damage/min'
+        || reading.attributionLabel !== DAMAGE_ATTRIBUTION_LABEL || reading.unattributedLabel !== UNATTRIBUTED_LABEL
+        || JSON.stringify(Object.keys(reading.byWeapon || {}).sort()) !== JSON.stringify([...ids].sort())) {
+        violations.push(`pair ${pairKey}/${key} has invalid solo-sum ratio or per-weapon attribution`);
+      }
+      distribution(reading?.unattributed, buildsValid ? buildsSample.seeds : 0, `pair ${pairKey}/${key} unattributed damage`, { full: true });
+      if (reading?.unattributed?.max !== 0) violations.push(`pair ${pairKey}/${key} has non-zero unattributed controlled-sink damage`);
+      for (const id of ids) {
+        const component = reading?.byWeapon?.[id];
+        distribution(component, buildsValid ? buildsSample.seeds : 0, `pair ${pairKey}/${key} component ${id}`, { full: true });
+        const share = component?.shareOfAttributed;
+        distribution(share, buildsValid ? buildsSample.seeds : 0, `pair ${pairKey}/${key} share ${id}`, { requireN: false });
+      }
+      for (let index = 0; index < (buildsValid ? buildsSample.seeds : 0); index++) {
+        const attributed = ids.reduce((sum, id) => sum + (reading?.byWeapon?.[id]?.perSeed?.[index] || 0), 0);
+        const shareSum = ids.reduce((sum, id) => sum + (reading?.byWeapon?.[id]?.shareOfAttributed?.perSeed?.[index] || 0), 0);
+        if (attributed > 0 && Math.abs(shareSum - 1) > 0.002) violations.push(`pair ${pairKey}/${key} seed ${index} attribution shares do not sum to one`);
+      }
+    }
+  }
+  if (pairKeys.size !== expectedPairRows) violations.push(`measured pair coverage is ${pairKeys.size}, expected ${expectedPairRows} exhaustive unordered pairs`);
+
+  const achievements = D.domains.achievements.entries;
+  for (const build of measuredBuilds.builds) {
+    const label = `${build.axis || 'unknown'} build`;
+    if (build.label !== 'Measured controlled-sim build' || !axisKeys.includes(build.axis)
+      || build.unit !== axisUnits.get(build.axis) || build.method !== 'greedy-forward-selection'
+      || build.level !== loadout?.level || !Array.isArray(build.seededFrom) || build.seededFrom.length !== 1
+      || !eligible.includes(build.seededFrom[0]) || build.candidateLoadouts !== expectedCandidatesPerChain
+      || !Array.isArray(build.ids) || build.ids.length !== buildSize
+      || build.ids.length > loadout?.weaponSlots || new Set(build.ids).size !== build.ids.length
+      || build.ids.some((id) => !eligible.includes(id)) || JSON.stringify(build.ids) !== JSON.stringify([...build.ids].sort())) {
+      violations.push(`${label} violates its label, axis, unit, method, level or legal loadout`);
+    }
+    if (![build.p10, build.median, build.p90].every(finite) || build.p10 > build.median || build.median > build.p90) {
+      violations.push(`${label} has an invalid P10/median/P90 summary`);
+    }
+    if (!Array.isArray(build.requirements) || build.requirements.length !== build.ids.length
+      || JSON.stringify(build.requirements.map((requirement) => requirement.id).sort()) !== JSON.stringify([...build.ids].sort())) {
+      violations.push(`${label} does not expose one unlock requirement per component`);
+    }
+    for (const requirement of build.requirements || []) {
+      const weapon = weaponDomain.entries[requirement.id];
+      const achievement = requirement.achievementId ? achievements[requirement.achievementId] : null;
+      if (!weapon || requirement.unlockedFromStart !== weapon.unlockedFromStart
+        || (!weapon.unlockedFromStart && (!achievement || achievement.name !== requirement.achievementName
+          || achievement.unlocks?.weapon !== requirement.id))) {
+        violations.push(`${label} has an invalid unlock requirement for ${requirement.id}`);
+      }
+    }
+    if (!Array.isArray(build.steps) || build.steps.length !== buildSize) violations.push(`${label} does not contain one measured step per configured component`);
+    let previous = [];
+    for (const [index, step] of (build.steps || []).entries()) {
+      const expectedStepIds = index === 0 ? step.ids : [...previous, step.added].sort();
+      if (!Array.isArray(step.ids) || step.ids.length !== index + 1 || new Set(step.ids).size !== step.ids.length
+        || JSON.stringify(step.ids) !== JSON.stringify([...step.ids].sort())
+        || (index === 0
+          ? step.added !== null || step.marginal !== null || JSON.stringify(step.ids) !== JSON.stringify(build.seededFrom)
+          : !eligible.includes(step.added) || JSON.stringify(step.ids) !== JSON.stringify(expectedStepIds))) {
+        violations.push(`${label} step ${index + 1} is not a legal deterministic prefix`);
+      }
+      distribution(step, buildsValid ? buildsSample.seeds : 0, `${label} step ${index + 1}`, { requireN: false });
+      if (step.attributionLabel !== DAMAGE_ATTRIBUTION_LABEL || step.unattributedLabel !== UNATTRIBUTED_LABEL
+        || JSON.stringify(Object.keys(step.byWeapon || {}).sort()) !== JSON.stringify([...(step.ids || [])].sort())) {
+        violations.push(`${label} step ${index + 1} does not attribute every equipped weapon`);
+      }
+      distribution(step.unattributed, buildsValid ? buildsSample.seeds : 0, `${label} step ${index + 1} unattributed damage`, { full: true });
+      if (step.unattributed?.max !== 0) violations.push(`${label} step ${index + 1} has non-zero unattributed controlled-sink damage`);
+      for (const id of step.ids || []) {
+        const component = step.byWeapon?.[id];
+        distribution(component, buildsValid ? buildsSample.seeds : 0, `${label} step ${index + 1} component ${id}`, { full: true });
+        distribution(component?.shareOfAttributed, buildsValid ? buildsSample.seeds : 0, `${label} step ${index + 1} share ${id}`, { requireN: false });
+      }
+      for (let seedIndex = 0; seedIndex < (buildsValid ? buildsSample.seeds : 0); seedIndex++) {
+        const attributed = (step.ids || []).reduce((sum, id) => sum + (step.byWeapon?.[id]?.perSeed?.[seedIndex] || 0), 0);
+        const shareSum = (step.ids || []).reduce((sum, id) => sum + (step.byWeapon?.[id]?.shareOfAttributed?.perSeed?.[seedIndex] || 0), 0);
+        if (attributed > 0 && Math.abs(shareSum - 1) > 0.002) violations.push(`${label} step ${index + 1} seed ${seedIndex} attribution shares do not sum to one`);
+      }
+      if (index > 0) {
+        distribution(step.marginal, buildsValid ? buildsSample.seeds : 0, `${label} step ${index + 1} marginal`);
+        if (step.marginal?.unit !== build.unit || !finite(step.gain)) {
+          violations.push(`${label} step ${index + 1} marginal gain does not preserve its unit and summary`);
+        }
+      }
+      previous = step.ids || [];
+    }
+    if (JSON.stringify(previous) !== JSON.stringify(build.ids)) violations.push(`${label} final step differs from the published loadout`);
+  }
+  return violations;
+}
+
 // ================================================================ entry point
 export function buildWiki(ctx) {
-  const { D, T } = ctx;
-  const rosters = rosterSpecs(D, ctx.esc, T);
+  const { D, T, V } = ctx;
+  const evidenceViolations = tierEvidenceViolations(D, T);
+  if (evidenceViolations.length) throw new Error(`Wiki evidence contract failed (${evidenceViolations.length}):\n  ${evidenceViolations.join('\n  ')}`);
+  const visualViolations = visualManifestViolations(D, V);
+  if (visualViolations.length) throw new Error(`Wiki visual contract failed (${visualViolations.length}):\n  ${visualViolations.join('\n  ')}`);
+  const rosters = rosterSpecs(D, ctx.esc, T, V);
   const violations = [];
-  if (D.schema !== 7) violations.push(`game-data.json schema 7 is required, received ${D.schema}`);
+  if (D.schema !== 9) violations.push(`game-data.json schema 9 is required, received ${D.schema}`);
+  for (const path of DISPLAY_ROOT_FIELD_PATHS) {
+    const field = displayPathValue(D, path);
+    if (!field.present || !displayValueIsRenderable(field.value)) {
+      violations.push(`game artifact has no renderable displayed root field ${path}`);
+    }
+  }
+  const searchTypeDomains = Object.keys(SEARCH_TYPE).sort();
+  const publicDomains = [...(D.domainOrder || [])].sort();
+  if (JSON.stringify(searchTypeDomains) !== JSON.stringify(publicDomains)
+    || Object.values(SEARCH_TYPE).some((label) => typeof label !== 'string' || !label.trim() || /[A-Z]/.test(label))) {
+    violations.push('player-facing search type labels do not exactly cover the public domain order');
+  }
   const byDomain = new Map();
   const slugs = new Set();
   for (const roster of rosters) {
@@ -2332,6 +3378,41 @@ export function buildWiki(ctx) {
         const extra = renderedIds.filter((id) => !sourceIds.includes(id));
         violations.push(`roster ${roster.slug} does not exactly cover ${roster.domain}; missing [${missing.join(', ')}], extra [${extra.join(', ')}]`);
       }
+      const displayedPaths = DISPLAY_FIELD_PATHS[roster.domain];
+      if (!displayedPaths) {
+        violations.push(`domain ${roster.domain} has no displayed-field contract`);
+      } else {
+        for (const entry of roster.entries) {
+          for (const path of ['id', 'name', ...displayedPaths]) {
+            const field = displayPathValue(entry, path);
+            if (!field.present || !displayValueIsRenderable(field.value)
+              || (NONEMPTY_DISPLAY_ARRAYS.has(`${roster.domain}.${path}`)
+                && (!Array.isArray(field.value) || field.value.length === 0))) {
+              violations.push(`roster ${roster.slug} entry ${entry.id || '(missing id)'} has no renderable displayed field ${path}`);
+            }
+          }
+        }
+      }
+      for (const rule of DISPLAY_CONDITIONAL_FIELD_PATHS[roster.domain] || []) {
+        for (const entry of roster.entries) {
+          if (!rule.when(entry, D)) continue;
+          const field = displayPathValue(entry, rule.path);
+          if (!field.present || !displayValueIsRenderable(field.value)) {
+            violations.push(`roster ${roster.slug} entry ${entry.id || '(missing id)'} has no renderable conditional displayed field ${rule.path}`);
+          }
+        }
+      }
+      for (const rule of DISPLAY_REF_FIELD_PATHS[roster.domain] || []) {
+        for (const entry of roster.entries) {
+          const descriptor = typeof rule === 'string' ? { path: rule, when: () => true } : rule;
+          if (!descriptor.when(entry, D)) continue;
+          const field = displayPathValue(source.refs?.[entry.id], descriptor.path);
+          if (!field.present || !displayValueIsRenderable(field.value)
+            || (typeof rule !== 'string' && Array.isArray(field.value) && field.value.length === 0)) {
+            violations.push(`roster ${roster.slug} entry ${entry.id || '(missing id)'} has no renderable displayed ref field ${descriptor.path}`);
+          }
+        }
+      }
     }
   }
   for (const domain of D.domainOrder) {
@@ -2340,7 +3421,134 @@ export function buildWiki(ctx) {
   for (const domain of byDomain.keys()) {
     if (!D.domainOrder.includes(domain)) violations.push(`wiki renders undeclared domain ${domain}`);
   }
-  if (!T || T.schema !== 1) violations.push('tier-rankings.json schema 1 is required');
+  if (!T || T.schema !== 2) violations.push('tier-rankings.json schema 2 is required');
+  const ultimateRuntime = D.domains.ultimates?.runtime;
+  const expectedUltimateProvenance = [
+    'activation', 'availabilityGate', 'botKitPolicy', 'bossReaction', 'campaignRunStart', 'coopRunStart',
+    'duelKitPolicy', 'headlessRunStart', 'hubPreview', 'ownershipAndSlot', 'registry',
+  ].sort();
+  const ultimateSemantics = Array.isArray(ultimateRuntime?.semantics) ? ultimateRuntime.semantics : [];
+  const ultimateSemanticText = ultimateSemantics.join(' ').toLocaleLowerCase();
+  const ultimateSemanticSubjects = [/campaign/, /headless/, /co-?op|cooperative/, /hub/, /preview/, /duel/, /bot/];
+  if (ultimateRuntime?.owner !== 'player' || ultimateRuntime?.slot !== 'Q'
+    || ultimateRuntime?.availability?.fromRunStart !== true
+    || ultimateRuntime?.availability?.requiresBossKill !== false
+    || ultimateRuntime?.availability?.scope !== 'standard-player-run'
+    || ultimateSemantics.length < 4
+    || ultimateSemantics.some((line) => typeof line !== 'string' || !line.trim())
+    || ultimateSemanticSubjects.some((pattern) => !pattern.test(ultimateSemanticText))
+    || JSON.stringify(Object.keys(ultimateRuntime?.provenance || {}).sort()) !== JSON.stringify(expectedUltimateProvenance)
+    || Object.values(ultimateRuntime?.provenance || {}).some((source) => typeof source !== 'string' || !source.trim())) {
+    violations.push('ultimate runtime does not prove the scoped player-owned Q-slot availability and separate campaign, preview, duel and bot policies');
+  }
+  const ultimateRoster = rosters.find((roster) => roster.domain === 'ultimates');
+  if (ultimateRoster?.slug !== 'ultimates' || ultimateRoster?.title !== 'WHOMP Ultimate'
+    || !ultimateRoster.entries.some((entry) => entry.id === 'whomp')) {
+    violations.push('WHOMP Ultimate taxonomy or stable ultimates/#e-whomp route contract has drifted');
+  }
+  const enemyScaling = D.domains.enemies?.scaling;
+  if (!['hpPer25s', 'damagePer30s', 'speedPer50s', 'xpPer120s'].every((field) => Number.isFinite(enemyScaling?.[field]) && enemyScaling[field] >= 0)) {
+    violations.push('enemy scaling does not expose separate finite health, damage, speed and XP clocks');
+  }
+  const characterBaseStats = D.domains.characters?.runtime?.baseStats;
+  const characterRuntimeShape = [
+    ['maxHp', 'run-start-health-base', 'hp', ['permanentBonus', 'registry', 'runConsumer']],
+    ['speed', 'character-speed-identity-input', 'relative-input', ['movementSink', 'reference', 'registry', 'runConsumer']],
+    ['might', 'multiplicative-damage-identity-input', 'multiplier', ['registry', 'runConsumer', 'statSink']],
+  ];
+  if (characterRuntimeShape.some(([key, role, unit, provenanceKeys]) => {
+    const contract = characterBaseStats?.[key];
+    return contract?.role !== role || contract?.unit !== unit
+      || typeof contract.semantics !== 'string' || !contract.semantics.trim()
+      || JSON.stringify(Object.keys(contract.provenance || {}).sort()) !== JSON.stringify(provenanceKeys)
+      || Object.values(contract.provenance || {}).some((source) => typeof source !== 'string' || !source.trim());
+  }) || characterBaseStats?.speed?.reference !== 6) {
+    violations.push('character runtime does not preserve the run-start health, relative-to-6 speed and multiplicative might input semantics');
+  }
+  const characterWeaponIdentity = D.domains.characters?.runtime?.weaponIdentity;
+  const weaponIdentityText = Array.isArray(characterWeaponIdentity?.semantics)
+    ? characterWeaponIdentity.semantics.join(' ').toLocaleLowerCase()
+    : '';
+  if (characterWeaponIdentity?.field !== 'startWeaponId'
+    || characterWeaponIdentity?.role !== 'suggested-default-loadout-weapon'
+    || characterWeaponIdentity?.standardSoloCampaignGrant !== 'none-core-only'
+    || !/suggest/.test(weaponIdentityText) || !/aimed core only/.test(weaponIdentityText)
+    || JSON.stringify(Object.keys(characterWeaponIdentity?.provenance || {}).sort())
+      !== JSON.stringify(['botConsumer', 'coopConsumer', 'progressionConsumer', 'registry', 'soloConsumer'])
+    || Object.values(characterWeaponIdentity.provenance).some((source) => typeof source !== 'string' || !source.trim())) {
+    violations.push('character weapon identity does not prove a suggestion-only field and aimed-core-only standard solo campaign start');
+  }
+  for (const character of Object.values(D.domains.characters?.entries || {})) {
+    if (D.domains.characters.refs?.[character.id]?.suggestedWeapon !== character.startWeaponId) {
+      violations.push(`character ${character.id} suggested-weapon relation does not match its authored identity field`);
+    }
+  }
+  const openingEnemyHp = D.domains.runModes?.openingEnemyHpBonus;
+  if (openingEnemyHp?.field !== 'openingHpBonusPct' || openingEnemyHp?.owner !== 'enemy'
+    || openingEnemyHp?.appliesTo !== 'spawn-director-ordinary-wave-health' || !Array.isArray(openingEnemyHp?.excludes)
+    || openingEnemyHp.excludes.length === 0 || openingEnemyHp?.fade !== 'linear'
+    || openingEnemyHp?.fadeClock !== 'mode-profiled-pace-seconds' || openingEnemyHp?.startsAtPaceSec !== 0
+    || openingEnemyHp?.fadesToZeroAtPaceSec !== 180 || !Number.isFinite(openingEnemyHp?.unifiedProfileElapsedSec)
+    || !openingEnemyHp.provenance || Object.values(openingEnemyHp.provenance).some((source) => typeof source !== 'string' || !source.trim())) {
+    violations.push('run-mode opening enemy HP contract does not prove its ordinary-wave-only owner/exclusions, 0:00-to-3:00 pace-clock fade and unified real-play equivalent');
+  }
+  const encounterSchedule = D.world?.encounterSchedule;
+  const encounterText = Array.isArray(encounterSchedule?.semantics) ? encounterSchedule.semantics.join(' ').toLocaleLowerCase() : '';
+  if (!Number.isFinite(encounterSchedule?.automaticMinibossCadenceSec) || encounterSchedule.automaticMinibossCadenceSec <= 0
+    || encounterSchedule?.cadenceClock !== 'mode-profiled-cadence-seconds'
+    || !Number.isFinite(encounterSchedule?.unifiedProfilePreBankIntervalElapsedSec)
+    || !Number.isFinite(encounterSchedule?.unifiedProfileEndlessIntervalElapsedSec)
+    || !/cadence/.test(encounterText) || !/reserv/.test(encounterText)
+    || !/(?:does not add an automatic|no auto(?:matic)?|exclude)/.test(encounterText)
+    || !Array.isArray(encounterSchedule?.limits) || encounterSchedule.limits.length !== 1
+    || !/identity/.test(encounterSchedule.limits[0].toLocaleLowerCase()) || !/actual spawn time/.test(encounterSchedule.limits[0].toLocaleLowerCase())
+    || !encounterSchedule.provenance || Object.values(encounterSchedule.provenance).some((source) => typeof source !== 'string' || !source.trim())) {
+    violations.push('world encounterSchedule does not prove limited cadence evidence, unified interval and signature-slot reservation semantics');
+  }
+  const shrineMovement = D.domains.shrineMovement;
+  const shrineText = Array.isArray(shrineMovement?.runtime?.semantics) ? shrineMovement.runtime.semantics.join(' ').toLocaleLowerCase() : '';
+  if (shrineMovement?.count !== 5 || shrineMovement?.runtime?.owner !== 'world-shrine'
+    || shrineMovement?.runtime?.offerSlot !== 'movement' || shrineMovement?.runtime?.normalWorldShrineMovementSlots !== 1
+    || shrineMovement?.runtime?.gate?.requiresWorldShrine !== true
+    || shrineMovement?.runtime?.gate?.requiresNoLegendaryReplacement !== true
+    || !/blessing trio/.test(shrineText) || !/legendary/.test(shrineText)
+    || !/directive/.test(shrineText) || !/merchant/.test(shrineText)
+    || !/extra jump/.test(shrineText) || !/legacy/.test(shrineText)
+    || !shrineMovement.runtime.provenance || Object.values(shrineMovement.runtime.provenance).some((source) => typeof source !== 'string' || !source.trim())) {
+    violations.push('shrine movement runtime does not prove the five-entry gated normal-world-shrine offering pool');
+  }
+  const jumpAliases = D.domains.jumpAugments;
+  const linkedShrineIds = (jumpAliases?.order || []).map((id) => jumpAliases.refs?.[id]?.shrineMovementOffering);
+  if (jumpAliases?.count !== 2 || linkedShrineIds.some((id) => !shrineMovement?.entries?.[id])
+    || new Set(linkedShrineIds).size !== linkedShrineIds.length) {
+    violations.push('legacy jump augment aliases do not map one-to-one onto two live Shrine movement offerings');
+  }
+  const aegis = D.domains.passives?.entries?.aegisTome;
+  const aegisRefs = D.domains.passives?.refs?.aegisTome;
+  const aegisUnlock = aegisRefs?.runtimeUnlock;
+  const aegisAchievement = Object.values(D.domains.achievements?.entries || {}).some((row) => row.unlocks?.passive === 'aegisTome');
+  if (!aegis || aegis.unlockedFromStart !== false || aegisAchievement || (aegisRefs?.unlockedByAchievements || []).length
+    || aegisUnlock?.kind !== 'campaignSignatureBossMilestone' || aegisUnlock?.scope !== 'anyCampaignLevel'
+    || aegisUnlock?.requiredMilestones !== 1 || aegisUnlock?.permanent !== true
+    || aegisUnlock?.availability !== 'future-draft-pools' || typeof aegisUnlock?.description !== 'string' || !aegisUnlock.description.trim()
+    || JSON.stringify(Object.keys(aegisUnlock?.provenance || {}).sort()) !== JSON.stringify(['activation', 'persistence', 'policy'])
+    || Object.values(aegisUnlock?.provenance || {}).some((source) => typeof source !== 'string' || !source.trim())) {
+    violations.push('Aegis Tome does not preserve its first campaign signature-boss runtime unlock without a fresh-save or achievement fallback');
+  }
+  for (const weapon of Object.values(D.domains.weapons?.entries || {})) {
+    const refs = D.domains.weapons.refs?.[weapon.id] || {};
+    const expectedAchievements = Object.values(D.domains.achievements.entries)
+      .filter((row) => row.unlocks?.weapon === weapon.id).map((row) => row.id).sort();
+    const expectedQuests = Object.values(D.domains.quests.entries)
+      .filter((row) => row.reward?.weaponId === weapon.id).map((row) => row.id).sort();
+    const expectedSuggestions = Object.values(D.domains.characters.entries)
+      .filter((row) => row.startWeaponId === weapon.id).map((row) => row.id).sort();
+    if (JSON.stringify([...(refs.unlockedByAchievements || [])].sort()) !== JSON.stringify(expectedAchievements)
+      || JSON.stringify([...(refs.unlockedByQuests || [])].sort()) !== JSON.stringify(expectedQuests)
+      || JSON.stringify([...(refs.suggestedByCharacters || [])].sort()) !== JSON.stringify(expectedSuggestions)) {
+      violations.push(`weapon ${weapon.id} backlinks do not exactly compose achievement, quest and character-suggestion relations`);
+    }
+  }
   if (!D.domains.enemies?.speedPolicy?.unit || !Array.isArray(D.domains.enemies.speedPolicy.bands)) {
     violations.push('enemy speed policy is missing its unit or canonical bands');
   }
@@ -2389,36 +3597,24 @@ export function buildWiki(ctx) {
     || Object.values(D.powerCeiling?.config || {}).some((value) => !Number.isFinite(value))
     || !D.powerCeiling?.source || !Array.isArray(D.powerCeiling?.semantics) || D.powerCeiling.semantics.length === 0
     || D.powerCeiling.semantics.some((line) => typeof line !== 'string' || line.length === 0)) {
-    violations.push('root powerCeiling does not expose the four-dial schema-7 contract');
+    violations.push('root powerCeiling does not expose the four-dial schema-9 contract');
   }
   if (T) {
-    if (T.coverage?.weaponDefs !== D.domains.weapons.count || T.coverage?.measured !== D.domains.weapons.count) {
-      violations.push(`tier coverage ${T.coverage?.measured}/${T.coverage?.weaponDefs} does not cover all ${D.domains.weapons.count} weapons`);
-    }
     const tierRoster = rosters.find((r) => r.slug === 'tiers');
     if (tierRoster?.entries.length !== T.coverage?.rows) violations.push(`tier route emits ${tierRoster?.entries.length || 0} rows, artifact declares ${T.coverage?.rows}`);
     const buildsRoster = rosters.find((r) => r.slug === 'builds');
-    if (buildsRoster?.entries.length !== T.meta?.pairs?.length) violations.push(`build route emits ${buildsRoster?.entries.length || 0} pairs, artifact declares ${T.meta?.pairs?.length}`);
-    for (const row of T.weapons || []) {
-      if (!D.domains.weapons.entries[row.id]) violations.push(`tier row points at missing weapon ${row.id}`);
-      for (const axis of T.metric?.axes || []) {
-        const reading = row.axes?.[axis.key];
-        if (!reading || !reading.n || reading.p10 === undefined || reading.p90 === undefined || !reading.tier) violations.push(`tier row ${row.id}@${row.level}/${axis.key} has no renderable sample, spread or tier`);
-        if (reading?.volatile && (!reading.tierAtP10 || !reading.tierAtP90 || reading.tierSpan <= 1)) violations.push(`volatile tier row ${row.id}@${row.level}/${axis.key} has no visible tier span evidence`);
-      }
-    }
+    if (buildsRoster?.entries.length !== T.measuredBuilds?.pairs?.length) violations.push(`build route emits ${buildsRoster?.entries.length || 0} pairs, artifact declares ${T.measuredBuilds?.pairs?.length}`);
   }
   if (violations.length) throw new Error(`Wiki source contract failed (${violations.length}):\n  ${violations.join('\n  ')}`);
   const pages = [renderHub(rosters, ctx), ...rosters.map((r) => renderRosterPage(r, ctx))];
 
-  const TYPE = { enemies: 'enemy', coreWeapons: 'core weapon', weapons: 'weapon', passives: 'tome', shrineBlessings: 'blessing', runModes: 'run mode', levels: 'world' };
   const searchEntries = [];
-  searchEntries.push({ type: 'wiki', title: 'WHOMP wiki', text: `All ${D.coverage.domains} source catalogs and measured guides`, anchor: '', href: 'wiki.html' });
+  searchEntries.push({ type: 'wiki', title: 'WHOMP wiki', text: `All ${D.coverage.domains} source catalogs and controlled-simulation evidence guides`, anchor: '', href: 'wiki.html' });
   for (const r of rosters) {
     searchEntries.push({ type: 'wiki page', title: r.title, text: `${r.section} ${r.tagline} ${r.lede}`, anchor: '', href: `wiki-${r.slug}.html` });
     for (const e of r.entries) {
       searchEntries.push({
-        type: TYPE[r.domain] || r.domain || r.sourceKind || 'wiki',
+        type: r.domain ? SEARCH_TYPE[r.domain] : (r.sourceKind || 'wiki'),
         title: e.name,
         text: r.searchText(e),
         anchor: `e-${e.id}`,

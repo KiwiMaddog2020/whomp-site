@@ -11,13 +11,15 @@
  *  which the net handshake compares EXACTLY and which would lock out every peer
  *  mid-session.
  *
- *  TWO SURFACES, from one run:
+ *  THREE SURFACES, from one run:
  *    index.html  : the short public landing page. Mark, tagline, live build
  *                  chip, play button, arcs. Never grows.
  *    log.html    : the real dev log, sidebar, search, filters, and the two-view
  *                  toggle (Kevin's authored CONCISE notes vs the generated FULL
  *                  raw engineering log).
- *  Both read a shared search-index.json written alongside them, built at
+ *    wiki*.html  : the generated encyclopedia, controlled-sim evidence, and
+ *                  canonical visual associations from three verified artifacts.
+ *  All read a shared search-index.json written alongside them, built at
  *  generate time from everything on the page: notes, commits, known bugs, arcs.
  *
  *  KNOWN BUGS, director change 2026-07-30: publishing individual tester reports
@@ -39,10 +41,11 @@
  *  USAGE: node bin/generate.mjs [--repo ../whomp] [--outdir .] [--offline]
  */
 import { execFileSync } from 'node:child_process';
-import { writeFileSync, readFileSync, readdirSync, existsSync, unlinkSync } from 'node:fs';
-import { resolve, join, dirname } from 'node:path';
+import { createHash } from 'node:crypto';
+import { writeFileSync, readFileSync, readdirSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
+import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildWiki, rosterSpecs, WIKI_CSS } from './wiki.mjs';
+import { buildWiki, rosterSpecs, visualOutputPath, WIKI_CSS } from './wiki.mjs';
 
 const SITE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -125,9 +128,11 @@ const mdInline = (s) => noEmDash(esc(s))
 /* VERIFY BEFORE CONSUME. These artifacts are committed caches of canonical
  * game data and simulation evidence, so schema checks alone are not enough:
  * schema-valid stale JSON would still let the wiki publish a confident lie.
- * Run each artifact owner's cheap, deterministic pin before this process reads
- * either file. execFileSync is intentionally fail-closed; a non-zero exit stops
- * generation before any output can be written. */
+ * Run each artifact owner's deterministic pin before this process reads any
+ * artifact. execFileSync is intentionally fail-closed; a non-zero exit stops
+ * generation before any output can be written. The visual artifact uses its
+ * full rerender verification gate because source-valid PNG metadata alone does
+ * not authenticate the canonical runtime render bytes. */
 function verifyGameArtifact(script, flag, artifact) {
   const scriptPath = join(REPO, 'bin', script);
   if (!existsSync(scriptPath)) {
@@ -150,14 +155,15 @@ if (gameTreeStatus) {
 
 verifyGameArtifact('data-layer.mjs', '--check', 'data/game-data.json');
 verifyGameArtifact('tier-engine.mjs', '--verify', 'data/tier-rankings.json');
+verifyGameArtifact('wiki-visuals.mjs', '--verify', 'data/wiki-visuals.json');
 
 const DATA_PATH = join(REPO, 'data/game-data.json');
 if (!existsSync(DATA_PATH)) {
   throw new Error(`No data layer at ${DATA_PATH}. The wiki pages derive every number from it and will not invent one. Run "node bin/data-layer.mjs" in the game repo, or drop the wiki pages from this generator.`);
 }
 const gameData = JSON.parse(readFileSync(DATA_PATH, 'utf8'));
-if (gameData.schema !== 7) {
-  throw new Error(`data/game-data.json is schema ${gameData.schema}, this generator requires schema 7. Read the game repo's data/README.md and update bin/wiki.mjs rather than shipping pages built against a shape that moved.`);
+if (gameData.schema !== 9) {
+  throw new Error(`data/game-data.json is schema ${gameData.schema}, this generator requires schema 9. Read the game repo's data/README.md and update bin/wiki.mjs rather than shipping pages built against a shape that moved.`);
 }
 
 const TIER_PATH = join(REPO, 'data/tier-rankings.json');
@@ -165,8 +171,48 @@ if (!existsSync(TIER_PATH)) {
   throw new Error(`No measured tier artifact at ${TIER_PATH}. Run "node bin/tier-engine.mjs" in the game repo; the wiki will not replace measurements with hand-ranked tiers.`);
 }
 const tierData = JSON.parse(readFileSync(TIER_PATH, 'utf8'));
-if (tierData.schema !== 1) {
-  throw new Error(`data/tier-rankings.json is schema ${tierData.schema}, this generator understands schema 1. Update bin/wiki.mjs and this consumer before publishing a moved measurement contract.`);
+if (tierData.schema !== 2) {
+  throw new Error(`data/tier-rankings.json is schema ${tierData.schema}, this generator understands schema 2. Update bin/wiki.mjs and this consumer before publishing a moved measurement contract.`);
+}
+
+const VISUAL_PATH = join(REPO, 'data/wiki-visuals.json');
+if (!existsSync(VISUAL_PATH)) {
+  throw new Error(`No visual encyclopedia artifact at ${VISUAL_PATH}. Run "node bin/wiki-visuals.mjs" in the game repo; the wiki will not invent or manually map game art.`);
+}
+const visualData = JSON.parse(readFileSync(VISUAL_PATH, 'utf8'));
+if (visualData.schema !== 1) {
+  throw new Error(`data/wiki-visuals.json is schema ${visualData.schema}, this generator understands schema 1. Update bin/wiki.mjs and this consumer before publishing a moved visual contract.`);
+}
+
+const PNG_SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+const safeGeneratedPath = (path) => typeof path === 'string' && path.length > 0
+  && path.split('/').every((part) => /^[a-z0-9][a-z0-9._-]*$/.test(part) && part !== '.' && part !== '..');
+const portable = (path) => path.split(sep).join('/');
+const sha256Bytes = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const pngDimensions = (bytes, label) => {
+  if (!Buffer.isBuffer(bytes) || bytes.length < 24 || !bytes.subarray(0, 8).equals(PNG_SIGNATURE)
+    || bytes.subarray(12, 16).toString('ascii') !== 'IHDR') {
+    throw new Error(`Visual source ${label} is not a valid PNG envelope.`);
+  }
+  return { width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20) };
+};
+const visualAssets = (visualData.entries || []).flatMap((entry) => (entry.variants || []).map((variant) => {
+  const file = visualOutputPath(variant.path);
+  if (!safeGeneratedPath(file) || !file.startsWith('wiki-assets/')) {
+    throw new Error(`Visual output path ${file} is outside the generated wiki-assets namespace.`);
+  }
+  const source = join(REPO, ...variant.path.split('/'));
+  if (!existsSync(source)) throw new Error(`Visual source asset is missing: ${source}`);
+  const bytes = readFileSync(source);
+  const dimensions = pngDimensions(bytes, variant.path);
+  if (bytes.length !== variant.byteSize || sha256Bytes(bytes) !== variant.sha256
+    || dimensions.width !== variant.width || dimensions.height !== variant.height) {
+    throw new Error(`Visual source asset does not match manifest bytes, hash or dimensions: ${variant.path}`);
+  }
+  return { file, source, bytes, variant };
+}));
+if (new Set(visualAssets.map((asset) => asset.file)).size !== visualAssets.length) {
+  throw new Error('Visual manifest maps more than one source variant to the same generated output path.');
 }
 
 const DESKTOP_ICON_PATH = join(REPO, 'public/icons/icon.svg');
@@ -576,8 +622,8 @@ const wordmark = (size, id) => `
 </svg>`;
 const FAVICON = 'whomp-icon.svg';
 
-const liveChip = () => `<span class="chip"><span class="dot${live && live.sha === headSha ? '' : ' stale'}"></span>
-  ${live ? `live <b>${esc(live.sha)}</b>` : 'live build <b>unverified</b>'}</span>
+const liveChip = () => `<span class="chip"><span class="dot${live && live.sha === headSha ? '' : ' stale'}" aria-hidden="true"></span>
+  ${live ? `live <b>${esc(live.sha)}</b> · ${live.sha === headSha ? 'current wiki source' : 'different from wiki source'}` : 'live build <b>unverified</b> · offline provenance'}</span>
   <span class="chip">version <b>${esc(live?.version ?? pkg.version)}</b></span>`;
 
 const arcCards = (list) => list.map((a) => `
@@ -763,6 +809,21 @@ let searchIndex = [];
 let searchState = 'loading';
 let renderedHits = [];
 let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
 
 function setSearchStatus(message) {
   if (searchStatus) searchStatus.textContent = message;
@@ -916,9 +977,15 @@ srPanel.addEventListener('click', (e) => {
   if (!a) return;
   setSearchOpen(false);
   const href = a.getAttribute('href') || '';
-  const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
-  const target = hash ? document.getElementById(hash) : null;
-  if (target) { ${onSamePageHit} }
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
+  if (target) {
+    ${onSamePageHit}
+    target.focus({ preventScroll: true });
+  }
 });
 
 fetch('./search-index.json')
@@ -1033,6 +1100,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 ${body}
 ${AUTH_SCRIPT()}
 <script type="module">
@@ -1051,7 +1119,7 @@ const SEARCH_PLACEHOLDER = 'Search wiki guides, cards, and the dev log...';
  * and cheap, so calling it once for the nav and once inside buildWiki costs
  * nothing and buys a nav that is not reading half-initialised mutable state. Add
  * a roster and it appears in the sidebar of every existing page for free. */
-const wikiRosterNav = rosterSpecs(gameData, esc, tierData)
+const wikiRosterNav = rosterSpecs(gameData, esc, tierData, visualData)
   .map((r) => ({ slug: r.slug, title: r.title, section: r.section }));
 const wikiNavSections = [];
 for (const roster of wikiRosterNav) {
@@ -1072,7 +1140,7 @@ const wikiNav = (here) => `
     <a href="wiki.html"${currentNavAttrs(here === '')}>All guides</a>
     ${wikiNavSections.map((section) => {
       const containsCurrent = section.rosters.some((r) => r.slug === here);
-      return `<details class="wside-section"${containsCurrent ? ' open' : ''}>
+      return `<details class="wside-section${containsCurrent ? ' is-current-section' : ''}"${containsCurrent ? ' open' : ''}>
       <summary>${esc(section.name)} <span>${section.rosters.length}</span></summary>
       <div class="wside-links">
         ${section.rosters.map((r) => `<a href="wiki-${esc(r.slug)}.html"${currentNavAttrs(here === r.slug)}>${esc(r.title)}</a>`).join('\n        ')}
@@ -1086,6 +1154,7 @@ const wikiNav = (here) => `
 const wiki = buildWiki({
   D: gameData,
   T: tierData,
+  V: visualData,
   esc,
   page: wikiPage,
   chrome: {
@@ -1679,12 +1748,12 @@ const OUTPUTS = [
   { file: 'whomp-icon.svg', body: desktopIconSvg },
   ...wiki.pages.map((p) => ({ file: p.file, body: p.html })),
 ];
-/* A filename that needs shell quoting would break the staging loop in the deploy
-   scripts, so the shape is enforced here where it is cheap, rather than debugged
-   later from a deploy that half worked. */
+/* Every manifest path is a lowercase, slash-delimited relative path. Nested
+   paths are required for the generated visual encyclopedia, but traversal,
+   empty segments and shell-significant characters remain impossible. */
 for (const o of OUTPUTS) {
-  if (!/^[a-z0-9][a-z0-9._-]*$/.test(o.file)) {
-    throw new Error(`Output filename "${o.file}" is not a plain lowercase name. The deploy scripts stage these by name from the manifest and cannot quote surprises.`);
+  if (!safeGeneratedPath(o.file)) {
+    throw new Error(`Output path "${o.file}" is not a safe lowercase generated path.`);
   }
 }
 
@@ -1694,7 +1763,7 @@ for (const o of OUTPUTS) {
  * Remove only generated wiki filenames that are absent from this exact model,
  * and add only tracked retirements to the staging manifest so an untracked stale
  * preview file cannot make `git add` fail. */
-const outputFiles = OUTPUTS.map((output) => output.file);
+const outputFiles = [...OUTPUTS.map((output) => output.file), ...visualAssets.map((asset) => asset.file)];
 const expectedWikiFiles = new Set(outputFiles.filter((file) => /^wiki.*\.html$/.test(file)));
 const retiredGeneratedWikiFiles = readdirSync(OUTDIR, { withFileTypes: true })
   .filter((entry) => entry.isFile() && /^wiki.*\.html$/.test(entry.name) && !expectedWikiFiles.has(entry.name))
@@ -1712,6 +1781,35 @@ if (retiredGeneratedWikiFiles.length) {
   }
   for (const file of retiredGeneratedWikiFiles) unlinkSync(join(OUTDIR, file));
 }
+const walkGeneratedFiles = (root, current = root) => {
+  if (!existsSync(current)) return [];
+  const files = [];
+  for (const entry of readdirSync(current, { withFileTypes: true })) {
+    const path = join(current, entry.name);
+    if (entry.isDirectory()) files.push(...walkGeneratedFiles(root, path));
+    else if (entry.isFile()) files.push(portable(relative(OUTDIR, path)));
+  }
+  return files.sort();
+};
+const expectedVisualFiles = new Set(visualAssets.map((asset) => asset.file));
+const retiredVisualFiles = walkGeneratedFiles(join(OUTDIR, 'wiki-assets'))
+  .filter((file) => !expectedVisualFiles.has(file));
+let trackedRetiredVisualFiles = [];
+if (retiredVisualFiles.length) {
+  try {
+    trackedRetiredVisualFiles = execFileSync(
+      'git', ['-C', OUTDIR, 'ls-files', '--', ...retiredVisualFiles], { encoding: 'utf8' },
+    ).trim().split('\n').filter(Boolean);
+  } catch {
+    // Preview output directories are not necessarily repositories.
+  }
+  for (const file of retiredVisualFiles) {
+    if (!safeGeneratedPath(file) || !file.startsWith('wiki-assets/')) {
+      throw new Error(`Refusing to retire visual output outside wiki-assets: ${file}`);
+    }
+    unlinkSync(join(OUTDIR, ...file.split('/')));
+  }
+}
 /* Optional template rows interpolate as empty strings. Keep their surrounding
  * indentation out of the committed HTML so generated releases stay clean under
  * `git diff --check`; non-HTML assets (especially the canonical icon) remain
@@ -1720,7 +1818,19 @@ for (const o of OUTPUTS) {
   const body = o.file.endsWith('.html') ? o.body.replace(/[ \t]+$/gm, '') : o.body;
   writeFileSync(join(OUTDIR, o.file), body);
 }
-const stagingManifest = [...outputFiles, ...trackedRetiredWikiFiles];
+for (const asset of visualAssets) {
+  const destination = join(OUTDIR, ...asset.file.split('/'));
+  mkdirSync(dirname(destination), { recursive: true });
+  writeFileSync(destination, asset.bytes);
+}
+const stagingManifest = [...new Set([
+  ...outputFiles,
+  ...trackedRetiredWikiFiles,
+  ...trackedRetiredVisualFiles,
+])];
+if (stagingManifest.some((file) => !safeGeneratedPath(file))) {
+  throw new Error('Generated staging manifest contains an unsafe relative path.');
+}
 writeFileSync(join(OUTDIR, '.site-outputs'), `${stagingManifest.join('\n')}\n`);
 
 /* VALIDATE THE EXACT CANDIDATE RELEASE. Artifact pins above prove the inputs;
@@ -1744,9 +1854,12 @@ try {
   throw new Error(`Refusing to publish generated wiki output: bin/wiki-check.mjs failed${status}.`, { cause: error });
 }
 
-console.log(`wrote ${OUTPUTS.length} files to ${OUTDIR}`);
+console.log(`wrote ${OUTPUTS.length} documents and ${visualAssets.length} verified visual variants to ${OUTDIR}`);
 if (retiredGeneratedWikiFiles.length) {
   console.log(`  retired ${retiredGeneratedWikiFiles.length} stale wiki route(s); ${trackedRetiredWikiFiles.length} deletion(s) added to the staging manifest`);
+}
+if (retiredVisualFiles.length) {
+  console.log(`  retired ${retiredVisualFiles.length} stale visual output(s); ${trackedRetiredVisualFiles.length} deletion(s) added to the staging manifest`);
 }
 console.log(`  game@${headSha}  live=${live ? live.sha : 'unreachable'}`);
 console.log(`  ${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days since ${windowStart}, across ${allDays.length} active days (${filtered} noise commits filtered)`);

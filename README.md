@@ -95,10 +95,11 @@ inventing a sha.
 ## The wiki
 
 `bin/wiki.mjs` builds a categorized hub plus one generated guide for every public
-domain in the schema-7 game-data contract. Three additional guides expose the
-root permanent-power soft knees, measured weapon tiers and measured pair/build
-chains. Their current route, catalog, row and pair counts are reported by the
-generator from the verified artifacts; none are maintained in this document.
+domain in the schema-9 game-data contract. Three additional guides expose the
+root permanent-power soft knees, controlled automatic-weapon tiers and measured
+pair/build search paths. Their current route, catalog, row and pair counts are
+reported by the generator from the verified artifacts; none are maintained in
+this document.
 
 The module is imported by `bin/generate.mjs`, so there is still one entry point,
 one palette, one accessible cross-site search index and one output manifest. It
@@ -110,20 +111,75 @@ game's canonical `public/icons/icon.svg`. Wiki pages do not redraw it and do not
 repeat it in their content header; the single icon is an accessible link back to
 the wiki hub on both desktop and narrow layouts.
 
-**Every factual value comes from one of two verified game artifacts:**
+**Every factual value or game-art association comes from one of three verified game artifacts:**
 
-- `data/game-data.json` owns the public catalogs, their relations, enemy
-  speed policy, aimed-core forgiveness profiles and global power ceilings.
-- `data/tier-rankings.json` owns measured weapon tiers, uncertainty spans,
-  exhaustive pairs and measured greedy build chains.
+- `data/game-data.json` owns the public catalogs, their relations, the
+  player-owned WHOMP runtime contract, enemy speed policy, aimed-core
+  forgiveness profiles, Shrine movement activation contract, encounter cadence,
+  authored character-input semantics and global power ceilings.
+- `data/tier-rankings.json` owns controlled automatic-weapon evidence: fixture
+  definitions, source fingerprints, samples and spread, exhaustive pairs,
+  damage attribution, unlock requirements and measured greedy build paths.
+- `data/wiki-visuals.json` owns the complete canonical visual inventory and the
+  ID-to-art association. It records source/content fingerprints, provenance and
+  licensing classification, meaningful alt text, intrinsic dimensions, hashes,
+  responsive portrait variants, isolated render context, limitations and an
+  aggregate byte budget. The site never maintains a second visual ID map.
 
-Before reading either file, the site generator runs the game artifact owner's
-own freshness command (`data-layer --check` and `tier-engine --verify`). It then
+Before reading the files, the site generator runs each game artifact owner's
+freshness/authentication command (`data-layer --check`, `tier-engine --verify`
+and the visual pipeline's full `wiki-visuals --verify` rerender comparison). It then
 runs `bin/wiki-check.mjs`, which mutation-tests the coverage guard and proves
 that every domain, route, card, anchor, hub card and search entry reached the
-generated output. An unclassified domain, stale schema, missing forgiveness or
-speed field, hidden volatile tier span, dead link or retired on-disk route stops
-the build before deployment.
+generated output. It also proves that every covered entry renders the correct
+visual, copied PNG bytes match their source hash and dimensions, responsive
+variants and loading priorities are sound, alt/provenance/limitations remain
+visible, and stale or orphaned visual files are retired. An unclassified domain,
+stale schema, missing displayed field, misowned ultimate, incomplete fixture or
+source fingerprint, invalid loadout, hidden volatile tier span, broken visual,
+dead link or retired on-disk route stops the build before deployment. Search
+kinds, skip targets, breadcrumbs, facet labels and the compact mobile navigation
+are part of the same output contract. Displayed-field guards cover entry values,
+independently owned relation backlinks, conditional payloads and route-level
+runtime semantics. Mutation probes delete representative scalar, conditional,
+relation and root-contract values so those guards are known to fail closed.
+Search entry cards are programmatically focusable: a same-page hit reveals and
+focuses its card, while load/hashchange focus is restricted to valid `#e-*`
+entry targets and never takes focus for unrelated fragments.
+
+The route retained as `wiki-ultimates.html#e-whomp` is titled **WHOMP Ultimate**.
+Its player ownership, Q slot and standard-player-run availability come from
+`domains.ultimates.runtime`. The artifact separately documents campaign,
+headless and co-op player-seat arming, unconditional hub preview, duel and bot
+kit policy, plus exact runtime provenance; boss reaction code is explicitly not
+treated as ownership.
+
+`wiki-shrine-movement.html` is the complete five-entry live movement-offering
+pool for qualifying normal world-shrine activations. `wiki-blessings.html`
+documents only the blessing-trio registry, including the legendary-replacement
+boundary. The stable `wiki-jump-augments.html` route is explicitly a two-entry
+legacy card/progression alias catalog and links each alias to its live Shrine
+movement entry; it is an alias surface rather than an acquisition rule or a
+complete live pool.
+
+Character weapon ids are presented as **suggested weapons**, following
+`characters.runtime.weaponIdentity`; standard solo campaign starts with the
+aimed core only. Character health, speed and might use their exported runtime
+roles rather than pretending the authored tuple is three final comparable
+stats. Run-mode opening HP is labelled **Opening enemy HP bonus**, scoped to
+ordinary SpawnDirector waves, with exclusions plus the structured 3:00 pace /
+1:48 unified-profile elapsed fade shown separately. World and expedition pages
+combine authored tables with automatic-miniboss cadence evidence, but repeat the
+artifact limit that identity and actual spawn time are not exported.
+
+Canonical visuals are copied into generated `wiki-assets/` paths. Runtime
+portraits are deterministic isolated production renders with transparent
+backgrounds, an explicit neutral presentation palette or renderer-owned
+materials, fixed gallery lighting/camera and a named neutral frame. The UI calls
+them renders, never sprites or in-game screenshots. Palette strips and evolution
+compositions are labelled as authored/derived media rather than gameplay
+captures. Controlled-sim pages use canonical weapon glyphs and data-native
+P10/median/P90 plots with units, sample size and local-scale limitations.
 
 The authored half is small and it is about **meaning, never magnitude**. This
 repo may explain what `pierceLine` or `clip` means, because the data layer ships
@@ -140,20 +196,28 @@ as trustworthy:
 - **No DPS.** Damage is multiplied by the player's might and crit and the
   interval divided by their attack speed, and half the patterns have no
   "damage times shots per second" semantics at all.
-- **No final enemy chase speed.** The wiki publishes both the authored base and
-  the profile-gated live-run base from `bandedEnemySpeed()`. The latter still
-  precedes timed and per-instance scaling, so it is labelled as a base.
-- **No boss or miniboss health and damage.** Those encounter values remain
-  explicitly unmeasured because runtime authority is private, multi-stage and
-  mode-dependent.
+- **No final enemy chase speed.** For basic and special enemies, the wiki
+  publishes the authored base and profile-gated live-run base from
+  `bandedEnemySpeed()`. The latter still precedes timed and per-instance scaling,
+  so it is labelled as a base.
+- **No boss or miniboss health, damage, behavior or speed.** Those contextual
+  encounter mechanics remain explicitly UNMEASURED because runtime authority is
+  private, multi-stage and mode-dependent; partial registry values are not shown.
 - **No core weapon combat numbers.** Every clip size, reload and multiplier is a
   module-private constant in the game's combat code. The nine-field aim and
-  forgiveness profile is published because schema 7 now exports and pins it;
+  forgiveness profile is published because schema 9 exports and pins it;
   those fields describe targeting generosity, not damage strength.
 - **No core evolutions.** `coreWeapons.ts` carries an `evolutionName` per core
   and the game's own picker advertises it, but nothing implements it.
-- **No made-up tome, relic or character tiers.** The measurement artifact names
-  those as uncovered and explains why; only measured weapon axes are ranked.
+- **No made-up core-weapon, tome, relic or character tiers.** The evidence
+  artifact names those as uncovered and explains why; only measured automatic-
+  weapon axes are ranked. These pages call their results controlled simulation,
+  not whole-run or human-play meta.
+- **No holdout claim for greedy build paths.** Candidate selection and reported
+  performance use the same deterministic cohort. The artifact's explicit
+  same-cohort selection-bias/no-holdout limitation is printed on the build
+  route, so those paths remain measured fixture searches rather than validated
+  live-play recommendations.
 - **No computed effective permanent power.** The four exported soft-knee dials
   are shown exactly, but the artifact does not contain a build's inputs and
   temporary buffs apply after those curves.
@@ -179,11 +243,13 @@ they stage from the manifest the generator writes.
 ### The output manifest
 
 `bin/generate.mjs` writes `.site-outputs`, a plain list of the files it just
-wrote plus any tracked generated wiki route it retired, and both deploy paths
-stage from it. A missing tracked path is intentional here: `git add -- <path>`
-stages that route's deletion so an old page cannot survive after leaving the
-hub. The manifest is gitignored because it is a build-time handoff rather than
-site content.
+wrote plus any tracked generated wiki route or visual it retired, and both
+deploy paths stage from it. Visual variants use safe lowercase nested paths
+under `wiki-assets/`; absolute paths, traversal and unsafe segments are refused
+independently by generation and deployment. A missing tracked path is
+intentional here: `git add -- <path>` stages that output's deletion so an old
+page or image cannot survive after leaving the artifact. The manifest is
+gitignored because it is a build-time handoff rather than site content.
 
 This replaced a hand-typed filename list that appeared in **two repos**
 (`bin/deploy-site.sh` here and `bin/deploy-play.sh` in the game). That was
@@ -216,11 +282,10 @@ pink or the cyan, and do not replace the pink; it is load-bearing in the blend.
   refresh is done, folded into the game's `bin/deploy-play.sh` and non-fatal
   there by design, so a site hiccup can never read as a failed game deploy.
 - Per-entry flavour notes. The plumbing is live and proven (`data/authored/` in
-  the game repo, keyed by entry id, orphans go red in its suite), and 0 of 313
-  were written in schema 1. Schema 7 still reports no authored notes; the exact
-  source-derived numerator and denominator are printed by every build. That
-  voice is the director's, so the wiki uses canonical registry copy rather than
-  manufacturing a second lore layer.
+  the game repo, keyed by entry id, orphans go red in its suite). The current
+  source-derived numerator and denominator are printed by every build rather
+  than frozen in this document. That voice is the director's, so the wiki uses
+  canonical registry copy rather than manufacturing a second lore layer.
 - Real gating, see the Gating section above.
 
 The public source catalogs are fully routed. Anything added to the game-data
