@@ -122,13 +122,45 @@ const mdInline = (s) => noEmDash(esc(s))
  * or its schema moved, the run stops. A wiki that silently renders an empty
  * roster is worse than a build that refuses, because nobody notices the first
  * one until a reader does. */
+/* VERIFY BEFORE CONSUME. These artifacts are committed caches of canonical
+ * game data and simulation evidence, so schema checks alone are not enough:
+ * schema-valid stale JSON would still let the wiki publish a confident lie.
+ * Run each artifact owner's cheap, deterministic pin before this process reads
+ * either file. execFileSync is intentionally fail-closed; a non-zero exit stops
+ * generation before any output can be written. */
+function verifyGameArtifact(script, flag, artifact) {
+  const scriptPath = join(REPO, 'bin', script);
+  if (!existsSync(scriptPath)) {
+    throw new Error(`Cannot verify ${artifact}: ${scriptPath} does not exist.`);
+  }
+  console.log(`verifying ${artifact}: node bin/${script} ${flag}`);
+  try {
+    execFileSync(process.execPath, [scriptPath, flag], { cwd: REPO, stdio: 'inherit' });
+  } catch (error) {
+    const status = Number.isInteger(error?.status) ? ` (exit ${error.status})` : '';
+    throw new Error(`Refusing to build the wiki: ${artifact} failed its canonical verification${status}.`, { cause: error });
+  }
+}
+
+verifyGameArtifact('data-layer.mjs', '--check', 'data/game-data.json');
+verifyGameArtifact('tier-engine.mjs', '--verify', 'data/tier-rankings.json');
+
 const DATA_PATH = join(REPO, 'data/game-data.json');
 if (!existsSync(DATA_PATH)) {
   throw new Error(`No data layer at ${DATA_PATH}. The wiki pages derive every number from it and will not invent one. Run "node bin/data-layer.mjs" in the game repo, or drop the wiki pages from this generator.`);
 }
 const gameData = JSON.parse(readFileSync(DATA_PATH, 'utf8'));
-if (gameData.schema !== 1) {
-  throw new Error(`data/game-data.json is schema ${gameData.schema}, this generator understands schema 1. Read the game repo's data/README.md and update bin/wiki.mjs rather than shipping pages built against a shape that moved.`);
+if (gameData.schema !== 7) {
+  throw new Error(`data/game-data.json is schema ${gameData.schema}, this generator requires schema 7. Read the game repo's data/README.md and update bin/wiki.mjs rather than shipping pages built against a shape that moved.`);
+}
+
+const TIER_PATH = join(REPO, 'data/tier-rankings.json');
+if (!existsSync(TIER_PATH)) {
+  throw new Error(`No measured tier artifact at ${TIER_PATH}. Run "node bin/tier-engine.mjs" in the game repo; the wiki will not replace measurements with hand-ranked tiers.`);
+}
+const tierData = JSON.parse(readFileSync(TIER_PATH, 'utf8'));
+if (tierData.schema !== 1) {
+  throw new Error(`data/tier-rankings.json is schema ${tierData.schema}, this generator understands schema 1. Update bin/wiki.mjs and this consumer before publishing a moved measurement contract.`);
 }
 
 // ---------------------------------------------------------------- derive: identity
@@ -140,7 +172,10 @@ const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
  * marketing copy rather than repo truth, so it lives here and Kevin owns it. */
 const TAGLINE = 'A 3D horde-survivor where you aim it yourself.';
 
-const headSha = git('rev-parse', '--short', 'main');
+/* Provenance names the exact checkout whose artifacts were just verified, not
+ * whatever commit the local `main` ref happens to point at. Deploy normally
+ * consumes main, but explicit --repo worktrees must not be mislabeled. */
+const headSha = git('rev-parse', '--short', 'HEAD');
 
 // ---------------------------------------------------------------- derive: title screen wordmark + slogans
 /* Director change 2026-07-30: "copy the title from the title screen EXACTLY"
@@ -295,6 +330,7 @@ const totalShipped = [...days.values()].reduce((n, d) => n + d.length, 0);
 const LOG_DAYS_CAP = 30;
 const PER_DAY_CAP = 20;
 const fullFeed = allDays.slice(0, LOG_DAYS_CAP);
+const renderedChanges = fullFeed.flatMap(([, changes]) => changes.slice(0, PER_DAY_CAP));
 
 // ---------------------------------------------------------------- derive: the arcs, from CAMPAIGN
 /* CAMPAIGN.md IS the train. Parsing its ARCS block keeps one source of truth
@@ -533,7 +569,7 @@ const liveChip = () => `<span class="chip"><span class="dot${live && live.sha ==
   <span class="chip">version <b>${esc(live?.version ?? pkg.version)}</b></span>`;
 
 const arcCards = (list) => list.map((a) => `
-    <div class="arc">
+    <div class="arc" id="flight-${slug(a.name)}">
       <div class="id">${esc(a.id)}${a.when ? ` &middot; ${esc(a.when)}` : ''}</div>
       <h4>${esc(a.name)}</h4>
       <p>${esc(a.what)}</p>
@@ -667,6 +703,7 @@ html,body{max-width:100%;overflow-x:hidden}
  * how one of them quietly stops matching the other. */
 const SEARCH_CSS = `
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -677,16 +714,22 @@ const SEARCH_CSS = `
 .sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
 .sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
 .sr-item:first-child{border-top:0}
-.sr-item:hover,.sr-item:focus{background:rgba(255,243,207,.06)}
+.sr-item:hover,.sr-item:focus,.sr-item.is-active,.sr-item[aria-selected="true"]{background:rgba(36,240,255,.08);outline:none}
 .sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
   color:var(--gold);margin-right:8px}
 .sr-title{color:var(--cream)}
+.sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 `;
 
 const searchMarkup = (placeholder) => `
-<div class="searchwrap">
-  <input class="searchbox" id="search" type="search" placeholder="${esc(placeholder)}" autocomplete="off">
-  <div class="sr-panel" id="sr-panel"></div>
+<div class="searchwrap" role="search">
+  <label class="searchlabel" for="search">Search WHOMP</label>
+  <input class="searchbox" id="search" type="search" placeholder="${esc(placeholder)}" autocomplete="off" spellcheck="false"
+    role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
+    aria-controls="sr-panel" aria-describedby="sr-status">
+  <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
+  <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
 </div>`;
 
 /* The search index is ONE file shared by every page, so every entry carries a
@@ -702,32 +745,186 @@ const searchMarkup = (placeholder) => `
 const SEARCH_SCRIPT = (onSamePageHit = '') => `
 const searchInput = document.getElementById('search');
 const srPanel = document.getElementById('sr-panel');
+const searchStatus = document.getElementById('sr-status');
+const SEARCH_LIMIT = 30;
 let searchIndex = [];
-fetch('./search-index.json').then((r) => r.ok ? r.json() : []).then((data) => { searchIndex = data; }).catch(() => { searchIndex = []; });
+let searchState = 'loading';
+let renderedHits = [];
+let activeResult = -1;
+
+function setSearchStatus(message) {
+  if (searchStatus) searchStatus.textContent = message;
+}
+
+function setSearchOpen(open) {
+  srPanel.classList.toggle('open', open);
+  searchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!open) {
+    activeResult = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function showSearchMessage(message, announcement = message) {
+  renderedHits = [];
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  const empty = document.createElement('div');
+  empty.className = 'sr-empty';
+  empty.setAttribute('role', 'option');
+  empty.setAttribute('aria-disabled', 'true');
+  empty.textContent = message;
+  srPanel.append(empty);
+  setSearchStatus(announcement);
+  setSearchOpen(true);
+}
+
+const normalized = (value) => String(value || '').trim().toLowerCase();
+const hasWordPrefix = (value, query) => value.split(/\\s+/).some((word) => word.startsWith(query));
+
+/* Ranking is deliberately source-aware. Exact and prefix title matches are
+ * always first; after those, a generated wiki route/card beats a generic
+ * change-log body match. This is what makes a short query such as "core" land
+ * on Core weapons and its cards instead of a commit that happened to say core. */
+function searchRank(item, query) {
+  const title = normalized(item.title);
+  const text = normalized(item.text);
+  const type = normalized(item.type);
+  const wikiResult = normalized(item.href).startsWith('wiki');
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 10;
+  if (wikiResult && hasWordPrefix(title, query)) return 20;
+  if (wikiResult && title.includes(query)) return 30;
+  if (wikiResult && (text.startsWith(query) || type.startsWith(query))) return 40;
+  if (wikiResult && (hasWordPrefix(text, query) || hasWordPrefix(type, query))) return 45;
+  if (wikiResult) return 50;
+  if (title.includes(query)) return 60;
+  if (text.startsWith(query) || type.startsWith(query) || hasWordPrefix(text, query) || hasWordPrefix(type, query)) return 70;
+  return type === 'change' ? 90 : 80;
+}
+
+function setActiveResult(next) {
+  const options = [...srPanel.querySelectorAll('.sr-item')];
+  if (!options.length) return;
+  activeResult = (next + options.length) % options.length;
+  options.forEach((option, index) => {
+    const active = index === activeResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  const selected = options[activeResult];
+  searchInput.setAttribute('aria-activedescendant', selected.id);
+  selected.scrollIntoView({ block: 'nearest' });
+}
 
 function renderResults(query) {
   const q = query.trim().toLowerCase();
-  if (q.length < 2) { srPanel.classList.remove('open'); srPanel.innerHTML = ''; return; }
-  const hits = searchIndex.filter((it) => (it.title + ' ' + it.text).toLowerCase().includes(q)).slice(0, 30);
-  if (hits.length === 0) {
-    srPanel.innerHTML = '<div class="sr-empty">No matches.</div>';
-  } else {
-    srPanel.innerHTML = hits.map((it) => \`<a class="sr-item" href="\${it.href}"><span class="sr-kind">\${it.type}</span><span class="sr-title">\${it.title}</span></a>\`).join('');
+  if (q.length < 2) {
+    renderedHits = [];
+    srPanel.replaceChildren();
+    setSearchOpen(false);
+    setSearchStatus('Enter at least two characters to search.');
+    return;
   }
-  srPanel.classList.add('open');
+  if (searchState === 'loading') {
+    showSearchMessage('Loading the search index...', 'Search is still loading.');
+    return;
+  }
+  if (searchState === 'error') {
+    showSearchMessage('Search is unavailable right now. Reload the page to try again.', 'Search could not load. Reload the page to try again.');
+    return;
+  }
+
+  const ranked = searchIndex
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => normalized(item.title + ' ' + item.text + ' ' + item.type).includes(q))
+    .sort((a, b) => searchRank(a.item, q) - searchRank(b.item, q)
+      || normalized(a.item.title).localeCompare(normalized(b.item.title))
+      || a.index - b.index);
+  renderedHits = ranked.slice(0, SEARCH_LIMIT).map(({ item }) => item);
+  if (renderedHits.length === 0) {
+    showSearchMessage('No matches for "' + query.trim() + '". Try a weapon, character, world, or dev-log term.', 'No search results for ' + query.trim() + '.');
+    return;
+  }
+
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  renderedHits.forEach((item, index) => {
+    const link = document.createElement('a');
+    link.className = 'sr-item';
+    link.id = 'sr-option-' + index;
+    link.href = String(item.href || '');
+    link.tabIndex = -1;
+    link.setAttribute('role', 'option');
+    link.setAttribute('aria-selected', 'false');
+    const kind = document.createElement('span');
+    kind.className = 'sr-kind';
+    kind.textContent = String(item.type || 'result');
+    const title = document.createElement('span');
+    title.className = 'sr-title';
+    title.textContent = String(item.title || 'Untitled');
+    link.append(kind, title);
+    srPanel.append(link);
+  });
+  const shown = renderedHits.length;
+  const total = ranked.length;
+  setSearchStatus((shown < total ? 'Showing ' + shown + ' of ' + total : total) + (total === 1 ? ' search result' : ' search results') + ' for ' + query.trim() + '.');
+  setSearchOpen(true);
 }
 searchInput.addEventListener('input', (e) => renderResults(e.target.value));
 searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
-document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) srPanel.classList.remove('open'); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (searchInput.value.trim().length < 2) return;
+    e.preventDefault();
+    if (!srPanel.classList.contains('open')) renderResults(searchInput.value);
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    setActiveResult(activeResult < 0 ? (direction > 0 ? 0 : renderedHits.length - 1) : activeResult + direction);
+    return;
+  }
+  if (e.key === 'Enter' && renderedHits.length && srPanel.classList.contains('open')) {
+    e.preventDefault();
+    const options = [...srPanel.querySelectorAll('.sr-item')];
+    const selected = options[activeResult >= 0 ? activeResult : 0];
+    selected?.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (srPanel.classList.contains('open')) e.preventDefault();
+    setSearchOpen(false);
+    setSearchStatus('Search suggestions closed.');
+  }
+  if (e.key === 'Tab') setSearchOpen(false);
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
-  srPanel.classList.remove('open');
+  setSearchOpen(false);
   const href = a.getAttribute('href') || '';
   const hash = href.includes('#') ? href.slice(href.indexOf('#') + 1) : '';
   const target = hash ? document.getElementById(hash) : null;
   if (target) { ${onSamePageHit} }
 });
+
+fetch('./search-index.json')
+  .then((response) => {
+    if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+    return response.json();
+  })
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error('Search index is not an array');
+    searchIndex = data;
+    searchState = 'ready';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  })
+  .catch(() => {
+    searchIndex = [];
+    searchState = 'error';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  });
 `;
 
 const AUTH_SCRIPT = (idSuffix = '') => `
@@ -793,6 +990,21 @@ const wikiPage = ({ title, description, body, script }) => `<!doctype html>
 ${SHARED_CSS}
 ${SEARCH_CSS}
 ${WIKI_CSS}
+.wside-section{border-top:1px solid rgba(255,243,207,.06)}
+.wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
+  font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
+.wside-section summary:hover{background:rgba(255,243,207,.04)}
+.wside-section summary::marker{color:var(--cyan)}
+.wside-section summary span{float:right;color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums}
+.wside-section[open] summary{color:var(--cream)}
+.wside-links{padding:0 0 5px 7px}
+.wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+@media(max-width:760px){
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
+  .wside-section summary{padding:12px}
+  .wside-links{padding-left:8px}
+  .wside-links a{padding:10px 12px}
+}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand .wm{margin:0}
 .brand h1{font-size:1.6rem;margin:0}
@@ -811,7 +1023,7 @@ ${script}
 </body>
 </html>`;
 
-const SEARCH_PLACEHOLDER = 'Search weapons, cores, enemies, changes, bugs...';
+const SEARCH_PLACEHOLDER = 'Search wiki guides, cards, and the dev log...';
 
 /* The wiki's own sidebar. It lives here rather than in wiki.mjs because it names
  * the pages that are NOT rosters too, and because "you are here" is page chrome.
@@ -821,17 +1033,37 @@ const SEARCH_PLACEHOLDER = 'Search weapons, cores, enemies, changes, bugs...';
  * and cheap, so calling it once for the nav and once inside buildWiki costs
  * nothing and buys a nav that is not reading half-initialised mutable state. Add
  * a roster and it appears in the sidebar of every existing page for free. */
-const wikiRosterNav = rosterSpecs(gameData, esc).map((r) => ({ slug: r.slug, title: r.title }));
+const wikiRosterNav = rosterSpecs(gameData, esc, tierData)
+  .map((r) => ({ slug: r.slug, title: r.title, section: r.section }));
+const wikiNavSections = [];
+for (const roster of wikiRosterNav) {
+  let section = wikiNavSections.find((candidate) => candidate.name === roster.section);
+  if (!section) {
+    section = { name: roster.section, rosters: [] };
+    wikiNavSections.push(section);
+  }
+  section.rosters.push(roster);
+}
+const currentNavAttrs = (current) => current ? ' class="is-here" aria-current="page"' : '';
 const wikiNav = (here) => `
     <span class="wside-h">Wiki</span>
-    <a href="wiki.html"${here === '' ? ' class="is-here"' : ''}>All rosters</a>
-    ${wikiRosterNav.map((r) => `<a href="wiki-${r.slug}.html"${here === r.slug ? ' class="is-here"' : ''}>${esc(r.title)}</a>`).join('\n    ')}
+    <a href="wiki.html"${currentNavAttrs(here === '')}>All guides</a>
+    ${wikiNavSections.map((section) => {
+      const containsCurrent = section.rosters.some((r) => r.slug === here);
+      return `<details class="wside-section"${containsCurrent ? ' open' : ''}>
+      <summary>${esc(section.name)} <span>${section.rosters.length}</span></summary>
+      <div class="wside-links">
+        ${section.rosters.map((r) => `<a href="wiki-${esc(r.slug)}.html"${currentNavAttrs(here === r.slug)}>${esc(r.title)}</a>`).join('\n        ')}
+      </div>
+    </details>`;
+    }).join('\n    ')}
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>`;
 
 const wiki = buildWiki({
   D: gameData,
+  T: tierData,
   esc,
   page: wikiPage,
   chrome: {
@@ -897,7 +1129,7 @@ ${AUTHBAR}
 </section>
 
 <footer>
-  Generated ${esc(buildStamp)} from <code>main@${esc(headSha)}</code>.
+  Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
   ${live ? `Live build <code>${esc(live.sha)}</code>${live.sha === headSha ? ' (current)' : ' (a deploy is pending)'}.`
          : 'Live build could not be reached at generation time, so no live sha is claimed.'}
 </footer>
@@ -1134,7 +1366,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   </div>
 </div>
 
-${searchMarkup('Search weapons, cores, enemies, changes, bugs...')}
+${searchMarkup(SEARCH_PLACEHOLDER)}
 
 <div class="shell">
   <nav class="side">
@@ -1211,7 +1443,7 @@ ${searchMarkup('Search weapons, cores, enemies, changes, bugs...')}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated ${esc(buildStamp)} from <code>main@${esc(headSha)}</code>.
+  Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
   ${live ? `Live build <code>${esc(live.sha)}</code>${live.sha === headSha ? ' (current)' : ' (a deploy is pending)'}.`
          : 'Live build could not be reached at generation time, so no live sha is claimed.'}
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
@@ -1308,7 +1540,7 @@ ${SEARCH_SCRIPT(`
 
 // ---------------------------------------------------------------- search index
 /* One small JSON file, built at generate time, over everything the page
- * shows: notes, the full commit feed, known bugs, arcs and in-flight work.
+ * shows: notes, the rendered commit feed, known bugs, arcs and in-flight work.
  * Loaded client-side and filtered live. No service, no dependency.
  *
  * KNOWN BUGS gets exactly one aggregate entry, counts only, same as the
@@ -1333,10 +1565,8 @@ for (const n of notes) {
     }
   }
 }
-for (const [, changes] of allDays) {
-  for (const c of changes) {
-    searchIndex.push({ type: 'change', title: c.text, text: `${c.kind} ${c.scope}`, anchor: `chg-${c.sha}`, href: logHref(`chg-${c.sha}`) });
-  }
+for (const c of renderedChanges) {
+  searchIndex.push({ type: 'change', title: c.text, text: `${c.kind} ${c.scope}`, anchor: `chg-${c.sha}`, href: logHref(`chg-${c.sha}`) });
 }
 searchIndex.push({
   type: 'bugs',
@@ -1354,7 +1584,7 @@ for (const t of backlogTeasers) {
 searchIndex.push(...wiki.searchEntries);
 
 // ---------------------------------------------------------------- link integrity
-/* THE WIKI IS A GRAPH AND A GRAPH ROTS AT THE EDGES. Weapon cards link to the
+/* THE SITE IS A GRAPH AND A GRAPH ROTS AT THE EDGES. Weapon cards link to the
  * ship core built on them, cores link back to their donor weapon, splitters link
  * to what they leave behind, and every one of those hrefs is built from an id in
  * src/data. Rename a weapon there and the relation survives (the data layer
@@ -1369,23 +1599,38 @@ searchIndex.push(...wiki.searchEntries);
  *
  * It also covers search-index.json, which is the easier one to get wrong because
  * nothing renders it at build time. */
+const emittedDocuments = [
+  { file: 'index.html', html: indexHtml },
+  { file: 'log.html', html: logHtml },
+  ...wiki.pages,
+];
+const withoutHtmlComments = (html) => html.replace(/<!--[\s\S]*?-->/g, '');
 const emittedAnchors = new Map(); // file -> Set of element ids
-for (const p of wiki.pages) {
-  emittedAnchors.set(p.file, new Set([...p.html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
+const duplicateAnchors = [];
+for (const p of emittedDocuments) {
+  const ids = [...withoutHtmlComments(p.html).matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+  const uniqueIds = new Set(ids);
+  if (uniqueIds.size !== ids.length) {
+    const seen = new Set();
+    duplicateAnchors.push(...ids.filter((id) => seen.has(id) || !seen.add(id)).map((id) => `${p.file}#${id}`));
+  }
+  emittedAnchors.set(p.file, uniqueIds);
 }
-const brokenLinks = [];
-const checkHref = (href, where) => {
-  const [file, anchor] = href.split('#');
-  if (!file.startsWith('wiki')) return; // log.html / index.html anchors are not this check's business
+const brokenLinks = duplicateAnchors.map((anchor) => `duplicate id ${anchor}`);
+const checkHref = (href, where, currentFile = '') => {
+  if (/^(?:https?:|mailto:|data:)/.test(href)) return;
+  const [rawFile, anchor] = href.split('#');
+  const file = (rawFile || currentFile).replace(/^\.\//, '');
+  if (!file.endsWith('.html')) return;
   if (!emittedAnchors.has(file)) { brokenLinks.push(`${where}: no such page ${file}`); return; }
   if (anchor && !emittedAnchors.get(file).has(anchor)) brokenLinks.push(`${where}: ${file} has no #${anchor}`);
 };
-for (const p of wiki.pages) {
-  for (const m of p.html.matchAll(/href="(wiki[^"#]*\.html(?:#[^"]*)?)"/g)) checkHref(m[1], p.file);
+for (const p of emittedDocuments) {
+  for (const m of withoutHtmlComments(p.html).matchAll(/href="([^"]+)"/g)) checkHref(m[1], p.file, p.file);
 }
-for (const e of wiki.searchEntries) checkHref(e.href, 'search-index');
+for (const e of searchIndex) checkHref(e.href, 'search-index');
 if (brokenLinks.length) {
-  throw new Error(`The wiki emitted ${brokenLinks.length} link(s) that resolve to nothing:\n  ${brokenLinks.join('\n  ')}\nFix bin/wiki.mjs rather than shipping dead anchors.`);
+  throw new Error(`The site emitted ${brokenLinks.length} internal link(s) that resolve to nothing:\n  ${brokenLinks.join('\n  ')}\nFix the generator rather than shipping dead routes or anchors.`);
 }
 
 // ---------------------------------------------------------------- write
@@ -1421,12 +1666,33 @@ for (const o of OUTPUTS) {
 for (const o of OUTPUTS) writeFileSync(join(OUTDIR, o.file), o.body);
 writeFileSync(join(OUTDIR, '.site-outputs'), `${OUTPUTS.map((o) => o.file).join('\n')}\n`);
 
+/* VALIDATE THE EXACT CANDIDATE RELEASE. Artifact pins above prove the inputs;
+ * this consumer-side contract proves those inputs survived as complete routes,
+ * cards, anchors and search edges in the files just written. Both established
+ * deploy paths call this generator before staging, so a non-zero checker exit
+ * stops publication without either deploy script needing a second hand-wired
+ * gate. wiki-check imports the wiki model only and cannot recurse here. */
+const WIKI_CHECK_PATH = join(SITE_ROOT, 'bin/wiki-check.mjs');
+if (!existsSync(WIKI_CHECK_PATH)) {
+  throw new Error(`Refusing to publish unchecked wiki output: ${WIKI_CHECK_PATH} does not exist.`);
+}
+console.log('validating generated wiki contract');
+try {
+  execFileSync(process.execPath, [WIKI_CHECK_PATH, '--repo', REPO, '--outdir', OUTDIR], {
+    cwd: SITE_ROOT,
+    stdio: 'inherit',
+  });
+} catch (error) {
+  const status = Number.isInteger(error?.status) ? ` (exit ${error.status})` : '';
+  throw new Error(`Refusing to publish generated wiki output: bin/wiki-check.mjs failed${status}.`, { cause: error });
+}
+
 console.log(`wrote ${OUTPUTS.length} files to ${OUTDIR}`);
-console.log(`  main@${headSha}  live=${live ? live.sha : 'unreachable'}`);
+console.log(`  game@${headSha}  live=${live ? live.sha : 'unreachable'}`);
 console.log(`  ${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days since ${windowStart}, across ${allDays.length} active days (${filtered} noise commits filtered)`);
 console.log(`  ${arcs.length} arcs, ${backlogTeasers.length} backlog teasers, ${openBugs.length} open bugs, ${notes.length} authored notes`);
 console.log(`  wiki: ${wiki.rosters.length} rosters, ${wiki.rosters.map((r) => `${r.title} ${r.entries.length}`).join(', ')}`);
-console.log(`  wiki: ${[...emittedAnchors.values()].reduce((n, s) => n + s.size, 0)} anchors, all internal links resolve`);
+console.log(`  site: ${[...emittedAnchors.values()].reduce((n, s) => n + s.size, 0)} anchors, all internal links resolve`);
 if (wiki.gaps.length) {
   console.log(`  wiki: ${wiki.gaps.length} enum value(s) with no written explanation yet, shown as the bare value:`);
   for (const g of wiki.gaps) console.log(`    ${g}`);
