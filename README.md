@@ -248,8 +248,11 @@ deploy paths stage from it. Visual variants use safe lowercase nested paths
 under `wiki-assets/`; absolute paths, traversal and unsafe segments are refused
 independently by generation and deployment. A missing tracked path is
 intentional here: `git add -- <path>` stages that output's deletion so an old
-page or image cannot survive after leaving the artifact. The manifest is
-gitignored because it is a build-time handoff rather than site content.
+page or image cannot survive after leaving the artifact. Tracked generated
+paths are enumerated from Git even when a prior interrupted generation already
+removed the file, so the next manifest still carries the pending deletion. The
+manifest is gitignored because it is a build-time handoff rather than site
+content.
 
 This replaced a hand-typed filename list that appeared in **two repos**
 (`bin/deploy-site.sh` here and `bin/deploy-play.sh` in the game). That was

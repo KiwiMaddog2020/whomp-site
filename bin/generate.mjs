@@ -1760,27 +1760,36 @@ for (const o of OUTPUTS) {
 /* RETIRED ROUTES ARE OUTPUTS TOO, in the only sense deploy cares about: their
  * deletion must be staged. Both deploy paths consume .site-outputs and call
  * `git add -- <path>`; a tracked path that no longer exists stages its deletion.
- * Remove only generated wiki filenames that are absent from this exact model,
- * and add only tracked retirements to the staging manifest so an untracked stale
- * preview file cannot make `git add` fail. */
+ * Enumerate the tracked generated namespace directly, not only files still on
+ * disk: a prior interrupted generation may already have removed a route or
+ * asset before staging it. Remove only generated wiki filenames that are absent
+ * from this exact model, and add only tracked retirements to the staging manifest
+ * so an untracked stale preview file cannot make `git add` fail. */
 const outputFiles = [...OUTPUTS.map((output) => output.file), ...visualAssets.map((asset) => asset.file)];
 const expectedWikiFiles = new Set(outputFiles.filter((file) => /^wiki.*\.html$/.test(file)));
-const retiredGeneratedWikiFiles = readdirSync(OUTDIR, { withFileTypes: true })
+let trackedGeneratedFiles = [];
+try {
+  trackedGeneratedFiles = execFileSync(
+    'git', ['-C', OUTDIR, 'ls-files', '--', 'wiki*.html', 'wiki-assets'], { encoding: 'utf8' },
+  ).trim().split('\n').filter(Boolean);
+} catch {
+  // A temporary preview directory is normally not a repository. Its stale
+  // generated files are still removed, but there is no deletion to stage.
+}
+const trackedGeneratedWikiFiles = trackedGeneratedFiles.filter((file) => /^wiki.*\.html$/.test(file));
+const trackedGeneratedVisualFiles = trackedGeneratedFiles.filter((file) => file.startsWith('wiki-assets/'));
+const invalidTrackedGeneratedFiles = trackedGeneratedFiles.filter((file) => !/^wiki.*\.html$/.test(file)
+  && !/^wiki-assets\/(?:[a-z0-9][a-z0-9._-]*\/)*[a-z0-9][a-z0-9._-]*\.png$/.test(file));
+if (invalidTrackedGeneratedFiles.length) {
+  throw new Error(`Tracked generated namespace contains unclassified paths: ${invalidTrackedGeneratedFiles.join(', ')}`);
+}
+const trackedRetiredWikiFiles = trackedGeneratedWikiFiles.filter((file) => !expectedWikiFiles.has(file));
+const staleWikiFilesOnDisk = readdirSync(OUTDIR, { withFileTypes: true })
   .filter((entry) => entry.isFile() && /^wiki.*\.html$/.test(entry.name) && !expectedWikiFiles.has(entry.name))
   .map((entry) => entry.name)
   .sort();
-let trackedRetiredWikiFiles = [];
-if (retiredGeneratedWikiFiles.length) {
-  try {
-    trackedRetiredWikiFiles = execFileSync(
-      'git', ['-C', OUTDIR, 'ls-files', '--', ...retiredGeneratedWikiFiles], { encoding: 'utf8' },
-    ).trim().split('\n').filter(Boolean);
-  } catch {
-    // A temporary preview directory is normally not a repository. Its stale
-    // generated files are still removed, but there is no deletion to stage.
-  }
-  for (const file of retiredGeneratedWikiFiles) unlinkSync(join(OUTDIR, file));
-}
+const retiredGeneratedWikiFiles = [...new Set([...staleWikiFilesOnDisk, ...trackedRetiredWikiFiles])].sort();
+for (const file of staleWikiFilesOnDisk) unlinkSync(join(OUTDIR, file));
 const walkGeneratedFiles = (root, current = root) => {
   if (!existsSync(current)) return [];
   const files = [];
@@ -1792,23 +1801,15 @@ const walkGeneratedFiles = (root, current = root) => {
   return files.sort();
 };
 const expectedVisualFiles = new Set(visualAssets.map((asset) => asset.file));
-const retiredVisualFiles = walkGeneratedFiles(join(OUTDIR, 'wiki-assets'))
+const trackedRetiredVisualFiles = trackedGeneratedVisualFiles.filter((file) => !expectedVisualFiles.has(file));
+const staleVisualFilesOnDisk = walkGeneratedFiles(join(OUTDIR, 'wiki-assets'))
   .filter((file) => !expectedVisualFiles.has(file));
-let trackedRetiredVisualFiles = [];
-if (retiredVisualFiles.length) {
-  try {
-    trackedRetiredVisualFiles = execFileSync(
-      'git', ['-C', OUTDIR, 'ls-files', '--', ...retiredVisualFiles], { encoding: 'utf8' },
-    ).trim().split('\n').filter(Boolean);
-  } catch {
-    // Preview output directories are not necessarily repositories.
+const retiredVisualFiles = [...new Set([...staleVisualFilesOnDisk, ...trackedRetiredVisualFiles])].sort();
+for (const file of staleVisualFilesOnDisk) {
+  if (!safeGeneratedPath(file) || !file.startsWith('wiki-assets/')) {
+    throw new Error(`Refusing to retire visual output outside wiki-assets: ${file}`);
   }
-  for (const file of retiredVisualFiles) {
-    if (!safeGeneratedPath(file) || !file.startsWith('wiki-assets/')) {
-      throw new Error(`Refusing to retire visual output outside wiki-assets: ${file}`);
-    }
-    unlinkSync(join(OUTDIR, ...file.split('/')));
-  }
+  unlinkSync(join(OUTDIR, ...file.split('/')));
 }
 /* Optional template rows interpolate as empty strings. Keep their surrounding
  * indentation out of the committed HTML so generated releases stay clean under
