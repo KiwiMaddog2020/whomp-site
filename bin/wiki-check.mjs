@@ -75,6 +75,7 @@ const T = readJson(join(REPO, 'data/tier-rankings.json'));
 const V = readJson(join(REPO, 'data/wiki-visuals.json'));
 const generatorSource = readFileSync(join(SITE_ROOT, 'bin/generate.mjs'), 'utf8');
 const generatedOutputGitSource = readFileSync(join(SITE_ROOT, 'bin/generated-output-git.mjs'), 'utf8');
+const liveVersionSource = readFileSync(join(SITE_ROOT, 'bin/live-version.mjs'), 'utf8');
 requireThat(/verifyGameArtifact\('wiki-visuals\.mjs', '--verify', 'data\/wiki-visuals\.json'\)/.test(generatorSource),
   'site generator does not require the full visual rerender verification gate');
 requireThat(/const ENTRY_HASH_PATTERN = \/\^#e-\[A-Za-z0-9\._-\]\+\$\//.test(generatorSource)
@@ -85,6 +86,14 @@ requireThat(/const ENTRY_HASH_PATTERN = \/\^#e-\[A-Za-z0-9\._-\]\+\$\//.test(gen
 'search focus does not restrict load/hashchange focus to valid programmatically focusable #e-* entry targets');
 requireThat(/destination\.pathname === location\.pathname && destination\.search === location\.search/.test(generatorSource),
   'same-page search reveal/focus does not prove that the destination is the current document');
+requireThat(/live = normalizeSuppliedLiveVersion\(SHA_ARG, VERSION_ARG \|\| pkg\.version\);/.test(generatorSource)
+  && /live = await fetchStableLiveVersion\(`\$\{LIVE_URL\}\/version\.json`\);/.test(generatorSource)
+  && /if \(payload\.schema !== 1\) fail\('schema must be 1'\);/.test(liveVersionSource)
+  && /sha: payload\.sourceSha\.slice\(0, 8\)/.test(liveVersionSource)
+  && /version,\s*builtAt: payload\.publishedAt/.test(liveVersionSource)
+  && /if \(!response\.ok\) return null;/.test(liveVersionSource)
+  && /fail\('HTTP 200 body is not valid JSON'/.test(liveVersionSource),
+'generator does not distinguish unreachable Stable metadata from a malformed HTTP-200 release contract');
 requireThat(/const trackedGeneratedFiles = listTrackedGeneratedFiles\(OUTDIR\);/.test(generatorSource)
   && /if \(!gitWorktreeRoot\(root\)\) return \[\];/.test(generatedOutputGitSource)
   && /'git', \['-C', root, 'ls-files', '--', 'wiki\*\.html', 'wiki-assets'\]/.test(generatedOutputGitSource)

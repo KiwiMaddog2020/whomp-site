@@ -46,6 +46,7 @@ import { writeFileSync, readFileSync, readdirSync, existsSync, mkdirSync, unlink
 import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
+import { fetchStableLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
 import { buildWiki, rosterSpecs, visualOutputPath, WIKI_CSS } from './wiki.mjs';
 
 const SITE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -263,12 +264,9 @@ if (gameTaglines.length === 0) {
  * reports it as measured, and says so plainly when it could not measure it. */
 let live = null;
 if (SHA_ARG) {
-  live = { sha: SHA_ARG, version: VERSION_ARG || pkg.version, builtAt: null };
+  live = normalizeSuppliedLiveVersion(SHA_ARG, VERSION_ARG || pkg.version);
 } else if (!OFFLINE) {
-  try {
-    const r = await fetch(`${LIVE_URL}/version.json`, { signal: AbortSignal.timeout(8000) });
-    if (r.ok) live = await r.json();
-  } catch { /* offline build; the page says so rather than inventing a sha */ }
+  live = await fetchStableLiveVersion(`${LIVE_URL}/version.json`);
 }
 
 // ---------------------------------------------------------------- derive: the full shipped feed
