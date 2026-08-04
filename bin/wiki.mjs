@@ -328,8 +328,18 @@ const WIKI_CSS = `
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -443,6 +453,21 @@ const WIKI_CSS = `
 
 // ---------------------------------------------------------------- card pieces
 const tag = (text, ink) => `<span class="wtag${ink ? ` ink-${ink}` : ''}">${text}</span>`;
+/* Accents arrive as #rrggbb from the registry colours. The glyph well wants the
+   same hue at two low alphas, and a bad or absent colour must produce nothing
+   rather than an invalid declaration that paints the well black.
+   THE BRIGHTNESS FLOOR is the part that matters. Three cosmetic accents are
+   near-black (Shades is #121522), and a near-black ring on a near-black card is
+   not a subtle ring, it is a missing one. Below the floor the well keeps its
+   default hairline instead, so an accent can only ever add to the component. */
+const rgba = (hex, alpha, minLuminance = 0) => {
+  const match = /^#([0-9a-f]{6})$/i.exec(String(hex || ''));
+  if (!match) return '';
+  const value = parseInt(match[1], 16);
+  const [r, g, b] = [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+  if ((0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < minLuminance) return '';
+  return `rgba(${r},${g},${b},${alpha})`;
+};
 const fact = (k, v) => (v ? `<div class="wfact"><span class="wfact-k">${k}</span><span class="wfact-v">${v}</span></div>` : '');
 const meter = (k, value, max, unit) => {
   const w = max > 0 ? Math.max(2, Math.round((Number(value) / max) * 100)) : 0;
@@ -1131,6 +1156,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       { key: 'stacks', label: 'Max stacks', of: (e) => e.maxStacks, desc: true },
     ],
     searchText: (e) => `${e.desc} ${e.flavor} ${e.rarity} relic ${Object.keys(e.stats || {}).join(' ')}`,
+    icon: (e) => e.icon,
     card: (e) => `
       <div class="wtags">${tag(esc(humanize(e.rarity)), e.rarity === 'legendary' ? 'gold' : e.rarity === 'epic' ? 'pink' : e.rarity === 'rare' ? 'violet' : '')}${e.event ? tag('Runtime effect', 'cyan') : tag('Stat effect', 'cyan')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
@@ -1217,6 +1243,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     ],
     searchText: (e) => `${e.desc} ${e.effect} legendary ${Object.keys(e.params || {}).join(' ')}`,
     accent: (e) => colorHex(e.color),
+    icon: (e) => e.icon,
     card: (e) => `
       <div class="wtags">${tag('Legendary', 'gold')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
@@ -1354,6 +1381,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     facets: [],
     sorts: [{ key: 'roster', label: 'Roster order', of: (e) => ultimateEntries.indexOf(e) }],
     searchText: (e) => `${e.desc} ${ultimateRuntime.owner} ultimate ability ${ultimateRuntime.slot} slot ${ultimateAvailability} ${ultimateRuntime.availability.scope || ''} ${ultimateRuntime.semantics.join(' ')} ${Object.keys(e.params || {}).join(' ')}`,
+    icon: (e) => e.icon,
     card: (e) => `
       <div class="wtags">${tag(`${esc(humanize(ultimateRuntime.owner))} ability`, 'cyan')}${tag(`${esc(ultimateRuntime.slot)} slot`, 'violet')}${tag(esc(ultimateAvailability), 'gold')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
@@ -2129,6 +2157,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     ],
     searchText: (e) => `${e.name} cosmetic style skin ${(inverseUnlocks.get(`sprite:${e.id}`) || []).map((row) => row.name).join(' ')}`,
     accent: (e) => colorHex(e.accentColor),
+    icon: (e) => e.icon,
     card: (e) => {
       const unlocks = inverseUnlocks.get(`sprite:${e.id}`) || [];
       const swatch = (value, label) => value === null || value === undefined
@@ -2410,7 +2439,7 @@ export const DISPLAY_FIELD_PATHS = Object.freeze({
   shipSystems: ['label', 'heart', 'coreId'],
   shipFragments: ['route', 'system', 'form', 'memoryFlavor'],
   wearables: ['anchor', 'blurb', 'color', 'accent', 'trails'],
-  cosmetics: ['unlockedFromStart', 'bodyColor', 'rimColor', 'accentColor'],
+  cosmetics: ['icon', 'unlockedFromStart', 'bodyColor', 'rimColor', 'accentColor'],
 });
 
 /* Ref fields are held to a stronger rule than "present if present": each
@@ -2653,9 +2682,15 @@ function renderRosterPage(roster, ctx) {
         : visualEntries.length === 1
           ? renderWikiVisual(visualEntries[0], esc, { primary: isPrimaryVisual, use: 'entry' })
           : '';
+      /* The glyph is the entry's own, straight from the game, so a roster opts
+         in by naming where it lives and never by inventing one here. */
+      const glyph = roster.icon ? roster.icon(e) : '';
+      const glyphRing = rgba(accent, 0.45, 0.25);
+      const glyphWash = rgba(accent, 0.12, 0.25);
       return `
       <article class="wcard" id="e-${esc(e.id)}" tabindex="-1" ${facetAttrs} ${sortAttrs}>
         <div class="wcard-h">
+          ${glyph ? `<span class="wcard-glyph" aria-hidden="true"${glyphRing ? ` style="border-color:${glyphRing};background:${glyphWash}"` : ''}>${esc(glyph)}</span>` : ''}
           <h4>${esc(e.name)}</h4>
           ${accent ? `<span class="wcard-accent" style="background:${esc(accent)}"></span>` : ''}
         </div>
