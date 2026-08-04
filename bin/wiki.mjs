@@ -727,20 +727,28 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     domain: 'weapons',
     title: 'Weapons',
     tagline: 'The half of your build that fires itself.',
-    lede: `Weapons fire on their own. You are offered them as you level, you level them up, and ${evolvedWeaponCount} of them are terminal forms reached with the right tome and a boss chest. The weapon you aim by hand is the core weapon, and it has its own page.`,
-    omissions: 'There is no damage-per-second column here, and that is deliberate. The game does not compute one: your might and crit multiply the damage, your attack speed divides the interval, and half of these do not have "damage times shots per second" semantics in the first place. A beam ramps the longer it holds, chain jumps land a flat share of the first hit, the shotgun pays more up close. A single number would be wrong on most of these cards, so the page gives you the base figures and the growth rule and lets you compare like with like. <b>Element is a look, not a rule</b>: it picks the effect tint and nothing in the game reads it for damage, resistance or status.',
+    lede: `Weapons fire on their own. You are offered them as you level, you feed the levels back into them, and ${evolvedWeaponCount} of them are end forms that only arrive with the right tome and a boss chest. The one you aim by hand is a core weapon, and it has its own page.`,
+    omissions: '<b>There is no damage-per-second column, on purpose.</b> The game never works one out: your might and your crit multiply the damage, your attack speed divides the interval, and half of these do not fire in a way that "damage times shots per second" describes at all. A beam ramps the longer it holds, a chain jump lands a flat share of the first hit, the shotgun pays more up close. One number would be wrong on most of these cards, so you get the base figures and the growth rule and you compare like with like. <b>Element is a look, not a rule</b>: it picks the color of the effect, and nothing in the game reads it for damage, resistance or status.',
     entries: weaponEntries,
     groups: [
       {
         key: 'base',
         title: 'Base weapons',
-        note: `What the level-up offer draws from. ${freshBaseWeaponCount} are available on a fresh save; the rest use the quest and/or achievement routes listed on each card. Character weapon ids are suggestions, not campaign starting grants.`,
+        /* THE LAST SENTENCE IS A REGRESSION GUARD, and bin/wiki-check.mjs pins it.
+           An earlier version of this page read a character's startWeaponId as a
+           weapon they begin the campaign holding. They do not: the standard solo
+           campaign starts with the aimed core and nothing else. Reword it freely,
+           update the pin with it, and keep saying the true thing. The sentence
+           avoids an apostrophe on purpose: the pin is a plain substring match and
+           the generator does not escape one, so a possessive here is a trap for
+           whoever reworks this next. */
+        note: `What the level-up offer draws from. ${freshBaseWeaponCount} are there on a fresh save, and the rest arrive through the quest or achievement routes named on each card. The weapon a character lists is a suggestion, not something they walk in holding.`,
         has: (e) => !e.evolved,
       },
       {
         key: 'evolved',
         title: 'Evolutions',
-        note: 'Terminal forms, never offered directly. Each one is the payoff for maxing a specific weapon, holding its paired tome, and opening a boss chest. Turning it down is not permanent, the offer comes back at the next one.',
+        note: 'End forms, never offered straight up. Each one is the payoff for maxing a specific weapon, holding its paired tome, and opening a boss chest. Turning one down is not final, the offer comes back at the next chest.',
         has: (e) => !!e.evolved,
       },
     ],
@@ -877,7 +885,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   }));
   const powerCeilingFeature = `
     <section class="wfeature" aria-labelledby="power-ceiling-semantics">
-      <div><span class="eyebrow">Global system mechanic</span><h3 id="power-ceiling-semantics">Permanent-power soft knees</h3></div>
+      <div><span class="eyebrow">How the curve bends</span><h3 id="power-ceiling-semantics">The knee, in the game's own words</h3></div>
       ${(D.powerCeiling.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
       ${sourceParams({ source: D.powerCeiling.source }, 'Power-ceiling provenance')}
     </section>`;
@@ -885,16 +893,19 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     section: 'Buildcraft',
     slug: 'power-ceilings',
     domain: null,
-    sourceKind: 'source mechanic',
-    title: 'Power soft knees',
-    tagline: `${powerCeilingEntries.length} exported permanent-power dials, without an invented build result.`,
-    lede: 'The root powerCeiling contract exposes its knee and factor fields. This guide prints the exact field names and values alongside the artifact’s own semantics.',
-    omissions: '<b>No effective-power number is computed here.</b> The contract does not include a build’s permanent attack-speed bonus or crit product, and temporary buffs apply after these curves.',
+    sourceKind: 'game rule',
+    /* The page title also becomes the document title, as "WHOMP <title>" in
+       lower case. "Where power stops paying" is the better heading and the worse
+       browser tab, so the heading stays plain and the tagline carries the turn. */
+    title: 'Diminishing returns',
+    tagline: 'Attack speed and crit each stop paying full price somewhere.',
+    lede: 'Permanent power does not climb forever. Past a point, more attack speed and more crit each buy you less than the last one did, and these four numbers are where that starts and how hard it bites.',
+    omissions: '<b>This page will not work out what your own build gets.</b> The game keeps your permanent attack-speed bonus and your crit product to itself, and the buffs that come and go during a run land after these curves anyway. So the four numbers are here and the arithmetic on your run is not.',
     featureHtml: powerCeilingFeature,
     sourceLabel: D.powerCeiling.source,
-    countLabel: `${powerCeilingEntries.length} source dials`,
+    countLabel: `${powerCeilingEntries.length} dials`,
     entries: powerCeilingEntries,
-    groups: [{ key: 'all', title: 'Exported configuration', note: 'Every field in powerCeiling.config, in source order.', has: () => true }],
+    groups: [{ key: 'all', title: 'The four dials', note: 'All four, in the order the game keeps them.', has: () => true }],
     facets: [{ key: 'system', label: 'System', of: (e) => e.system }],
     sorts: [
       { key: 'roster', label: 'Source order', of: (e) => powerCeilingEntries.indexOf(e) },
@@ -2052,12 +2063,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'cosmetics',
     domain: 'cosmetics',
     title: 'Cosmetic styles',
-    tagline: 'Every body, rim and accent palette.',
-    lede: 'Cosmetic styles are complete source palettes. Each card shows availability, achievement route when one exists, and the exact body, rim and accent values stored by the registry.',
+    tagline: 'Three colors each, and not one of them makes you stronger.',
+    lede: 'A style is three colors: body, rim and accent. It changes nothing about how a run goes, which is the entire point of it.',
+    omissions: '<b>These are the colors, not the look.</b> The strip on each card is the three stored values side by side, exact and flat, and it is not a picture of anyone wearing anything. What the game currently does with those colors is on the card too, in the game\'s own words, and it is less than you would expect.',
     entries: cosmeticEntries,
     groups: [
-      { key: 'start', title: 'Available from the start', note: 'Present on a fresh save.', has: (e) => e.unlockedFromStart },
-      { key: 'earned', title: 'Earned styles', note: 'Achievement-linked styles.', has: (e) => !e.unlockedFromStart },
+      { key: 'start', title: 'Available from the start', note: 'Yours before you have done anything.', has: (e) => e.unlockedFromStart },
+      { key: 'earned', title: 'Earned styles', note: 'Earned by doing one specific thing. The achievement that pays out is named on the card.', has: (e) => !e.unlockedFromStart },
     ],
     facets: [{ key: 'access', label: 'Availability', of: (e) => e.unlockedFromStart ? 'from the start' : 'achievement' }],
     sorts: [

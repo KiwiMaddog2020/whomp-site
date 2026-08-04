@@ -768,8 +768,12 @@ requireThat(/Run-start health base/.test(charactersHtml)
   && /Suggested weapon/.test(charactersHtml) && !/Starting weapon/.test(charactersHtml)
   && /not m\/s/.test(charactersHtml) && /not final damage/.test(charactersHtml),
 'character route mislabels authored health, speed or might identity inputs');
+// Regression guard, reworded with the copy it guards. A character's listed
+// weapon is a suggestion; the standard solo campaign starts with the aimed core
+// and nothing else. The forbidden phrasings are the exact wrong claims this page
+// carried before, so they stay forbidden whatever the true sentence sounds like.
 requireThat(!/start(?:s|ing)? with it|ones a character brings with them/i.test(weaponsHtml)
-  && /Character weapon ids are suggestions, not campaign starting grants/.test(weaponsHtml),
+  && /The weapon a character lists is a suggestion, not something they walk in holding/.test(weaponsHtml),
 'weapon route has regressed from suggested identity to an unconditional character starting grant');
 for (const html of [worldsHtml, expeditionsHtml]) {
   requireThat(html.includes(String(D.world.encounterSchedule.automaticMinibossCadenceSec))
