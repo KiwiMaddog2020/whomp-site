@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP shrine blessings</title>
-<meta name="description" content="Shrine blessings: 20 authored blessing options in the shrine's blessing-trio portion. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Shrine blessings: The three a shrine puts in front of you. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP shrine blessings</h1>
-        <p class="subtag">20 authored blessing options in the shrine's blessing-trio portion.</p>
+        <p class="subtag">The three a shrine puts in front of you.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Shrine blessings</span></nav>
     <h2 class="chroma">Shrine blessings</h2>
-    <p class="lede">This registry supplies the blessing trio portion of an activated world shrine. A legendary replacement can return before the blessing menu and movement draw, so these cards are not the complete set of shrine outcomes.</p>
+    <p class="lede">A shrine you activate offers three, drawn from these 20. That trio is only part of what a shrine can do, because a legendary replacement can turn up ahead of the blessing menu and a way to move can follow it, so this page is not the complete set of shrine outcomes.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -468,8 +478,8 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
     <section class="wfeature" aria-labelledby="blessing-shrine-runtime">
-      <div><span class="eyebrow">World-shrine activation contract</span><h3 id="blessing-shrine-runtime">Blessing trio, legendary replacement and movement offering</h3></div>
-      <p>A qualifying normal activation has <b>1</b> movement slot. The gate requires a world shrine and no legendary replacement; directive and merchant blessing offers have no movement slot.</p>
+      <div><span class="eyebrow">What lighting one up actually does</span><h3 id="blessing-shrine-runtime">Blessings first, then a legendary or a way to move</h3></div>
+      <p>A normal world shrine that lights up has <b>1</b> movement slot to fill, and it only fills if no legendary replacement arrived first. Directive and merchant offers do not carry that slot at all.</p>
       <p>A non-legendary activated world shrine rolls its blessing trio, then fills the eligible movement slot from this complete registry.</p><p>Directive and merchant blessing offers do not include the movement slot, and a legendary replacement returns before the movement draw.</p><p>Offerings at their maxStacks ceiling leave the eligible pool; Extra Jump is uncapped, so the pool cannot become empty.</p><p>JUMP_AUGMENTS is a legacy card/progression alias surface for Spring Step and Extra Jump, not the complete shrine movement pool.</p>
       <details class="wraw"><summary>Shrine runtime provenance <span>5</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/shrineMovement.ts#SHRINE_MOVEMENT_OFFERINGS</dd></div><div><dt><code>order</code></dt><dd>src/data/shrineMovement.ts#SHRINE_MOVEMENT_IDS</dd></div><div><dt><code>activation</code></dt><dd>src/sim/shrines.ts#ShrineSystem.openBlessingOffer</dd></div><div><dt><code>eligibility</code></dt><dd>src/sim/shrines.ts#ShrineSystem.rollMovementOffering</dd></div><div><dt><code>grant</code></dt><dd>src/sim/shrines.ts#ShrineSystem.grantMovement</dd></div></dl></details>
     </section>
@@ -497,10 +507,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Blessing registry</h3><span class="wgroup-n">20</span></div>
-      <p class="wgroup-note">All authored options for the blessing trio; movement offerings are catalogued separately.</p>
+      <p class="wgroup-note">Every option the trio can be drawn from. The movement offering that can follow it has its own page.</p>
       <div class="wgrid">
       <article class="wcard" id="e-damage" tabindex="-1" data-stat="damageBonus" data-s-roster="0" data-s-name="power" data-s-value="0.08">
         <div class="wcard-h">
+
           <h4>Power</h4>
           <span class="wcard-accent" style="background:#ff8a3d"></span>
         </div>
@@ -516,6 +527,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-speed" tabindex="-1" data-stat="speedBonus" data-s-roster="1" data-s-name="swiftness" data-s-value="0.06">
         <div class="wcard-h">
+
           <h4>Swiftness</h4>
           <span class="wcard-accent" style="background:#28e0c2"></span>
         </div>
@@ -531,6 +543,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-attackSpeed" tabindex="-1" data-stat="attackSpeedBonus" data-s-roster="2" data-s-name="haste" data-s-value="0.08">
         <div class="wcard-h">
+
           <h4>Haste</h4>
           <span class="wcard-accent" style="background:#ffd84a"></span>
         </div>
@@ -546,6 +559,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-regen" tabindex="-1" data-stat="regenBonus" data-s-roster="3" data-s-name="vitality" data-s-value="0.5">
         <div class="wcard-h">
+
           <h4>Vitality</h4>
           <span class="wcard-accent" style="background:#34e89e"></span>
         </div>
@@ -561,6 +575,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lifesteal" tabindex="-1" data-stat="lifesteal" data-s-roster="4" data-s-name="vampirism" data-s-value="0.03">
         <div class="wcard-h">
+
           <h4>Vampirism</h4>
           <span class="wcard-accent" style="background:#ff4f87"></span>
         </div>
@@ -576,6 +591,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-critChance" tabindex="-1" data-stat="critChance" data-s-roster="5" data-s-name="precision" data-s-value="0.04">
         <div class="wcard-h">
+
           <h4>Precision</h4>
           <span class="wcard-accent" style="background:#35d7ff"></span>
         </div>
@@ -591,6 +607,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-critMultiplier" tabindex="-1" data-stat="critMultiplier" data-s-roster="6" data-s-name="lethality" data-s-value="0.09">
         <div class="wcard-h">
+
           <h4>Lethality</h4>
           <span class="wcard-accent" style="background:#bb6cff"></span>
         </div>
@@ -606,6 +623,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-armor" tabindex="-1" data-stat="armor" data-s-roster="7" data-s-name="fortitude" data-s-value="0.05">
         <div class="wcard-h">
+
           <h4>Fortitude</h4>
           <span class="wcard-accent" style="background:#5494ff"></span>
         </div>
@@ -621,6 +639,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-maxHp" tabindex="-1" data-stat="maxHpBonus" data-s-roster="8" data-s-name="vigor" data-s-value="15">
         <div class="wcard-h">
+
           <h4>Vigor</h4>
           <span class="wcard-accent" style="background:#ff6b9a"></span>
         </div>
@@ -636,6 +655,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pickupRange" tabindex="-1" data-stat="pickupBonus" data-s-roster="9" data-s-name="magnetism" data-s-value="0.2">
         <div class="wcard-h">
+
           <h4>Magnetism</h4>
           <span class="wcard-accent" style="background:#34d9ff"></span>
         </div>
@@ -651,6 +671,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-xpBonus" tabindex="-1" data-stat="xpBonus" data-s-roster="10" data-s-name="wisdom" data-s-value="0.1">
         <div class="wcard-h">
+
           <h4>Wisdom</h4>
           <span class="wcard-accent" style="background:#a66cff"></span>
         </div>
@@ -666,6 +687,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-luck" tabindex="-1" data-stat="luck" data-s-roster="11" data-s-name="fortune" data-s-value="0.03">
         <div class="wcard-h">
+
           <h4>Fortune</h4>
           <span class="wcard-accent" style="background:#38d9a9"></span>
         </div>
@@ -681,6 +703,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-size" tabindex="-1" data-stat="sizeBonus" data-s-roster="12" data-s-name="magnitude" data-s-value="0.05">
         <div class="wcard-h">
+
           <h4>Magnitude</h4>
           <span class="wcard-accent" style="background:#c9a4ff"></span>
         </div>
@@ -696,6 +719,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-duration" tabindex="-1" data-stat="durationBonus" data-s-roster="13" data-s-name="persistence" data-s-value="0.06">
         <div class="wcard-h">
+
           <h4>Persistence</h4>
           <span class="wcard-accent" style="background:#5be0c9"></span>
         </div>
@@ -711,6 +735,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-projSpeed" tabindex="-1" data-stat="projSpeedBonus" data-s-roster="14" data-s-name="velocity" data-s-value="0.05">
         <div class="wcard-h">
+
           <h4>Velocity</h4>
           <span class="wcard-accent" style="background:#ffb454"></span>
         </div>
@@ -726,6 +751,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gold" tabindex="-1" data-stat="goldBonus" data-s-roster="15" data-s-name="riches" data-s-value="0.07">
         <div class="wcard-h">
+
           <h4>Riches</h4>
           <span class="wcard-accent" style="background:#f2c14e"></span>
         </div>
@@ -741,6 +767,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thorns" tabindex="-1" data-stat="thornsBonus" data-s-roster="16" data-s-name="thorns" data-s-value="0.08">
         <div class="wcard-h">
+
           <h4>Thorns</h4>
           <span class="wcard-accent" style="background:#c25b3f"></span>
         </div>
@@ -756,6 +783,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shield" tabindex="-1" data-stat="shieldBonus" data-s-roster="17" data-s-name="aegis" data-s-value="4">
         <div class="wcard-h">
+
           <h4>Aegis</h4>
           <span class="wcard-accent" style="background:#63b3ff"></span>
         </div>
@@ -771,6 +799,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-might" tabindex="-1" data-stat="mightBonus" data-s-roster="18" data-s-name="ferocity" data-s-value="0.05">
         <div class="wcard-h">
+
           <h4>Ferocity</h4>
           <span class="wcard-accent" style="background:#ff5252"></span>
         </div>
@@ -786,6 +815,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-projectiles" tabindex="-1" data-stat="bonusProjectiles" data-s-roster="19" data-s-name="barrage" data-s-value="1">
         <div class="wcard-h">
+
           <h4>Barrage</h4>
           <span class="wcard-accent" style="background:#ff9f43"></span>
         </div>
@@ -804,7 +834,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

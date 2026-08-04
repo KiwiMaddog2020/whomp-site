@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP automatic-weapon sim tiers</title>
-<meta name="description" content="Automatic-weapon sim tiers: 2 controlled simulation fixtures, with sample and spread attached. Canonical facts generated from verified game artifacts.">
+<title>WHOMP automatic weapons, measured</title>
+<meta name="description" content="Automatic weapons, measured: Two lab tests, run over and over, with the spread left in. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -364,8 +374,8 @@ footer a{color:var(--cyan);text-decoration:none}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP automatic-weapon sim tiers</h1>
-        <p class="subtag">2 controlled simulation fixtures, with sample and spread attached.</p>
+        <h1 class="chroma">WHOMP automatic weapons, measured</h1>
+        <p class="subtag">Two lab tests, run over and over, with the spread left in.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html" class="is-here" aria-current="page">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html" class="is-here" aria-current="page">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -457,18 +467,18 @@ footer a{color:var(--cyan);text-decoration:none}
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
-    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Automatic-weapon sim tiers</span></nav>
-    <h2 class="chroma">Automatic-weapon sim tiers</h2>
-    <p class="lede">33 of 33 automatic weapons are represented across 83 form-and-level evidence rows in deterministic controlled fixtures. These are laboratory comparisons, not whole-run or human-play rankings. Each assigned letter is relative to its artifact-defined cohort; UNMEASURED axes are excluded rather than forced into the ladder.</p>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Automatic weapons, measured</span></nav>
+    <h2 class="chroma">Automatic weapons, measured</h2>
+    <p class="lede">Every one of the 33 automatic weapons went through the same two tests, at 83 combinations of form and level. This is a laboratory and not a run: nothing here dodges, nothing here is aimed, and a letter only says where a row landed against the other rows it was compared with. Where a test could not honestly produce a number, the row says so instead of taking a guess.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit"><b>Core weapons, tomes, relics and characters are named as unmeasured by the artifact.</b> <b>Tomes:</b> A tome has no standalone output; its number is a DELTA against a reference build, and choosing that reference is a design decision this lane was not scoped to make. Named follow-on lane. <b>Relics:</b> Relics span direct stats, economy, survival, movement and event effects. No universal reference build or grade was selected. <b>Characters:</b> Confounded by innate + signature + starting weapon at once; not separable on this rig. <b>Core weapons:</b> Campaign cores are aimed/manual-control weapons with a separate runtime registry. This automatic WeaponSystem orbit cannot measure human aim.</p>
+    <p class="womit"><b>Core weapons, tomes, relics and characters have no letters here, and the measurement says why.</b> <b>Tomes:</b> A tome has no standalone output; its number is a DELTA against a reference build, and choosing that reference is a design decision this lane was not scoped to make. Named follow-on lane. <b>Relics:</b> Relics span direct stats, economy, survival, movement and event effects. No universal reference build or grade was selected. <b>Characters:</b> Confounded by innate + signature + starting weapon at once; not separable on this rig. <b>Core weapons:</b> Campaign cores are aimed/manual-control weapons with a separate runtime registry. This automatic WeaponSystem orbit cannot measure human aim.</p>
 
 
     <section class="wfeature" aria-labelledby="measurement-method">
-      <div><span class="eyebrow">Controlled automatic-weapon simulation</span><h3 id="measurement-method">Artifact-defined fixtures and cohort tiers</h3></div>
+      <div><span class="eyebrow">How the measuring was done</span><h3 id="measurement-method">The tests, and what they hold still</h3></div>
       <p>Collapsing crowd-clear and boss damage into one score needs a weight, and a weight is an opinion. Two letters is the honest publication.</p>
       <div class="wmethod-grid">
         <div><b>Controlled trash sim</b><span>clearing the horde kills per minute against 72 respawning 35-HP enemies that pressure an orbiting player</span><code>kills/min</code></div><div><b>Stationary-target sim</b><span>damaging a stationary controlled boss-class target damage per minute into one stationary 1e9-HP target</span><code>damage/min</code></div>
@@ -520,7 +530,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <div class="wfacet">
         <label class="wfacet-h" for="wsort">Sort</label>
-        <select class="wsort" id="wsort" aria-label="Sort Automatic-weapon sim tiers">
+        <select class="wsort" id="wsort" aria-label="Sort Automatic weapons, measured">
           <option value="roster" data-desc="0" data-text="0">Controlled trash rank</option><option value="name" data-desc="0" data-text="1">Name</option><option value="crowd" data-desc="1" data-text="0">Controlled trash median</option><option value="boss" data-desc="1" data-text="0">Stationary-target median</option>
         </select>
       </div></div>
@@ -533,10 +543,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="base-1" id="g-base-1">
       <div class="wgroup-h"><h3>Base weapons · level 1</h3><span class="wgroup-n">25</span></div>
-      <p class="wgroup-note">40 seeds per row, ranked only against this cohort.</p>
+      <p class="wgroup-note">40 seeds per row, and a row is only ranked against the others in this group.</p>
       <div class="wgrid">
       <article class="wcard" id="e-energyBolt-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="20" data-s-name="energy bolt · level 1" data-s-crowd="33" data-s-boss="1027.2">
         <div class="wcard-h">
+
           <h4>Energy Bolt · level 1</h4>
 
         </div>
@@ -560,6 +571,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="7" data-s-name="boom box · level 1" data-s-crowd="430" data-s-boss="245">
         <div class="wcard-h">
+
           <h4>Boom Box · level 1</h4>
 
         </div>
@@ -583,6 +595,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="D" data-confidence="tier-consistent in fixture" data-s-roster="8" data-s-name="plasma shield · level 1" data-s-crowd="419" data-s-boss="154">
         <div class="wcard-h">
+
           <h4>Plasma Shield · level 1</h4>
 
         </div>
@@ -606,6 +619,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="C" data-boss="D" data-confidence="sample-sensitive tier" data-s-roster="24" data-s-name="ghost pup · level 1" data-s-crowd="13.5" data-s-boss="186.5">
         <div class="wcard-h">
+
           <h4>Ghost Pup · level 1</h4>
 
         </div>
@@ -629,6 +643,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="11" data-s-name="beam · level 1" data-s-crowd="176" data-s-boss="3228.5">
         <div class="wcard-h">
+
           <h4>Beam · level 1</h4>
 
         </div>
@@ -652,6 +667,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidDaggers-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="17" data-s-name="void daggers · level 1" data-s-crowd="41.5" data-s-boss="2125">
         <div class="wcard-h">
+
           <h4>Void Daggers · level 1</h4>
 
         </div>
@@ -675,6 +691,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="5" data-s-name="flame thrower · level 1" data-s-crowd="486.5" data-s-boss="1605.4">
         <div class="wcard-h">
+
           <h4>Flame Thrower · level 1</h4>
 
         </div>
@@ -698,6 +715,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="22" data-s-name="ice shards · level 1" data-s-crowd="21.5" data-s-boss="1101.1">
         <div class="wcard-h">
+
           <h4>Ice Shards · level 1</h4>
 
         </div>
@@ -721,6 +739,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thunderStrike-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="23" data-s-name="lightning strike · level 1" data-s-crowd="17" data-s-boss="1200">
         <div class="wcard-h">
+
           <h4>Lightning Strike · level 1</h4>
 
         </div>
@@ -744,6 +763,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="12" data-s-name="chain lightning · level 1" data-s-crowd="68" data-s-boss="819">
         <div class="wcard-h">
+
           <h4>Chain Lightning · level 1</h4>
 
         </div>
@@ -767,6 +787,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-toxicAura-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="6" data-s-name="toxic aura · level 1" data-s-crowd="463" data-s-boss="259.2">
         <div class="wcard-h">
+
           <h4>Toxic Aura · level 1</h4>
 
         </div>
@@ -790,6 +811,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="13" data-s-name="boomerang · level 1" data-s-crowd="67.5" data-s-boss="615.6">
         <div class="wcard-h">
+
           <h4>Boomerang · level 1</h4>
 
         </div>
@@ -813,6 +835,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="21" data-s-name="spectral arrows · level 1" data-s-crowd="26" data-s-boss="774.4">
         <div class="wcard-h">
+
           <h4>Spectral Arrows · level 1</h4>
 
         </div>
@@ -836,6 +859,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="14" data-s-name="ricochet disc · level 1" data-s-crowd="65" data-s-boss="571.9">
         <div class="wcard-h">
+
           <h4>Ricochet Disc · level 1</h4>
 
         </div>
@@ -859,6 +883,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="4" data-s-name="gravity well · level 1" data-s-crowd="494.5" data-s-boss="645">
         <div class="wcard-h">
+
           <h4>Gravity Well · level 1</h4>
 
         </div>
@@ -882,6 +907,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="2" data-s-name="star field · level 1" data-s-crowd="545.5" data-s-boss="731.4">
         <div class="wcard-h">
+
           <h4>Star Field · level 1</h4>
 
         </div>
@@ -905,6 +931,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="19" data-s-name="storm sentry · level 1" data-s-crowd="35" data-s-boss="1511.3">
         <div class="wcard-h">
+
           <h4>Storm Sentry · level 1</h4>
 
         </div>
@@ -928,6 +955,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="C" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="25" data-s-name="ghost orbs · level 1" data-s-crowd="11" data-s-boss="790.9">
         <div class="wcard-h">
+
           <h4>Ghost Orbs · level 1</h4>
 
         </div>
@@ -951,6 +979,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="3" data-s-name="pulse mine · level 1" data-s-crowd="508" data-s-boss="375">
         <div class="wcard-h">
+
           <h4>Pulse Mine · level 1</h4>
 
         </div>
@@ -974,6 +1003,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="15" data-s-name="shotgun · level 1" data-s-crowd="55.5" data-s-boss="1793.5">
         <div class="wcard-h">
+
           <h4>Shotgun · level 1</h4>
 
         </div>
@@ -997,6 +1027,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="9" data-s-name="faultline · level 1" data-s-crowd="370" data-s-boss="923">
         <div class="wcard-h">
+
           <h4>Faultline · level 1</h4>
 
         </div>
@@ -1020,6 +1051,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="10" data-s-name="meteor strike · level 1" data-s-crowd="314.5" data-s-boss="356.3">
         <div class="wcard-h">
+
           <h4>Meteor Strike · level 1</h4>
 
         </div>
@@ -1043,6 +1075,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="1" data-s-name="photon scythe · level 1" data-s-crowd="691.5" data-s-boss="676.8">
         <div class="wcard-h">
+
           <h4>Photon Scythe · level 1</h4>
 
         </div>
@@ -1066,6 +1099,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="UNMEASURED" data-confidence="contains UNMEASURED axis" data-s-roster="18" data-s-name="echo · level 1" data-s-crowd="37.5" >
         <div class="wcard-h">
+
           <h4>Echo · level 1</h4>
 
         </div>
@@ -1085,6 +1119,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidRailgun-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="16" data-s-name="void railgun · level 1" data-s-crowd="54" data-s-boss="360">
         <div class="wcard-h">
+
           <h4>Void Railgun · level 1</h4>
 
         </div>
@@ -1109,10 +1144,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="base-4" id="g-base-4">
       <div class="wgroup-h"><h3>Base weapons · level 4</h3><span class="wgroup-n">25</span></div>
-      <p class="wgroup-note">40 seeds per row, ranked only against this cohort.</p>
+      <p class="wgroup-note">40 seeds per row, and a row is only ranked against the others in this group.</p>
       <div class="wgrid">
       <article class="wcard" id="e-energyBolt-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="17" data-s-name="energy bolt · level 4" data-s-crowd="97.5" data-s-boss="2440.7">
         <div class="wcard-h">
+
           <h4>Energy Bolt · level 4</h4>
 
         </div>
@@ -1136,6 +1172,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="9" data-s-name="boom box · level 4" data-s-crowd="501.5" data-s-boss="506">
         <div class="wcard-h">
+
           <h4>Boom Box · level 4</h4>
 
         </div>
@@ -1159,6 +1196,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="11" data-s-name="plasma shield · level 4" data-s-crowd="299" data-s-boss="729.1">
         <div class="wcard-h">
+
           <h4>Plasma Shield · level 4</h4>
 
         </div>
@@ -1182,6 +1220,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="14" data-s-name="ghost pup · level 4" data-s-crowd="121.5" data-s-boss="763.5">
         <div class="wcard-h">
+
           <h4>Ghost Pup · level 4</h4>
 
         </div>
@@ -1205,6 +1244,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="S" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="4" data-s-name="beam · level 4" data-s-crowd="751.5" data-s-boss="5745.9">
         <div class="wcard-h">
+
           <h4>Beam · level 4</h4>
 
         </div>
@@ -1228,6 +1268,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidDaggers-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="21" data-s-name="void daggers · level 4" data-s-crowd="74" data-s-boss="3117.8">
         <div class="wcard-h">
+
           <h4>Void Daggers · level 4</h4>
 
         </div>
@@ -1251,6 +1292,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="7" data-s-name="flame thrower · level 4" data-s-crowd="625" data-s-boss="1880">
         <div class="wcard-h">
+
           <h4>Flame Thrower · level 4</h4>
 
         </div>
@@ -1274,6 +1316,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="20" data-s-name="ice shards · level 4" data-s-crowd="75" data-s-boss="2044.4">
         <div class="wcard-h">
+
           <h4>Ice Shards · level 4</h4>
 
         </div>
@@ -1297,6 +1340,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thunderStrike-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="C" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="25" data-s-name="lightning strike · level 4" data-s-crowd="43.5" data-s-boss="1789.2">
         <div class="wcard-h">
+
           <h4>Lightning Strike · level 4</h4>
 
         </div>
@@ -1320,6 +1364,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="17" data-s-name="chain lightning · level 4" data-s-crowd="97.5" data-s-boss="1040.3">
         <div class="wcard-h">
+
           <h4>Chain Lightning · level 4</h4>
 
         </div>
@@ -1343,6 +1388,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-toxicAura-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="8" data-s-name="toxic aura · level 4" data-s-crowd="526" data-s-boss="365.3">
         <div class="wcard-h">
+
           <h4>Toxic Aura · level 4</h4>
 
         </div>
@@ -1366,6 +1412,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="19" data-s-name="boomerang · level 4" data-s-crowd="97" data-s-boss="830.7">
         <div class="wcard-h">
+
           <h4>Boomerang · level 4</h4>
 
         </div>
@@ -1389,6 +1436,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="15" data-s-name="spectral arrows · level 4" data-s-crowd="108.5" data-s-boss="2684.5">
         <div class="wcard-h">
+
           <h4>Spectral Arrows · level 4</h4>
 
         </div>
@@ -1412,6 +1460,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="13" data-s-name="ricochet disc · level 4" data-s-crowd="130.5" data-s-boss="718">
         <div class="wcard-h">
+
           <h4>Ricochet Disc · level 4</h4>
 
         </div>
@@ -1435,6 +1484,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="5" data-s-name="gravity well · level 4" data-s-crowd="691" data-s-boss="929.8">
         <div class="wcard-h">
+
           <h4>Gravity Well · level 4</h4>
 
         </div>
@@ -1458,6 +1508,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="S" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="2" data-s-name="star field · level 4" data-s-crowd="792" data-s-boss="904.8">
         <div class="wcard-h">
+
           <h4>Star Field · level 4</h4>
 
         </div>
@@ -1481,6 +1532,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="C" data-boss="A" data-confidence="sample-sensitive tier" data-s-roster="23" data-s-name="storm sentry · level 4" data-s-crowd="56" data-s-boss="2658.7">
         <div class="wcard-h">
+
           <h4>Storm Sentry · level 4</h4>
 
         </div>
@@ -1504,6 +1556,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="C" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="24" data-s-name="ghost orbs · level 4" data-s-crowd="51" data-s-boss="2347.3">
         <div class="wcard-h">
+
           <h4>Ghost Orbs · level 4</h4>
 
         </div>
@@ -1527,6 +1580,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="S" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="3" data-s-name="pulse mine · level 4" data-s-crowd="789" data-s-boss="570.9">
         <div class="wcard-h">
+
           <h4>Pulse Mine · level 4</h4>
 
         </div>
@@ -1550,6 +1604,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="22" data-s-name="shotgun · level 4" data-s-crowd="69" data-s-boss="2769.1">
         <div class="wcard-h">
+
           <h4>Shotgun · level 4</h4>
 
         </div>
@@ -1573,6 +1628,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="10" data-s-name="faultline · level 4" data-s-crowd="400" data-s-boss="1278.4">
         <div class="wcard-h">
+
           <h4>Faultline · level 4</h4>
 
         </div>
@@ -1596,6 +1652,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="6" data-s-name="meteor strike · level 4" data-s-crowd="629" data-s-boss="1071.7">
         <div class="wcard-h">
+
           <h4>Meteor Strike · level 4</h4>
 
         </div>
@@ -1619,6 +1676,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="S" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="1" data-s-name="photon scythe · level 4" data-s-crowd="801.5" data-s-boss="866.8">
         <div class="wcard-h">
+
           <h4>Photon Scythe · level 4</h4>
 
         </div>
@@ -1642,6 +1700,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="UNMEASURED" data-confidence="contains UNMEASURED axis" data-s-roster="12" data-s-name="echo · level 4" data-s-crowd="252.5" >
         <div class="wcard-h">
+
           <h4>Echo · level 4</h4>
 
         </div>
@@ -1661,6 +1720,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidRailgun-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="16" data-s-name="void railgun · level 4" data-s-crowd="108" data-s-boss="551.1">
         <div class="wcard-h">
+
           <h4>Void Railgun · level 4</h4>
 
         </div>
@@ -1685,10 +1745,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="base-8" id="g-base-8">
       <div class="wgroup-h"><h3>Base weapons · level 8</h3><span class="wgroup-n">25</span></div>
-      <p class="wgroup-note">40 seeds per row, ranked only against this cohort.</p>
+      <p class="wgroup-note">40 seeds per row, and a row is only ranked against the others in this group.</p>
       <div class="wgrid">
       <article class="wcard" id="e-energyBolt-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="13" data-s-name="energy bolt · level 8" data-s-crowd="281.5" data-s-boss="4506.8">
         <div class="wcard-h">
+
           <h4>Energy Bolt · level 8</h4>
 
         </div>
@@ -1712,6 +1773,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="7" data-s-name="boom box · level 8" data-s-crowd="812" data-s-boss="627.8">
         <div class="wcard-h">
+
           <h4>Boom Box · level 8</h4>
 
         </div>
@@ -1735,6 +1797,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="15" data-s-name="plasma shield · level 8" data-s-crowd="228" data-s-boss="1702.4">
         <div class="wcard-h">
+
           <h4>Plasma Shield · level 8</h4>
 
         </div>
@@ -1758,6 +1821,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="14" data-s-name="ghost pup · level 8" data-s-crowd="264.5" data-s-boss="1757.4">
         <div class="wcard-h">
+
           <h4>Ghost Pup · level 8</h4>
 
         </div>
@@ -1781,6 +1845,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="2" data-s-name="beam · level 8" data-s-crowd="1277.5" data-s-boss="8252.1">
         <div class="wcard-h">
+
           <h4>Beam · level 8</h4>
 
         </div>
@@ -1804,6 +1869,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidDaggers-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="C" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="23" data-s-name="void daggers · level 8" data-s-crowd="96.5" data-s-boss="4537">
         <div class="wcard-h">
+
           <h4>Void Daggers · level 8</h4>
 
         </div>
@@ -1827,6 +1893,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="6" data-s-name="flame thrower · level 8" data-s-crowd="872.5" data-s-boss="2284.1">
         <div class="wcard-h">
+
           <h4>Flame Thrower · level 8</h4>
 
         </div>
@@ -1850,6 +1917,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="17" data-s-name="ice shards · level 8" data-s-crowd="171.5" data-s-boss="3477">
         <div class="wcard-h">
+
           <h4>Ice Shards · level 8</h4>
 
         </div>
@@ -1873,6 +1941,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thunderStrike-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="19" data-s-name="lightning strike · level 8" data-s-crowd="168" data-s-boss="2661.1">
         <div class="wcard-h">
+
           <h4>Lightning Strike · level 8</h4>
 
         </div>
@@ -1896,6 +1965,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="17" data-s-name="chain lightning · level 8" data-s-crowd="171.5" data-s-boss="1355">
         <div class="wcard-h">
+
           <h4>Chain Lightning · level 8</h4>
 
         </div>
@@ -1919,6 +1989,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-toxicAura-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="D" data-confidence="tier-consistent in fixture" data-s-roster="9" data-s-name="toxic aura · level 8" data-s-crowd="687" data-s-boss="439.6">
         <div class="wcard-h">
+
           <h4>Toxic Aura · level 8</h4>
 
         </div>
@@ -1942,6 +2013,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="11" data-s-name="boomerang · level 8" data-s-crowd="386.5" data-s-boss="2274.1">
         <div class="wcard-h">
+
           <h4>Boomerang · level 8</h4>
 
         </div>
@@ -1965,6 +2037,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="16" data-s-name="spectral arrows · level 8" data-s-crowd="199.5" data-s-boss="5295.7">
         <div class="wcard-h">
+
           <h4>Spectral Arrows · level 8</h4>
 
         </div>
@@ -1988,6 +2061,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="20" data-s-name="ricochet disc · level 8" data-s-crowd="160" data-s-boss="927.4">
         <div class="wcard-h">
+
           <h4>Ricochet Disc · level 8</h4>
 
         </div>
@@ -2011,6 +2085,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="3" data-s-name="gravity well · level 8" data-s-crowd="1114" data-s-boss="1407.4">
         <div class="wcard-h">
+
           <h4>Gravity Well · level 8</h4>
 
         </div>
@@ -2034,6 +2109,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="C" data-confidence="sample-sensitive tier" data-s-roster="8" data-s-name="star field · level 8" data-s-crowd="723.5" data-s-boss="1026.8">
         <div class="wcard-h">
+
           <h4>Star Field · level 8</h4>
 
         </div>
@@ -2057,6 +2133,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="C" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="25" data-s-name="storm sentry · level 8" data-s-crowd="81" data-s-boss="4487.5">
         <div class="wcard-h">
+
           <h4>Storm Sentry · level 8</h4>
 
         </div>
@@ -2080,6 +2157,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="C" data-boss="A" data-confidence="tier-consistent in fixture" data-s-roster="24" data-s-name="ghost orbs · level 8" data-s-crowd="85" data-s-boss="5219.8">
         <div class="wcard-h">
+
           <h4>Ghost Orbs · level 8</h4>
 
         </div>
@@ -2103,6 +2181,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="5" data-s-name="pulse mine · level 8" data-s-crowd="906.5" data-s-boss="858.4">
         <div class="wcard-h">
+
           <h4>Pulse Mine · level 8</h4>
 
         </div>
@@ -2126,6 +2205,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="22" data-s-name="shotgun · level 8" data-s-crowd="117.5" data-s-boss="3986.4">
         <div class="wcard-h">
+
           <h4>Shotgun · level 8</h4>
 
         </div>
@@ -2149,6 +2229,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="10" data-s-name="faultline · level 8" data-s-crowd="419.5" data-s-boss="1864.3">
         <div class="wcard-h">
+
           <h4>Faultline · level 8</h4>
 
         </div>
@@ -2172,6 +2253,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="4" data-s-name="meteor strike · level 8" data-s-crowd="994" data-s-boss="2401.2">
         <div class="wcard-h">
+
           <h4>Meteor Strike · level 8</h4>
 
         </div>
@@ -2195,6 +2277,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="1" data-s-name="photon scythe · level 8" data-s-crowd="1352" data-s-boss="1256.3">
         <div class="wcard-h">
+
           <h4>Photon Scythe · level 8</h4>
 
         </div>
@@ -2218,6 +2301,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="UNMEASURED" data-confidence="contains UNMEASURED axis" data-s-roster="12" data-s-name="echo · level 8" data-s-crowd="365" >
         <div class="wcard-h">
+
           <h4>Echo · level 8</h4>
 
         </div>
@@ -2237,6 +2321,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidRailgun-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="C" data-confidence="sample-sensitive tier" data-s-roster="21" data-s-name="void railgun · level 8" data-s-crowd="131.5" data-s-boss="960.9">
         <div class="wcard-h">
+
           <h4>Void Railgun · level 8</h4>
 
         </div>
@@ -2261,10 +2346,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="evolved-1" id="g-evolved-1">
       <div class="wgroup-h"><h3>Evolved forms</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">40 seeds per row, ranked only against evolved forms.</p>
+      <p class="wgroup-note">40 seeds per row, and an end form is only ranked against other end forms.</p>
       <div class="wgrid">
       <article class="wcard" id="e-novaLance-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="6" data-s-name="nova lance · evolved" data-s-crowd="451" data-s-boss="5429.9">
         <div class="wcard-h">
+
           <h4>Nova Lance · evolved</h4>
 
         </div>
@@ -2288,6 +2374,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ringOfRuin-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="4" data-s-name="ring of ruin · evolved" data-s-crowd="715.5" data-s-boss="2869.2">
         <div class="wcard-h">
+
           <h4>Ring of Ruin · evolved</h4>
 
         </div>
@@ -2311,6 +2398,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-hellscatter-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="C" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="8" data-s-name="hellscatter · evolved" data-s-crowd="191" data-s-boss="7428.1">
         <div class="wcard-h">
+
           <h4>Hellscatter · evolved</h4>
 
         </div>
@@ -2334,6 +2422,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-dragonsBreath-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="A" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="1" data-s-name="dragon's breath · evolved" data-s-crowd="1629.5" data-s-boss="9482.4">
         <div class="wcard-h">
+
           <h4>Dragon's Breath · evolved</h4>
 
         </div>
@@ -2357,6 +2446,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-glacierLance-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="B" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="7" data-s-name="glacier lance · evolved" data-s-crowd="324.5" data-s-boss="3998.6">
         <div class="wcard-h">
+
           <h4>Glacier Lance · evolved</h4>
 
         </div>
@@ -2380,6 +2470,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-constellation-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="B" data-boss="D" data-confidence="sample-sensitive tier" data-s-roster="3" data-s-name="constellation · evolved" data-s-crowd="1443" data-s-boss="1476.9">
         <div class="wcard-h">
+
           <h4>Constellation · evolved</h4>
 
         </div>
@@ -2403,6 +2494,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-deathray-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="A" data-boss="A" data-confidence="sample-sensitive tier" data-s-roster="2" data-s-name="deathray · evolved" data-s-crowd="1583" data-s-boss="10727.7">
         <div class="wcard-h">
+
           <h4>Deathray · evolved</h4>
 
         </div>
@@ -2426,6 +2518,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-goldReaver-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="B" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="5" data-s-name="gold reaver · evolved" data-s-crowd="492" data-s-boss="2762.6">
         <div class="wcard-h">
+
           <h4>Gold Reaver · evolved</h4>
 
         </div>
@@ -2452,7 +2545,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/tier-rankings.json · fingerprint 79ea25bce7ee7a9862b6792a833600a4 · source fb58922ea217c1649fdc30b278f8b2fcf1a18ecc1b76e877b1e3b092a9dc7632</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

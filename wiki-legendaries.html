@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP legendary upgrades</title>
-<meta name="description" content="Legendary upgrades: Run-defining effects with their real payload attached. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Legendary upgrades: A run holds four of the 17. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP legendary upgrades</h1>
-        <p class="subtag">Run-defining effects with their real payload attached.</p>
+        <p class="subtag">A run holds four of the 17.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html" class="is-here" aria-current="page">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Legendary upgrades</span></nav>
     <h2 class="chroma">Legendary upgrades</h2>
-    <p class="lede">The legendary registry contains 17 upgrades. The shared artifact also sets the run cap to 4; each card reproduces the canonical description, effect line and parameter payload.</p>
+    <p class="lede">A legendary is the upgrade a run gets remembered for. There are 17 of them and you can carry four at once, so most of this page is the part you did not get.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -491,10 +501,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Legendary pool</h3><span class="wgroup-n">17</span></div>
-      <p class="wgroup-note">A run can hold up to 4.</p>
+      <p class="wgroup-note">All 17. You will be holding four at most.</p>
       <div class="wgrid">
       <article class="wcard" id="e-burn" tabindex="-1" data-shape="multi-part" data-s-roster="0" data-s-name="inferno touch">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,107,53,0.45);background:rgba(255,107,53,0.12)">🔥</span>
           <h4>Inferno Touch</h4>
           <span class="wcard-accent" style="background:#ff6b35"></span>
         </div>
@@ -511,6 +522,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-freeze" tabindex="-1" data-shape="multi-part" data-s-roster="1" data-s-name="frostbite">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(102,204,255,0.45);background:rgba(102,204,255,0.12)">❄️</span>
           <h4>Frostbite</h4>
           <span class="wcard-accent" style="background:#66ccff"></span>
         </div>
@@ -527,6 +539,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shock" tabindex="-1" data-shape="multi-part" data-s-roster="2" data-s-name="overcharged">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,238,85,0.45);background:rgba(255,238,85,0.12)">⚡</span>
           <h4>Overcharged</h4>
           <span class="wcard-accent" style="background:#ffee55"></span>
         </div>
@@ -543,6 +556,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-timeSlow" tabindex="-1" data-shape="multi-part" data-s-roster="3" data-s-name="temporal shield">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(153,102,255,0.45);background:rgba(153,102,255,0.12)">⏳</span>
           <h4>Temporal Shield</h4>
           <span class="wcard-accent" style="background:#9966ff"></span>
         </div>
@@ -559,6 +573,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-holyBook" tabindex="-1" data-shape="multi-part" data-s-roster="4" data-s-name="sacred tome">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,255,170,0.45);background:rgba(255,255,170,0.12)">📖</span>
           <h4>Sacred Tome</h4>
           <span class="wcard-accent" style="background:#ffffaa"></span>
         </div>
@@ -575,6 +590,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stillness" tabindex="-1" data-shape="multi-part" data-s-roster="5" data-s-name="inner peace">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(136,255,170,0.45);background:rgba(136,255,170,0.12)">🧘</span>
           <h4>Inner Peace</h4>
           <span class="wcard-accent" style="background:#88ffaa"></span>
         </div>
@@ -591,6 +607,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-xpMagnet" tabindex="-1" data-shape="single-part" data-s-roster="6" data-s-name="soul siphon">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,215,0,0.45);background:rgba(255,215,0,0.12)">💎</span>
           <h4>Soul Siphon</h4>
           <span class="wcard-accent" style="background:#ffd700"></span>
         </div>
@@ -607,6 +624,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ghostStrike" tabindex="-1" data-shape="single-part" data-s-roster="7" data-s-name="vengeful spirits">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(170,204,255,0.45);background:rgba(170,204,255,0.12)">👻</span>
           <h4>Vengeful Spirits</h4>
           <span class="wcard-accent" style="background:#aaccff"></span>
         </div>
@@ -623,6 +641,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-berserker" tabindex="-1" data-shape="single-part" data-s-roster="8" data-s-name="bloodlust">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,51,68,0.45);background:rgba(255,51,68,0.12)">🩸</span>
           <h4>Bloodlust</h4>
           <span class="wcard-accent" style="background:#ff3344"></span>
         </div>
@@ -639,6 +658,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-executioner" tabindex="-1" data-shape="single-part" data-s-roster="9" data-s-name="executioner">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,68,102,0.45);background:rgba(255,68,102,0.12)">🗡️</span>
           <h4>Executioner</h4>
           <span class="wcard-accent" style="background:#ff4466"></span>
         </div>
@@ -655,6 +675,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-combustion" tabindex="-1" data-shape="multi-part" data-s-roster="10" data-s-name="combustion">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,136,0,0.45);background:rgba(255,136,0,0.12)">💥</span>
           <h4>Combustion</h4>
           <span class="wcard-accent" style="background:#ff8800"></span>
         </div>
@@ -671,6 +692,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-deadeye" tabindex="-1" data-shape="multi-part" data-s-roster="11" data-s-name="deadeye">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,77,166,0.45);background:rgba(255,77,166,0.12)">🎯</span>
           <h4>Deadeye</h4>
           <span class="wcard-accent" style="background:#ff4da6"></span>
         </div>
@@ -687,6 +709,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-windRunner" tabindex="-1" data-shape="multi-part" data-s-roster="12" data-s-name="windrunner">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(102,224,255,0.45);background:rgba(102,224,255,0.12)">💨</span>
           <h4>Windrunner</h4>
           <span class="wcard-accent" style="background:#66e0ff"></span>
         </div>
@@ -703,6 +726,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralEcho" tabindex="-1" data-shape="multi-part" data-s-roster="13" data-s-name="spectral echo">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(207,224,255,0.45);background:rgba(207,224,255,0.12)">👥</span>
           <h4>Spectral Echo</h4>
           <span class="wcard-accent" style="background:#cfe0ff"></span>
         </div>
@@ -719,6 +743,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-soulHarvest" tabindex="-1" data-shape="multi-part" data-s-roster="14" data-s-name="soul harvest">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(176,96,255,0.45);background:rgba(176,96,255,0.12)">💀</span>
           <h4>Soul Harvest</h4>
           <span class="wcard-accent" style="background:#b060ff"></span>
         </div>
@@ -735,6 +760,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-phantomStride" tabindex="-1" data-shape="multi-part" data-s-roster="15" data-s-name="phantom stride">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(127,224,208,0.45);background:rgba(127,224,208,0.12)">👣</span>
           <h4>Phantom Stride</h4>
           <span class="wcard-accent" style="background:#7fe0d0"></span>
         </div>
@@ -751,6 +777,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-guardianWisp" tabindex="-1" data-shape="multi-part" data-s-roster="16" data-s-name="guardian wisp">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(102,204,255,0.45);background:rgba(102,204,255,0.12)">🯿</span>
           <h4>Guardian Wisp</h4>
           <span class="wcard-accent" style="background:#66ccff"></span>
         </div>
@@ -770,7 +797,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

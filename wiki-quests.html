@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP quests and rewards</title>
-<meta name="description" content="Quests and rewards: Every chain, objective, giver, response and validated reward. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Quests and rewards: One ask at a time, from somebody who wants something specific. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP quests and rewards</h1>
-        <p class="subtag">Every chain, objective, giver, response and validated reward.</p>
+        <p class="subtag">One ask at a time, from somebody who wants something specific.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html" class="is-here" aria-current="page">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Quests and rewards</span></nav>
     <h2 class="chroma">Quests and rewards</h2>
-    <p class="lede">Quest cards preserve the registry’s authored request and reaction lines, exact objective contract, previous and next links, and reward target. The title gallery is derived from the same chain metadata.</p>
+    <p class="lede">One ask is active at a time, it comes from a person and never from a board, and the next step of a chain opens only when you turn in the one before it. 5 villagers want 24 very specific things.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -546,10 +556,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="thornOrder" id="g-thornOrder">
       <div class="wgroup-h"><h3>Thorn order</h3><span class="wgroup-n">3</span></div>
-      <p class="wgroup-note">3 source-ordered steps.</p>
+      <p class="wgroup-note">3 steps, in the order they are offered.</p>
       <div class="wgrid">
       <article class="wcard" id="e-thornThree" tabindex="-1" data-giver="tailor" data-target="scavengerRun" data-reward="wearable" data-s-roster="0" data-s-chain="1" data-s-name="three thorns">
         <div class="wcard-h">
+
           <h4>Three Thorns</h4>
 
         </div>
@@ -571,6 +582,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-fivePods" tabindex="-1" data-giver="tailor" data-target="scavengerRun" data-reward="wearable" data-s-roster="1" data-s-chain="2" data-s-name="five more pods">
         <div class="wcard-h">
+
           <h4>Five More Pods</h4>
 
         </div>
@@ -592,6 +604,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stiffCollar" tabindex="-1" data-giver="tailor" data-target="trophyHunt" data-reward="wearable" data-s-roster="2" data-s-chain="3" data-s-name="a stiff collar">
         <div class="wcard-h">
+
           <h4>A Stiff Collar</h4>
 
         </div>
@@ -614,10 +627,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="trophyCoat" id="g-trophyCoat">
       <div class="wgroup-h"><h3>Trophy coat</h3><span class="wgroup-n">3</span></div>
-      <p class="wgroup-note">3 source-ordered steps.</p>
+      <p class="wgroup-note">3 steps, in the order they are offered.</p>
       <div class="wgrid">
       <article class="wcard" id="e-shinyBit" tabindex="-1" data-giver="tailor" data-target="trophyHunt" data-reward="wearable" data-s-roster="3" data-s-chain="101" data-s-name="the shiny bit">
         <div class="wcard-h">
+
           <h4>The Shiny Bit</h4>
 
         </div>
@@ -639,6 +653,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-brightTrim" tabindex="-1" data-giver="tailor" data-target="scavengerRun" data-reward="wearable" data-s-roster="4" data-s-chain="102" data-s-name="bright trim">
         <div class="wcard-h">
+
           <h4>Bright Trim</h4>
 
         </div>
@@ -660,6 +675,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-twoShoulders" tabindex="-1" data-giver="tailor" data-target="trophyHunt" data-reward="wearable" data-s-roster="5" data-s-chain="103" data-s-name="two shoulders">
         <div class="wcard-h">
+
           <h4>Two Shoulders</h4>
 
         </div>
@@ -682,10 +698,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="theDares" id="g-theDares">
       <div class="wgroup-h"><h3>The dares</h3><span class="wgroup-n">3</span></div>
-      <p class="wgroup-note">3 source-ordered steps.</p>
+      <p class="wgroup-note">3 steps, in the order they are offered.</p>
       <div class="wgrid">
       <article class="wcard" id="e-theBigCrab" tabindex="-1" data-giver="child" data-target="trophyHunt" data-reward="wearable" data-s-roster="6" data-s-chain="201" data-s-name="the big crab">
         <div class="wcard-h">
+
           <h4>The Big Crab</h4>
 
         </div>
@@ -707,6 +724,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theLanternDare" tabindex="-1" data-giver="child" data-target="fragileDelivery" data-reward="wearable" data-s-roster="7" data-s-chain="202" data-s-name="the lantern dare">
         <div class="wcard-h">
+
           <h4>The Lantern Dare</h4>
 
         </div>
@@ -728,6 +746,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theHiddenOne" tabindex="-1" data-giver="child" data-target="lostThing" data-reward="title" data-s-roster="8" data-s-chain="203" data-s-name="the hidden one">
         <div class="wcard-h">
+
           <h4>The Hidden One</h4>
 
         </div>
@@ -750,10 +769,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="theLarder" id="g-theLarder">
       <div class="wgroup-h"><h3>The larder</h3><span class="wgroup-n">3</span></div>
-      <p class="wgroup-note">3 source-ordered steps.</p>
+      <p class="wgroup-note">3 steps, in the order they are offered.</p>
       <div class="wgrid">
       <article class="wcard" id="e-sourCaps" tabindex="-1" data-giver="baker" data-target="scavengerRun" data-reward="wearable" data-s-roster="9" data-s-chain="301" data-s-name="four sour caps">
         <div class="wcard-h">
+
           <h4>Four Sour Caps</h4>
 
         </div>
@@ -775,6 +795,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theDeepShelf" tabindex="-1" data-giver="baker" data-target="lostThing" data-reward="wearable" data-s-roster="10" data-s-chain="302" data-s-name="the deep shelf">
         <div class="wcard-h">
+
           <h4>The Deep Shelf</h4>
 
         </div>
@@ -796,6 +817,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theEggRun" tabindex="-1" data-giver="baker" data-target="fragileDelivery" data-reward="title" data-s-roster="11" data-s-chain="303" data-s-name="the egg run">
         <div class="wcard-h">
+
           <h4>The Egg Run</h4>
 
         </div>
@@ -818,10 +840,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="theClaim" id="g-theClaim">
       <div class="wgroup-h"><h3>The claim</h3><span class="wgroup-n">4</span></div>
-      <p class="wgroup-note">4 source-ordered steps.</p>
+      <p class="wgroup-note">4 steps, in the order they are offered.</p>
       <div class="wgrid">
       <article class="wcard" id="e-theColourInIt" tabindex="-1" data-giver="prospector" data-target="scavengerRun" data-reward="gold" data-s-roster="12" data-s-chain="401" data-s-name="the colour in it">
         <div class="wcard-h">
+
           <h4>The Colour In It</h4>
 
         </div>
@@ -843,6 +866,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theDeepSeam" tabindex="-1" data-giver="prospector" data-target="lostThing" data-reward="wearable" data-s-roster="13" data-s-chain="402" data-s-name="the deep seam">
         <div class="wcard-h">
+
           <h4>The Deep Seam</h4>
 
         </div>
@@ -864,6 +888,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-whatIsUnderIt" tabindex="-1" data-giver="prospector" data-target="trophyHunt" data-reward="gold" data-s-roster="14" data-s-chain="403" data-s-name="what is under it">
         <div class="wcard-h">
+
           <h4>What Is Under It</h4>
 
         </div>
@@ -885,6 +910,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theAssay" tabindex="-1" data-giver="prospector" data-target="scavengerRun" data-reward="title" data-s-roster="15" data-s-chain="404" data-s-name="the assay">
         <div class="wcard-h">
+
           <h4>The Assay</h4>
 
         </div>
@@ -907,10 +933,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="theOverdueList" id="g-theOverdueList">
       <div class="wgroup-h"><h3>The overdue list</h3><span class="wgroup-n">4</span></div>
-      <p class="wgroup-note">4 source-ordered steps.</p>
+      <p class="wgroup-note">4 steps, in the order they are offered.</p>
       <div class="wgrid">
       <article class="wcard" id="e-theOverdueOne" tabindex="-1" data-giver="librarian" data-target="lostThing" data-reward="wearable" data-s-roster="16" data-s-chain="501" data-s-name="the overdue one">
         <div class="wcard-h">
+
           <h4>The Overdue One</h4>
 
         </div>
@@ -932,6 +959,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theMarginalia" tabindex="-1" data-giver="librarian" data-target="scavengerRun" data-reward="gold" data-s-roster="17" data-s-chain="502" data-s-name="the marginalia">
         <div class="wcard-h">
+
           <h4>The Marginalia</h4>
 
         </div>
@@ -953,6 +981,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theRestrictedShelf" tabindex="-1" data-giver="librarian" data-target="trophyHunt" data-reward="gold" data-s-roster="18" data-s-chain="503" data-s-name="the restricted shelf">
         <div class="wcard-h">
+
           <h4>The Restricted Shelf</h4>
 
         </div>
@@ -974,6 +1003,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theArchivistsTrade" tabindex="-1" data-giver="librarian" data-target="fragileDelivery" data-reward="title" data-s-roster="19" data-s-chain="504" data-s-name="the archivist's trade">
         <div class="wcard-h">
+
           <h4>The Archivist's Trade</h4>
 
         </div>
@@ -996,10 +1026,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="theStray" id="g-theStray">
       <div class="wgroup-h"><h3>The stray</h3><span class="wgroup-n">4</span></div>
-      <p class="wgroup-note">4 source-ordered steps.</p>
+      <p class="wgroup-note">4 steps, in the order they are offered.</p>
       <div class="wgrid">
       <article class="wcard" id="e-aDogOutThere" tabindex="-1" data-giver="child" data-target="pupRescue" data-reward="wearable" data-s-roster="20" data-s-chain="601" data-s-name="a dog out there">
         <div class="wcard-h">
+
           <h4>A Dog Out There</h4>
 
         </div>
@@ -1021,6 +1052,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theDogOnMyClaim" tabindex="-1" data-giver="prospector" data-target="scavengerRun" data-reward="gold" data-s-roster="21" data-s-chain="602" data-s-name="the dog on my claim">
         <div class="wcard-h">
+
           <h4>The Dog On My Claim</h4>
 
         </div>
@@ -1042,6 +1074,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theDogsRecord" tabindex="-1" data-giver="librarian" data-target="lostThing" data-reward="gold" data-s-roster="22" data-s-chain="603" data-s-name="the dog's record">
         <div class="wcard-h">
+
           <h4>The Dog's Record</h4>
 
         </div>
@@ -1063,6 +1096,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-theOneItPicked" tabindex="-1" data-giver="child" data-target="pupRescue" data-reward="unlock" data-s-roster="23" data-s-chain="604" data-s-name="the one it picked">
         <div class="wcard-h">
+
           <h4>The One It Picked</h4>
 
         </div>
@@ -1087,7 +1121,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

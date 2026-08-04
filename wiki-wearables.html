@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP wearables</title>
-<meta name="description" content="Wearables: Cosmetic pieces, anchors and trail behavior. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Wearables: What the village hands you for doing it a favour. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP wearables</h1>
-        <p class="subtag">Cosmetic pieces, anchors and trail behavior.</p>
+        <p class="subtag">What the village hands you for doing it a favour.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,12 +469,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Wearables</span></nav>
     <h2 class="chroma">Wearables</h2>
-    <p class="lede">Wearables are cosmetic attachments. The registry defines their anchor, blurb, source colors and whether they add trails; those are the only claims this page makes.</p>
+    <p class="lede">A wearable is what a quest pays you: somebody wanted something specific, you brought it back, and this is what they handed over. It bolts onto whichever hero you are playing, and it does nothing else.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-
+    <p class="womit"><b>An anchor is where a piece mounts, not a slot you fill.</b> A hero wears one of these at a time, so eyes, head and back are not three things you can have on at once.</p>
 
 
 
@@ -498,10 +508,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="eyes" id="g-eyes">
       <div class="wgroup-h"><h3>Eyes</h3><span class="wgroup-n">2</span></div>
-      <p class="wgroup-note">Anchored to the eye slot.</p>
+      <p class="wgroup-note">Mounted at the eyes.</p>
       <div class="wgrid">
       <article class="wcard" id="e-thornShades" tabindex="-1" data-anchor="eyes" data-trails="no" data-s-roster="0" data-s-name="thorn shades">
         <div class="wcard-h">
+
           <h4>Thorn Shades</h4>
           <span class="wcard-accent" style="background:#2fd6c8"></span>
         </div>
@@ -520,6 +531,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-readingSpecs" tabindex="-1" data-anchor="eyes" data-trails="no" data-s-roster="11" data-s-name="reading spectacles">
         <div class="wcard-h">
+
           <h4>Reading Spectacles</h4>
           <span class="wcard-accent" style="background:#8fd8c4"></span>
         </div>
@@ -539,10 +551,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="head" id="g-head">
       <div class="wgroup-h"><h3>Head</h3><span class="wgroup-n">4</span></div>
-      <p class="wgroup-note">Anchored to the head slot.</p>
+      <p class="wgroup-note">Mounted on the crown, which on a wizard means the tip of the hat.</p>
       <div class="wgrid">
       <article class="wcard" id="e-knitCap" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="1" data-s-name="knit cap">
         <div class="wcard-h">
+
           <h4>Knit Cap</h4>
           <span class="wcard-accent" style="background:#e8cfa0"></span>
         </div>
@@ -561,6 +574,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-paperCrown" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="7" data-s-name="paper crown">
         <div class="wcard-h">
+
           <h4>Paper Crown</h4>
           <span class="wcard-accent" style="background:#4bb3d4"></span>
         </div>
@@ -579,6 +593,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-eggCap" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="9" data-s-name="egg cap">
         <div class="wcard-h">
+
           <h4>Egg Cap</h4>
           <span class="wcard-accent" style="background:#c9a06a"></span>
         </div>
@@ -597,6 +612,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-panHat" tabindex="-1" data-anchor="head" data-trails="no" data-s-roster="10" data-s-name="pan hat">
         <div class="wcard-h">
+
           <h4>Pan Hat</h4>
           <span class="wcard-accent" style="background:#e0b64a"></span>
         </div>
@@ -616,10 +632,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="back" id="g-back">
       <div class="wgroup-h"><h3>Back</h3><span class="wgroup-n">1</span></div>
-      <p class="wgroup-note">Anchored to the back slot.</p>
+      <p class="wgroup-note">Mounted between the shoulders.</p>
       <div class="wgrid">
       <article class="wcard" id="e-halfCape" tabindex="-1" data-anchor="back" data-trails="no" data-s-roster="5" data-s-name="half cape">
         <div class="wcard-h">
+
           <h4>Half Cape</h4>
           <span class="wcard-accent" style="background:#ffcf3f"></span>
         </div>
@@ -639,10 +656,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="other" id="g-other">
       <div class="wgroup-h"><h3>Other anchors</h3><span class="wgroup-n">6</span></div>
-      <p class="wgroup-note">Every remaining canonical anchor.</p>
+      <p class="wgroup-note">Everything that mounts somewhere else, mostly at the neck.</p>
       <div class="wgrid">
       <article class="wcard" id="e-longScarf" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="2" data-s-name="long scarf">
         <div class="wcard-h">
+
           <h4>Long Scarf</h4>
           <span class="wcard-accent" style="background:#d9c07a"></span>
         </div>
@@ -661,6 +679,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ribbonTail" tabindex="-1" data-anchor="neck" data-trails="yes" data-s-roster="3" data-s-name="ribbon tail">
         <div class="wcard-h">
+
           <h4>Ribbon Tail</h4>
           <span class="wcard-accent" style="background:#ffe0f0"></span>
         </div>
@@ -679,6 +698,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-brambleRuff" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="4" data-s-name="bramble ruff">
         <div class="wcard-h">
+
           <h4>Bramble Ruff</h4>
           <span class="wcard-accent" style="background:#d8c39a"></span>
         </div>
@@ -697,6 +717,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-dareMedal" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="6" data-s-name="dare medal">
         <div class="wcard-h">
+
           <h4>Dare Medal</h4>
           <span class="wcard-accent" style="background:#f2d067"></span>
         </div>
@@ -715,6 +736,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flourApron" tabindex="-1" data-anchor="hip" data-trails="no" data-s-roster="8" data-s-name="flour apron">
         <div class="wcard-h">
+
           <h4>Flour Apron</h4>
           <span class="wcard-accent" style="background:#7d5334"></span>
         </div>
@@ -733,6 +755,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pupBandana" tabindex="-1" data-anchor="neck" data-trails="no" data-s-roster="12" data-s-name="pup bandana">
         <div class="wcard-h">
+
           <h4>Pup Bandana</h4>
           <span class="wcard-accent" style="background:#f0dcc0"></span>
         </div>
@@ -754,7 +777,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

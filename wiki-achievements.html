@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP achievements</title>
-<meta name="description" content="Achievements: Every goal and every payload it unlocks. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Achievements: What the game counts, and what it pays out for. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP achievements</h1>
-        <p class="subtag">Every goal and every payload it unlocks.</p>
+        <p class="subtag">What the game counts, and what it pays out for.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html" class="is-here" aria-current="page">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,12 +469,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Achievements</span></nav>
     <h2 class="chroma">Achievements</h2>
-    <p class="lede">The achievement registry is the unlock ladder. Cards show the canonical requirement, measurement kind, optional world condition and every unlock payload with a live link to its destination.</p>
+    <p class="lede">An achievement is a counter with a payout at the end. 15 weapons and 8 tomes sit behind this list, which makes it less a trophy cabinet than a list of what is not in your level-up pool yet.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-
+    <p class="womit"><b>How far along you are is not here.</b> Every card carries the counter and the number it wants, and the running total is on your save, where this page cannot see it.</p>
 
 
 
@@ -505,10 +515,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="run" id="g-run">
       <div class="wgroup-h"><h3>Single-run goals</h3><span class="wgroup-n">12</span></div>
-      <p class="wgroup-note">Measured inside one run.</p>
+      <p class="wgroup-note">Counted inside one run. The counter goes back to zero when the run does.</p>
       <div class="wgrid">
       <article class="wcard" id="e-firstBlood" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="0" data-s-name="first blood" data-s-target="150">
         <div class="wcard-h">
+
           <h4>First Blood</h4>
 
         </div>
@@ -525,6 +536,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-survivor10" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="1" data-s-name="survivor" data-s-target="600">
         <div class="wcard-h">
+
           <h4>Survivor</h4>
 
         </div>
@@ -541,6 +553,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bigSpender" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="2" data-s-name="big spender" data-s-target="3500">
         <div class="wcard-h">
+
           <h4>Big Spender</h4>
 
         </div>
@@ -557,6 +570,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-packHunter" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="4" data-s-name="pack hunter" data-s-target="800">
         <div class="wcard-h">
+
           <h4>Pack Hunter</h4>
 
         </div>
@@ -573,6 +587,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-taskmaster" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="6" data-s-name="taskmaster" data-s-target="3">
         <div class="wcard-h">
+
           <h4>Taskmaster</h4>
 
         </div>
@@ -589,6 +604,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-survivor20" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="7" data-s-name="endurance" data-s-target="1200">
         <div class="wcard-h">
+
           <h4>Endurance</h4>
 
         </div>
@@ -605,6 +621,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-keeper" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="no" data-s-roster="8" data-s-name="keeper" data-s-target="3">
         <div class="wcard-h">
+
           <h4>Keeper</h4>
 
         </div>
@@ -621,6 +638,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-emberAscend" tabindex="-1" data-kind="runStat" data-reward="weapon" data-world="yes" data-s-roster="9" data-s-name="forged in fire" data-s-target="30">
         <div class="wcard-h">
+
           <h4>Forged in Fire</h4>
 
         </div>
@@ -637,6 +655,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-marshLong" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="yes" data-s-roster="19" data-s-name="marsh endurance" data-s-target="900">
         <div class="wcard-h">
+
           <h4>Marsh Endurance</h4>
 
         </div>
@@ -653,6 +672,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-highLevel15" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="no" data-s-roster="20" data-s-name="ascendant" data-s-target="18">
         <div class="wcard-h">
+
           <h4>Ascendant</h4>
 
         </div>
@@ -669,6 +689,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-necroLong" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="yes" data-s-roster="21" data-s-name="grave vigil" data-s-target="1500">
         <div class="wcard-h">
+
           <h4>Grave Vigil</h4>
 
         </div>
@@ -685,6 +706,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-slaughter300" tabindex="-1" data-kind="runStat" data-reward="passive" data-world="no" data-s-roster="22" data-s-name="slaughter" data-s-target="300">
         <div class="wcard-h">
+
           <h4>Slaughter</h4>
 
         </div>
@@ -702,10 +724,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="lifetime" id="g-lifetime">
       <div class="wgroup-h"><h3>Lifetime goals</h3><span class="wgroup-n">6</span></div>
-      <p class="wgroup-note">Measured across the save.</p>
+      <p class="wgroup-note">Counted across every run on the save. These are the patient ones.</p>
       <div class="wgrid">
       <article class="wcard" id="e-bossDown" tabindex="-1" data-kind="lifetime" data-reward="weapon" data-world="no" data-s-roster="3" data-s-name="boss down" data-s-target="5">
         <div class="wcard-h">
+
           <h4>Boss Down</h4>
 
         </div>
@@ -722,6 +745,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-exterminator" tabindex="-1" data-kind="lifetime" data-reward="weapon" data-world="no" data-s-roster="5" data-s-name="exterminator" data-s-target="4000">
         <div class="wcard-h">
+
           <h4>Exterminator</h4>
 
         </div>
@@ -738,6 +762,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lucky" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="17" data-s-name="lucky" data-s-target="18">
         <div class="wcard-h">
+
           <h4>Lucky</h4>
 
         </div>
@@ -754,6 +779,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bossSlayer" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="18" data-s-name="boss slayer" data-s-target="20">
         <div class="wcard-h">
+
           <h4>Boss Slayer</h4>
 
         </div>
@@ -770,6 +796,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-tycoon" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="23" data-s-name="tycoon" data-s-target="15000">
         <div class="wcard-h">
+
           <h4>Tycoon</h4>
 
         </div>
@@ -786,6 +813,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-phoenix" tabindex="-1" data-kind="lifetime" data-reward="passive" data-world="no" data-s-roster="24" data-s-name="phoenix" data-s-target="5">
         <div class="wcard-h">
+
           <h4>Phoenix</h4>
 
         </div>
@@ -803,10 +831,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="event" id="g-event">
       <div class="wgroup-h"><h3>Milestones</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">Completed by a named event rather than a counter.</p>
+      <p class="wgroup-note">No counter on these. Something specific either happened or it did not.</p>
       <div class="wgrid">
       <article class="wcard" id="e-perfectionist" tabindex="-1" data-kind="event" data-reward="weapon" data-world="no" data-s-roster="10" data-s-name="perfectionist" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Perfectionist</h4>
 
         </div>
@@ -823,6 +852,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meadowCleared" tabindex="-1" data-kind="event" data-reward="none" data-world="yes" data-s-roster="11" data-s-name="meadow cleared" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Meadow Cleared</h4>
 
         </div>
@@ -839,6 +869,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-marshCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="12" data-s-name="marsh cleared" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Marsh Cleared</h4>
 
         </div>
@@ -855,6 +886,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-necroCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="13" data-s-name="necropolis cleared" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Necropolis Cleared</h4>
 
         </div>
@@ -871,6 +903,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-emberCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="14" data-s-name="ember cleared" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Ember Cleared</h4>
 
         </div>
@@ -887,6 +920,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-riftCleared" tabindex="-1" data-kind="event" data-reward="weapon" data-world="yes" data-s-roster="15" data-s-name="rift cleared" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Rift Cleared</h4>
 
         </div>
@@ -903,6 +937,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-infernoCleared" tabindex="-1" data-kind="event" data-reward="sprite" data-world="yes" data-s-roster="16" data-s-name="hellmouth cleared" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Hellmouth Cleared</h4>
 
         </div>
@@ -919,6 +954,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-mawSealed" tabindex="-1" data-kind="event" data-reward="sprite" data-world="no" data-s-roster="25" data-s-name="sealed the hellmouth" data-s-target="0">
         <div class="wcard-h">
+
           <h4>Sealed the Hellmouth</h4>
 
         </div>
@@ -938,7 +974,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

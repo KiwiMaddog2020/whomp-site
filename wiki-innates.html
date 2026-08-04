@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Innates</span></nav>
     <h2 class="chroma">Innates</h2>
-    <p class="lede">Innates are character-bound passive rules. The character-select sentence is canonical copy; base, growth and cap are read from the same registry row.</p>
+    <p class="lede">An innate belongs to one character and arrives with them, and the sentence on each card is the one you are shown at character select. You do not pick it and you do not spend anything on it; the three numbers underneath are where it starts, what a level adds, and where it stops climbing.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -498,10 +508,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Innate roster</h3><span class="wgroup-n">11</span></div>
-      <p class="wgroup-note">One source entry per character-bound innate.</p>
+      <p class="wgroup-note">One for each character, in the order the characters are listed.</p>
       <div class="wgrid">
       <article class="wcard" id="e-boosterSchool" tabindex="-1" data-effect="boostRecharge" data-value="fraction" data-s-roster="0" data-s-name="booster school">
         <div class="wcard-h">
+
           <h4>Booster School</h4>
 
         </div>
@@ -518,6 +529,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-cruelFate" tabindex="-1" data-effect="controlledTargetDamage" data-value="fraction" data-s-roster="1" data-s-name="cruel fate">
         <div class="wcard-h">
+
           <h4>Cruel Fate</h4>
 
         </div>
@@ -534,6 +546,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-loadBearing" tabindex="-1" data-effect="groundedDefense" data-value="fraction" data-s-roster="2" data-s-name="load bearing">
         <div class="wcard-h">
+
           <h4>Load Bearing</h4>
 
         </div>
@@ -550,6 +563,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lineTension" tabindex="-1" data-effect="enemyDisplacement" data-value="fraction" data-s-roster="3" data-s-name="line tension">
         <div class="wcard-h">
+
           <h4>Line Tension</h4>
 
         </div>
@@ -566,6 +580,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-quickFeet" tabindex="-1" data-effect="moveSpeed" data-value="fraction" data-s-roster="4" data-s-name="quick feet">
         <div class="wcard-h">
+
           <h4>Quick Feet</h4>
 
         </div>
@@ -582,6 +597,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lastingSpell" tabindex="-1" data-effect="ownedDuration" data-value="fraction" data-s-roster="5" data-s-name="lasting spell">
         <div class="wcard-h">
+
           <h4>Lasting Spell</h4>
 
         </div>
@@ -598,6 +614,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-criticalMass" tabindex="-1" data-effect="crowdDefense" data-value="fraction" data-s-roster="6" data-s-name="critical mass">
         <div class="wcard-h">
+
           <h4>Critical Mass</h4>
 
         </div>
@@ -614,6 +631,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-reserveAegis" tabindex="-1" data-effect="shieldCapacity" data-value="flatShield" data-s-roster="7" data-s-name="reserve aegis">
         <div class="wcard-h">
+
           <h4>Reserve Aegis</h4>
 
         </div>
@@ -630,6 +648,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-redline" tabindex="-1" data-effect="missingHealthDamage" data-value="fraction" data-s-roster="8" data-s-name="redline">
         <div class="wcard-h">
+
           <h4>Redline</h4>
 
         </div>
@@ -646,6 +665,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-longStrings" tabindex="-1" data-effect="weaponReach" data-value="fraction" data-s-roster="9" data-s-name="long strings">
         <div class="wcard-h">
+
           <h4>Long Strings</h4>
 
         </div>
@@ -662,6 +682,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bedsideManner" tabindex="-1" data-effect="healingAndRevive" data-value="fraction" data-s-roster="10" data-s-name="bedside manner">
         <div class="wcard-h">
+
           <h4>Bedside Manner</h4>
 
         </div>
@@ -681,7 +702,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

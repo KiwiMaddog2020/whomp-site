@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP automatic-weapon sim loadouts</title>
-<meta name="description" content="Automatic-weapon sim loadouts: Every controlled pair and the greedy loadout paths the fixture found. Canonical facts generated from verified game artifacts.">
+<title>WHOMP automatic weapons in pairs</title>
+<meta name="description" content="Automatic weapons in pairs: What two weapons do together, against what they do apart. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -364,8 +374,8 @@ footer a{color:var(--cyan);text-decoration:none}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP automatic-weapon sim loadouts</h1>
-        <p class="subtag">Every controlled pair and the greedy loadout paths the fixture found.</p>
+        <h1 class="chroma">WHOMP automatic weapons in pairs</h1>
+        <p class="subtag">What two weapons do together, against what they do apart.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html" class="is-here" aria-current="page">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html" class="is-here" aria-current="page">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -457,19 +467,19 @@ footer a{color:var(--cyan);text-decoration:none}
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
-    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Automatic-weapon sim loadouts</span></nav>
-    <h2 class="chroma">Automatic-weapon sim loadouts</h2>
-    <p class="lede">300 level-4 automatic-weapon pairs were measured exhaustively on a deterministic 40-seed controlled cohort. Pair output, spread, per-weapon attributed damage and the ratio to solo-sum output are shown on both fixtures; the 4 paths are laboratory search results, not whole-run recommendations.</p>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Automatic weapons in pairs</span></nav>
+    <h2 class="chroma">Automatic weapons in pairs</h2>
+    <p class="lede">Every one of the 300 pairs you can make at level 4 was run on the same 40 seeds, on both tests. Each card says what the pair put out, how much of that each weapon was responsible for, and whether the two of them together beat the two of them separately. The four longer paths at the top are what a search found in a laboratory, and a laboratory is not a run.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit"><b>Pair and build samples use 40 seeds, not the 40-seed single-weapon sweep.</b> Measured association between each weapon and its exhaustive controlled-fixture pairs. The mechanism is not measured; no causal explanation is asserted. Greedy build selection and reported build performance use the same deterministic seed cohort; there is no holdout cohort, so selection bias is possible. WeaponSystem insertion order can affect cast interleave. Every controlled pair/build uses lexicographic weapon-id order; acquisition-order permutations are not measured. Unlock rows report eligibility only; they do not model when a weapon enters a live run.</p>
+    <p class="womit"><b>Pairs and paths were run on 40 seeds, not the 40 the single-weapon sweep used.</b> Measured association between each weapon and its exhaustive controlled-fixture pairs. The mechanism is not measured; no causal explanation is asserted. Greedy build selection and reported build performance use the same deterministic seed cohort; there is no holdout cohort, so selection bias is possible. WeaponSystem insertion order can affect cast interleave. Every controlled pair/build uses lexicographic weapon-id order; acquisition-order permutations are not measured. The unlock lines say only whether you could have a weapon, never when it would actually turn up in a run.</p>
 
 
     <section class="wfeature" aria-labelledby="measured-builds">
-      <div><span class="eyebrow">Controlled-sim search paths</span><h3 id="measured-builds">Greedy automatic-weapon loadout paths</h3></div>
-      <p>Controlled simulation only. Pairs are exhaustive over the unlocked base automatic roster; builds are greedy forward selection seeded from the best measured solo on each axis. Each path starts from a controlled solo fixture and adds the best measured next automatic weapon for that fixture. It is not a claim about human aiming, terrain, mobility, unlock timing or a complete live run.</p>
+      <div><span class="eyebrow">How the paths were found</span><h3 id="measured-builds">One weapon at a time, best next each time</h3></div>
+      <p>Controlled simulation only. Pairs are exhaustive over the unlocked base automatic roster; builds are greedy forward selection seeded from the best measured solo on each axis. Each path starts from one weapon alone in the lab and adds whichever weapon measured best next to it. It says nothing about aiming, terrain, moving, when a weapon becomes available, or how a real run goes.</p>
       <div class="wbuild-grid">
         <article>
           <span class="wtag ink-cyan">Measured controlled-sim build · controlled trash sim</span>
@@ -581,7 +591,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <div class="wfacet">
         <label class="wfacet-h" for="wsort">Sort</label>
-        <select class="wsort" id="wsort" aria-label="Sort Automatic-weapon sim loadouts">
+        <select class="wsort" id="wsort" aria-label="Sort Automatic weapons in pairs">
           <option value="crowd" data-desc="1" data-text="0">Controlled trash output</option><option value="crowdSynergy" data-desc="1" data-text="0">Trash output / solo sum</option><option value="boss" data-desc="1" data-text="0">Stationary-target output</option><option value="bossSynergy" data-desc="1" data-text="0">Target output / solo sum</option><option value="name" data-desc="0" data-text="1">Name</option>
         </select>
       </div></div>
@@ -594,10 +604,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Every controlled-sim pair</h3><span class="wgroup-n">300</span></div>
-      <p class="wgroup-note">All unordered pairs across the 25-weapon eligible roster, 40 deterministic seeds per pair.</p>
+      <p class="wgroup-note">Every pair that can be made from the 25 eligible weapons, 40 seeds each, order ignored.</p>
       <div class="wgrid">
       <article class="wcard" id="e-photonScythe-starField" tabindex="-1" data-weapon="photonScythe starField" data-s-crowd="1503.3" data-s-crowd-synergy="0.946" data-s-boss="1698.9" data-s-boss-synergy="0.985" data-s-name="photon scythe + star field">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Star Field</h4>
 
         </div>
@@ -621,6 +632,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-starField" tabindex="-1" data-weapon="pulseMine starField" data-s-crowd="1436.7" data-s-crowd-synergy="0.914" data-s-boss="1450" data-s-boss-synergy="0.983" data-s-name="pulse mine + star field">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Star Field</h4>
 
         </div>
@@ -644,6 +656,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-photonScythe" tabindex="-1" data-weapon="flameThrower photonScythe" data-s-crowd="1350.7" data-s-crowd-synergy="0.95" data-s-boss="2735.7" data-s-boss-synergy="1" data-s-name="flame thrower + photon scythe">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Photon Scythe</h4>
 
         </div>
@@ -667,6 +680,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-photonScythe" tabindex="-1" data-weapon="beam photonScythe" data-s-crowd="1328" data-s-crowd-synergy="0.858" data-s-boss="6554.8" data-s-boss-synergy="1" data-s-name="beam + photon scythe">
         <div class="wcard-h">
+
           <h4>Beam + Photon Scythe</h4>
 
         </div>
@@ -690,6 +704,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-photonScythe" tabindex="-1" data-weapon="gravityWell photonScythe" data-s-crowd="1309.3" data-s-crowd-synergy="0.884" data-s-boss="1778" data-s-boss-synergy="1" data-s-name="gravity well + photon scythe">
         <div class="wcard-h">
+
           <h4>Gravity Well + Photon Scythe</h4>
 
         </div>
@@ -713,6 +728,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-starField" tabindex="-1" data-weapon="beam starField" data-s-crowd="1292" data-s-crowd-synergy="0.848" data-s-boss="6581.1" data-s-boss-synergy="1" data-s-name="beam + star field">
         <div class="wcard-h">
+
           <h4>Beam + Star Field</h4>
 
         </div>
@@ -736,6 +752,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-pulseMine" tabindex="-1" data-weapon="beam pulseMine" data-s-crowd="1256.7" data-s-crowd-synergy="0.826" data-s-boss="6267" data-s-boss-synergy="1" data-s-name="beam + pulse mine">
         <div class="wcard-h">
+
           <h4>Beam + Pulse Mine</h4>
 
         </div>
@@ -759,6 +776,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-pulseMine" tabindex="-1" data-weapon="photonScythe pulseMine" data-s-crowd="1251.3" data-s-crowd-synergy="0.791" data-s-boss="1423.6" data-s-boss-synergy="1" data-s-name="photon scythe + pulse mine">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Pulse Mine</h4>
 
         </div>
@@ -782,6 +800,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-starField" tabindex="-1" data-weapon="gravityWell starField" data-s-crowd="1238" data-s-crowd-synergy="0.845" data-s-boss="1830.3" data-s-boss-synergy="1.007" data-s-name="gravity well + star field">
         <div class="wcard-h">
+
           <h4>Gravity Well + Star Field</h4>
 
         </div>
@@ -805,6 +824,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-starField" tabindex="-1" data-weapon="meteorStrike starField" data-s-crowd="1234.7" data-s-crowd-synergy="0.875" data-s-boss="1979.8" data-s-boss-synergy="0.987" data-s-name="meteor strike + star field">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Star Field</h4>
 
         </div>
@@ -828,6 +848,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-starField" tabindex="-1" data-weapon="flameThrower starField" data-s-crowd="1217.3" data-s-crowd-synergy="0.861" data-s-boss="2801" data-s-boss-synergy="1" data-s-name="flame thrower + star field">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Star Field</h4>
 
         </div>
@@ -851,6 +872,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-pulseMine" tabindex="-1" data-weapon="meteorStrike pulseMine" data-s-crowd="1214" data-s-crowd-synergy="0.863" data-s-boss="1639.7" data-s-boss-synergy="1" data-s-name="meteor strike + pulse mine">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Pulse Mine</h4>
 
         </div>
@@ -874,6 +896,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-gravityWell" tabindex="-1" data-weapon="beam gravityWell" data-s-crowd="1206.7" data-s-crowd-synergy="0.851" data-s-boss="6621.4" data-s-boss-synergy="1" data-s-name="beam + gravity well">
         <div class="wcard-h">
+
           <h4>Beam + Gravity Well</h4>
 
         </div>
@@ -897,6 +920,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-toxicAura" tabindex="-1" data-weapon="pulseMine toxicAura" data-s-crowd="1205.3" data-s-crowd-synergy="0.937" data-s-boss="930.4" data-s-boss-synergy="1" data-s-name="pulse mine + toxic aura">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Toxic Aura</h4>
 
         </div>
@@ -920,6 +944,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-flameThrower" tabindex="-1" data-weapon="beam flameThrower" data-s-crowd="1184" data-s-crowd-synergy="0.869" data-s-boss="7579.1" data-s-boss-synergy="1" data-s-name="beam + flame thrower">
         <div class="wcard-h">
+
           <h4>Beam + Flame Thrower</h4>
 
         </div>
@@ -943,6 +968,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-photonScythe" tabindex="-1" data-weapon="boomBox photonScythe" data-s-crowd="1172.7" data-s-crowd-synergy="0.909" data-s-boss="1361.7" data-s-boss-synergy="1" data-s-name="boom box + photon scythe">
         <div class="wcard-h">
+
           <h4>Boom Box + Photon Scythe</h4>
 
         </div>
@@ -966,6 +992,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-toxicAura" tabindex="-1" data-weapon="photonScythe toxicAura" data-s-crowd="1172" data-s-crowd-synergy="0.897" data-s-boss="1218.2" data-s-boss-synergy="1" data-s-name="photon scythe + toxic aura">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Toxic Aura</h4>
 
         </div>
@@ -989,6 +1016,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-toxicAura" tabindex="-1" data-weapon="starField toxicAura" data-s-crowd="1160.7" data-s-crowd-synergy="0.898" data-s-boss="1283.5" data-s-boss-synergy="1" data-s-name="star field + toxic aura">
         <div class="wcard-h">
+
           <h4>Star Field + Toxic Aura</h4>
 
         </div>
@@ -1012,6 +1040,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-pulseMine" tabindex="-1" data-weapon="flameThrower pulseMine" data-s-crowd="1155.3" data-s-crowd-synergy="0.822" data-s-boss="2447.9" data-s-boss-synergy="1" data-s-name="flame thrower + pulse mine">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Pulse Mine</h4>
 
         </div>
@@ -1035,6 +1064,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-pulseMine" tabindex="-1" data-weapon="gravityWell pulseMine" data-s-crowd="1142" data-s-crowd-synergy="0.782" data-s-boss="1490.2" data-s-boss-synergy="1" data-s-name="gravity well + pulse mine">
         <div class="wcard-h">
+
           <h4>Gravity Well + Pulse Mine</h4>
 
         </div>
@@ -1058,6 +1088,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-toxicAura" tabindex="-1" data-weapon="beam toxicAura" data-s-crowd="1104.7" data-s-crowd-synergy="0.883" data-s-boss="6061.5" data-s-boss-synergy="1" data-s-name="beam + toxic aura">
         <div class="wcard-h">
+
           <h4>Beam + Toxic Aura</h4>
 
         </div>
@@ -1081,6 +1112,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-pulseMine" tabindex="-1" data-weapon="boomBox pulseMine" data-s-crowd="1097.3" data-s-crowd-synergy="0.861" data-s-boss="1073.9" data-s-boss-synergy="1" data-s-name="boom box + pulse mine">
         <div class="wcard-h">
+
           <h4>Boom Box + Pulse Mine</h4>
 
         </div>
@@ -1104,6 +1136,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-starField" tabindex="-1" data-weapon="boomBox starField" data-s-crowd="1092" data-s-crowd-synergy="0.853" data-s-boss="1401" data-s-boss-synergy="1" data-s-name="boom box + star field">
         <div class="wcard-h">
+
           <h4>Boom Box + Star Field</h4>
 
         </div>
@@ -1127,6 +1160,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-gravityWell" tabindex="-1" data-weapon="flameThrower gravityWell" data-s-crowd="1085.3" data-s-crowd-synergy="0.835" data-s-boss="2802.3" data-s-boss-synergy="1" data-s-name="flame thrower + gravity well">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Gravity Well</h4>
 
         </div>
@@ -1150,6 +1184,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-boomBox" tabindex="-1" data-weapon="beam boomBox" data-s-crowd="1076" data-s-crowd-synergy="0.873" data-s-boss="6205.1" data-s-boss-synergy="1" data-s-name="beam + boom box">
         <div class="wcard-h">
+
           <h4>Beam + Boom Box</h4>
 
         </div>
@@ -1173,6 +1208,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-starField" tabindex="-1" data-weapon="plasmaOrbit starField" data-s-crowd="1072.7" data-s-crowd-synergy="0.98" data-s-boss="1644.8" data-s-boss-synergy="1" data-s-name="plasma shield + star field">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Star Field</h4>
 
         </div>
@@ -1196,6 +1232,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-photonScythe" tabindex="-1" data-weapon="meteorStrike photonScythe" data-s-crowd="1066.7" data-s-crowd-synergy="0.75" data-s-boss="1927.5" data-s-boss-synergy="1" data-s-name="meteor strike + photon scythe">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Photon Scythe</h4>
 
         </div>
@@ -1219,6 +1256,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-meteorStrike" tabindex="-1" data-weapon="beam meteorStrike" data-s-crowd="1062" data-s-crowd-synergy="0.778" data-s-boss="6770.8" data-s-boss-synergy="1" data-s-name="beam + meteor strike">
         <div class="wcard-h">
+
           <h4>Beam + Meteor Strike</h4>
 
         </div>
@@ -1242,6 +1280,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-gravityWell" tabindex="-1" data-weapon="boomBox gravityWell" data-s-crowd="1058.7" data-s-crowd-synergy="0.904" data-s-boss="1428.3" data-s-boss-synergy="1" data-s-name="boom box + gravity well">
         <div class="wcard-h">
+
           <h4>Boom Box + Gravity Well</h4>
 
         </div>
@@ -1265,6 +1304,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-toxicAura" tabindex="-1" data-weapon="gravityWell toxicAura" data-s-crowd="1049.3" data-s-crowd-synergy="0.883" data-s-boss="1284.8" data-s-boss-synergy="1" data-s-name="gravity well + toxic aura">
         <div class="wcard-h">
+
           <h4>Gravity Well + Toxic Aura</h4>
 
         </div>
@@ -1288,6 +1328,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-plasmaOrbit" tabindex="-1" data-weapon="photonScythe plasmaOrbit" data-s-crowd="1016.7" data-s-crowd-synergy="0.926" data-s-boss="1566.5" data-s-boss-synergy="1" data-s-name="photon scythe + plasma shield">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Plasma Shield</h4>
 
         </div>
@@ -1311,6 +1352,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-flameThrower" tabindex="-1" data-weapon="boomBox flameThrower" data-s-crowd="1013.3" data-s-crowd-synergy="0.907" data-s-boss="2386" data-s-boss-synergy="1" data-s-name="boom box + flame thrower">
         <div class="wcard-h">
+
           <h4>Boom Box + Flame Thrower</h4>
 
         </div>
@@ -1334,6 +1376,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-meteorStrike" tabindex="-1" data-weapon="gravityWell meteorStrike" data-s-crowd="999.3" data-s-crowd-synergy="0.768" data-s-boss="1994" data-s-boss-synergy="1" data-s-name="gravity well + meteor strike">
         <div class="wcard-h">
+
           <h4>Gravity Well + Meteor Strike</h4>
 
         </div>
@@ -1357,6 +1400,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-meteorStrike" tabindex="-1" data-weapon="flameThrower meteorStrike" data-s-crowd="996.7" data-s-crowd-synergy="0.799" data-s-boss="2951.8" data-s-boss-synergy="1" data-s-name="flame thrower + meteor strike">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Meteor Strike</h4>
 
         </div>
@@ -1380,6 +1424,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-toxicAura" tabindex="-1" data-weapon="flameThrower toxicAura" data-s-crowd="992.7" data-s-crowd-synergy="0.881" data-s-boss="2242.5" data-s-boss-synergy="1" data-s-name="flame thrower + toxic aura">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Toxic Aura</h4>
 
         </div>
@@ -1403,6 +1448,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-photonScythe" tabindex="-1" data-weapon="lighthouse photonScythe" data-s-crowd="986" data-s-crowd-synergy="0.819" data-s-boss="2141.6" data-s-boss-synergy="1" data-s-name="faultline + photon scythe">
         <div class="wcard-h">
+
           <h4>Faultline + Photon Scythe</h4>
 
         </div>
@@ -1426,6 +1472,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-starField" tabindex="-1" data-weapon="lighthouse starField" data-s-crowd="962.7" data-s-crowd-synergy="0.805" data-s-boss="2193.9" data-s-boss-synergy="0.994" data-s-name="faultline + star field">
         <div class="wcard-h">
+
           <h4>Faultline + Star Field</h4>
 
         </div>
@@ -1449,6 +1496,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-plasmaOrbit" tabindex="-1" data-weapon="beam plasmaOrbit" data-s-crowd="955.3" data-s-crowd-synergy="0.917" data-s-boss="6409.9" data-s-boss-synergy="1" data-s-name="beam + plasma shield">
         <div class="wcard-h">
+
           <h4>Beam + Plasma Shield</h4>
 
         </div>
@@ -1472,6 +1520,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-photonScythe" tabindex="-1" data-weapon="energyBolt photonScythe" data-s-crowd="930" data-s-crowd-synergy="1.038" data-s-boss="3296.4" data-s-boss-synergy="1" data-s-name="energy bolt + photon scythe">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Photon Scythe</h4>
 
         </div>
@@ -1495,6 +1544,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-toxicAura" tabindex="-1" data-weapon="boomBox toxicAura" data-s-crowd="929.3" data-s-crowd-synergy="0.93" data-s-boss="868.5" data-s-boss-synergy="1" data-s-name="boom box + toxic aura">
         <div class="wcard-h">
+
           <h4>Boom Box + Toxic Aura</h4>
 
         </div>
@@ -1518,6 +1568,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-pulseMine" tabindex="-1" data-weapon="lighthouse pulseMine" data-s-crowd="928.7" data-s-crowd-synergy="0.787" data-s-boss="1853.8" data-s-boss-synergy="1" data-s-name="faultline + pulse mine">
         <div class="wcard-h">
+
           <h4>Faultline + Pulse Mine</h4>
 
         </div>
@@ -1541,6 +1592,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-starField" tabindex="-1" data-weapon="ricochetDisc starField" data-s-crowd="918" data-s-crowd-synergy="1.006" data-s-boss="1597.1" data-s-boss-synergy="0.992" data-s-name="ricochet disc + star field">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Star Field</h4>
 
         </div>
@@ -1564,6 +1616,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-voidDaggers" tabindex="-1" data-weapon="photonScythe voidDaggers" data-s-crowd="914" data-s-crowd-synergy="1.048" data-s-boss="3997.3" data-s-boss-synergy="1" data-s-name="photon scythe + void daggers">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Void Daggers</h4>
 
         </div>
@@ -1587,6 +1640,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-pulseMine" tabindex="-1" data-weapon="plasmaOrbit pulseMine" data-s-crowd="908" data-s-crowd-synergy="0.841" data-s-boss="1278.7" data-s-boss-synergy="1" data-s-name="plasma shield + pulse mine">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Pulse Mine</h4>
 
         </div>
@@ -1610,6 +1664,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-starField" tabindex="-1" data-weapon="chainLightning starField" data-s-crowd="905.3" data-s-crowd-synergy="1.028" data-s-boss="1961.2" data-s-boss-synergy="0.987" data-s-name="chain lightning + star field">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Star Field</h4>
 
         </div>
@@ -1633,6 +1688,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-spectralArrows" tabindex="-1" data-weapon="photonScythe spectralArrows" data-s-crowd="898.7" data-s-crowd-synergy="0.991" data-s-boss="3545.3" data-s-boss-synergy="1" data-s-name="photon scythe + spectral arrows">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Spectral Arrows</h4>
 
         </div>
@@ -1656,6 +1712,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-photonScythe" tabindex="-1" data-weapon="chainLightning photonScythe" data-s-crowd="897.3" data-s-crowd-synergy="1.002" data-s-boss="1896" data-s-boss-synergy="1" data-s-name="chain lightning + photon scythe">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Photon Scythe</h4>
 
         </div>
@@ -1679,6 +1736,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-pulseMine" tabindex="-1" data-weapon="chainLightning pulseMine" data-s-crowd="894" data-s-crowd-synergy="1.023" data-s-boss="1608.2" data-s-boss-synergy="1" data-s-name="chain lightning + pulse mine">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Pulse Mine</h4>
 
         </div>
@@ -1702,6 +1760,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-ricochetDisc" tabindex="-1" data-weapon="photonScythe ricochetDisc" data-s-crowd="892.7" data-s-crowd-synergy="0.965" data-s-boss="1570.7" data-s-boss-synergy="1" data-s-name="photon scythe + ricochet disc">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Ricochet Disc</h4>
 
         </div>
@@ -1725,6 +1784,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-meteorStrike" tabindex="-1" data-weapon="boomBox meteorStrike" data-s-crowd="892" data-s-crowd-synergy="0.797" data-s-boss="1577.7" data-s-boss-synergy="1" data-s-name="boom box + meteor strike">
         <div class="wcard-h">
+
           <h4>Boom Box + Meteor Strike</h4>
 
         </div>
@@ -1748,6 +1808,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-ricochetDisc" tabindex="-1" data-weapon="pulseMine ricochetDisc" data-s-crowd="890.7" data-s-crowd-synergy="0.982" data-s-boss="1282.9" data-s-boss-synergy="1" data-s-name="pulse mine + ricochet disc">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Ricochet Disc</h4>
 
         </div>
@@ -1771,6 +1832,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-photonScythe" tabindex="-1" data-weapon="encore photonScythe" data-s-crowd="890" data-s-crowd-synergy="0.849" data-s-boss="855.7" data-s-boss-synergy="1" data-s-name="echo + photon scythe">
         <div class="wcard-h">
+
           <h4>Echo + Photon Scythe</h4>
 
         </div>
@@ -1794,6 +1856,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-lighthouse" tabindex="-1" data-weapon="beam lighthouse" data-s-crowd="885.3" data-s-crowd-synergy="0.777" data-s-boss="6984.9" data-s-boss-synergy="1" data-s-name="beam + faultline">
         <div class="wcard-h">
+
           <h4>Beam + Faultline</h4>
 
         </div>
@@ -1817,6 +1880,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-photonScythe" tabindex="-1" data-weapon="iceShard photonScythe" data-s-crowd="884" data-s-crowd-synergy="1.011" data-s-boss="2891" data-s-boss-synergy="1" data-s-name="ice shards + photon scythe">
         <div class="wcard-h">
+
           <h4>Ice Shards + Photon Scythe</h4>
 
         </div>
@@ -1840,6 +1904,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-plasmaOrbit" tabindex="-1" data-weapon="gravityWell plasmaOrbit" data-s-crowd="882.7" data-s-crowd-synergy="0.903" data-s-boss="1633.1" data-s-boss-synergy="1" data-s-name="gravity well + plasma shield">
         <div class="wcard-h">
+
           <h4>Gravity Well + Plasma Shield</h4>
 
         </div>
@@ -1863,6 +1928,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-starField" tabindex="-1" data-weapon="spectralArrows starField" data-s-crowd="880" data-s-crowd-synergy="0.983" data-s-boss="3584.6" data-s-boss-synergy="0.996" data-s-name="spectral arrows + star field">
         <div class="wcard-h">
+
           <h4>Spectral Arrows + Star Field</h4>
 
         </div>
@@ -1886,6 +1952,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-photonScythe" tabindex="-1" data-weapon="blackSquirrel photonScythe" data-s-crowd="878.7" data-s-crowd-synergy="0.952" data-s-boss="1616.8" data-s-boss-synergy="1" data-s-name="ghost pup + photon scythe">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Photon Scythe</h4>
 
         </div>
@@ -1909,6 +1976,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-starField" tabindex="-1" data-weapon="energyBolt starField" data-s-crowd="876" data-s-crowd-synergy="0.982" data-s-boss="3322.8" data-s-boss-synergy="1.008" data-s-name="energy bolt + star field">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Star Field</h4>
 
         </div>
@@ -1932,6 +2000,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-spectralArrows" tabindex="-1" data-weapon="pulseMine spectralArrows" data-s-crowd="875.3" data-s-crowd-synergy="0.985" data-s-boss="3257.5" data-s-boss-synergy="1" data-s-name="pulse mine + spectral arrows">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Spectral Arrows</h4>
 
         </div>
@@ -1955,6 +2024,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-pulseMine" tabindex="-1" data-weapon="energyBolt pulseMine" data-s-crowd="869.3" data-s-crowd-synergy="0.992" data-s-boss="3008.6" data-s-boss-synergy="1" data-s-name="energy bolt + pulse mine">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Pulse Mine</h4>
 
         </div>
@@ -1978,6 +2048,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-starField" tabindex="-1" data-weapon="encore starField" data-s-crowd="868.7" data-s-crowd-synergy="0.837" data-s-boss="921" data-s-boss-synergy="1" data-s-name="echo + star field">
         <div class="wcard-h">
+
           <h4>Echo + Star Field</h4>
 
         </div>
@@ -2001,6 +2072,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-shotgun" tabindex="-1" data-weapon="photonScythe shotgun" data-s-crowd="868.7" data-s-crowd-synergy="0.998" data-s-boss="3600.9" data-s-boss-synergy="1.003" data-s-name="photon scythe + shotgun">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Shotgun</h4>
 
         </div>
@@ -2024,6 +2096,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-spiritOrbs" tabindex="-1" data-weapon="photonScythe spiritOrbs" data-s-crowd="865.3" data-s-crowd-synergy="1.021" data-s-boss="3203" data-s-boss-synergy="1" data-s-name="photon scythe + ghost orbs">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Ghost Orbs</h4>
 
         </div>
@@ -2047,6 +2120,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-starField" tabindex="-1" data-weapon="iceShard starField" data-s-crowd="864" data-s-crowd-synergy="1.005" data-s-boss="2930.3" data-s-boss-synergy="0.995" data-s-name="ice shards + star field">
         <div class="wcard-h">
+
           <h4>Ice Shards + Star Field</h4>
 
         </div>
@@ -2070,6 +2144,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-photonScythe" tabindex="-1" data-weapon="boomerang photonScythe" data-s-crowd="856" data-s-crowd-synergy="0.96" data-s-boss="1686.5" data-s-boss-synergy="1" data-s-name="boomerang + photon scythe">
         <div class="wcard-h">
+
           <h4>Boomerang + Photon Scythe</h4>
 
         </div>
@@ -2093,6 +2168,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-pulseMine" tabindex="-1" data-weapon="iceShard pulseMine" data-s-crowd="854" data-s-crowd-synergy="0.999" data-s-boss="2603.2" data-s-boss-synergy="1" data-s-name="ice shards + pulse mine">
         <div class="wcard-h">
+
           <h4>Ice Shards + Pulse Mine</h4>
 
         </div>
@@ -2116,6 +2192,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-stormSentry" tabindex="-1" data-weapon="photonScythe stormSentry" data-s-crowd="851.3" data-s-crowd-synergy="0.998" data-s-boss="3500.7" data-s-boss-synergy="1" data-s-name="photon scythe + storm sentry">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Storm Sentry</h4>
 
         </div>
@@ -2139,6 +2216,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-starField" tabindex="-1" data-weapon="shotgun starField" data-s-crowd="850" data-s-crowd-synergy="0.991" data-s-boss="3622.3" data-s-boss-synergy="0.991" data-s-name="shotgun + star field">
         <div class="wcard-h">
+
           <h4>Shotgun + Star Field</h4>
 
         </div>
@@ -2162,6 +2240,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-starField" tabindex="-1" data-weapon="spiritOrbs starField" data-s-crowd="847.3" data-s-crowd-synergy="1.023" data-s-boss="3229.3" data-s-boss-synergy="0.996" data-s-name="ghost orbs + star field">
         <div class="wcard-h">
+
           <h4>Ghost Orbs + Star Field</h4>
 
         </div>
@@ -2185,6 +2264,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-starField" tabindex="-1" data-weapon="boomerang starField" data-s-crowd="846.7" data-s-crowd-synergy="0.961" data-s-boss="1712.8" data-s-boss-synergy="0.986" data-s-name="boomerang + star field">
         <div class="wcard-h">
+
           <h4>Boomerang + Star Field</h4>
 
         </div>
@@ -2208,6 +2288,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-thunderStrike" tabindex="-1" data-weapon="photonScythe thunderStrike" data-s-crowd="845.3" data-s-crowd-synergy="1.006" data-s-boss="2650.6" data-s-boss-synergy="1" data-s-name="photon scythe + lightning strike">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Lightning Strike</h4>
 
         </div>
@@ -2231,6 +2312,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-toxicAura" tabindex="-1" data-weapon="meteorStrike toxicAura" data-s-crowd="840.7" data-s-crowd-synergy="0.743" data-s-boss="1434.2" data-s-boss-synergy="1" data-s-name="meteor strike + toxic aura">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Toxic Aura</h4>
 
         </div>
@@ -2254,6 +2336,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-pulseMine" tabindex="-1" data-weapon="encore pulseMine" data-s-crowd="839.3" data-s-crowd-synergy="0.813" data-s-boss="567.9" data-s-boss-synergy="1" data-s-name="echo + pulse mine">
         <div class="wcard-h">
+
           <h4>Echo + Pulse Mine</h4>
 
         </div>
@@ -2277,6 +2360,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-shotgun" tabindex="-1" data-weapon="pulseMine shotgun" data-s-crowd="839.3" data-s-crowd-synergy="0.987" data-s-boss="3307.3" data-s-boss-synergy="1.001" data-s-name="pulse mine + shotgun">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Shotgun</h4>
 
         </div>
@@ -2300,6 +2384,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-voidDaggers" tabindex="-1" data-weapon="starField voidDaggers" data-s-crowd="837.3" data-s-crowd-synergy="0.988" data-s-boss="3997.7" data-s-boss-synergy="0.997" data-s-name="star field + void daggers">
         <div class="wcard-h">
+
           <h4>Star Field + Void Daggers</h4>
 
         </div>
@@ -2323,6 +2408,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-spiritOrbs" tabindex="-1" data-weapon="pulseMine spiritOrbs" data-s-crowd="836.7" data-s-crowd-synergy="1.01" data-s-boss="2915.2" data-s-boss-synergy="1" data-s-name="pulse mine + ghost orbs">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Ghost Orbs</h4>
 
         </div>
@@ -2346,6 +2432,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-thunderStrike" tabindex="-1" data-weapon="starField thunderStrike" data-s-crowd="836" data-s-crowd-synergy="1.006" data-s-boss="2664" data-s-boss-synergy="0.99" data-s-name="star field + lightning strike">
         <div class="wcard-h">
+
           <h4>Star Field + Lightning Strike</h4>
 
         </div>
@@ -2369,6 +2456,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe-voidRailgun" tabindex="-1" data-weapon="photonScythe voidRailgun" data-s-crowd="834.7" data-s-crowd-synergy="0.926" data-s-boss="1400.9" data-s-boss-synergy="1" data-s-name="photon scythe + void railgun">
         <div class="wcard-h">
+
           <h4>Photon Scythe + Void Railgun</h4>
 
         </div>
@@ -2392,6 +2480,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-voidDaggers" tabindex="-1" data-weapon="pulseMine voidDaggers" data-s-crowd="832.7" data-s-crowd-synergy="0.976" data-s-boss="3709.5" data-s-boss-synergy="1" data-s-name="pulse mine + void daggers">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Void Daggers</h4>
 
         </div>
@@ -2415,6 +2504,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-pulseMine" tabindex="-1" data-weapon="boomerang pulseMine" data-s-crowd="829.3" data-s-crowd-synergy="0.946" data-s-boss="1398.7" data-s-boss-synergy="1" data-s-name="boomerang + pulse mine">
         <div class="wcard-h">
+
           <h4>Boomerang + Pulse Mine</h4>
 
         </div>
@@ -2438,6 +2528,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-voidRailgun" tabindex="-1" data-weapon="pulseMine voidRailgun" data-s-crowd="829.3" data-s-crowd-synergy="0.939" data-s-boss="1113.1" data-s-boss-synergy="1" data-s-name="pulse mine + void railgun">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Void Railgun</h4>
 
         </div>
@@ -2461,6 +2552,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-starField" tabindex="-1" data-weapon="blackSquirrel starField" data-s-crowd="828.7" data-s-crowd-synergy="0.913" data-s-boss="1669" data-s-boss-synergy="1.008" data-s-name="ghost pup + star field">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Star Field</h4>
 
         </div>
@@ -2484,6 +2576,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-thunderStrike" tabindex="-1" data-weapon="pulseMine thunderStrike" data-s-crowd="827.3" data-s-crowd-synergy="1.007" data-s-boss="2362.8" data-s-boss-synergy="1" data-s-name="pulse mine + lightning strike">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Lightning Strike</h4>
 
         </div>
@@ -2507,6 +2600,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-stormSentry" tabindex="-1" data-weapon="starField stormSentry" data-s-crowd="827.3" data-s-crowd-synergy="0.98" data-s-boss="3527" data-s-boss-synergy="0.996" data-s-name="star field + storm sentry">
         <div class="wcard-h">
+
           <h4>Star Field + Storm Sentry</h4>
 
         </div>
@@ -2530,6 +2624,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField-voidRailgun" tabindex="-1" data-weapon="starField voidRailgun" data-s-crowd="827.3" data-s-crowd-synergy="0.926" data-s-boss="1453.2" data-s-boss-synergy="1" data-s-name="star field + void railgun">
         <div class="wcard-h">
+
           <h4>Star Field + Void Railgun</h4>
 
         </div>
@@ -2553,6 +2648,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine-stormSentry" tabindex="-1" data-weapon="pulseMine stormSentry" data-s-crowd="824" data-s-crowd-synergy="0.989" data-s-boss="3212.9" data-s-boss-synergy="1" data-s-name="pulse mine + storm sentry">
         <div class="wcard-h">
+
           <h4>Pulse Mine + Storm Sentry</h4>
 
         </div>
@@ -2576,6 +2672,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-lighthouse" tabindex="-1" data-weapon="gravityWell lighthouse" data-s-crowd="812" data-s-crowd-synergy="0.754" data-s-boss="2208.2" data-s-boss-synergy="1" data-s-name="gravity well + faultline">
         <div class="wcard-h">
+
           <h4>Gravity Well + Faultline</h4>
 
         </div>
@@ -2599,6 +2696,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-plasmaOrbit" tabindex="-1" data-weapon="flameThrower plasmaOrbit" data-s-crowd="806.7" data-s-crowd-synergy="0.875" data-s-boss="2590.9" data-s-boss-synergy="1" data-s-name="flame thrower + plasma shield">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Plasma Shield</h4>
 
         </div>
@@ -2622,6 +2720,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-pulseMine" tabindex="-1" data-weapon="blackSquirrel pulseMine" data-s-crowd="806" data-s-crowd-synergy="0.896" data-s-boss="1329" data-s-boss-synergy="1" data-s-name="ghost pup + pulse mine">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Pulse Mine</h4>
 
         </div>
@@ -2645,6 +2744,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-energyBolt" tabindex="-1" data-weapon="beam energyBolt" data-s-crowd="805.3" data-s-crowd-synergy="0.96" data-s-boss="8139.8" data-s-boss-synergy="1" data-s-name="beam + energy bolt">
         <div class="wcard-h">
+
           <h4>Beam + Energy Bolt</h4>
 
         </div>
@@ -2668,6 +2768,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-spectralArrows" tabindex="-1" data-weapon="beam spectralArrows" data-s-crowd="804" data-s-crowd-synergy="0.947" data-s-boss="8388.6" data-s-boss-synergy="1" data-s-name="beam + spectral arrows">
         <div class="wcard-h">
+
           <h4>Beam + Spectral Arrows</h4>
 
         </div>
@@ -2691,6 +2792,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-chainLightning" tabindex="-1" data-weapon="beam chainLightning" data-s-crowd="796.7" data-s-crowd-synergy="0.953" data-s-boss="6739.3" data-s-boss-synergy="1" data-s-name="beam + chain lightning">
         <div class="wcard-h">
+
           <h4>Beam + Chain Lightning</h4>
 
         </div>
@@ -2714,6 +2816,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-ricochetDisc" tabindex="-1" data-weapon="beam ricochetDisc" data-s-crowd="793.3" data-s-crowd-synergy="0.915" data-s-boss="6414.1" data-s-boss-synergy="1" data-s-name="beam + ricochet disc">
         <div class="wcard-h">
+
           <h4>Beam + Ricochet Disc</h4>
 
         </div>
@@ -2737,6 +2840,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-boomerang" tabindex="-1" data-weapon="beam boomerang" data-s-crowd="791.3" data-s-crowd-synergy="0.94" data-s-boss="6529.8" data-s-boss-synergy="1" data-s-name="beam + boomerang">
         <div class="wcard-h">
+
           <h4>Beam + Boomerang</h4>
 
         </div>
@@ -2760,6 +2864,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-encore" tabindex="-1" data-weapon="beam encore" data-s-crowd="784.7" data-s-crowd-synergy="0.789" data-s-boss="5699.1" data-s-boss-synergy="1" data-s-name="beam + echo">
         <div class="wcard-h">
+
           <h4>Beam + Echo</h4>
 
         </div>
@@ -2783,6 +2888,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-gravityWell" tabindex="-1" data-weapon="energyBolt gravityWell" data-s-crowd="784.7" data-s-crowd-synergy="1.015" data-s-boss="3363" data-s-boss-synergy="1" data-s-name="energy bolt + gravity well">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Gravity Well</h4>
 
         </div>
@@ -2806,6 +2912,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-stormSentry" tabindex="-1" data-weapon="beam stormSentry" data-s-crowd="783.3" data-s-crowd-synergy="0.986" data-s-boss="8344" data-s-boss-synergy="1" data-s-name="beam + storm sentry">
         <div class="wcard-h">
+
           <h4>Beam + Storm Sentry</h4>
 
         </div>
@@ -2829,6 +2936,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-iceShard" tabindex="-1" data-weapon="beam iceShard" data-s-crowd="778.7" data-s-crowd-synergy="0.954" data-s-boss="7734.3" data-s-boss-synergy="1" data-s-name="beam + ice shards">
         <div class="wcard-h">
+
           <h4>Beam + Ice Shards</h4>
 
         </div>
@@ -2852,6 +2960,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-lighthouse" tabindex="-1" data-weapon="flameThrower lighthouse" data-s-crowd="778" data-s-crowd-synergy="0.761" data-s-boss="3165.9" data-s-boss-synergy="1" data-s-name="flame thrower + faultline">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Faultline</h4>
 
         </div>
@@ -2875,6 +2984,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-blackSquirrel" tabindex="-1" data-weapon="beam blackSquirrel" data-s-crowd="777.3" data-s-crowd-synergy="0.908" data-s-boss="6460.1" data-s-boss-synergy="1" data-s-name="beam + ghost pup">
         <div class="wcard-h">
+
           <h4>Beam + Ghost Pup</h4>
 
         </div>
@@ -2898,6 +3008,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-voidDaggers" tabindex="-1" data-weapon="beam voidDaggers" data-s-crowd="775.3" data-s-crowd-synergy="0.953" data-s-boss="8840.7" data-s-boss-synergy="1" data-s-name="beam + void daggers">
         <div class="wcard-h">
+
           <h4>Beam + Void Daggers</h4>
 
         </div>
@@ -2921,6 +3032,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-shotgun" tabindex="-1" data-weapon="beam shotgun" data-s-crowd="774" data-s-crowd-synergy="0.954" data-s-boss="8438.7" data-s-boss-synergy="1.001" data-s-name="beam + shotgun">
         <div class="wcard-h">
+
           <h4>Beam + Shotgun</h4>
 
         </div>
@@ -2944,6 +3056,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-thunderStrike" tabindex="-1" data-weapon="beam thunderStrike" data-s-crowd="772.7" data-s-crowd-synergy="0.989" data-s-boss="7493.9" data-s-boss-synergy="1" data-s-name="beam + lightning strike">
         <div class="wcard-h">
+
           <h4>Beam + Lightning Strike</h4>
 
         </div>
@@ -2967,6 +3080,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-spectralArrows" tabindex="-1" data-weapon="gravityWell spectralArrows" data-s-crowd="772.7" data-s-crowd-synergy="0.986" data-s-boss="3611.8" data-s-boss-synergy="1" data-s-name="gravity well + spectral arrows">
         <div class="wcard-h">
+
           <h4>Gravity Well + Spectral Arrows</h4>
 
         </div>
@@ -2990,6 +3104,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-spectralArrows" tabindex="-1" data-weapon="flameThrower spectralArrows" data-s-crowd="769.3" data-s-crowd-synergy="1.053" data-s-boss="4569.6" data-s-boss-synergy="1" data-s-name="flame thrower + spectral arrows">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Spectral Arrows</h4>
 
         </div>
@@ -3013,6 +3128,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-ricochetDisc" tabindex="-1" data-weapon="gravityWell ricochetDisc" data-s-crowd="768" data-s-crowd-synergy="0.952" data-s-boss="1637.3" data-s-boss-synergy="1" data-s-name="gravity well + ricochet disc">
         <div class="wcard-h">
+
           <h4>Gravity Well + Ricochet Disc</h4>
 
         </div>
@@ -3036,6 +3152,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-voidRailgun" tabindex="-1" data-weapon="beam voidRailgun" data-s-crowd="767.3" data-s-crowd-synergy="0.909" data-s-boss="6244.3" data-s-boss-synergy="1" data-s-name="beam + void railgun">
         <div class="wcard-h">
+
           <h4>Beam + Void Railgun</h4>
 
         </div>
@@ -3059,6 +3176,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-meteorStrike" tabindex="-1" data-weapon="lighthouse meteorStrike" data-s-crowd="766" data-s-crowd-synergy="0.748" data-s-boss="2357.6" data-s-boss-synergy="1" data-s-name="faultline + meteor strike">
         <div class="wcard-h">
+
           <h4>Faultline + Meteor Strike</h4>
 
         </div>
@@ -3082,6 +3200,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam-spiritOrbs" tabindex="-1" data-weapon="beam spiritOrbs" data-s-crowd="764" data-s-crowd-synergy="0.969" data-s-boss="8046.3" data-s-boss-synergy="1" data-s-name="beam + ghost orbs">
         <div class="wcard-h">
+
           <h4>Beam + Ghost Orbs</h4>
 
         </div>
@@ -3105,6 +3224,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-gravityWell" tabindex="-1" data-weapon="chainLightning gravityWell" data-s-crowd="764" data-s-crowd-synergy="0.987" data-s-boss="1962.6" data-s-boss-synergy="1" data-s-name="chain lightning + gravity well">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Gravity Well</h4>
 
         </div>
@@ -3128,6 +3248,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-flameThrower" tabindex="-1" data-weapon="energyBolt flameThrower" data-s-crowd="762" data-s-crowd-synergy="1.059" data-s-boss="4320.7" data-s-boss-synergy="1" data-s-name="energy bolt + flame thrower">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Flame Thrower</h4>
 
         </div>
@@ -3151,6 +3272,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-gravityWell" tabindex="-1" data-weapon="blackSquirrel gravityWell" data-s-crowd="761.3" data-s-crowd-synergy="0.952" data-s-boss="1683.3" data-s-boss-synergy="1" data-s-name="ghost pup + gravity well">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Gravity Well</h4>
 
         </div>
@@ -3174,6 +3296,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-plasmaOrbit" tabindex="-1" data-weapon="boomBox plasmaOrbit" data-s-crowd="758" data-s-crowd-synergy="0.956" data-s-boss="1216.8" data-s-boss-synergy="1" data-s-name="boom box + plasma shield">
         <div class="wcard-h">
+
           <h4>Boom Box + Plasma Shield</h4>
 
         </div>
@@ -3197,6 +3320,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-gravityWell" tabindex="-1" data-weapon="encore gravityWell" data-s-crowd="753.3" data-s-crowd-synergy="0.813" data-s-boss="922.3" data-s-boss-synergy="1" data-s-name="echo + gravity well">
         <div class="wcard-h">
+
           <h4>Echo + Gravity Well</h4>
 
         </div>
@@ -3220,6 +3344,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-gravityWell" tabindex="-1" data-weapon="boomerang gravityWell" data-s-crowd="749.3" data-s-crowd-synergy="0.97" data-s-boss="1753" data-s-boss-synergy="1" data-s-name="boomerang + gravity well">
         <div class="wcard-h">
+
           <h4>Boomerang + Gravity Well</h4>
 
         </div>
@@ -3243,6 +3368,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-iceShard" tabindex="-1" data-weapon="gravityWell iceShard" data-s-crowd="748" data-s-crowd-synergy="0.996" data-s-boss="2957.6" data-s-boss-synergy="1" data-s-name="gravity well + ice shards">
         <div class="wcard-h">
+
           <h4>Gravity Well + Ice Shards</h4>
 
         </div>
@@ -3266,6 +3392,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-shotgun" tabindex="-1" data-weapon="gravityWell shotgun" data-s-crowd="746" data-s-crowd-synergy="0.996" data-s-boss="3663.4" data-s-boss-synergy="1.001" data-s-name="gravity well + shotgun">
         <div class="wcard-h">
+
           <h4>Gravity Well + Shotgun</h4>
 
         </div>
@@ -3289,6 +3416,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-ricochetDisc" tabindex="-1" data-weapon="flameThrower ricochetDisc" data-s-crowd="740.7" data-s-crowd-synergy="0.987" data-s-boss="2595" data-s-boss-synergy="1" data-s-name="flame thrower + ricochet disc">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Ricochet Disc</h4>
 
         </div>
@@ -3312,6 +3440,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-voidDaggers" tabindex="-1" data-weapon="gravityWell voidDaggers" data-s-crowd="740.7" data-s-crowd-synergy="0.988" data-s-boss="4063.9" data-s-boss-synergy="1" data-s-name="gravity well + void daggers">
         <div class="wcard-h">
+
           <h4>Gravity Well + Void Daggers</h4>
 
         </div>
@@ -3335,6 +3464,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-toxicAura" tabindex="-1" data-weapon="plasmaOrbit toxicAura" data-s-crowd="740" data-s-crowd-synergy="0.924" data-s-boss="1073.3" data-s-boss-synergy="1" data-s-name="plasma shield + toxic aura">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Toxic Aura</h4>
 
         </div>
@@ -3358,6 +3488,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-stormSentry" tabindex="-1" data-weapon="gravityWell stormSentry" data-s-crowd="731.3" data-s-crowd-synergy="1.001" data-s-boss="3567.2" data-s-boss-synergy="1" data-s-name="gravity well + storm sentry">
         <div class="wcard-h">
+
           <h4>Gravity Well + Storm Sentry</h4>
 
         </div>
@@ -3381,6 +3512,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-thunderStrike" tabindex="-1" data-weapon="gravityWell thunderStrike" data-s-crowd="726.7" data-s-crowd-synergy="1.01" data-s-boss="2717.2" data-s-boss-synergy="1" data-s-name="gravity well + lightning strike">
         <div class="wcard-h">
+
           <h4>Gravity Well + Lightning Strike</h4>
 
         </div>
@@ -3404,6 +3536,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-flameThrower" tabindex="-1" data-weapon="chainLightning flameThrower" data-s-crowd="725.3" data-s-crowd-synergy="1.017" data-s-boss="2920.3" data-s-boss-synergy="1" data-s-name="chain lightning + flame thrower">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Flame Thrower</h4>
 
         </div>
@@ -3427,6 +3560,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-shotgun" tabindex="-1" data-weapon="flameThrower shotgun" data-s-crowd="723.3" data-s-crowd-synergy="1.044" data-s-boss="4629" data-s-boss-synergy="1.001" data-s-name="flame thrower + shotgun">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Shotgun</h4>
 
         </div>
@@ -3450,6 +3584,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-iceShard" tabindex="-1" data-weapon="flameThrower iceShard" data-s-crowd="721.3" data-s-crowd-synergy="1.04" data-s-boss="3915.3" data-s-boss-synergy="1" data-s-name="flame thrower + ice shards">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Ice Shards</h4>
 
         </div>
@@ -3473,6 +3608,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-voidRailgun" tabindex="-1" data-weapon="gravityWell voidRailgun" data-s-crowd="720" data-s-crowd-synergy="0.922" data-s-boss="1467.5" data-s-boss-synergy="1" data-s-name="gravity well + void railgun">
         <div class="wcard-h">
+
           <h4>Gravity Well + Void Railgun</h4>
 
         </div>
@@ -3496,6 +3632,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-flameThrower" tabindex="-1" data-weapon="boomerang flameThrower" data-s-crowd="719.3" data-s-crowd-synergy="1.009" data-s-boss="2710.8" data-s-boss-synergy="1" data-s-name="boomerang + flame thrower">
         <div class="wcard-h">
+
           <h4>Boomerang + Flame Thrower</h4>
 
         </div>
@@ -3519,6 +3656,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-flameThrower" tabindex="-1" data-weapon="blackSquirrel flameThrower" data-s-crowd="718.7" data-s-crowd-synergy="0.975" data-s-boss="2641.1" data-s-boss-synergy="1" data-s-name="ghost pup + flame thrower">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Flame Thrower</h4>
 
         </div>
@@ -3542,6 +3680,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-plasmaOrbit" tabindex="-1" data-weapon="meteorStrike plasmaOrbit" data-s-crowd="718.7" data-s-crowd-synergy="0.776" data-s-boss="1782.6" data-s-boss-synergy="1" data-s-name="meteor strike + plasma shield">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Plasma Shield</h4>
 
         </div>
@@ -3565,6 +3704,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-meteorStrike" tabindex="-1" data-weapon="chainLightning meteorStrike" data-s-crowd="716" data-s-crowd-synergy="0.993" data-s-boss="2112" data-s-boss-synergy="1" data-s-name="chain lightning + meteor strike">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Meteor Strike</h4>
 
         </div>
@@ -3588,6 +3728,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell-spiritOrbs" tabindex="-1" data-weapon="gravityWell spiritOrbs" data-s-crowd="716" data-s-crowd-synergy="0.984" data-s-boss="3269.6" data-s-boss-synergy="1" data-s-name="gravity well + ghost orbs">
         <div class="wcard-h">
+
           <h4>Gravity Well + Ghost Orbs</h4>
 
         </div>
@@ -3611,6 +3752,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-ricochetDisc" tabindex="-1" data-weapon="meteorStrike ricochetDisc" data-s-crowd="716" data-s-crowd-synergy="0.954" data-s-boss="1786.8" data-s-boss-synergy="1" data-s-name="meteor strike + ricochet disc">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Ricochet Disc</h4>
 
         </div>
@@ -3634,6 +3776,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-flameThrower" tabindex="-1" data-weapon="encore flameThrower" data-s-crowd="708" data-s-crowd-synergy="0.814" data-s-boss="1880" data-s-boss-synergy="1" data-s-name="echo + flame thrower">
         <div class="wcard-h">
+
           <h4>Echo + Flame Thrower</h4>
 
         </div>
@@ -3657,6 +3800,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-meteorStrike" tabindex="-1" data-weapon="energyBolt meteorStrike" data-s-crowd="701.3" data-s-crowd-synergy="0.971" data-s-boss="3512.5" data-s-boss-synergy="1" data-s-name="energy bolt + meteor strike">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Meteor Strike</h4>
 
         </div>
@@ -3680,6 +3824,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-voidDaggers" tabindex="-1" data-weapon="flameThrower voidDaggers" data-s-crowd="700.7" data-s-crowd-synergy="1.011" data-s-boss="5021.6" data-s-boss-synergy="1" data-s-name="flame thrower + void daggers">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Void Daggers</h4>
 
         </div>
@@ -3703,6 +3848,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-spectralArrows" tabindex="-1" data-weapon="meteorStrike spectralArrows" data-s-crowd="696" data-s-crowd-synergy="0.949" data-s-boss="3761.3" data-s-boss-synergy="1" data-s-name="meteor strike + spectral arrows">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Spectral Arrows</h4>
 
         </div>
@@ -3726,6 +3872,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-stormSentry" tabindex="-1" data-weapon="flameThrower stormSentry" data-s-crowd="682" data-s-crowd-synergy="1.014" data-s-boss="4525" data-s-boss-synergy="1" data-s-name="flame thrower + storm sentry">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Storm Sentry</h4>
 
         </div>
@@ -3749,6 +3896,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-meteorStrike" tabindex="-1" data-weapon="iceShard meteorStrike" data-s-crowd="680.7" data-s-crowd-synergy="0.975" data-s-boss="3107" data-s-boss-synergy="1" data-s-name="ice shards + meteor strike">
         <div class="wcard-h">
+
           <h4>Ice Shards + Meteor Strike</h4>
 
         </div>
@@ -3772,6 +3920,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-voidRailgun" tabindex="-1" data-weapon="flameThrower voidRailgun" data-s-crowd="673.3" data-s-crowd-synergy="0.93" data-s-boss="2425.2" data-s-boss-synergy="1" data-s-name="flame thrower + void railgun">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Void Railgun</h4>
 
         </div>
@@ -3795,6 +3944,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-shotgun" tabindex="-1" data-weapon="meteorStrike shotgun" data-s-crowd="672.7" data-s-crowd-synergy="0.967" data-s-boss="3817.7" data-s-boss-synergy="1.001" data-s-name="meteor strike + shotgun">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Shotgun</h4>
 
         </div>
@@ -3818,6 +3968,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-meteorStrike" tabindex="-1" data-weapon="encore meteorStrike" data-s-crowd="671.3" data-s-crowd-synergy="0.767" data-s-boss="1071.7" data-s-boss-synergy="1" data-s-name="echo + meteor strike">
         <div class="wcard-h">
+
           <h4>Echo + Meteor Strike</h4>
 
         </div>
@@ -3841,6 +3992,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-spiritOrbs" tabindex="-1" data-weapon="flameThrower spiritOrbs" data-s-crowd="668" data-s-crowd-synergy="0.993" data-s-boss="4227.3" data-s-boss-synergy="1" data-s-name="flame thrower + ghost orbs">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Ghost Orbs</h4>
 
         </div>
@@ -3864,6 +4016,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower-thunderStrike" tabindex="-1" data-weapon="flameThrower thunderStrike" data-s-crowd="667.3" data-s-crowd-synergy="1.006" data-s-boss="3674.9" data-s-boss-synergy="1" data-s-name="flame thrower + lightning strike">
         <div class="wcard-h">
+
           <h4>Flame Thrower + Lightning Strike</h4>
 
         </div>
@@ -3887,6 +4040,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-voidDaggers" tabindex="-1" data-weapon="meteorStrike voidDaggers" data-s-crowd="667.3" data-s-crowd-synergy="0.954" data-s-boss="4213.3" data-s-boss-synergy="1" data-s-name="meteor strike + void daggers">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Void Daggers</h4>
 
         </div>
@@ -3910,6 +4064,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-spiritOrbs" tabindex="-1" data-weapon="meteorStrike spiritOrbs" data-s-crowd="664" data-s-crowd-synergy="0.983" data-s-boss="3419" data-s-boss-synergy="1" data-s-name="meteor strike + ghost orbs">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Ghost Orbs</h4>
 
         </div>
@@ -3933,6 +4088,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-lighthouse" tabindex="-1" data-weapon="boomBox lighthouse" data-s-crowd="658" data-s-crowd-synergy="0.736" data-s-boss="1791.9" data-s-boss-synergy="1" data-s-name="boom box + faultline">
         <div class="wcard-h">
+
           <h4>Boom Box + Faultline</h4>
 
         </div>
@@ -3956,6 +4112,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-meteorStrike" tabindex="-1" data-weapon="boomerang meteorStrike" data-s-crowd="656.7" data-s-crowd-synergy="0.916" data-s-boss="1902.5" data-s-boss-synergy="1" data-s-name="boomerang + meteor strike">
         <div class="wcard-h">
+
           <h4>Boomerang + Meteor Strike</h4>
 
         </div>
@@ -3979,6 +4136,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-thunderStrike" tabindex="-1" data-weapon="meteorStrike thunderStrike" data-s-crowd="654" data-s-crowd-synergy="0.98" data-s-boss="2866.6" data-s-boss-synergy="1" data-s-name="meteor strike + lightning strike">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Lightning Strike</h4>
 
         </div>
@@ -4002,6 +4160,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-voidRailgun" tabindex="-1" data-weapon="meteorStrike voidRailgun" data-s-crowd="654" data-s-crowd-synergy="0.902" data-s-boss="1617" data-s-boss-synergy="1" data-s-name="meteor strike + void railgun">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Void Railgun</h4>
 
         </div>
@@ -4025,6 +4184,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-meteorStrike" tabindex="-1" data-weapon="blackSquirrel meteorStrike" data-s-crowd="646.7" data-s-crowd-synergy="0.878" data-s-boss="1832.8" data-s-boss-synergy="1" data-s-name="ghost pup + meteor strike">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Meteor Strike</h4>
 
         </div>
@@ -4048,6 +4208,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike-stormSentry" tabindex="-1" data-weapon="meteorStrike stormSentry" data-s-crowd="642.7" data-s-crowd-synergy="0.952" data-s-boss="3716.7" data-s-boss-synergy="1" data-s-name="meteor strike + storm sentry">
         <div class="wcard-h">
+
           <h4>Meteor Strike + Storm Sentry</h4>
 
         </div>
@@ -4071,6 +4232,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-toxicAura" tabindex="-1" data-weapon="energyBolt toxicAura" data-s-crowd="638.7" data-s-crowd-synergy="1.058" data-s-boss="2803.2" data-s-boss-synergy="1" data-s-name="energy bolt + toxic aura">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Toxic Aura</h4>
 
         </div>
@@ -4094,6 +4256,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-toxicAura" tabindex="-1" data-weapon="lighthouse toxicAura" data-s-crowd="638" data-s-crowd-synergy="0.707" data-s-boss="1648.4" data-s-boss-synergy="1" data-s-name="faultline + toxic aura">
         <div class="wcard-h">
+
           <h4>Faultline + Toxic Aura</h4>
 
         </div>
@@ -4117,6 +4280,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-toxicAura" tabindex="-1" data-weapon="ricochetDisc toxicAura" data-s-crowd="630" data-s-crowd-synergy="0.992" data-s-boss="1077.5" data-s-boss-synergy="1" data-s-name="ricochet disc + toxic aura">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Toxic Aura</h4>
 
         </div>
@@ -4140,6 +4304,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-toxicAura" tabindex="-1" data-weapon="spectralArrows toxicAura" data-s-crowd="614" data-s-crowd-synergy="1.004" data-s-boss="3052" data-s-boss-synergy="1" data-s-name="spectral arrows + toxic aura">
         <div class="wcard-h">
+
           <h4>Spectral Arrows + Toxic Aura</h4>
 
         </div>
@@ -4163,6 +4328,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-toxicAura-voidDaggers" tabindex="-1" data-weapon="toxicAura voidDaggers" data-s-crowd="608" data-s-crowd-synergy="1.053" data-s-boss="3504.1" data-s-boss-synergy="1" data-s-name="toxic aura + void daggers">
         <div class="wcard-h">
+
           <h4>Toxic Aura + Void Daggers</h4>
 
         </div>
@@ -4186,6 +4352,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-toxicAura" tabindex="-1" data-weapon="chainLightning toxicAura" data-s-crowd="602" data-s-crowd-synergy="0.998" data-s-boss="1402.8" data-s-boss-synergy="1" data-s-name="chain lightning + toxic aura">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Toxic Aura</h4>
 
         </div>
@@ -4209,6 +4376,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-toxicAura" tabindex="-1" data-weapon="encore toxicAura" data-s-crowd="601.3" data-s-crowd-synergy="0.792" data-s-boss="362.5" data-s-boss-synergy="1" data-s-name="echo + toxic aura">
         <div class="wcard-h">
+
           <h4>Echo + Toxic Aura</h4>
 
         </div>
@@ -4232,6 +4400,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-toxicAura" tabindex="-1" data-weapon="iceShard toxicAura" data-s-crowd="600" data-s-crowd-synergy="1.042" data-s-boss="2397.8" data-s-boss-synergy="1" data-s-name="ice shards + toxic aura">
         <div class="wcard-h">
+
           <h4>Ice Shards + Toxic Aura</h4>
 
         </div>
@@ -4255,6 +4424,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-spectralArrows" tabindex="-1" data-weapon="boomBox spectralArrows" data-s-crowd="597.3" data-s-crowd-synergy="0.985" data-s-boss="3195.5" data-s-boss-synergy="1" data-s-name="boom box + spectral arrows">
         <div class="wcard-h">
+
           <h4>Boom Box + Spectral Arrows</h4>
 
         </div>
@@ -4278,6 +4448,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-chainLightning" tabindex="-1" data-weapon="boomBox chainLightning" data-s-crowd="595.3" data-s-crowd-synergy="1.013" data-s-boss="1546.3" data-s-boss-synergy="1" data-s-name="boom box + chain lightning">
         <div class="wcard-h">
+
           <h4>Boom Box + Chain Lightning</h4>
 
         </div>
@@ -4301,6 +4472,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-ricochetDisc" tabindex="-1" data-weapon="boomBox ricochetDisc" data-s-crowd="592" data-s-crowd-synergy="0.955" data-s-boss="1221" data-s-boss-synergy="1" data-s-name="boom box + ricochet disc">
         <div class="wcard-h">
+
           <h4>Boom Box + Ricochet Disc</h4>
 
         </div>
@@ -4324,6 +4496,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-encore" tabindex="-1" data-weapon="boomBox encore" data-s-crowd="589.3" data-s-crowd-synergy="0.791" data-s-boss="506" data-s-boss-synergy="1" data-s-name="boom box + echo">
         <div class="wcard-h">
+
           <h4>Boom Box + Echo</h4>
 
         </div>
@@ -4347,6 +4520,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-energyBolt" tabindex="-1" data-weapon="boomBox energyBolt" data-s-crowd="589.3" data-s-crowd-synergy="0.999" data-s-boss="2946.7" data-s-boss-synergy="1" data-s-name="boom box + energy bolt">
         <div class="wcard-h">
+
           <h4>Boom Box + Energy Bolt</h4>
 
         </div>
@@ -4370,6 +4544,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-toxicAura" tabindex="-1" data-weapon="boomerang toxicAura" data-s-crowd="588" data-s-crowd-synergy="0.982" data-s-boss="1193.2" data-s-boss-synergy="1" data-s-name="boomerang + toxic aura">
         <div class="wcard-h">
+
           <h4>Boomerang + Toxic Aura</h4>
 
         </div>
@@ -4393,6 +4568,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-toxicAura" tabindex="-1" data-weapon="blackSquirrel toxicAura" data-s-crowd="586.7" data-s-crowd-synergy="0.936" data-s-boss="1123.5" data-s-boss-synergy="1" data-s-name="ghost pup + toxic aura">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Toxic Aura</h4>
 
         </div>
@@ -4416,6 +4592,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-toxicAura" tabindex="-1" data-weapon="shotgun toxicAura" data-s-crowd="586" data-s-crowd-synergy="1.017" data-s-boss="3101.5" data-s-boss-synergy="1" data-s-name="shotgun + toxic aura">
         <div class="wcard-h">
+
           <h4>Shotgun + Toxic Aura</h4>
 
         </div>
@@ -4439,6 +4616,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-boomerang" tabindex="-1" data-weapon="boomBox boomerang" data-s-crowd="580" data-s-crowd-synergy="0.984" data-s-boss="1336.7" data-s-boss-synergy="1" data-s-name="boom box + boomerang">
         <div class="wcard-h">
+
           <h4>Boom Box + Boomerang</h4>
 
         </div>
@@ -4462,6 +4640,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-stormSentry" tabindex="-1" data-weapon="boomBox stormSentry" data-s-crowd="579.3" data-s-crowd-synergy="1.057" data-s-boss="3150.9" data-s-boss-synergy="1" data-s-name="boom box + storm sentry">
         <div class="wcard-h">
+
           <h4>Boom Box + Storm Sentry</h4>
 
         </div>
@@ -4485,6 +4664,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-boomBox" tabindex="-1" data-weapon="blackSquirrel boomBox" data-s-crowd="578.7" data-s-crowd-synergy="0.945" data-s-boss="1267" data-s-boss-synergy="1" data-s-name="ghost pup + boom box">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Boom Box</h4>
 
         </div>
@@ -4508,6 +4688,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-iceShard" tabindex="-1" data-weapon="boomBox iceShard" data-s-crowd="572.7" data-s-crowd-synergy="1.014" data-s-boss="2541.3" data-s-boss-synergy="1" data-s-name="boom box + ice shards">
         <div class="wcard-h">
+
           <h4>Boom Box + Ice Shards</h4>
 
         </div>
@@ -4531,6 +4712,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-shotgun" tabindex="-1" data-weapon="boomBox shotgun" data-s-crowd="570" data-s-crowd-synergy="1.008" data-s-boss="3241.1" data-s-boss-synergy="0.998" data-s-name="boom box + shotgun">
         <div class="wcard-h">
+
           <h4>Boom Box + Shotgun</h4>
 
         </div>
@@ -4554,6 +4736,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-voidDaggers" tabindex="-1" data-weapon="boomBox voidDaggers" data-s-crowd="564.7" data-s-crowd-synergy="0.998" data-s-boss="3647.6" data-s-boss-synergy="1" data-s-name="boom box + void daggers">
         <div class="wcard-h">
+
           <h4>Boom Box + Void Daggers</h4>
 
         </div>
@@ -4577,6 +4760,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry-toxicAura" tabindex="-1" data-weapon="stormSentry toxicAura" data-s-crowd="564.7" data-s-crowd-synergy="1.009" data-s-boss="3007.4" data-s-boss-synergy="1" data-s-name="storm sentry + toxic aura">
         <div class="wcard-h">
+
           <h4>Storm Sentry + Toxic Aura</h4>
 
         </div>
@@ -4600,6 +4784,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-toxicAura" tabindex="-1" data-weapon="spiritOrbs toxicAura" data-s-crowd="562" data-s-crowd-synergy="1.014" data-s-boss="2709.8" data-s-boss-synergy="1" data-s-name="ghost orbs + toxic aura">
         <div class="wcard-h">
+
           <h4>Ghost Orbs + Toxic Aura</h4>
 
         </div>
@@ -4623,6 +4808,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thunderStrike-toxicAura" tabindex="-1" data-weapon="thunderStrike toxicAura" data-s-crowd="556" data-s-crowd-synergy="1.017" data-s-boss="2157.4" data-s-boss-synergy="1" data-s-name="lightning strike + toxic aura">
         <div class="wcard-h">
+
           <h4>Lightning Strike + Toxic Aura</h4>
 
         </div>
@@ -4646,6 +4832,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-thunderStrike" tabindex="-1" data-weapon="boomBox thunderStrike" data-s-crowd="554.7" data-s-crowd-synergy="1.037" data-s-boss="2300.9" data-s-boss-synergy="1" data-s-name="boom box + lightning strike">
         <div class="wcard-h">
+
           <h4>Boom Box + Lightning Strike</h4>
 
         </div>
@@ -4669,6 +4856,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-plasmaOrbit" tabindex="-1" data-weapon="lighthouse plasmaOrbit" data-s-crowd="549.3" data-s-crowd-synergy="0.782" data-s-boss="1996.7" data-s-boss-synergy="1" data-s-name="faultline + plasma shield">
         <div class="wcard-h">
+
           <h4>Faultline + Plasma Shield</h4>
 
         </div>
@@ -4692,6 +4880,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-spiritOrbs" tabindex="-1" data-weapon="boomBox spiritOrbs" data-s-crowd="542" data-s-crowd-synergy="0.996" data-s-boss="2853.3" data-s-boss-synergy="1" data-s-name="boom box + ghost orbs">
         <div class="wcard-h">
+
           <h4>Boom Box + Ghost Orbs</h4>
 
         </div>
@@ -4715,6 +4904,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-toxicAura-voidRailgun" tabindex="-1" data-weapon="toxicAura voidRailgun" data-s-crowd="542" data-s-crowd-synergy="0.892" data-s-boss="907.7" data-s-boss-synergy="1" data-s-name="toxic aura + void railgun">
         <div class="wcard-h">
+
           <h4>Toxic Aura + Void Railgun</h4>
 
         </div>
@@ -4738,6 +4928,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox-voidRailgun" tabindex="-1" data-weapon="boomBox voidRailgun" data-s-crowd="539.3" data-s-crowd-synergy="0.9" data-s-boss="1051.2" data-s-boss-synergy="1" data-s-name="boom box + void railgun">
         <div class="wcard-h">
+
           <h4>Boom Box + Void Railgun</h4>
 
         </div>
@@ -4761,6 +4952,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-lighthouse" tabindex="-1" data-weapon="encore lighthouse" data-s-crowd="496.7" data-s-crowd-synergy="0.761" data-s-boss="1285.9" data-s-boss-synergy="1" data-s-name="echo + faultline">
         <div class="wcard-h">
+
           <h4>Echo + Faultline</h4>
 
         </div>
@@ -4784,6 +4976,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-spectralArrows" tabindex="-1" data-weapon="lighthouse spectralArrows" data-s-crowd="478.7" data-s-crowd-synergy="0.945" data-s-boss="3975.4" data-s-boss-synergy="1" data-s-name="faultline + spectral arrows">
         <div class="wcard-h">
+
           <h4>Faultline + Spectral Arrows</h4>
 
         </div>
@@ -4807,6 +5000,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-lighthouse" tabindex="-1" data-weapon="energyBolt lighthouse" data-s-crowd="465.3" data-s-crowd-synergy="0.937" data-s-boss="3726.6" data-s-boss-synergy="1" data-s-name="energy bolt + faultline">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Faultline</h4>
 
         </div>
@@ -4830,6 +5024,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-ricochetDisc" tabindex="-1" data-weapon="lighthouse ricochetDisc" data-s-crowd="460.7" data-s-crowd-synergy="0.881" data-s-boss="2000.9" data-s-boss-synergy="1" data-s-name="faultline + ricochet disc">
         <div class="wcard-h">
+
           <h4>Faultline + Ricochet Disc</h4>
 
         </div>
@@ -4853,6 +5048,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-shotgun" tabindex="-1" data-weapon="lighthouse shotgun" data-s-crowd="454" data-s-crowd-synergy="0.966" data-s-boss="4029.6" data-s-boss-synergy="0.999" data-s-name="faultline + shotgun">
         <div class="wcard-h">
+
           <h4>Faultline + Shotgun</h4>
 
         </div>
@@ -4876,6 +5072,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-lighthouse" tabindex="-1" data-weapon="iceShard lighthouse" data-s-crowd="446" data-s-crowd-synergy="0.942" data-s-boss="3321.1" data-s-boss-synergy="1" data-s-name="ice shards + faultline">
         <div class="wcard-h">
+
           <h4>Ice Shards + Faultline</h4>
 
         </div>
@@ -4899,6 +5096,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-voidRailgun" tabindex="-1" data-weapon="lighthouse voidRailgun" data-s-crowd="444.7" data-s-crowd-synergy="0.893" data-s-boss="1831.1" data-s-boss-synergy="1" data-s-name="faultline + void railgun">
         <div class="wcard-h">
+
           <h4>Faultline + Void Railgun</h4>
 
         </div>
@@ -4922,6 +5120,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-lighthouse" tabindex="-1" data-weapon="chainLightning lighthouse" data-s-crowd="442" data-s-crowd-synergy="0.901" data-s-boss="2326.1" data-s-boss-synergy="1" data-s-name="chain lightning + faultline">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Faultline</h4>
 
         </div>
@@ -4945,6 +5144,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-lighthouse" tabindex="-1" data-weapon="blackSquirrel lighthouse" data-s-crowd="427.3" data-s-crowd-synergy="0.818" data-s-boss="2046.9" data-s-boss-synergy="1" data-s-name="ghost pup + faultline">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Faultline</h4>
 
         </div>
@@ -4968,6 +5168,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-plasmaOrbit" tabindex="-1" data-weapon="energyBolt plasmaOrbit" data-s-crowd="424" data-s-crowd-synergy="1.071" data-s-boss="3151.5" data-s-boss-synergy="1" data-s-name="energy bolt + plasma shield">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Plasma Shield</h4>
 
         </div>
@@ -4991,6 +5192,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-voidDaggers" tabindex="-1" data-weapon="lighthouse voidDaggers" data-s-crowd="422.7" data-s-crowd-synergy="0.894" data-s-boss="4427.5" data-s-boss-synergy="1" data-s-name="faultline + void daggers">
         <div class="wcard-h">
+
           <h4>Faultline + Void Daggers</h4>
 
         </div>
@@ -5014,6 +5216,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-lighthouse" tabindex="-1" data-weapon="boomerang lighthouse" data-s-crowd="422" data-s-crowd-synergy="0.857" data-s-boss="2116.6" data-s-boss-synergy="1" data-s-name="boomerang + faultline">
         <div class="wcard-h">
+
           <h4>Boomerang + Faultline</h4>
 
         </div>
@@ -5037,6 +5240,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-stormSentry" tabindex="-1" data-weapon="lighthouse stormSentry" data-s-crowd="421.3" data-s-crowd-synergy="0.931" data-s-boss="3930.8" data-s-boss-synergy="1" data-s-name="faultline + storm sentry">
         <div class="wcard-h">
+
           <h4>Faultline + Storm Sentry</h4>
 
         </div>
@@ -5060,6 +5264,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-spiritOrbs" tabindex="-1" data-weapon="lighthouse spiritOrbs" data-s-crowd="415.3" data-s-crowd-synergy="0.932" data-s-boss="3633.1" data-s-boss-synergy="1" data-s-name="faultline + ghost orbs">
         <div class="wcard-h">
+
           <h4>Faultline + Ghost Orbs</h4>
 
         </div>
@@ -5083,6 +5288,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse-thunderStrike" tabindex="-1" data-weapon="lighthouse thunderStrike" data-s-crowd="406.7" data-s-crowd-synergy="0.919" data-s-boss="3080.8" data-s-boss-synergy="1" data-s-name="faultline + lightning strike">
         <div class="wcard-h">
+
           <h4>Faultline + Lightning Strike</h4>
 
         </div>
@@ -5106,6 +5312,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-spectralArrows" tabindex="-1" data-weapon="plasmaOrbit spectralArrows" data-s-crowd="394.7" data-s-crowd-synergy="0.967" data-s-boss="3400.4" data-s-boss-synergy="1" data-s-name="plasma shield + spectral arrows">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Spectral Arrows</h4>
 
         </div>
@@ -5129,6 +5336,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-plasmaOrbit" tabindex="-1" data-weapon="encore plasmaOrbit" data-s-crowd="386.7" data-s-crowd-synergy="0.697" data-s-boss="710.8" data-s-boss-synergy="1" data-s-name="echo + plasma shield">
         <div class="wcard-h">
+
           <h4>Echo + Plasma Shield</h4>
 
         </div>
@@ -5152,6 +5360,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-plasmaOrbit" tabindex="-1" data-weapon="blackSquirrel plasmaOrbit" data-s-crowd="379.3" data-s-crowd-synergy="0.913" data-s-boss="1471.9" data-s-boss-synergy="1" data-s-name="ghost pup + plasma shield">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Plasma Shield</h4>
 
         </div>
@@ -5175,6 +5384,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-plasmaOrbit" tabindex="-1" data-weapon="chainLightning plasmaOrbit" data-s-crowd="368.7" data-s-crowd-synergy="0.936" data-s-boss="1751.1" data-s-boss-synergy="1" data-s-name="chain lightning + plasma shield">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Plasma Shield</h4>
 
         </div>
@@ -5198,6 +5408,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-plasmaOrbit" tabindex="-1" data-weapon="boomerang plasmaOrbit" data-s-crowd="366" data-s-crowd-synergy="0.926" data-s-boss="1541.6" data-s-boss-synergy="1" data-s-name="boomerang + plasma shield">
         <div class="wcard-h">
+
           <h4>Boomerang + Plasma Shield</h4>
 
         </div>
@@ -5221,6 +5432,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-ricochetDisc" tabindex="-1" data-weapon="plasmaOrbit ricochetDisc" data-s-crowd="364" data-s-crowd-synergy="0.855" data-s-boss="1425.8" data-s-boss-synergy="1" data-s-name="plasma shield + ricochet disc">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Ricochet Disc</h4>
 
         </div>
@@ -5244,6 +5456,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-voidRailgun" tabindex="-1" data-weapon="plasmaOrbit voidRailgun" data-s-crowd="362" data-s-crowd-synergy="0.908" data-s-boss="1256" data-s-boss-synergy="1" data-s-name="plasma shield + void railgun">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Void Railgun</h4>
 
         </div>
@@ -5267,6 +5480,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-plasmaOrbit" tabindex="-1" data-weapon="iceShard plasmaOrbit" data-s-crowd="361.3" data-s-crowd-synergy="0.971" data-s-boss="2746.1" data-s-boss-synergy="1" data-s-name="ice shards + plasma shield">
         <div class="wcard-h">
+
           <h4>Ice Shards + Plasma Shield</h4>
 
         </div>
@@ -5290,6 +5504,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-spiritOrbs" tabindex="-1" data-weapon="plasmaOrbit spiritOrbs" data-s-crowd="360.7" data-s-crowd-synergy="1.036" data-s-boss="3058.1" data-s-boss-synergy="1" data-s-name="plasma shield + ghost orbs">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Ghost Orbs</h4>
 
         </div>
@@ -5313,6 +5528,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-shotgun" tabindex="-1" data-weapon="plasmaOrbit shotgun" data-s-crowd="358.7" data-s-crowd-synergy="0.971" data-s-boss="3467.7" data-s-boss-synergy="1.003" data-s-name="plasma shield + shotgun">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Shotgun</h4>
 
         </div>
@@ -5336,6 +5552,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-thunderStrike" tabindex="-1" data-weapon="plasmaOrbit thunderStrike" data-s-crowd="358" data-s-crowd-synergy="1.054" data-s-boss="2505.7" data-s-boss-synergy="1" data-s-name="plasma shield + lightning strike">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Lightning Strike</h4>
 
         </div>
@@ -5359,6 +5576,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-voidDaggers" tabindex="-1" data-weapon="plasmaOrbit voidDaggers" data-s-crowd="356" data-s-crowd-synergy="0.962" data-s-boss="3852.4" data-s-boss-synergy="1" data-s-name="plasma shield + void daggers">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Void Daggers</h4>
 
         </div>
@@ -5382,6 +5600,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit-stormSentry" tabindex="-1" data-weapon="plasmaOrbit stormSentry" data-s-crowd="342" data-s-crowd-synergy="0.968" data-s-boss="3355.8" data-s-boss-synergy="1" data-s-name="plasma shield + storm sentry">
         <div class="wcard-h">
+
           <h4>Plasma Shield + Storm Sentry</h4>
 
         </div>
@@ -5405,6 +5624,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-voidRailgun" tabindex="-1" data-weapon="encore voidRailgun" data-s-crowd="300" data-s-crowd-synergy="0.856" data-s-boss="545.2" data-s-boss-synergy="1" data-s-name="echo + void railgun">
         <div class="wcard-h">
+
           <h4>Echo + Void Railgun</h4>
 
         </div>
@@ -5428,6 +5648,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-spectralArrows" tabindex="-1" data-weapon="encore spectralArrows" data-s-crowd="296.7" data-s-crowd-synergy="0.836" data-s-boss="2689.5" data-s-boss-synergy="1" data-s-name="echo + spectral arrows">
         <div class="wcard-h">
+
           <h4>Echo + Spectral Arrows</h4>
 
         </div>
@@ -5451,6 +5672,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-ricochetDisc" tabindex="-1" data-weapon="encore ricochetDisc" data-s-crowd="293.3" data-s-crowd-synergy="0.775" data-s-boss="715" data-s-boss-synergy="1" data-s-name="echo + ricochet disc">
         <div class="wcard-h">
+
           <h4>Echo + Ricochet Disc</h4>
 
         </div>
@@ -5474,6 +5696,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-encore" tabindex="-1" data-weapon="blackSquirrel encore" data-s-crowd="290" data-s-crowd-synergy="0.789" data-s-boss="761" data-s-boss-synergy="1" data-s-name="ghost pup + echo">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Echo</h4>
 
         </div>
@@ -5497,6 +5720,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-energyBolt" tabindex="-1" data-weapon="encore energyBolt" data-s-crowd="289.3" data-s-crowd-synergy="0.836" data-s-boss="2440.7" data-s-boss-synergy="1" data-s-name="echo + energy bolt">
         <div class="wcard-h">
+
           <h4>Echo + Energy Bolt</h4>
 
         </div>
@@ -5520,6 +5744,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-stormSentry" tabindex="-1" data-weapon="encore stormSentry" data-s-crowd="283.3" data-s-crowd-synergy="0.932" data-s-boss="2644.9" data-s-boss-synergy="1" data-s-name="echo + storm sentry">
         <div class="wcard-h">
+
           <h4>Echo + Storm Sentry</h4>
 
         </div>
@@ -5543,6 +5768,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-thunderStrike" tabindex="-1" data-weapon="encore thunderStrike" data-s-crowd="282" data-s-crowd-synergy="0.965" data-s-boss="1794.9" data-s-boss-synergy="1" data-s-name="echo + lightning strike">
         <div class="wcard-h">
+
           <h4>Echo + Lightning Strike</h4>
 
         </div>
@@ -5566,6 +5792,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-encore" tabindex="-1" data-weapon="boomerang encore" data-s-crowd="280" data-s-crowd-synergy="0.823" data-s-boss="830.7" data-s-boss-synergy="1" data-s-name="boomerang + echo">
         <div class="wcard-h">
+
           <h4>Boomerang + Echo</h4>
 
         </div>
@@ -5589,6 +5816,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-encore" tabindex="-1" data-weapon="chainLightning encore" data-s-crowd="277.3" data-s-crowd-synergy="0.811" data-s-boss="1040.3" data-s-boss-synergy="1" data-s-name="chain lightning + echo">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Echo</h4>
 
         </div>
@@ -5612,6 +5840,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-shotgun" tabindex="-1" data-weapon="encore shotgun" data-s-crowd="276.7" data-s-crowd-synergy="0.864" data-s-boss="2739.1" data-s-boss-synergy="1" data-s-name="echo + shotgun">
         <div class="wcard-h">
+
           <h4>Echo + Shotgun</h4>
 
         </div>
@@ -5635,6 +5864,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-iceShard" tabindex="-1" data-weapon="encore iceShard" data-s-crowd="274" data-s-crowd-synergy="0.853" data-s-boss="2035.3" data-s-boss-synergy="1" data-s-name="echo + ice shards">
         <div class="wcard-h">
+
           <h4>Echo + Ice Shards</h4>
 
         </div>
@@ -5658,6 +5888,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-voidDaggers" tabindex="-1" data-weapon="encore voidDaggers" data-s-crowd="273.3" data-s-crowd-synergy="0.848" data-s-boss="3141.6" data-s-boss-synergy="1" data-s-name="echo + void daggers">
         <div class="wcard-h">
+
           <h4>Echo + Void Daggers</h4>
 
         </div>
@@ -5681,6 +5912,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-energyBolt" tabindex="-1" data-weapon="boomerang energyBolt" data-s-crowd="271.3" data-s-crowd-synergy="1.372" data-s-boss="3271.4" data-s-boss-synergy="1" data-s-name="boomerang + energy bolt">
         <div class="wcard-h">
+
           <h4>Boomerang + Energy Bolt</h4>
 
         </div>
@@ -5704,6 +5936,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore-spiritOrbs" tabindex="-1" data-weapon="encore spiritOrbs" data-s-crowd="270" data-s-crowd-synergy="0.893" data-s-boss="2347.3" data-s-boss-synergy="1" data-s-name="echo + ghost orbs">
         <div class="wcard-h">
+
           <h4>Echo + Ghost Orbs</h4>
 
         </div>
@@ -5727,6 +5960,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-ricochetDisc" tabindex="-1" data-weapon="chainLightning ricochetDisc" data-s-crowd="254.7" data-s-crowd-synergy="1.145" data-s-boss="1755.3" data-s-boss-synergy="1" data-s-name="chain lightning + ricochet disc">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Ricochet Disc</h4>
 
         </div>
@@ -5750,6 +5984,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-energyBolt" tabindex="-1" data-weapon="blackSquirrel energyBolt" data-s-crowd="247.3" data-s-crowd-synergy="1.183" data-s-boss="3201.8" data-s-boss-synergy="1" data-s-name="ghost pup + energy bolt">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Energy Bolt</h4>
 
         </div>
@@ -5773,6 +6008,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-spectralArrows" tabindex="-1" data-weapon="blackSquirrel spectralArrows" data-s-crowd="235.3" data-s-crowd-synergy="1.044" data-s-boss="3450.6" data-s-boss-synergy="1" data-s-name="ghost pup + spectral arrows">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Spectral Arrows</h4>
 
         </div>
@@ -5796,6 +6032,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-spectralArrows" tabindex="-1" data-weapon="boomerang spectralArrows" data-s-crowd="233.3" data-s-crowd-synergy="1.179" data-s-boss="3520.3" data-s-boss-synergy="1" data-s-name="boomerang + spectral arrows">
         <div class="wcard-h">
+
           <h4>Boomerang + Spectral Arrows</h4>
 
         </div>
@@ -5819,6 +6056,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-spectralArrows" tabindex="-1" data-weapon="energyBolt spectralArrows" data-s-crowd="232" data-s-crowd-synergy="1.131" data-s-boss="5130.2" data-s-boss-synergy="1" data-s-name="energy bolt + spectral arrows">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Spectral Arrows</h4>
 
         </div>
@@ -5842,6 +6080,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-energyBolt" tabindex="-1" data-weapon="chainLightning energyBolt" data-s-crowd="230" data-s-crowd-synergy="1.2" data-s-boss="3481" data-s-boss-synergy="1" data-s-name="chain lightning + energy bolt">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Energy Bolt</h4>
 
         </div>
@@ -5865,6 +6104,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-ricochetDisc" tabindex="-1" data-weapon="energyBolt ricochetDisc" data-s-crowd="228.7" data-s-crowd-synergy="1.018" data-s-boss="3155.7" data-s-boss-synergy="1" data-s-name="energy bolt + ricochet disc">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Ricochet Disc</h4>
 
         </div>
@@ -5888,6 +6128,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-chainLightning" tabindex="-1" data-weapon="blackSquirrel chainLightning" data-s-crowd="227.3" data-s-crowd-synergy="1.066" data-s-boss="1801.3" data-s-boss-synergy="1" data-s-name="ghost pup + chain lightning">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Chain Lightning</h4>
 
         </div>
@@ -5911,6 +6152,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-spectralArrows" tabindex="-1" data-weapon="ricochetDisc spectralArrows" data-s-crowd="225.3" data-s-crowd-synergy="0.96" data-s-boss="3404.5" data-s-boss-synergy="1" data-s-name="ricochet disc + spectral arrows">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Spectral Arrows</h4>
 
         </div>
@@ -5934,6 +6176,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-ricochetDisc" tabindex="-1" data-weapon="boomerang ricochetDisc" data-s-crowd="224.7" data-s-crowd-synergy="1.025" data-s-boss="1545.7" data-s-boss-synergy="1" data-s-name="boomerang + ricochet disc">
         <div class="wcard-h">
+
           <h4>Boomerang + Ricochet Disc</h4>
 
         </div>
@@ -5957,6 +6200,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-ricochetDisc" tabindex="-1" data-weapon="blackSquirrel ricochetDisc" data-s-crowd="218.7" data-s-crowd-synergy="0.892" data-s-boss="1476" data-s-boss-synergy="1" data-s-name="ghost pup + ricochet disc">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Ricochet Disc</h4>
 
         </div>
@@ -5980,6 +6224,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-chainLightning" tabindex="-1" data-weapon="boomerang chainLightning" data-s-crowd="217.3" data-s-crowd-synergy="1.151" data-s-boss="1871" data-s-boss-synergy="1" data-s-name="boomerang + chain lightning">
         <div class="wcard-h">
+
           <h4>Boomerang + Chain Lightning</h4>
 
         </div>
@@ -6003,6 +6248,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-spectralArrows" tabindex="-1" data-weapon="chainLightning spectralArrows" data-s-crowd="217.3" data-s-crowd-synergy="1.079" data-s-boss="3729.8" data-s-boss-synergy="1" data-s-name="chain lightning + spectral arrows">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Spectral Arrows</h4>
 
         </div>
@@ -6026,6 +6272,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-boomerang" tabindex="-1" data-weapon="blackSquirrel boomerang" data-s-crowd="209.3" data-s-crowd-synergy="0.997" data-s-boss="1591.8" data-s-boss-synergy="1" data-s-name="ghost pup + boomerang">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Boomerang</h4>
 
         </div>
@@ -6049,6 +6296,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-shotgun" tabindex="-1" data-weapon="boomerang shotgun" data-s-crowd="208" data-s-crowd-synergy="1.236" data-s-boss="3582.2" data-s-boss-synergy="1.004" data-s-name="boomerang + shotgun">
         <div class="wcard-h">
+
           <h4>Boomerang + Shotgun</h4>
 
         </div>
@@ -6072,6 +6320,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-iceShard" tabindex="-1" data-weapon="blackSquirrel iceShard" data-s-crowd="207.3" data-s-crowd-synergy="1.102" data-s-boss="2796.3" data-s-boss-synergy="1" data-s-name="ghost pup + ice shards">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Ice Shards</h4>
 
         </div>
@@ -6095,6 +6344,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-voidRailgun" tabindex="-1" data-weapon="ricochetDisc voidRailgun" data-s-crowd="207.3" data-s-crowd-synergy="0.886" data-s-boss="1260.2" data-s-boss-synergy="1" data-s-name="ricochet disc + void railgun">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Void Railgun</h4>
 
         </div>
@@ -6118,6 +6368,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-shotgun" tabindex="-1" data-weapon="blackSquirrel shotgun" data-s-crowd="206" data-s-crowd-synergy="1.095" data-s-boss="3512.7" data-s-boss-synergy="1.003" data-s-name="ghost pup + shotgun">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Shotgun</h4>
 
         </div>
@@ -6141,6 +6392,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-spectralArrows" tabindex="-1" data-weapon="shotgun spectralArrows" data-s-crowd="204" data-s-crowd-synergy="1.146" data-s-boss="5435.7" data-s-boss-synergy="1.001" data-s-name="shotgun + spectral arrows">
         <div class="wcard-h">
+
           <h4>Shotgun + Spectral Arrows</h4>
 
         </div>
@@ -6164,6 +6416,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-ricochetDisc" tabindex="-1" data-weapon="iceShard ricochetDisc" data-s-crowd="203.3" data-s-crowd-synergy="1.02" data-s-boss="2750.3" data-s-boss-synergy="1" data-s-name="ice shards + ricochet disc">
         <div class="wcard-h">
+
           <h4>Ice Shards + Ricochet Disc</h4>
 
         </div>
@@ -6187,6 +6440,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-iceShard" tabindex="-1" data-weapon="energyBolt iceShard" data-s-crowd="202" data-s-crowd-synergy="1.203" data-s-boss="4476" data-s-boss-synergy="1" data-s-name="energy bolt + ice shards">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Ice Shards</h4>
 
         </div>
@@ -6210,6 +6464,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-voidRailgun" tabindex="-1" data-weapon="spectralArrows voidRailgun" data-s-crowd="200" data-s-crowd-synergy="0.944" data-s-boss="3234.7" data-s-boss-synergy="1" data-s-name="spectral arrows + void railgun">
         <div class="wcard-h">
+
           <h4>Spectral Arrows + Void Railgun</h4>
 
         </div>
@@ -6233,6 +6488,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-iceShard" tabindex="-1" data-weapon="boomerang iceShard" data-s-crowd="198" data-s-crowd-synergy="1.209" data-s-boss="2866" data-s-boss-synergy="1" data-s-name="boomerang + ice shards">
         <div class="wcard-h">
+
           <h4>Boomerang + Ice Shards</h4>
 
         </div>
@@ -6256,6 +6512,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-iceShard" tabindex="-1" data-weapon="chainLightning iceShard" data-s-crowd="197.3" data-s-crowd-synergy="1.18" data-s-boss="3075.5" data-s-boss-synergy="1" data-s-name="chain lightning + ice shards">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Ice Shards</h4>
 
         </div>
@@ -6279,6 +6536,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-shotgun" tabindex="-1" data-weapon="energyBolt shotgun" data-s-crowd="196" data-s-crowd-synergy="1.191" data-s-boss="5197.3" data-s-boss-synergy="1.003" data-s-name="energy bolt + shotgun">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Shotgun</h4>
 
         </div>
@@ -6302,6 +6560,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-spectralArrows" tabindex="-1" data-weapon="iceShard spectralArrows" data-s-crowd="194.7" data-s-crowd-synergy="1.088" data-s-boss="4724.8" data-s-boss-synergy="1" data-s-name="ice shards + spectral arrows">
         <div class="wcard-h">
+
           <h4>Ice Shards + Spectral Arrows</h4>
 
         </div>
@@ -6325,6 +6584,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-voidDaggers" tabindex="-1" data-weapon="chainLightning voidDaggers" data-s-crowd="190.7" data-s-crowd-synergy="1.137" data-s-boss="4181.9" data-s-boss-synergy="1" data-s-name="chain lightning + void daggers">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Void Daggers</h4>
 
         </div>
@@ -6348,6 +6608,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-voidDaggers" tabindex="-1" data-weapon="ricochetDisc voidDaggers" data-s-crowd="189.3" data-s-crowd-synergy="0.949" data-s-boss="3856.6" data-s-boss-synergy="1" data-s-name="ricochet disc + void daggers">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Void Daggers</h4>
 
         </div>
@@ -6371,6 +6632,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-voidRailgun" tabindex="-1" data-weapon="energyBolt voidRailgun" data-s-crowd="188.7" data-s-crowd-synergy="0.964" data-s-boss="2985.9" data-s-boss-synergy="1" data-s-name="energy bolt + void railgun">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Void Railgun</h4>
 
         </div>
@@ -6394,6 +6656,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-shotgun" tabindex="-1" data-weapon="ricochetDisc shotgun" data-s-crowd="187.3" data-s-crowd-synergy="0.949" data-s-boss="3471.8" data-s-boss-synergy="1" data-s-name="ricochet disc + shotgun">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Shotgun</h4>
 
         </div>
@@ -6417,6 +6680,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-spiritOrbs" tabindex="-1" data-weapon="ricochetDisc spiritOrbs" data-s-crowd="185.3" data-s-crowd-synergy="1.048" data-s-boss="3062.3" data-s-boss-synergy="1" data-s-name="ricochet disc + ghost orbs">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Ghost Orbs</h4>
 
         </div>
@@ -6440,6 +6704,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-voidDaggers" tabindex="-1" data-weapon="energyBolt voidDaggers" data-s-crowd="180.7" data-s-crowd-synergy="1.07" data-s-boss="5582.3" data-s-boss-synergy="1" data-s-name="energy bolt + void daggers">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Void Daggers</h4>
 
         </div>
@@ -6463,6 +6728,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-voidDaggers" tabindex="-1" data-weapon="spectralArrows voidDaggers" data-s-crowd="180.7" data-s-crowd-synergy="1" data-s-boss="5831.1" data-s-boss-synergy="1" data-s-name="spectral arrows + void daggers">
         <div class="wcard-h">
+
           <h4>Spectral Arrows + Void Daggers</h4>
 
         </div>
@@ -6486,6 +6752,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-thunderStrike" tabindex="-1" data-weapon="ricochetDisc thunderStrike" data-s-crowd="179.3" data-s-crowd-synergy="1.059" data-s-boss="2509.9" data-s-boss-synergy="1" data-s-name="ricochet disc + lightning strike">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Lightning Strike</h4>
 
         </div>
@@ -6509,6 +6776,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc-stormSentry" tabindex="-1" data-weapon="ricochetDisc stormSentry" data-s-crowd="178" data-s-crowd-synergy="0.985" data-s-boss="3359.9" data-s-boss-synergy="1" data-s-name="ricochet disc + storm sentry">
         <div class="wcard-h">
+
           <h4>Ricochet Disc + Storm Sentry</h4>
 
         </div>
@@ -6532,6 +6800,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-shotgun" tabindex="-1" data-weapon="chainLightning shotgun" data-s-crowd="174" data-s-crowd-synergy="1.054" data-s-boss="3786.1" data-s-boss-synergy="0.999" data-s-name="chain lightning + shotgun">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Shotgun</h4>
 
         </div>
@@ -6555,6 +6824,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-stormSentry" tabindex="-1" data-weapon="energyBolt stormSentry" data-s-crowd="174" data-s-crowd-synergy="1.18" data-s-boss="5085.6" data-s-boss-synergy="1" data-s-name="energy bolt + storm sentry">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Storm Sentry</h4>
 
         </div>
@@ -6578,6 +6848,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-stormSentry" tabindex="-1" data-weapon="spectralArrows stormSentry" data-s-crowd="172" data-s-crowd-synergy="1.067" data-s-boss="5334.5" data-s-boss-synergy="1" data-s-name="spectral arrows + storm sentry">
         <div class="wcard-h">
+
           <h4>Spectral Arrows + Storm Sentry</h4>
 
         </div>
@@ -6601,6 +6872,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-voidRailgun" tabindex="-1" data-weapon="boomerang voidRailgun" data-s-crowd="171.3" data-s-crowd-synergy="0.88" data-s-boss="1375.9" data-s-boss-synergy="1" data-s-name="boomerang + void railgun">
         <div class="wcard-h">
+
           <h4>Boomerang + Void Railgun</h4>
 
         </div>
@@ -6624,6 +6896,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-voidRailgun" tabindex="-1" data-weapon="blackSquirrel voidRailgun" data-s-crowd="171.3" data-s-crowd-synergy="0.76" data-s-boss="1306.3" data-s-boss-synergy="1" data-s-name="ghost pup + void railgun">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Void Railgun</h4>
 
         </div>
@@ -6647,6 +6920,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-thunderStrike" tabindex="-1" data-weapon="spectralArrows thunderStrike" data-s-crowd="171.3" data-s-crowd-synergy="1.151" data-s-boss="4484.4" data-s-boss-synergy="1" data-s-name="spectral arrows + lightning strike">
         <div class="wcard-h">
+
           <h4>Spectral Arrows + Lightning Strike</h4>
 
         </div>
@@ -6670,6 +6944,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-voidRailgun" tabindex="-1" data-weapon="shotgun voidRailgun" data-s-crowd="168.7" data-s-crowd-synergy="0.974" data-s-boss="3287.3" data-s-boss-synergy="1" data-s-name="shotgun + void railgun">
         <div class="wcard-h">
+
           <h4>Shotgun + Void Railgun</h4>
 
         </div>
@@ -6693,6 +6968,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-voidRailgun" tabindex="-1" data-weapon="chainLightning voidRailgun" data-s-crowd="168" data-s-crowd-synergy="0.856" data-s-boss="1585.5" data-s-boss-synergy="1" data-s-name="chain lightning + void railgun">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Void Railgun</h4>
 
         </div>
@@ -6716,6 +6992,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-voidDaggers" tabindex="-1" data-weapon="iceShard voidDaggers" data-s-crowd="168" data-s-crowd-synergy="1.153" data-s-boss="5176.9" data-s-boss-synergy="1" data-s-name="ice shards + void daggers">
         <div class="wcard-h">
+
           <h4>Ice Shards + Void Daggers</h4>
 
         </div>
@@ -6739,6 +7016,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-thunderStrike" tabindex="-1" data-weapon="blackSquirrel thunderStrike" data-s-crowd="167.3" data-s-crowd-synergy="1.016" data-s-boss="2555.9" data-s-boss-synergy="1" data-s-name="ghost pup + lightning strike">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Lightning Strike</h4>
 
         </div>
@@ -6762,6 +7040,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-stormSentry" tabindex="-1" data-weapon="blackSquirrel stormSentry" data-s-crowd="166.7" data-s-crowd-synergy="1" data-s-boss="3406" data-s-boss-synergy="1" data-s-name="ghost pup + storm sentry">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Storm Sentry</h4>
 
         </div>
@@ -6785,6 +7064,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-voidDaggers" tabindex="-1" data-weapon="blackSquirrel voidDaggers" data-s-crowd="166.7" data-s-crowd-synergy="0.909" data-s-boss="3902.6" data-s-boss-synergy="1" data-s-name="ghost pup + void daggers">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Void Daggers</h4>
 
         </div>
@@ -6808,6 +7088,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-voidDaggers" tabindex="-1" data-weapon="boomerang voidDaggers" data-s-crowd="165.3" data-s-crowd-synergy="1.035" data-s-boss="3972.3" data-s-boss-synergy="1" data-s-name="boomerang + void daggers">
         <div class="wcard-h">
+
           <h4>Boomerang + Void Daggers</h4>
 
         </div>
@@ -6831,6 +7112,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-voidRailgun" tabindex="-1" data-weapon="iceShard voidRailgun" data-s-crowd="165.3" data-s-crowd-synergy="0.949" data-s-boss="2580.5" data-s-boss-synergy="1" data-s-name="ice shards + void railgun">
         <div class="wcard-h">
+
           <h4>Ice Shards + Void Railgun</h4>
 
         </div>
@@ -6854,6 +7136,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel-spiritOrbs" tabindex="-1" data-weapon="blackSquirrel spiritOrbs" data-s-crowd="164.7" data-s-crowd-synergy="1.015" data-s-boss="3108.3" data-s-boss-synergy="1" data-s-name="ghost pup + ghost orbs">
         <div class="wcard-h">
+
           <h4>Ghost Pup + Ghost Orbs</h4>
 
         </div>
@@ -6877,6 +7160,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-thunderStrike" tabindex="-1" data-weapon="energyBolt thunderStrike" data-s-crowd="163.3" data-s-crowd-synergy="1.183" data-s-boss="4235.6" data-s-boss-synergy="1" data-s-name="energy bolt + lightning strike">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Lightning Strike</h4>
 
         </div>
@@ -6900,6 +7184,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-spiritOrbs" tabindex="-1" data-weapon="chainLightning spiritOrbs" data-s-crowd="160" data-s-crowd-synergy="1.106" data-s-boss="3387.5" data-s-boss-synergy="1" data-s-name="chain lightning + ghost orbs">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Ghost Orbs</h4>
 
         </div>
@@ -6923,6 +7208,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows-spiritOrbs" tabindex="-1" data-weapon="spectralArrows spiritOrbs" data-s-crowd="159.3" data-s-crowd-synergy="1.017" data-s-boss="5036.8" data-s-boss-synergy="1" data-s-name="spectral arrows + ghost orbs">
         <div class="wcard-h">
+
           <h4>Spectral Arrows + Ghost Orbs</h4>
 
         </div>
@@ -6946,6 +7232,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-shotgun" tabindex="-1" data-weapon="iceShard shotgun" data-s-crowd="158" data-s-crowd-synergy="1.099" data-s-boss="4779.9" data-s-boss-synergy="1" data-s-name="ice shards + shotgun">
         <div class="wcard-h">
+
           <h4>Ice Shards + Shotgun</h4>
 
         </div>
@@ -6969,6 +7256,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-stormSentry" tabindex="-1" data-weapon="chainLightning stormSentry" data-s-crowd="157.3" data-s-crowd-synergy="1.059" data-s-boss="3685.2" data-s-boss-synergy="1" data-s-name="chain lightning + storm sentry">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Storm Sentry</h4>
 
         </div>
@@ -6992,6 +7280,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidDaggers-voidRailgun" tabindex="-1" data-weapon="voidDaggers voidRailgun" data-s-crowd="157.3" data-s-crowd-synergy="0.901" data-s-boss="3686.8" data-s-boss-synergy="1" data-s-name="void daggers + void railgun">
         <div class="wcard-h">
+
           <h4>Void Daggers + Void Railgun</h4>
 
         </div>
@@ -7015,6 +7304,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyBolt-spiritOrbs" tabindex="-1" data-weapon="energyBolt spiritOrbs" data-s-crowd="156.7" data-s-crowd-synergy="1.079" data-s-boss="4788" data-s-boss-synergy="1" data-s-name="energy bolt + ghost orbs">
         <div class="wcard-h">
+
           <h4>Energy Bolt + Ghost Orbs</h4>
 
         </div>
@@ -7038,6 +7328,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning-thunderStrike" tabindex="-1" data-weapon="chainLightning thunderStrike" data-s-crowd="152.7" data-s-crowd-synergy="1.127" data-s-boss="2835.1" data-s-boss-synergy="1" data-s-name="chain lightning + lightning strike">
         <div class="wcard-h">
+
           <h4>Chain Lightning + Lightning Strike</h4>
 
         </div>
@@ -7061,6 +7352,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-stormSentry" tabindex="-1" data-weapon="boomerang stormSentry" data-s-crowd="147.3" data-s-crowd-synergy="1.004" data-s-boss="3475.7" data-s-boss-synergy="1" data-s-name="boomerang + storm sentry">
         <div class="wcard-h">
+
           <h4>Boomerang + Storm Sentry</h4>
 
         </div>
@@ -7084,6 +7376,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-voidDaggers" tabindex="-1" data-weapon="shotgun voidDaggers" data-s-crowd="144" data-s-crowd-synergy="1.01" data-s-boss="5893.5" data-s-boss-synergy="0.999" data-s-name="shotgun + void daggers">
         <div class="wcard-h">
+
           <h4>Shotgun + Void Daggers</h4>
 
         </div>
@@ -7107,6 +7400,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-stormSentry" tabindex="-1" data-weapon="iceShard stormSentry" data-s-crowd="140.7" data-s-crowd-synergy="1.11" data-s-boss="4680.2" data-s-boss-synergy="1" data-s-name="ice shards + storm sentry">
         <div class="wcard-h">
+
           <h4>Ice Shards + Storm Sentry</h4>
 
         </div>
@@ -7130,6 +7424,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-voidRailgun" tabindex="-1" data-weapon="spiritOrbs voidRailgun" data-s-crowd="137.3" data-s-crowd-synergy="0.928" data-s-boss="2892.5" data-s-boss-synergy="1" data-s-name="ghost orbs + void railgun">
         <div class="wcard-h">
+
           <h4>Ghost Orbs + Void Railgun</h4>
 
         </div>
@@ -7153,6 +7448,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry-voidRailgun" tabindex="-1" data-weapon="stormSentry voidRailgun" data-s-crowd="134" data-s-crowd-synergy="0.863" data-s-boss="3190.1" data-s-boss-synergy="1" data-s-name="storm sentry + void railgun">
         <div class="wcard-h">
+
           <h4>Storm Sentry + Void Railgun</h4>
 
         </div>
@@ -7176,6 +7472,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-spiritOrbs" tabindex="-1" data-weapon="boomerang spiritOrbs" data-s-crowd="133.3" data-s-crowd-synergy="0.87" data-s-boss="3178" data-s-boss-synergy="1" data-s-name="boomerang + ghost orbs">
         <div class="wcard-h">
+
           <h4>Boomerang + Ghost Orbs</h4>
 
         </div>
@@ -7199,6 +7496,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-thunderStrike" tabindex="-1" data-weapon="iceShard thunderStrike" data-s-crowd="133.3" data-s-crowd-synergy="1.173" data-s-boss="3830.1" data-s-boss-synergy="1" data-s-name="ice shards + lightning strike">
         <div class="wcard-h">
+
           <h4>Ice Shards + Lightning Strike</h4>
 
         </div>
@@ -7222,6 +7520,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-stormSentry" tabindex="-1" data-weapon="shotgun stormSentry" data-s-crowd="132.7" data-s-crowd-synergy="1.067" data-s-boss="5390" data-s-boss-synergy="0.999" data-s-name="shotgun + storm sentry">
         <div class="wcard-h">
+
           <h4>Shotgun + Storm Sentry</h4>
 
         </div>
@@ -7245,6 +7544,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang-thunderStrike" tabindex="-1" data-weapon="boomerang thunderStrike" data-s-crowd="131.3" data-s-crowd-synergy="0.967" data-s-boss="2625.6" data-s-boss-synergy="1" data-s-name="boomerang + lightning strike">
         <div class="wcard-h">
+
           <h4>Boomerang + Lightning Strike</h4>
 
         </div>
@@ -7268,6 +7568,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry-voidDaggers" tabindex="-1" data-weapon="stormSentry voidDaggers" data-s-crowd="131.3" data-s-crowd-synergy="1.043" data-s-boss="5786.5" data-s-boss-synergy="1" data-s-name="storm sentry + void daggers">
         <div class="wcard-h">
+
           <h4>Storm Sentry + Void Daggers</h4>
 
         </div>
@@ -7291,6 +7592,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard-spiritOrbs" tabindex="-1" data-weapon="iceShard spiritOrbs" data-s-crowd="130" data-s-crowd-synergy="1.072" data-s-boss="4382.5" data-s-boss-synergy="1" data-s-name="ice shards + ghost orbs">
         <div class="wcard-h">
+
           <h4>Ice Shards + Ghost Orbs</h4>
 
         </div>
@@ -7314,6 +7616,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thunderStrike-voidDaggers" tabindex="-1" data-weapon="thunderStrike voidDaggers" data-s-crowd="129.3" data-s-crowd-synergy="1.146" data-s-boss="4936.5" data-s-boss-synergy="1" data-s-name="lightning strike + void daggers">
         <div class="wcard-h">
+
           <h4>Lightning Strike + Void Daggers</h4>
 
         </div>
@@ -7337,6 +7640,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-spiritOrbs" tabindex="-1" data-weapon="shotgun spiritOrbs" data-s-crowd="126" data-s-crowd-synergy="1.062" data-s-boss="5081.7" data-s-boss-synergy="0.999" data-s-name="shotgun + ghost orbs">
         <div class="wcard-h">
+
           <h4>Shotgun + Ghost Orbs</h4>
 
         </div>
@@ -7360,6 +7664,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thunderStrike-voidRailgun" tabindex="-1" data-weapon="thunderStrike voidRailgun" data-s-crowd="124.7" data-s-crowd-synergy="0.875" data-s-boss="2340.1" data-s-boss-synergy="1" data-s-name="lightning strike + void railgun">
         <div class="wcard-h">
+
           <h4>Lightning Strike + Void Railgun</h4>
 
         </div>
@@ -7383,6 +7688,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun-thunderStrike" tabindex="-1" data-weapon="shotgun thunderStrike" data-s-crowd="124" data-s-crowd-synergy="1.119" data-s-boss="4547.9" data-s-boss-synergy="1.005" data-s-name="shotgun + lightning strike">
         <div class="wcard-h">
+
           <h4>Shotgun + Lightning Strike</h4>
 
         </div>
@@ -7406,6 +7712,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-voidDaggers" tabindex="-1" data-weapon="spiritOrbs voidDaggers" data-s-crowd="123.3" data-s-crowd-synergy="1.016" data-s-boss="5488.9" data-s-boss-synergy="1" data-s-name="ghost orbs + void daggers">
         <div class="wcard-h">
+
           <h4>Ghost Orbs + Void Daggers</h4>
 
         </div>
@@ -7429,6 +7736,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry-thunderStrike" tabindex="-1" data-weapon="stormSentry thunderStrike" data-s-crowd="108.7" data-s-crowd-synergy="1.145" data-s-boss="4439.8" data-s-boss-synergy="1" data-s-name="storm sentry + lightning strike">
         <div class="wcard-h">
+
           <h4>Storm Sentry + Lightning Strike</h4>
 
         </div>
@@ -7452,6 +7760,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-stormSentry" tabindex="-1" data-weapon="spiritOrbs stormSentry" data-s-crowd="101.3" data-s-crowd-synergy="0.987" data-s-boss="4992.2" data-s-boss-synergy="1" data-s-name="ghost orbs + storm sentry">
         <div class="wcard-h">
+
           <h4>Ghost Orbs + Storm Sentry</h4>
 
         </div>
@@ -7475,6 +7784,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs-thunderStrike" tabindex="-1" data-weapon="spiritOrbs thunderStrike" data-s-crowd="98.7" data-s-crowd-synergy="1.097" data-s-boss="4142.1" data-s-boss-synergy="1" data-s-name="ghost orbs + lightning strike">
         <div class="wcard-h">
+
           <h4>Ghost Orbs + Lightning Strike</h4>
 
         </div>
@@ -7501,7 +7811,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/tier-rankings.json · fingerprint 79ea25bce7ee7a9862b6792a833600a4 · source fb58922ea217c1649fdc30b278f8b2fcf1a18ecc1b76e877b1e3b092a9dc7632</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP shrine movement</title>
-<meta name="description" content="Shrine movement: 5 live movement offerings from activated world shrines. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Shrine movement: The five ways a shrine changes how you move. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP shrine movement</h1>
-        <p class="subtag">5 live movement offerings from activated world shrines.</p>
+        <p class="subtag">The five ways a shrine changes how you move.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Shrine movement</span></nav>
     <h2 class="chroma">Shrine movement</h2>
-    <p class="lede">After an activated world shrine rolls its blessing trio, it draws one eligible movement offering from this canonical pool unless a legendary replacement already returned. Stack-capped entries leave the pool at cap; the uncapped Extra Jump keeps it non-empty.</p>
+    <p class="lede">Once a shrine has offered its blessings, it draws one movement offering from these five, unless a legendary replacement took that slot first. Four of them stop being offered once you have taken them to their ceiling, and Extra Jump never does, so there is always something left to draw.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -468,8 +478,8 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
     <section class="wfeature" aria-labelledby="movement-shrine-runtime">
-      <div><span class="eyebrow">World-shrine activation contract</span><h3 id="movement-shrine-runtime">Blessing trio, legendary replacement and movement offering</h3></div>
-      <p>A qualifying normal activation has <b>1</b> movement slot. The gate requires a world shrine and no legendary replacement; directive and merchant blessing offers have no movement slot.</p>
+      <div><span class="eyebrow">What lighting one up actually does</span><h3 id="movement-shrine-runtime">Blessings first, then a legendary or a way to move</h3></div>
+      <p>A normal world shrine that lights up has <b>1</b> movement slot to fill, and it only fills if no legendary replacement arrived first. Directive and merchant offers do not carry that slot at all.</p>
       <p>A non-legendary activated world shrine rolls its blessing trio, then fills the eligible movement slot from this complete registry.</p><p>Directive and merchant blessing offers do not include the movement slot, and a legendary replacement returns before the movement draw.</p><p>Offerings at their maxStacks ceiling leave the eligible pool; Extra Jump is uncapped, so the pool cannot become empty.</p><p>JUMP_AUGMENTS is a legacy card/progression alias surface for Spring Step and Extra Jump, not the complete shrine movement pool.</p>
       <details class="wraw"><summary>Shrine runtime provenance <span>5</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/shrineMovement.ts#SHRINE_MOVEMENT_OFFERINGS</dd></div><div><dt><code>order</code></dt><dd>src/data/shrineMovement.ts#SHRINE_MOVEMENT_IDS</dd></div><div><dt><code>activation</code></dt><dd>src/sim/shrines.ts#ShrineSystem.openBlessingOffer</dd></div><div><dt><code>eligibility</code></dt><dd>src/sim/shrines.ts#ShrineSystem.rollMovementOffering</dd></div><div><dt><code>grant</code></dt><dd>src/sim/shrines.ts#ShrineSystem.grantMovement</dd></div></dl></details>
     </section>
@@ -497,10 +507,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Live movement offering pool</h3><span class="wgroup-n">5</span></div>
-      <p class="wgroup-note">Every source-owned world-shrine movement option, in canonical draw order.</p>
+      <p class="wgroup-note">All five, in the order the game draws them.</p>
       <div class="wgrid">
       <article class="wcard" id="e-boostCharge" tabindex="-1" data-stat="bonusBoostCharges" data-s-roster="0" data-s-name="boost upgrade" data-s-value="1">
         <div class="wcard-h">
+
           <h4>Boost Upgrade</h4>
           <span class="wcard-accent" style="background:#ffb347"></span>
         </div>
@@ -520,6 +531,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-jumpPower" tabindex="-1" data-stat="jumpHeightBonus" data-s-roster="1" data-s-name="spring step" data-s-value="0.18">
         <div class="wcard-h">
+
           <h4>Spring Step</h4>
           <span class="wcard-accent" style="background:#4c9dff"></span>
         </div>
@@ -539,6 +551,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-extraJump" tabindex="-1" data-stat="extraAirJumps" data-s-roster="2" data-s-name="extra jump" data-s-value="1">
         <div class="wcard-h">
+
           <h4>Extra Jump</h4>
           <span class="wcard-accent" style="background:#20d7c7"></span>
         </div>
@@ -558,6 +571,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-whompStunDuration" tabindex="-1" data-stat="whompStunDurationBonus" data-s-roster="3" data-s-name="stun duration up" data-s-value="0.25">
         <div class="wcard-h">
+
           <h4>Stun Duration Up</h4>
           <span class="wcard-accent" style="background:#e979ff"></span>
         </div>
@@ -577,6 +591,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-whompCooldown" tabindex="-1" data-stat="whompCooldownReduction" data-s-roster="4" data-s-name="stun cooldown down" data-s-value="0.15">
         <div class="wcard-h">
+
           <h4>Stun Cooldown Down</h4>
           <span class="wcard-accent" style="background:#ffd84a"></span>
         </div>
@@ -599,7 +614,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

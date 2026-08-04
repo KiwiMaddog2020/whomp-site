@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP relics</title>
-<meta name="description" content="Relics: Stackable finds, with every trade written down. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Relics: Small things you pick up, and keep picking up. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP relics</h1>
-        <p class="subtag">Stackable finds, with every trade written down.</p>
+        <p class="subtag">Small things you pick up, and keep picking up.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html" class="is-here" aria-current="page">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,12 +469,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Relics</span></nav>
     <h2 class="chroma">Relics</h2>
-    <p class="lede">Relics are stackable run pickups. Their cards carry the game description, rarity, stack ceiling, source stat payload and whether the arena draft includes them.</p>
+    <p class="lede">A relic is a find you can take again and again until it hits its ceiling. Most of them are one small number in your favor, a few of them are one small number in your favor and a smaller one against you, and the rare ones are rare because the game says so.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit">There is no relic tier letter here. The measurement artifact explicitly does not cover relics because a relic needs a reference build and chest-economy model before its delta means anything. The roster is complete; the ranking is honestly unmeasured.</p>
+    <p class="womit"><b>No relic has a letter grade here.</b> Grading one would mean first deciding which build it is sitting in and what the chests cost that run, and neither of those has been measured, so a ladder would be a guess said with a straight face. Every relic in the game is on this page. The order they sit in is not a ranking.</p>
 
 
 
@@ -505,10 +515,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="common" id="g-common">
       <div class="wgroup-h"><h3>Common</h3><span class="wgroup-n">11</span></div>
-      <p class="wgroup-note">Base rarity weight 58.</p>
+      <p class="wgroup-note">Drawn with weight 58 out of 100.</p>
       <div class="wgrid">
       <article class="wcard" id="e-moldySandwich" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="0" data-s-name="forager's ration" data-s-stacks="8">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🥪</span>
           <h4>Forager's Ration</h4>
 
         </div>
@@ -529,6 +540,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-crackedDrumstick" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="1" data-s-name="splintered wand" data-s-stacks="6">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🪄</span>
           <h4>Splintered Wand</h4>
 
         </div>
@@ -549,6 +561,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blownAmp" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="2" data-s-name="cracked power core" data-s-stacks="6">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💥</span>
           <h4>Cracked Power Core</h4>
 
         </div>
@@ -569,6 +582,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-frayedCable" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="3" data-s-name="frayed conduit" data-s-stacks="6">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🔌</span>
           <h4>Frayed Conduit</h4>
 
         </div>
@@ -589,6 +603,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-setlistScrap" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="4" data-s-name="scout's notes" data-s-stacks="5">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📝</span>
           <h4>Scout's Notes</h4>
 
         </div>
@@ -609,6 +624,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-guitarPick" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="5" data-s-name="lucky fang" data-s-stacks="6">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🦷</span>
           <h4>Lucky Fang</h4>
 
         </div>
@@ -629,6 +645,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ductTape" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="6" data-s-name="field repair kit" data-s-stacks="5">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🩹</span>
           <h4>Field Repair Kit</h4>
 
         </div>
@@ -649,6 +666,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-merchCoin" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="7" data-s-name="tarnished coin" data-s-stacks="6">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🪙</span>
           <h4>Tarnished Coin</h4>
 
         </div>
@@ -669,6 +687,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stageLightGel" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="not included" data-s-roster="8" data-s-name="prism shard" data-s-stacks="6">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💎</span>
           <h4>Prism Shard</h4>
 
         </div>
@@ -689,6 +708,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-wornTourShirt" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="9" data-s-name="weathered cloak" data-s-stacks="5">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧥</span>
           <h4>Weathered Cloak</h4>
 
         </div>
@@ -709,6 +729,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-popFilter" tabindex="-1" data-rarity="common" data-effect="stat payload" data-arena="included" data-s-roster="10" data-s-name="ward mesh" data-s-stacks="5">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🛡️</span>
           <h4>Ward Mesh</h4>
 
         </div>
@@ -730,10 +751,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="rare" id="g-rare">
       <div class="wgroup-h"><h3>Rare</h3><span class="wgroup-n">11</span></div>
-      <p class="wgroup-note">Base rarity weight 27.</p>
+      <p class="wgroup-note">Drawn with weight 27 out of 100.</p>
       <div class="wgrid">
       <article class="wcard" id="e-reverbPedal" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="11" data-s-name="echo stone" data-s-stacks="4">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🔮</span>
           <h4>Echo Stone</h4>
 
         </div>
@@ -754,6 +776,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spareStrings" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="12" data-s-name="giant's thread" data-s-stacks="4">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧵</span>
           <h4>Giant's Thread</h4>
 
         </div>
@@ -774,6 +797,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-roadieGloves" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="13" data-s-name="pathfinder gloves" data-s-stacks="5">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧤</span>
           <h4>Pathfinder Gloves</h4>
 
         </div>
@@ -794,6 +818,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-energyDrink" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="included" data-s-roster="14" data-s-name="energy drink case" data-s-stacks="5">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🥫</span>
           <h4>Energy Drink Case</h4>
 
         </div>
@@ -814,6 +839,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-backstagePass" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="15" data-s-name="merchant's seal" data-s-stacks="3">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎫</span>
           <h4>Merchant's Seal</h4>
 
         </div>
@@ -834,6 +860,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-feedbackLoop" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="16" data-s-name="resonance loop" data-s-stacks="3">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🌀</span>
           <h4>Resonance Loop</h4>
 
         </div>
@@ -854,6 +881,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-fogMachine" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="17" data-s-name="fog machine" data-s-stacks="2">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🌫️</span>
           <h4>Fog Machine</h4>
 
         </div>
@@ -874,6 +902,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-extraVerse" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="18" data-s-name="scholar's echo" data-s-stacks="4">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📖</span>
           <h4>Scholar's Echo</h4>
 
         </div>
@@ -894,6 +923,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-cursedSetlist" tabindex="-1" data-rarity="rare" data-effect="stat payload" data-arena="not included" data-s-roster="19" data-s-name="cursed ledger" data-s-stacks="3">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📜</span>
           <h4>Cursed Ledger</h4>
 
         </div>
@@ -914,6 +944,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-feedbackScreamer" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="20" data-s-name="bossbane sigil" data-s-stacks="2">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⚔️</span>
           <h4>Bossbane Sigil</h4>
 
         </div>
@@ -934,6 +965,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-evpRecorder" tabindex="-1" data-rarity="rare" data-effect="runtime event" data-arena="not included" data-s-roster="21" data-s-name="spirit vessel" data-s-stacks="2">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">👻</span>
           <h4>Spirit Vessel</h4>
 
         </div>
@@ -955,10 +987,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="epic" id="g-epic">
       <div class="wgroup-h"><h3>Epic</h3><span class="wgroup-n">9</span></div>
-      <p class="wgroup-note">Base rarity weight 12.</p>
+      <p class="wgroup-note">Drawn with weight 12 out of 100.</p>
       <div class="wgrid">
       <article class="wcard" id="e-overdrivenAmp" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="22" data-s-name="overcharged core" data-s-stacks="2">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⚡</span>
           <h4>Overcharged Core</h4>
 
         </div>
@@ -979,6 +1012,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pyroRig" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="23" data-s-name="volatile furnace" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧨</span>
           <h4>Volatile Furnace</h4>
 
         </div>
@@ -999,6 +1033,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bassDrop" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="24" data-s-name="quake heart" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🌋</span>
           <h4>Quake Heart</h4>
 
         </div>
@@ -1019,6 +1054,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-crowdSurfPads" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="25" data-s-name="momentum greaves" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">👢</span>
           <h4>Momentum Greaves</h4>
 
         </div>
@@ -1039,6 +1075,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bootlegRecording" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="26" data-s-name="forbidden codex" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📕</span>
           <h4>Forbidden Codex</h4>
 
         </div>
@@ -1059,6 +1096,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-goldenKazoo" tabindex="-1" data-rarity="epic" data-effect="runtime event" data-arena="not included" data-s-roster="27" data-s-name="golden idol" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🗿</span>
           <h4>Golden Idol</h4>
 
         </div>
@@ -1079,6 +1117,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-heavyCab" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="28" data-s-name="bastion plate" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🛡️</span>
           <h4>Bastion Plate</h4>
 
         </div>
@@ -1099,6 +1138,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-strobeRig" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="not included" data-s-roster="29" data-s-name="blink engine" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💡</span>
           <h4>Blink Engine</h4>
 
         </div>
@@ -1119,6 +1159,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-signatureSolo" tabindex="-1" data-rarity="epic" data-effect="stat payload" data-arena="included" data-s-roster="30" data-s-name="duelist's crest" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎯</span>
           <h4>Duelist's Crest</h4>
 
         </div>
@@ -1140,10 +1181,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="legendary" id="g-legendary">
       <div class="wgroup-h"><h3>Legendary</h3><span class="wgroup-n">5</span></div>
-      <p class="wgroup-note">Base rarity weight 3.</p>
+      <p class="wgroup-note">Drawn with weight 3 out of 100.</p>
       <div class="wgrid">
       <article class="wcard" id="e-platinumRecord" tabindex="-1" data-rarity="legendary" data-effect="stat payload" data-arena="included" data-s-roster="31" data-s-name="astral prism" data-s-stacks="2">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">✦</span>
           <h4>Astral Prism</h4>
 
         </div>
@@ -1164,6 +1206,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encoreFlare" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="32" data-s-name="phoenix flare" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎇</span>
           <h4>Phoenix Flare</h4>
 
         </div>
@@ -1184,6 +1227,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-masterTape" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="33" data-s-name="prime blueprint" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📐</span>
           <h4>Prime Blueprint</h4>
 
         </div>
@@ -1204,6 +1248,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-tourBus" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="included" data-s-roster="34" data-s-name="wayfarer's compass" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧭</span>
           <h4>Wayfarer's Compass</h4>
 
         </div>
@@ -1224,6 +1269,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-goldMasterDisc" tabindex="-1" data-rarity="legendary" data-effect="runtime event" data-arena="not included" data-s-roster="35" data-s-name="gilded hourglass" data-s-stacks="1">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⏳</span>
           <h4>Gilded Hourglass</h4>
 
         </div>
@@ -1247,7 +1293,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

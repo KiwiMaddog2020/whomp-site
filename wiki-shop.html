@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP meta shop</title>
-<meta name="description" content="Meta shop: Every permanent upgrade, rank price, tier and gate. Canonical facts generated from verified game artifacts.">
+<title>WHOMP shop</title>
+<meta name="description" content="Shop: Every rank you buy stays bought. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -364,8 +374,8 @@ footer a{color:var(--cyan);text-decoration:none}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP meta shop</h1>
-        <p class="subtag">Every permanent upgrade, rank price, tier and gate.</p>
+        <h1 class="chroma">WHOMP shop</h1>
+        <p class="subtag">Every rank you buy stays bought.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html" class="is-here" aria-current="page">Meta shop</a>
+        <a href="wiki-shop.html" class="is-here" aria-current="page">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -457,19 +467,19 @@ footer a{color:var(--cyan);text-decoration:none}
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
-    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Meta shop</span></nav>
-    <h2 class="chroma">Meta shop</h2>
-    <p class="lede">Each source stat stays one card, with its complete canonical rank ladder expanded underneath. Prices, gates and tier assignments come from runtime exports rather than a duplicated pricing formula.</p>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Shop</span></nav>
+    <h2 class="chroma">Shop</h2>
+    <p class="lede">Gold you carry out of a run buys permanent ranks between runs: 23 rows here, 5935g for every rank and both gates. The price band is the whole message, and hitting harder costs more than picking gold up faster.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-
+    <p class="womit"><b>The per-rank number is what the game stores, not what you will feel.</b> A rank lands alongside everything else your run picked up, and the attack-speed row still goes through the soft knee on the way, so this page prices the ladder and stops there.</p>
 
 
     <section class="wfeature" aria-labelledby="shop-gates">
-      <div><span class="eyebrow">Canonical purchase ladder</span><h3 id="shop-gates">Gates and all-in cost</h3></div>
-      <p><b>5935g</b> buys every published rank and both gates. The artifact expands the 23 upgrade rows into <b>89</b> exact rank purchases.</p>
+      <div><span class="eyebrow">What it all costs</span><h3 id="shop-gates">The two gates, and the bill</h3></div>
+      <p><b>5935g</b> buys every rank and both gates. The 23 rows on this page come apart into <b>89</b> separate purchases.</p>
       <div class="wbuild-grid">
         <article id="gate-ledger">
             <span class="wtag ink-gold">150g · opens tier 2</span>
@@ -510,7 +520,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <div class="wfacet">
         <label class="wfacet-h" for="wsort">Sort</label>
-        <select class="wsort" id="wsort" aria-label="Sort Meta shop">
+        <select class="wsort" id="wsort" aria-label="Sort Shop">
           <option value="roster" data-desc="0" data-text="0">Registry order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="total" data-desc="1" data-text="0">Total cost</option><option value="increment" data-desc="1" data-text="0">Per-rank source value</option>
         </select>
       </div></div>
@@ -523,10 +533,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="power" id="g-power">
       <div class="wgroup-h"><h3>Power</h3><span class="wgroup-n">16</span></div>
-      <p class="wgroup-note">Rows whose canonical lane is power.</p>
+      <p class="wgroup-note">The rows that move your numbers, from what you hit for down to how much gold survives a bad run.</p>
       <div class="wgrid">
       <article class="wcard" id="e-damage" tabindex="-1" data-lane="power" data-band="prime" data-ranks="5" data-s-roster="0" data-s-name="sharper rock" data-s-total="435" data-s-increment="0.01">
         <div class="wcard-h">
+
           <h4>Sharper Rock</h4>
 
         </div>
@@ -545,6 +556,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-maxHp" tabindex="-1" data-lane="power" data-band="prime" data-ranks="5" data-s-roster="1" data-s-name="more meat" data-s-total="435" data-s-increment="0.02">
         <div class="wcard-h">
+
           <h4>More Meat</h4>
 
         </div>
@@ -563,6 +575,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-attackSpeed" tabindex="-1" data-lane="power" data-band="prime" data-ranks="5" data-s-roster="2" data-s-name="twitchier" data-s-total="435" data-s-increment="0.01">
         <div class="wcard-h">
+
           <h4>Twitchier</h4>
 
         </div>
@@ -581,6 +594,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-moveSpeed" tabindex="-1" data-lane="power" data-band="standard" data-ranks="5" data-s-roster="3" data-s-name="bigger legs" data-s-total="365" data-s-increment="0.008">
         <div class="wcard-h">
+
           <h4>Bigger Legs</h4>
 
         </div>
@@ -599,6 +613,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-armor" tabindex="-1" data-lane="power" data-band="prime" data-ranks="5" data-s-roster="4" data-s-name="extra skin" data-s-total="435" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Extra Skin</h4>
 
         </div>
@@ -617,6 +632,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-regen" tabindex="-1" data-lane="power" data-band="standard" data-ranks="5" data-s-roster="5" data-s-name="stubbornness" data-s-total="365" data-s-increment="0.1">
         <div class="wcard-h">
+
           <h4>Stubbornness</h4>
 
         </div>
@@ -635,6 +651,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pickup" tabindex="-1" data-lane="power" data-band="bargain" data-ranks="5" data-s-roster="6" data-s-name="longer arms" data-s-total="295" data-s-increment="0.03">
         <div class="wcard-h">
+
           <h4>Longer Arms</h4>
 
         </div>
@@ -653,6 +670,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-luck" tabindex="-1" data-lane="power" data-band="bargain" data-ranks="5" data-s-roster="7" data-s-name="rigged dice" data-s-total="295" data-s-increment="0.01">
         <div class="wcard-h">
+
           <h4>Rigged Dice</h4>
 
         </div>
@@ -671,6 +689,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-goldGain" tabindex="-1" data-lane="power" data-band="bargain" data-ranks="5" data-s-roster="8" data-s-name="bigger pockets" data-s-total="295" data-s-increment="0.02">
         <div class="wcard-h">
+
           <h4>Bigger Pockets</h4>
 
         </div>
@@ -689,6 +708,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-startGold" tabindex="-1" data-lane="power" data-band="bargain" data-ranks="5" data-s-roster="9" data-s-name="head start" data-s-total="295" data-s-increment="20">
         <div class="wcard-h">
+
           <h4>Head Start</h4>
 
         </div>
@@ -707,6 +727,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-vitality" tabindex="-1" data-lane="power" data-band="prime" data-ranks="2" data-s-roster="10" data-s-name="vitality" data-s-total="55" data-s-increment="0.03">
         <div class="wcard-h">
+
           <h4>Vitality</h4>
 
         </div>
@@ -725,6 +746,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-openingLoadout" tabindex="-1" data-lane="power" data-band="prime" data-ranks="2" data-s-roster="11" data-s-name="opening loadout" data-s-total="55" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Opening Loadout</h4>
 
         </div>
@@ -743,6 +765,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-tougherShield" tabindex="-1" data-lane="power" data-band="prime" data-ranks="5" data-s-roster="12" data-s-name="tougher shield" data-s-total="435" data-s-increment="5">
         <div class="wcard-h">
+
           <h4>Tougher Shield</h4>
 
         </div>
@@ -761,6 +784,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-goldMagnet" tabindex="-1" data-lane="power" data-band="bargain" data-ranks="5" data-s-roster="13" data-s-name="gold magnet" data-s-total="295" data-s-increment="0.03">
         <div class="wcard-h">
+
           <h4>Gold Magnet</h4>
 
         </div>
@@ -779,6 +803,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-headstartBoots" tabindex="-1" data-lane="power" data-band="standard" data-ranks="2" data-s-roster="14" data-s-name="headstart boots" data-s-total="45" data-s-increment="0.01">
         <div class="wcard-h">
+
           <h4>Headstart Boots</h4>
 
         </div>
@@ -797,6 +822,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bank" tabindex="-1" data-lane="power" data-band="bargain" data-ranks="3" data-s-roster="15" data-s-name="bank" data-s-total="85" data-s-increment="0.08">
         <div class="wcard-h">
+
           <h4>Bank</h4>
 
         </div>
@@ -816,10 +842,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="qol" id="g-qol">
       <div class="wgroup-h"><h3>Quality of life</h3><span class="wgroup-n">7</span></div>
-      <p class="wgroup-note">Rows whose canonical lane is qol.</p>
+      <p class="wgroup-note">These do not touch your numbers. They change what the level-up screen is allowed to offer you.</p>
       <div class="wgrid">
       <article class="wcard" id="e-rerolls" tabindex="-1" data-lane="qol" data-band="standard" data-ranks="3" data-s-roster="16" data-s-name="do-over" data-s-total="105" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Do-Over</h4>
 
         </div>
@@ -838,6 +865,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-banishes" tabindex="-1" data-lane="qol" data-band="standard" data-ranks="3" data-s-roster="17" data-s-name="never again" data-s-total="105" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Never Again</h4>
 
         </div>
@@ -856,6 +884,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-skips" tabindex="-1" data-lane="qol" data-band="standard" data-ranks="5" data-s-roster="18" data-s-name="not interested" data-s-total="365" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Not Interested</h4>
 
         </div>
@@ -874,6 +903,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-weaponBans" tabindex="-1" data-lane="qol" data-band="standard" data-ranks="3" data-s-roster="19" data-s-name="blacklist" data-s-total="105" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Blacklist</h4>
 
         </div>
@@ -892,6 +922,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-tomeBans" tabindex="-1" data-lane="qol" data-band="standard" data-ranks="2" data-s-roster="20" data-s-name="also blacklist" data-s-total="45" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Also Blacklist</h4>
 
         </div>
@@ -910,6 +941,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-weaponLockouts" tabindex="-1" data-lane="qol" data-band="standard" data-ranks="2" data-s-roster="21" data-s-name="weapon lockout" data-s-total="45" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Weapon Lockout</h4>
 
         </div>
@@ -928,6 +960,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-tomeLockouts" tabindex="-1" data-lane="qol" data-band="standard" data-ranks="2" data-s-roster="22" data-s-name="tome lockout" data-s-total="45" data-s-increment="1">
         <div class="wcard-h">
+
           <h4>Tome Lockout</h4>
 
         </div>
@@ -949,7 +982,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

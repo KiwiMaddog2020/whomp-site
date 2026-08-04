@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html" class="is-here" aria-current="page">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -509,6 +519,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgrid">
       <article class="wcard" id="e-energyBolt" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="start" data-s-roster="0" data-s-name="energy bolt" data-s-damage="9.6" data-s-range="21.45" data-s-cadence="560">
         <div class="wcard-h">
+
           <h4>Energy Bolt</h4>
 
         </div>
@@ -542,6 +553,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-plasmaOrbit" tabindex="-1" data-element="physical" data-pattern="orbit" data-access="start" data-s-roster="1" data-s-name="plasma shield" data-s-damage="14"  data-s-cadence="250">
         <div class="wcard-h">
+
           <h4>Plasma Shield</h4>
 
         </div>
@@ -575,6 +587,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spiritOrbs" tabindex="-1" data-element="void" data-pattern="homing" data-access="achievement" data-s-roster="2" data-s-name="ghost orbs" data-s-damage="14.25" data-s-range="30" data-s-cadence="1080">
         <div class="wcard-h">
+
           <h4>Ghost Orbs</h4>
 
         </div>
@@ -608,6 +621,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomerang" tabindex="-1" data-element="physical" data-pattern="boomerang" data-access="start" data-s-roster="3" data-s-name="boomerang" data-s-damage="10.8" data-s-range="9" data-s-cadence="2100">
         <div class="wcard-h">
+
           <h4>Boomerang</h4>
 
         </div>
@@ -641,6 +655,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-meteorStrike" tabindex="-1" data-element="fire" data-pattern="meteor" data-access="achievement" data-s-roster="4" data-s-name="meteor strike" data-s-damage="12.5" data-s-range="17" data-s-cadence="2100">
         <div class="wcard-h">
+
           <h4>Meteor Strike</h4>
 
         </div>
@@ -674,6 +689,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chainLightning" tabindex="-1" data-element="lightning" data-pattern="chain" data-access="achievement" data-s-roster="5" data-s-name="chain lightning" data-s-damage="18" data-s-range="21.45" data-s-cadence="1320">
         <div class="wcard-h">
+
           <h4>Chain Lightning</h4>
 
         </div>
@@ -707,6 +723,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-iceShard" tabindex="-1" data-element="ice" data-pattern="cone" data-access="start" data-s-roster="6" data-s-name="ice shards" data-s-damage="7.7" data-s-range="21.45" data-s-cadence="840">
         <div class="wcard-h">
+
           <h4>Ice Shards</h4>
 
         </div>
@@ -740,6 +757,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-toxicAura" tabindex="-1" data-element="physical" data-pattern="aura" data-access="start" data-s-roster="7" data-s-name="toxic aura" data-s-damage="7.2"  data-s-cadence="1400">
         <div class="wcard-h">
+
           <h4>Toxic Aura</h4>
 
         </div>
@@ -773,6 +791,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ricochetDisc" tabindex="-1" data-element="physical" data-pattern="ricochet" data-access="achievement" data-s-roster="8" data-s-name="ricochet disc" data-s-damage="15.25" data-s-range="21.45" data-s-cadence="1600">
         <div class="wcard-h">
+
           <h4>Ricochet Disc</h4>
 
         </div>
@@ -806,6 +825,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-beam" tabindex="-1" data-element="void" data-pattern="beam" data-access="start" data-s-roster="9" data-s-name="beam" data-s-damage="6.4" data-s-range="9" data-s-cadence="100">
         <div class="wcard-h">
+
           <h4>Beam</h4>
 
         </div>
@@ -839,6 +859,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shotgun" tabindex="-1" data-element="fire" data-pattern="burstNearest" data-access="start" data-s-roster="10" data-s-name="shotgun" data-s-damage="7.7" data-s-range="9" data-s-cadence="1485">
         <div class="wcard-h">
+
           <h4>Shotgun</h4>
 
         </div>
@@ -872,6 +893,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravityWell" tabindex="-1" data-element="void" data-pattern="blackHole" data-access="achievement" data-s-roster="11" data-s-name="gravity well" data-s-damage="3" data-s-range="30" data-s-cadence="4200">
         <div class="wcard-h">
+
           <h4>Gravity Well</h4>
 
         </div>
@@ -905,6 +927,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-encore" tabindex="-1" data-element="ice" data-pattern="pathEcho" data-access="achievement" data-s-roster="12" data-s-name="echo" data-s-damage="6"  data-s-cadence="300">
         <div class="wcard-h">
+
           <h4>Echo</h4>
 
         </div>
@@ -938,6 +961,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-photonScythe" tabindex="-1" data-element="void" data-pattern="meleeArc" data-access="achievement" data-s-roster="13" data-s-name="photon scythe" data-s-damage="14.4" data-s-range="9" data-s-cadence="950">
         <div class="wcard-h">
+
           <h4>Photon Scythe</h4>
 
         </div>
@@ -971,6 +995,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidRailgun" tabindex="-1" data-element="void" data-pattern="pierceLine" data-access="achievement" data-s-roster="14" data-s-name="void railgun" data-s-damage="24" data-s-range="17" data-s-cadence="2700">
         <div class="wcard-h">
+
           <h4>Void Railgun</h4>
 
         </div>
@@ -1004,6 +1029,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lighthouse" tabindex="-1" data-element="physical" data-pattern="beam" data-access="achievement" data-s-roster="15" data-s-name="faultline" data-s-damage="16" data-s-range="17" data-s-cadence="2300">
         <div class="wcard-h">
+
           <h4>Faultline</h4>
 
         </div>
@@ -1037,6 +1063,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stormSentry" tabindex="-1" data-element="lightning" data-pattern="petUnits" data-access="achievement" data-s-roster="16" data-s-name="storm sentry" data-s-damage="11.9" data-s-range="17" data-s-cadence="5200">
         <div class="wcard-h">
+
           <h4>Storm Sentry</h4>
 
         </div>
@@ -1070,6 +1097,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blackSquirrel" tabindex="-1" data-element="physical" data-pattern="petUnits" data-access="quest-or-achievement" data-s-roster="17" data-s-name="ghost pup" data-s-damage="11.3" data-s-range="13" data-s-cadence="2500">
         <div class="wcard-h">
+
           <h4>Ghost Pup</h4>
 
         </div>
@@ -1103,6 +1131,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-thunderStrike" tabindex="-1" data-element="lightning" data-pattern="randomAoE" data-access="achievement" data-s-roster="18" data-s-name="lightning strike" data-s-damage="24" data-s-range="9" data-s-cadence="1200">
         <div class="wcard-h">
+
           <h4>Lightning Strike</h4>
 
         </div>
@@ -1136,6 +1165,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidDaggers" tabindex="-1" data-element="void" data-pattern="chain" data-access="achievement" data-s-roster="19" data-s-name="void daggers" data-s-damage="8.5" data-s-range="17" data-s-cadence="960">
         <div class="wcard-h">
+
           <h4>Void Daggers</h4>
 
         </div>
@@ -1169,6 +1199,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-flameThrower" tabindex="-1" data-element="fire" data-pattern="cone" data-access="start" data-s-roster="20" data-s-name="flame thrower" data-s-damage="3.85" data-s-range="9" data-s-cadence="144">
         <div class="wcard-h">
+
           <h4>Flame Thrower</h4>
 
         </div>
@@ -1202,6 +1233,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-spectralArrows" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="achievement" data-s-roster="21" data-s-name="spectral arrows" data-s-damage="5.8" data-s-range="17" data-s-cadence="500">
         <div class="wcard-h">
+
           <h4>Spectral Arrows</h4>
 
         </div>
@@ -1235,6 +1267,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-starField" tabindex="-1" data-element="holy" data-pattern="randomAoE" data-access="start" data-s-roster="22" data-s-name="star field" data-s-damage="3.2"  data-s-cadence="500">
         <div class="wcard-h">
+
           <h4>Star Field</h4>
 
         </div>
@@ -1268,6 +1301,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-pulseMine" tabindex="-1" data-element="fire" data-pattern="randomAoE" data-access="start" data-s-roster="23" data-s-name="pulse mine" data-s-damage="12.5" data-s-range="21.45" data-s-cadence="2000">
         <div class="wcard-h">
+
           <h4>Pulse Mine</h4>
 
         </div>
@@ -1301,6 +1335,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boomBox" tabindex="-1" data-element="holy" data-pattern="aura" data-access="achievement" data-s-roster="24" data-s-name="boom box" data-s-damage="10"  data-s-cadence="1440">
         <div class="wcard-h">
+
           <h4>Boom Box</h4>
 
         </div>
@@ -1339,6 +1374,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgrid">
       <article class="wcard" id="e-novaLance" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="evolution" data-s-roster="25" data-s-name="nova lance" data-s-damage="19.5672" data-s-range="21.45" data-s-cadence="647.7182143255357">
         <div class="wcard-h">
+
           <h4>Nova Lance</h4>
 
         </div>
@@ -1372,6 +1408,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ringOfRuin" tabindex="-1" data-element="lightning" data-pattern="orbit" data-access="evolution" data-s-roster="26" data-s-name="ring of ruin" data-s-damage="15.36"  data-s-cadence="250">
         <div class="wcard-h">
+
           <h4>Ring of Ruin</h4>
 
         </div>
@@ -1405,6 +1442,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-hellscatter" tabindex="-1" data-element="fire" data-pattern="burstNearest" data-access="evolution" data-s-roster="27" data-s-name="hellscatter" data-s-damage="8.108100000000002" data-s-range="13" data-s-cadence="1289.1664168713792">
         <div class="wcard-h">
+
           <h4>Hellscatter</h4>
 
         </div>
@@ -1438,6 +1476,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-dragonsBreath" tabindex="-1" data-element="fire" data-pattern="cone" data-access="evolution" data-s-roster="28" data-s-name="dragon's breath" data-s-damage="4.928" data-s-range="13.5" data-s-cadence="129.54364286510713">
         <div class="wcard-h">
+
           <h4>Dragon's Breath</h4>
 
         </div>
@@ -1471,6 +1510,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-glacierLance" tabindex="-1" data-element="ice" data-pattern="cone" data-access="evolution" data-s-roster="29" data-s-name="glacier lance" data-s-damage="12.574099999999998" data-s-range="21.45" data-s-cadence="755.6712500464582">
         <div class="wcard-h">
+
           <h4>Glacier Lance</h4>
 
         </div>
@@ -1504,6 +1544,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-constellation" tabindex="-1" data-element="holy" data-pattern="randomAoE" data-access="evolution" data-s-roster="30" data-s-name="constellation" data-s-damage="6.144"  data-s-cadence="500">
         <div class="wcard-h">
+
           <h4>Constellation</h4>
 
         </div>
@@ -1537,6 +1578,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-deathray" tabindex="-1" data-element="void" data-pattern="beam" data-access="evolution" data-s-roster="31" data-s-name="deathray" data-s-damage="11.232000000000001" data-s-range="13.95" data-s-cadence="100">
         <div class="wcard-h">
+
           <h4>Deathray</h4>
 
         </div>
@@ -1570,6 +1612,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-goldReaver" tabindex="-1" data-element="holy" data-pattern="boomerang" data-access="evolution" data-s-roster="32" data-s-name="gold reaver" data-s-damage="21.752959999999998" data-s-range="13" data-s-cadence="1889.1781251161456">
         <div class="wcard-h">
+
           <h4>Gold Reaver</h4>
 
         </div>
@@ -1606,7 +1649,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

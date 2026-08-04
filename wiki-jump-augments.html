@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP legacy jump augment aliases</title>
-<meta name="description" content="Legacy jump augment aliases: 2 legacy card/progression aliases linked to live Shrine movement offerings. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Legacy jump augment aliases: Two old names for offerings that live somewhere else now. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP legacy jump augment aliases</h1>
-        <p class="subtag">2 legacy card/progression aliases linked to live Shrine movement offerings.</p>
+        <p class="subtag">Two old names for offerings that live somewhere else now.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Legacy jump augment aliases</span></nav>
     <h2 class="chroma">Legacy jump augment aliases</h2>
-    <p class="lede">This 2-entry registry preserves older card and progression aliases for Spring Step and Extra Jump. It is an alias surface, not an acquisition rule or the complete live movement pool; each card links to its canonical Shrine movement offering.</p>
+    <p class="lede">The game still keeps two older names for Extra Jump and Spring Step. They are names and nothing more: neither one is handed out here, the shrine is where both are actually offered, and every card points at the offering it stands for.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -485,10 +495,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Legacy aliases</h3><span class="wgroup-n">2</span></div>
-      <p class="wgroup-note">Compatibility aliases only; use Shrine movement for the complete live offering pool.</p>
+      <p class="wgroup-note">Names only. The pool you actually draw from is on the Shrine movement page.</p>
       <div class="wgrid">
       <article class="wcard" id="e-extraJump" tabindex="-1" data-stat="extraAirJumps" data-s-roster="0">
         <div class="wcard-h">
+
           <h4>Extra Jump</h4>
           <span class="wcard-accent" style="background:#20d7c7"></span>
         </div>
@@ -500,13 +511,14 @@ footer a{color:var(--cyan);text-decoration:none}
         <div class="wtags"><span class="wtag ink-gold">Legacy alias</span><span class="wtag ink-cyan">Extra air jumps</span></div>
         <p class="wdesc">+1 mid-air jump</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Source payload</span><span class="wfact-v"><b>1</b> per level</span></div>
-          <div class="wfact"><span class="wfact-k">Live Shrine offering</span><span class="wfact-v"><a href="wiki-shrine-movement.html#e-extraJump">Extra Jump</a></span></div>
+          <div class="wfact"><span class="wfact-k">What it adds</span><span class="wfact-v"><b>1</b> per level</span></div>
+          <div class="wfact"><span class="wfact-k">Offered as</span><span class="wfact-v"><a href="wiki-shrine-movement.html#e-extraJump">Extra Jump</a></span></div>
         </div>
 
       </article>
       <article class="wcard" id="e-jumpPower" tabindex="-1" data-stat="jumpHeight" data-s-roster="1">
         <div class="wcard-h">
+
           <h4>Spring Step</h4>
           <span class="wcard-accent" style="background:#4c9dff"></span>
         </div>
@@ -518,8 +530,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <div class="wtags"><span class="wtag ink-gold">Legacy alias</span><span class="wtag ink-cyan">Jump height</span></div>
         <p class="wdesc">+18% jump height</p>
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Source payload</span><span class="wfact-v"><b>0.18</b> per level, <b>5</b> levels max</span></div>
-          <div class="wfact"><span class="wfact-k">Live Shrine offering</span><span class="wfact-v"><a href="wiki-shrine-movement.html#e-jumpPower">Spring Step</a></span></div>
+          <div class="wfact"><span class="wfact-k">What it adds</span><span class="wfact-v"><b>0.18</b> per level, <b>5</b> levels max</span></div>
+          <div class="wfact"><span class="wfact-k">Offered as</span><span class="wfact-v"><a href="wiki-shrine-movement.html#e-jumpPower">Spring Step</a></span></div>
         </div>
 
       </article></div>
@@ -528,7 +540,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

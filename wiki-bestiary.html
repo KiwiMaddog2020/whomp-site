@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP bestiary</title>
-<meta name="description" content="Bestiary: Every canonical enemy kind, from horde units to encounter threats. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Bestiary: Every kind in the game. Several of them never come near you. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP bestiary</h1>
-        <p class="subtag">Every canonical enemy kind, from horde units to encounter threats.</p>
+        <p class="subtag">Every kind in the game. Several of them never come near you.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,12 +469,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Bestiary</span></nav>
     <h2 class="chroma">Bestiary</h2>
-    <p class="lede">Every kind in the game and where it turns up, with behavior and contextual stats only where the canonical runtime contract supports them. For basic and special enemies, health, contact damage and kill XP are starting values; each follows its own runtime scaling clock.</p>
+    <p class="lede">What each kind does to you, and where you first run into it. Health, contact damage and kill XP are opening numbers that climb on three separate clocks while you play, so the sentence on a card outlives the bars underneath it.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit"><b>Every time on this page is minutes of real play.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks. For basic and special enemies, <b>live-run speed is a base, not a final chase speed</b>; timed and per-instance multipliers still apply. <b>Boss and miniboss health, damage, behavior and final chase speed are UNMEASURED.</b> Their director authority is private, multi-stage and mode-dependent, so registry placeholders and partial bases are not published as encounter facts.</p>
+    <p class="womit"><b>Every time on this page is minutes of real play.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks. For basic and special kinds, <b>the speed shown is a starting speed, not how fast the thing ends up chasing you</b>: the run keeps multiplying it, and single instances carry their own multipliers on top. <b>Bosses and minibosses carry no combat numbers here at all.</b> What they have, how hard they hit and how they move is decided while the fight is running, in stages, and differently by mode, so the leftover values sitting in their rows would be a guess wearing the clothes of a fact.</p>
 
 
     <section class="wfeature" aria-labelledby="enemy-scaling-policy">
@@ -529,10 +539,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="basic" id="g-basic">
       <div class="wgroup-h"><h3>Basic</h3><span class="wgroup-n">5</span></div>
-      <p class="wgroup-note">The bulk of a run, and the only tier that can be promoted to an elite. Their listed basic behaviour runs in live combat; individually not the problem, the count is the problem.</p>
+      <p class="wgroup-note">The bulk of a run, and the only tier an elite can be promoted out of. The listed basic behaviour runs in live combat exactly as written, and one of these is never the problem: the count is the problem.</p>
       <div class="wgrid">
       <article class="wcard" id="e-blob" tabindex="-1" data-tier="basic" data-behavior="chaser" data-s-roster="0" data-s-name="blob" data-s-hp="10" data-s-damage="6.8" data-s-xp="3" data-s-speed="4.84">
         <div class="wcard-h">
+
           <h4>Blob</h4>
 
         </div>
@@ -568,6 +579,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-sprinter" tabindex="-1" data-tier="basic" data-behavior="fast" data-s-roster="1" data-s-name="sprinter" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
+
           <h4>Sprinter</h4>
 
         </div>
@@ -603,6 +615,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chonker" tabindex="-1" data-tier="basic" data-behavior="tank" data-s-roster="2" data-s-name="chonker" data-s-hp="38" data-s-damage="13.6" data-s-xp="7" data-s-speed="3.52">
         <div class="wcard-h">
+
           <h4>Chonker</h4>
 
         </div>
@@ -638,6 +651,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-mite" tabindex="-1" data-tier="basic" data-behavior="swarm" data-s-roster="3" data-s-name="mite" data-s-hp="4" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
+
           <h4>Mite</h4>
 
         </div>
@@ -673,6 +687,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-popper" tabindex="-1" data-tier="basic" data-behavior="exploder" data-s-roster="4" data-s-name="popper" data-s-hp="5" data-s-damage="3.4" data-s-xp="4" data-s-speed="5.5">
         <div class="wcard-h">
+
           <h4>Popper</h4>
 
         </div>
@@ -709,10 +724,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="special" id="g-special">
       <div class="wgroup-h"><h3>Special</h3><span class="wgroup-n">33</span></div>
-      <p class="wgroup-note">Kinds that change how a fight works rather than adding to its size. Their listed special behaviour also runs in live combat.</p>
+      <p class="wgroup-note">Kinds that change how a fight works instead of how big it is. Their listed special behaviour also runs in live combat.</p>
       <div class="wgrid">
       <article class="wcard" id="e-spitter" tabindex="-1" data-tier="special" data-behavior="spitter" data-s-roster="5" data-s-name="spitter" data-s-hp="22" data-s-damage="11.9" data-s-xp="4" data-s-speed="6.9336">
         <div class="wcard-h">
+
           <h4>Spitter</h4>
 
         </div>
@@ -748,6 +764,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-charger" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="6" data-s-name="charger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="7.39584">
         <div class="wcard-h">
+
           <h4>Charger</h4>
 
         </div>
@@ -783,6 +800,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-splitter" tabindex="-1" data-tier="special" data-behavior="splitter" data-s-roster="7" data-s-name="splitter" data-s-hp="28" data-s-damage="13.6" data-s-xp="4" data-s-speed="5.2272">
         <div class="wcard-h">
+
           <h4>Splitter</h4>
 
         </div>
@@ -818,6 +836,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-splitterMite" tabindex="-1" data-tier="special" data-behavior="chaser" data-s-roster="8" data-s-name="splitter mite" data-s-hp="17" data-s-damage="4.25" data-s-xp="2" data-s-speed="5.7024">
         <div class="wcard-h">
+
           <h4>Splitter Mite</h4>
 
         </div>
@@ -853,6 +872,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-wraith" tabindex="-1" data-tier="special" data-behavior="wraith" data-s-roster="9" data-s-name="wraith" data-s-hp="26" data-s-damage="17" data-s-xp="5" data-s-speed="6.1776">
         <div class="wcard-h">
+
           <h4>Wraith</h4>
 
         </div>
@@ -888,6 +908,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-sniper" tabindex="-1" data-tier="special" data-behavior="sniper" data-s-roster="10" data-s-name="sniper" data-s-hp="20" data-s-damage="13.6" data-s-xp="5" data-s-speed="4.2768">
         <div class="wcard-h">
+
           <h4>Sniper</h4>
 
         </div>
@@ -923,6 +944,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-wisp" tabindex="-1" data-tier="special" data-behavior="strafer" data-s-roster="11" data-s-name="wisp" data-s-hp="16" data-s-damage="8.5" data-s-xp="3" data-s-speed="7.522956">
         <div class="wcard-h">
+
           <h4>Wisp</h4>
 
         </div>
@@ -958,6 +980,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-leprechaun" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="26" data-s-name="leprechaun" data-s-hp="190" data-s-damage="4.25" data-s-xp="15" data-s-speed="7.1">
         <div class="wcard-h">
+
           <h4>Leprechaun</h4>
 
         </div>
@@ -993,6 +1016,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravecaller" tabindex="-1" data-tier="special" data-behavior="spitter" data-s-roster="27" data-s-name="gravecaller" data-s-hp="24" data-s-damage="13.6" data-s-xp="5" data-s-speed="5.7024">
         <div class="wcard-h">
+
           <h4>Gravecaller</h4>
 
         </div>
@@ -1028,6 +1052,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-cinderWisp" tabindex="-1" data-tier="special" data-behavior="strafer" data-s-roster="28" data-s-name="cinder wisp" data-s-hp="19" data-s-damage="8.5" data-s-xp="4" data-s-speed="8.167738">
         <div class="wcard-h">
+
           <h4>Cinder Wisp</h4>
 
         </div>
@@ -1063,6 +1088,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidSniper" tabindex="-1" data-tier="special" data-behavior="sniper" data-s-roster="29" data-s-name="void sniper" data-s-hp="24" data-s-damage="13.6" data-s-xp="6" data-s-speed="4.0392">
         <div class="wcard-h">
+
           <h4>Void Sniper</h4>
 
         </div>
@@ -1098,6 +1124,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bogHopper" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="30" data-s-name="bog hopper" data-s-hp="28" data-s-damage="18.7" data-s-xp="5" data-s-speed="4.752">
         <div class="wcard-h">
+
           <h4>Bog Hopper</h4>
 
         </div>
@@ -1133,6 +1160,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-mireBeast" tabindex="-1" data-tier="special" data-behavior="tank" data-s-roster="31" data-s-name="mire beast" data-s-hp="46" data-s-damage="20.4" data-s-xp="8" data-s-speed="3.52">
         <div class="wcard-h">
+
           <h4>Mire Beast</h4>
 
         </div>
@@ -1168,6 +1196,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-sinkTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="32" data-s-name="sink tick" data-s-hp="6" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
+
           <h4>Sink Tick</h4>
 
         </div>
@@ -1203,6 +1232,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boneDrifter" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="33" data-s-name="bone drifter" data-s-hp="8" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
+
           <h4>Bone Drifter</h4>
 
         </div>
@@ -1238,6 +1268,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-graveMite" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="34" data-s-name="grave mite" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
+
           <h4>Grave Mite</h4>
 
         </div>
@@ -1273,6 +1304,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-tombWisp" tabindex="-1" data-tier="special" data-behavior="strafer" data-s-roster="35" data-s-name="tomb wisp" data-s-hp="18" data-s-damage="8.5" data-s-xp="4" data-s-speed="7.522956">
         <div class="wcard-h">
+
           <h4>Tomb Wisp</h4>
 
         </div>
@@ -1308,6 +1340,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-emberSparkling" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="36" data-s-name="ember sparkling" data-s-hp="6" data-s-damage="4.25" data-s-xp="4" data-s-speed="8.06031">
         <div class="wcard-h">
+
           <h4>Ember Sparkling</h4>
 
         </div>
@@ -1343,6 +1376,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-cinderMoth" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="37" data-s-name="cinder moth" data-s-hp="4" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.415528">
         <div class="wcard-h">
+
           <h4>Cinder Moth</h4>
 
         </div>
@@ -1378,6 +1412,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-magmaLurch" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="38" data-s-name="magma lurch" data-s-hp="26" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.1776">
         <div class="wcard-h">
+
           <h4>Magma Lurch</h4>
 
         </div>
@@ -1413,6 +1448,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-riftSkitter" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="39" data-s-name="rift skitter" data-s-hp="5" data-s-damage="2.55" data-s-xp="4" data-s-speed="7.57667">
         <div class="wcard-h">
+
           <h4>Rift Skitter</h4>
 
         </div>
@@ -1448,6 +1484,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-phaseBlinker" tabindex="-1" data-tier="special" data-behavior="wraith" data-s-roster="40" data-s-name="phase blinker" data-s-hp="22" data-s-damage="17" data-s-xp="5" data-s-speed="6.47136">
         <div class="wcard-h">
+
           <h4>Phase Blinker</h4>
 
         </div>
@@ -1483,6 +1520,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-voidChaser" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="41" data-s-name="void chaser" data-s-hp="8" data-s-damage="4.25" data-s-xp="4" data-s-speed="7.737919">
         <div class="wcard-h">
+
           <h4>Void Chaser</h4>
 
         </div>
@@ -1518,6 +1556,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-cindersworn" tabindex="-1" data-tier="special" data-behavior="exploder" data-s-roster="42" data-s-name="cindersworn" data-s-hp="6" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.28028">
         <div class="wcard-h">
+
           <h4>Cindersworn</h4>
 
         </div>
@@ -1553,6 +1592,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-brimTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="43" data-s-name="brim tick" data-s-hp="5" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.254279">
         <div class="wcard-h">
+
           <h4>Brim Tick</h4>
 
         </div>
@@ -1588,6 +1628,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-hellstalker" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="44" data-s-name="hellstalker" data-s-hp="36" data-s-damage="18.7" data-s-xp="6" data-s-speed="7.307993">
         <div class="wcard-h">
+
           <h4>Hellstalker</h4>
 
         </div>
@@ -1623,6 +1664,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-duneScarab" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="46" data-s-name="dune scarab" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.630384">
         <div class="wcard-h">
+
           <h4>Dune Scarab</h4>
 
         </div>
@@ -1658,6 +1700,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-dustDevil" tabindex="-1" data-tier="special" data-behavior="chaser" data-s-roster="47" data-s-name="dust devil" data-s-hp="11" data-s-damage="6.8" data-s-xp="3" data-s-speed="7.522956">
         <div class="wcard-h">
+
           <h4>Dust Devil</h4>
 
         </div>
@@ -1693,6 +1736,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-mirageRunner" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="48" data-s-name="mirage runner" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
+
           <h4>Mirage Runner</h4>
 
         </div>
@@ -1728,6 +1772,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-duneStinger" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="49" data-s-name="dune stinger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.9336">
         <div class="wcard-h">
+
           <h4>Dune Stinger</h4>
 
         </div>
@@ -1763,6 +1808,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-skydart" tabindex="-1" data-tier="special" data-behavior="diver" data-s-roster="50" data-s-name="skydart" data-s-hp="8" data-s-damage="6" data-s-xp="4" data-s-speed="7.704">
         <div class="wcard-h">
+
           <h4>Skydart</h4>
 
         </div>
@@ -1798,6 +1844,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-loomer" tabindex="-1" data-tier="special" data-behavior="bomber" data-s-roster="51" data-s-name="loomer" data-s-hp="24" data-s-damage="6.8" data-s-xp="6" data-s-speed="3.74">
         <div class="wcard-h">
+
           <h4>Loomer</h4>
 
         </div>
@@ -1833,6 +1880,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-jumper" tabindex="-1" data-tier="special" data-behavior="jumper" data-s-roster="52" data-s-name="jumper" data-s-hp="16" data-s-damage="7" data-s-xp="4" data-s-speed="7.062">
         <div class="wcard-h">
+
           <h4>Jumper</h4>
 
         </div>
@@ -1869,10 +1917,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="miniboss" id="g-miniboss">
       <div class="wgroup-h"><h3>Minibosses</h3><span class="wgroup-n">5</span></div>
-      <p class="wgroup-note">Bruiser, Warden, Ravager and Harrier are the recurring automatic-cadence pool. The Maw is a separate authored set-piece; it is not another cadence roll. The boss director owns their contextual numbers and movement.</p>
+      <p class="wgroup-note">Bruiser, Warden, Ravager and Harrier are the four that keep coming back on a timer. The Maw is a separate authored set-piece and is not another turn of that timer. None of them arrives with numbers attached: what a miniboss is worth gets decided when it is sent.</p>
       <div class="wgrid">
       <article class="wcard" id="e-bruiser" tabindex="-1" data-tier="miniboss" data-s-roster="12" data-s-name="bruiser"    >
         <div class="wcard-h">
+
           <h4>Bruiser</h4>
 
         </div>
@@ -1908,6 +1957,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-warden" tabindex="-1" data-tier="miniboss" data-s-roster="13" data-s-name="warden"    >
         <div class="wcard-h">
+
           <h4>Warden</h4>
 
         </div>
@@ -1943,6 +1993,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ravager" tabindex="-1" data-tier="miniboss" data-s-roster="14" data-s-name="ravager"    >
         <div class="wcard-h">
+
           <h4>Ravager</h4>
 
         </div>
@@ -1978,6 +2029,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-harrier" tabindex="-1" data-tier="miniboss" data-s-roster="15" data-s-name="harrier"    >
         <div class="wcard-h">
+
           <h4>Harrier</h4>
 
         </div>
@@ -2013,6 +2065,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-maw" tabindex="-1" data-tier="miniboss" data-s-roster="45" data-s-name="the maw"    >
         <div class="wcard-h">
+
           <h4>The Maw</h4>
 
         </div>
@@ -2049,10 +2102,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="boss" id="g-boss">
       <div class="wgroup-h"><h3>Bosses</h3><span class="wgroup-n">10</span></div>
-      <p class="wgroup-note">The run’s punctuation, scheduled per level rather than rolled. Their movement is directed rather than run off the behaviour below.</p>
+      <p class="wgroup-note">Booked into a world at a fixed time rather than rolled for, and driven directly once they arrive. The behaviour names in this roster do not describe how a boss moves.</p>
       <div class="wgrid">
       <article class="wcard" id="e-thistlemaw" tabindex="-1" data-tier="boss" data-s-roster="16" data-s-name="thistlemaw"    >
         <div class="wcard-h">
+
           <h4>Thistlemaw</h4>
 
         </div>
@@ -2088,6 +2142,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ramhorn" tabindex="-1" data-tier="boss" data-s-roster="17" data-s-name="ramhorn"    >
         <div class="wcard-h">
+
           <h4>Ramhorn</h4>
 
         </div>
@@ -2123,6 +2178,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-kingbloom" tabindex="-1" data-tier="boss" data-s-roster="18" data-s-name="king bloom"    >
         <div class="wcard-h">
+
           <h4>King Bloom</h4>
 
         </div>
@@ -2158,6 +2214,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-tidebound" tabindex="-1" data-tier="boss" data-s-roster="19" data-s-name="tidebound colossus"    >
         <div class="wcard-h">
+
           <h4>Tidebound Colossus</h4>
 
         </div>
@@ -2193,6 +2250,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-oilfather" tabindex="-1" data-tier="boss" data-s-roster="20" data-s-name="oilfather"    >
         <div class="wcard-h">
+
           <h4>Oilfather</h4>
 
         </div>
@@ -2228,6 +2286,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-archivist" tabindex="-1" data-tier="boss" data-s-roster="21" data-s-name="the archivist"    >
         <div class="wcard-h">
+
           <h4>The Archivist</h4>
 
         </div>
@@ -2263,6 +2322,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gravemonarch" tabindex="-1" data-tier="boss" data-s-roster="22" data-s-name="the grave monarch"    >
         <div class="wcard-h">
+
           <h4>The Grave Monarch</h4>
 
         </div>
@@ -2298,6 +2358,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-cinderlord" tabindex="-1" data-tier="boss" data-s-roster="23" data-s-name="the cinderlord"    >
         <div class="wcard-h">
+
           <h4>The Cinderlord</h4>
 
         </div>
@@ -2333,6 +2394,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-nullwarden" tabindex="-1" data-tier="boss" data-s-roster="24" data-s-name="the null warden"    >
         <div class="wcard-h">
+
           <h4>The Null Warden</h4>
 
         </div>
@@ -2368,6 +2430,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-disregent" tabindex="-1" data-tier="boss" data-s-roster="25" data-s-name="the regent of dis"    >
         <div class="wcard-h">
+
           <h4>The Regent of Dis</h4>
 
         </div>
@@ -2406,7 +2469,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

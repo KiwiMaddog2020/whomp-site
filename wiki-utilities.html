@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP utility abilities</title>
-<meta name="description" content="Utility abilities: Your F-slot options, costs and cooldowns. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Utility abilities: The F key, and what you put under it. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP utility abilities</h1>
-        <p class="subtag">Your F-slot options, costs and cooldowns.</p>
+        <p class="subtag">The F key, and what you put under it.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Utility abilities</span></nav>
     <h2 class="chroma">Utility abilities</h2>
-    <p class="lede">The utility registry defines the complete selectable F-slot pool. Every current entry is implemented; cards show targeting, availability, gold cost, cooldown and the exact source parameters.</p>
+    <p class="lede">You carry one of these and you press F. Heroic Leap is the one you already have, the other seven cost gold, and every one of them is a cooldown you have to spend at the right moment.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -498,10 +508,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="starter" id="g-starter">
       <div class="wgroup-h"><h3>Starter utility</h3><span class="wgroup-n">1</span></div>
-      <p class="wgroup-note">Selected by the starter id in the shared artifact.</p>
+      <p class="wgroup-note">What you are holding before you buy anything.</p>
       <div class="wgrid">
       <article class="wcard" id="e-leap" tabindex="-1" data-targeting="targeted" data-access="from the start" data-s-roster="0" data-s-name="heroic leap" data-s-cooldown="12000" data-s-cost="0">
         <div class="wcard-h">
+
           <h4>Heroic Leap</h4>
           <span class="wcard-accent" style="background:#6fe3ff"></span>
         </div>
@@ -520,10 +531,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="forge" id="g-forge">
       <div class="wgroup-h"><h3>Unlockable utilities</h3><span class="wgroup-n">7</span></div>
-      <p class="wgroup-note">The remaining implemented utility choices.</p>
+      <p class="wgroup-note">The rest, each with a price on it.</p>
       <div class="wgrid">
       <article class="wcard" id="e-recallRune" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="1" data-s-name="recall rune" data-s-cooldown="18000" data-s-cost="400">
         <div class="wcard-h">
+
           <h4>Recall Rune</h4>
           <span class="wcard-accent" style="background:#b48cff"></span>
         </div>
@@ -541,6 +553,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-secondWind" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="2" data-s-name="second wind" data-s-cooldown="25000" data-s-cost="500">
         <div class="wcard-h">
+
           <h4>Second Wind</h4>
           <span class="wcard-accent" style="background:#66e6a0"></span>
         </div>
@@ -558,6 +571,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-bulwark" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="3" data-s-name="bulwark" data-s-cooldown="30000" data-s-cost="600">
         <div class="wcard-h">
+
           <h4>Bulwark</h4>
           <span class="wcard-accent" style="background:#ffcf5a"></span>
         </div>
@@ -575,6 +589,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-boop" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="4" data-s-name="boop" data-s-cooldown="14000" data-s-cost="400">
         <div class="wcard-h">
+
           <h4>Boop</h4>
           <span class="wcard-accent" style="background:#7dffcf"></span>
         </div>
@@ -592,6 +607,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-hook" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="5" data-s-name="hook" data-s-cooldown="16000" data-s-cost="450">
         <div class="wcard-h">
+
           <h4>Hook</h4>
           <span class="wcard-accent" style="background:#ff8c65"></span>
         </div>
@@ -609,6 +625,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-stasis" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="6" data-s-name="stasis" data-s-cooldown="26000" data-s-cost="700">
         <div class="wcard-h">
+
           <h4>Stasis</h4>
           <span class="wcard-accent" style="background:#9de8ff"></span>
         </div>
@@ -626,6 +643,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-chasm" tabindex="-1" data-targeting="targeted" data-access="unlockable" data-s-roster="7" data-s-name="chasm" data-s-cooldown="22000" data-s-cost="750">
         <div class="wcard-h">
+
           <h4>Chasm</h4>
           <span class="wcard-accent" style="background:#281326"></span>
         </div>
@@ -646,7 +664,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

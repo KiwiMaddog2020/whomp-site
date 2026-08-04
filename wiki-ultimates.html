@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP Ultimate</title>
-<meta name="description" content="WHOMP Ultimate: The player-held Q-slot ability. Armed from the start in standard player runs. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="WHOMP Ultimate: One ability, held on Q. Armed from the first second of a normal run. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP Ultimate</h1>
-        <p class="subtag">The player-held Q-slot ability. Armed from the start in standard player runs.</p>
+        <p class="subtag">One ability, held on Q. Armed from the first second of a normal run.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,7 +469,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">WHOMP Ultimate</span></nav>
     <h2 class="chroma">WHOMP Ultimate</h2>
-    <p class="lede">The complete canonical ultimate registry and the runtime semantics that define how the player holds and activates it.</p>
+    <p class="lede">There is exactly one ultimate and the player is the one holding it. Armed from the first second of a normal run, it comes down on Q, and the cooldown printed here is the number the game starts from before anything you are carrying cuts into it.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
@@ -468,7 +478,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
     <section class="wfeature" aria-labelledby="ultimate-runtime">
-      <div><span class="eyebrow">Canonical runtime semantics</span><h3 id="ultimate-runtime">A player-held Q-slot ability</h3></div>
+      <div><span class="eyebrow">What the game promises about it</span><h3 id="ultimate-runtime">Who holds it, and when it is ready</h3></div>
       <ul><li>The held ultimate is a player ability activated from the Q slot.</li><li>When requiresBossKill is false, standard campaign runs, headless runs, and co-op player seats arm the WHOMP at construction; later boss-kill offers are inert re-offers.</li><li>The hub preview arms the WHOMP independently. Duel kits and automated bot kits apply their own loadout policy, so fromRunStart is scoped to standard player runs rather than every synthetic combat context.</li><li>Bosses and minibosses react to a player-fired WHOMP; that reaction does not make the WHOMP a boss ability.</li><li>The displayed cooldown is the registry base. Runtime scales it by player cooldown and whompCooldownMult.</li></ul>
       <details class="wraw"><summary>Ultimate availability contract <span>3</span></summary><dl><div><dt><code>scope</code></dt><dd>standard-player-run</dd></div><div><dt><code>fromRunStart</code></dt><dd>true</dd></div><div><dt><code>requiresBossKill</code></dt><dd>false</dd></div></dl></details>
       <details class="wraw"><summary>Ultimate runtime provenance <span>11</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/ultimates.ts#ULTIMATES</dd></div><div><dt><code>ownershipAndSlot</code></dt><dd>src/data/ultimates.ts#ULTIMATE_RUNTIME</dd></div><div><dt><code>activation</code></dt><dd>src/sim/ultimates.ts#Ultimates</dd></div><div><dt><code>availabilityGate</code></dt><dd>src/data/ultimates.ts#WHOMP_REQUIRES_BOSS_KILL</dd></div><div><dt><code>campaignRunStart</code></dt><dd>src/engine.ts#Ultimates.offer(WHOMP_ID)</dd></div><div><dt><code>headlessRunStart</code></dt><dd>src/dev/headlessSim.ts#Ultimates.offer(WHOMP_ID)</dd></div><div><dt><code>coopRunStart</code></dt><dd>src/coop/seatFactory.ts#Ultimates.offer(WHOMP_ID)</dd></div><div><dt><code>hubPreview</code></dt><dd>src/hub/hub.ts#Hub.resetHubAbilityRuntimes</dd></div><div><dt><code>duelKitPolicy</code></dt><dd>src/battle/duelSim.ts#KitSnapshot.ultimateId-&gt;Ultimates.offer</dd></div><div><dt><code>botKitPolicy</code></dt><dd>src/sim/botKit.ts#buildBotKit</dd></div><div><dt><code>bossReaction</code></dt><dd>src/sim/bosses.ts#whompSlam</dd></div></dl></details>
@@ -484,23 +494,24 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Player ultimate ability</h3><span class="wgroup-n">1</span></div>
-      <p class="wgroup-note">Every registered player-held Q-slot ultimate.</p>
+      <p class="wgroup-note">Every ultimate the player can hold. There is one of them.</p>
       <div class="wgrid">
       <article class="wcard" id="e-whomp" tabindex="-1"  data-s-roster="0">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⬤</span>
           <h4>The Whomp</h4>
 
         </div>
 
 
-      <div class="wtags"><span class="wtag ink-cyan">Player ability</span><span class="wtag ink-violet">Q slot</span><span class="wtag ink-gold">Armed from the start in standard player runs</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Player ability</span><span class="wtag ink-violet">Q slot</span><span class="wtag ink-gold">Armed from the first second of a normal run</span></div>
       <p class="wdesc">You come down like a verdict. Everything nearby reconsiders.</p>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Owner</span><span class="wfact-v"><b>Player</b></span></div>
         <div class="wfact"><span class="wfact-k">Input slot</span><span class="wfact-v"><b>Q</b></span></div>
-        <div class="wfact"><span class="wfact-k">Availability</span><span class="wfact-v"><b>Armed from the start in standard player runs</b> · no boss kill required</span></div>
-        <div class="wfact"><span class="wfact-k">Availability scope</span><span class="wfact-v"><b>Standard player run</b></span></div>
-        <div class="wfact"><span class="wfact-k">Registry base cooldown</span><span class="wfact-v"><b>50 seconds</b></span></div>
+        <div class="wfact"><span class="wfact-k">Availability</span><span class="wfact-v"><b>Armed from the first second of a normal run</b> · no boss kill required</span></div>
+        <div class="wfact"><span class="wfact-k">Applies to</span><span class="wfact-v"><b>Standard player run</b></span></div>
+        <div class="wfact"><span class="wfact-k">Base cooldown</span><span class="wfact-v"><b>50 seconds</b>, before your own gear touches it</span></div>
       </div>
       <details class="wraw"><summary>Source parameters <span>4</span></summary><dl><div><dt><code>radius</code></dt><dd>12</dd></div><div><dt><code>damage</code></dt><dd>120</dd></div><div><dt><code>knockback</code></dt><dd>18</dd></div><div><dt><code>trashStunMs</code></dt><dd>1200</dd></div></dl></details>
 
@@ -510,7 +521,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

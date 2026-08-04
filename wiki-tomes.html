@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html" class="is-here" aria-current="page">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,12 +469,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Tomes</span></nav>
     <h2 class="chroma">Tomes</h2>
-    <p class="lede">Tomes level a named player stat. Every card shows the registry description, exact per-level payload, maximum level, unlock route and any weapon evolution recipe that requires it.</p>
+    <p class="lede">A tome raises one number and keeps raising it every time you take it again. Nothing here fires, aims or lands: this is the half of a build that quietly makes the other half bigger, and eight of them are also the key to a weapon end form.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit">There is no tome tier letter here. The measurement artifact says a tome is a delta against a reference build, and that reference has not been chosen or measured. A made-up order would turn complete source data into an unsupported claim.</p>
+    <p class="womit"><b>No tome has a letter grade here.</b> A tome is worth whatever the build around it is worth, and nobody has picked the build to measure it against yet, so putting these in order would be inventing a fact rather than reporting one. What each level actually adds is on the card, and you can do the comparing.</p>
 
 
 
@@ -498,10 +508,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="start" id="g-start">
       <div class="wgroup-h"><h3>Available from the start</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">In the tome pool on a fresh save.</p>
+      <p class="wgroup-note">Offered from the first run, before you have earned anything.</p>
       <div class="wgrid">
       <article class="wcard" id="e-critTome" tabindex="-1" data-access="from the start" data-stat="critChance" data-s-roster="0" data-s-name="tome of precision" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Precision</h4>
 
         </div>
@@ -522,6 +533,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-xpTome" tabindex="-1" data-access="from the start" data-stat="xpGain" data-s-roster="1" data-s-name="tome of wisdom" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Wisdom</h4>
 
         </div>
@@ -542,6 +554,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-speedTome" tabindex="-1" data-access="from the start" data-stat="moveSpeed" data-s-roster="2" data-s-name="tome of swiftness" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Swiftness</h4>
 
         </div>
@@ -562,6 +575,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-powerTome" tabindex="-1" data-access="from the start" data-stat="damage" data-s-roster="3" data-s-name="tome of power" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Power</h4>
 
         </div>
@@ -582,6 +596,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-attackSpeedTome" tabindex="-1" data-access="from the start" data-stat="attackSpeed" data-s-roster="5" data-s-name="tome of haste" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Haste</h4>
 
         </div>
@@ -602,6 +617,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-vitalityTome" tabindex="-1" data-access="from the start" data-stat="maxHp" data-s-roster="6" data-s-name="tome of vitality" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Vitality</h4>
 
         </div>
@@ -622,6 +638,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-regenTome" tabindex="-1" data-access="from the start" data-stat="regen" data-s-roster="7" data-s-name="tome of recovery" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Recovery</h4>
 
         </div>
@@ -642,6 +659,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-armorTome" tabindex="-1" data-access="from the start" data-stat="armor" data-s-roster="8" data-s-name="tome of iron" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Iron</h4>
 
         </div>
@@ -663,10 +681,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="milestone" id="g-milestone">
       <div class="wgroup-h"><h3>Campaign milestone unlock</h3><span class="wgroup-n">1</span></div>
-      <p class="wgroup-note">Permanently joins future draft pools after the canonical signature-boss milestone.</p>
+      <p class="wgroup-note">Arrives when the campaign hits its signature-boss milestone, and stays in the pool afterwards.</p>
       <div class="wgrid">
       <article class="wcard" id="e-aegisTome" tabindex="-1" data-access="signature-boss milestone" data-stat="shieldCapacity" data-s-roster="16" data-s-name="tome of the aegis" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of the Aegis</h4>
 
         </div>
@@ -688,10 +707,11 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="earned" id="g-earned">
       <div class="wgroup-h"><h3>Achievement unlocks</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">Each card links to the achievement that adds it.</p>
+      <p class="wgroup-note">Locked until you do the thing. The achievement that opens each one is on its card.</p>
       <div class="wgrid">
       <article class="wcard" id="e-luckTome" tabindex="-1" data-access="achievement" data-stat="luck" data-s-roster="4" data-s-name="tome of fortune" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Fortune</h4>
 
         </div>
@@ -712,6 +732,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-lifestealTome" tabindex="-1" data-access="achievement" data-stat="lifesteal" data-s-roster="9" data-s-name="tome of vampirism" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Vampirism</h4>
 
         </div>
@@ -732,6 +753,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-critDamageTome" tabindex="-1" data-access="achievement" data-stat="critDamage" data-s-roster="10" data-s-name="tome of lethality" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Lethality</h4>
 
         </div>
@@ -752,6 +774,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-sizeTome" tabindex="-1" data-access="achievement" data-stat="size" data-s-roster="11" data-s-name="tome of magnitude" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Magnitude</h4>
 
         </div>
@@ -772,6 +795,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-persistTome" tabindex="-1" data-access="achievement" data-stat="duration" data-s-roster="12" data-s-name="tome of persistence" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Persistence</h4>
 
         </div>
@@ -792,6 +816,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-velocityTome" tabindex="-1" data-access="achievement" data-stat="projectileSpeed" data-s-roster="13" data-s-name="tome of velocity" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Velocity</h4>
 
         </div>
@@ -812,6 +837,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-midasTome" tabindex="-1" data-access="achievement" data-stat="gold" data-s-roster="14" data-s-name="tome of riches" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Riches</h4>
 
         </div>
@@ -832,6 +858,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-retributionTome" tabindex="-1" data-access="achievement" data-stat="thorns" data-s-roster="15" data-s-name="tome of thorns" data-s-levels="20">
         <div class="wcard-h">
+
           <h4>Tome of Thorns</h4>
 
         </div>
@@ -855,7 +882,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

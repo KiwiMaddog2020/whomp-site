@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -495,6 +505,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgrid">
       <article class="wcard" id="e-classic" tabindex="-1" data-access="from the start" data-s-roster="0" data-s-name="classic">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.12)">👻</span>
           <h4>Classic</h4>
           <span class="wcard-accent" style="background:#ffffff"></span>
         </div>
@@ -519,6 +530,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wgrid">
       <article class="wcard" id="e-shades" tabindex="-1" data-access="achievement" data-s-roster="1" data-s-name="shades">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🕶️</span>
           <h4>Shades</h4>
           <span class="wcard-accent" style="background:#121522"></span>
         </div>
@@ -538,6 +550,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-mossy" tabindex="-1" data-access="achievement" data-s-roster="2" data-s-name="mossy">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(240,139,93,0.45);background:rgba(240,139,93,0.12)">🍄</span>
           <h4>Mossy</h4>
           <span class="wcard-accent" style="background:#f08b5d"></span>
         </div>
@@ -557,6 +570,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-skully" tabindex="-1" data-access="achievement" data-s-roster="3" data-s-name="skully">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💀</span>
           <h4>Skully</h4>
           <span class="wcard-accent" style="background:#3a3348"></span>
         </div>
@@ -576,6 +590,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-blazer" tabindex="-1" data-access="achievement" data-s-roster="4" data-s-name="blazer">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,237,79,0.45);background:rgba(255,237,79,0.12)">🔥</span>
           <h4>Blazer</h4>
           <span class="wcard-accent" style="background:#ffed4f"></span>
         </div>
@@ -595,6 +610,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-cosmic" tabindex="-1" data-access="achievement" data-s-roster="5" data-s-name="cosmic">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,123,200,0.45);background:rgba(255,123,200,0.12)">🌌</span>
           <h4>Cosmic</h4>
           <span class="wcard-accent" style="background:#ff7bc8"></span>
         </div>
@@ -614,6 +630,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-captain" tabindex="-1" data-access="achievement" data-s-roster="6" data-s-name="captain">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(255,210,105,0.45);background:rgba(255,210,105,0.12)">⚓</span>
           <h4>Captain</h4>
           <span class="wcard-accent" style="background:#ffd269"></span>
         </div>
@@ -633,6 +650,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-demon" tabindex="-1" data-access="achievement" data-s-roster="7" data-s-name="demon">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">😈</span>
           <h4>Demon</h4>
           <span class="wcard-accent" style="background:#281326"></span>
         </div>
@@ -652,6 +670,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-legend" tabindex="-1" data-access="achievement" data-s-roster="8" data-s-name="legend">
         <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true" style="border-color:rgba(155,80,255,0.45);background:rgba(155,80,255,0.12)">👑</span>
           <h4>Legend</h4>
           <span class="wcard-accent" style="background:#9b50ff"></span>
         </div>
@@ -674,7 +693,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

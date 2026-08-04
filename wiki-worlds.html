@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP campaign worlds</title>
-<meta name="description" content="Campaign worlds: Arenas, unlock chain, authored tables and cadence evidence. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Campaign worlds: The campaign, in the order it lets you have it. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP campaign worlds</h1>
-        <p class="subtag">Arenas, unlock chain, authored tables and cadence evidence.</p>
+        <p class="subtag">The campaign, in the order it lets you have it.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,12 +469,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Campaign worlds</span></nav>
     <h2 class="chroma">Campaign worlds</h2>
-    <p class="lede">Every campaign world card joins its authored identity to tuning, surfaces, fixtures, unlock relation, spawn table, authored signature-boss slots and recovered ship core. The shared encounter contract adds automatic-miniboss interval and reservation evidence without inventing identity or exact spawn time.</p>
+    <p class="lede">Each world names itself in one line, and that line is usually the honest summary. Underneath it is everything the line leaves out: what spawns there and when, which bosses are already booked, what the ground is made of, and which world you have to get through to reach it.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit"><b>These surfaces do not form an exact encounter timeline.</b> The per-world tables publish authored rows; the cadence contract publishes an interval and reservation rule while explicitly withholding automatic-miniboss identity and actual spawn time. Authored schedule times are converted only while the shared pace scale is valid. The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks.</p>
+    <p class="womit"><b>The boss slots are booked, the minibosses are not.</b> Each world was written with the rows and the signature-boss times you see on its card. The automatic minibosses run to an interval laid over all of that, so the game will tell you how often one is due and never which one or exactly when. Authored times became real minutes only where the shared pace scale holds. The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks.</p>
 
 
     <section class="wfeature" aria-labelledby="campaign-encounter-schedule">
@@ -512,10 +522,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="campaign" id="g-campaign">
       <div class="wgroup-h"><h3>Campaign route</h3><span class="wgroup-n">10</span></div>
-      <p class="wgroup-note">World ids named by the canonical campaign list.</p>
+      <p class="wgroup-note">The chain the game walks you along, in order.</p>
       <div class="wgrid">
       <article class="wcard" id="e-meadow" tabindex="-1" data-access="from the start" data-water="present" data-oil="absent" data-s-roster="0" data-s-name="neon meadow" data-s-hp="1" data-s-pressure="1">
         <div class="wcard-h">
+
           <h4>Neon Meadow</h4>
           <span class="wcard-accent" style="background:#6dffb0"></span>
         </div>
@@ -541,6 +552,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-marsh" tabindex="-1" data-access="from the start" data-water="present" data-oil="absent" data-s-roster="1" data-s-name="gloom marsh" data-s-hp="1.15" data-s-pressure="1">
         <div class="wcard-h">
+
           <h4>Gloom Marsh</h4>
           <span class="wcard-accent" style="background:#42e0a8"></span>
         </div>
@@ -566,6 +578,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-desert" tabindex="-1" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="2" data-s-name="scorchdune" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
+
           <h4>Scorchdune</h4>
           <span class="wcard-accent" style="background:#f5c542"></span>
         </div>
@@ -591,6 +604,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-necropolis" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="3" data-s-name="neon necropolis" data-s-hp="1" data-s-pressure="1.1">
         <div class="wcard-h">
+
           <h4>Neon Necropolis</h4>
           <span class="wcard-accent" style="background:#9d7bff"></span>
         </div>
@@ -616,6 +630,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-ember" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="4" data-s-name="ember wastes" data-s-hp="0.9" data-s-pressure="1">
         <div class="wcard-h">
+
           <h4>Ember Wastes</h4>
           <span class="wcard-accent" style="background:#ff8033"></span>
         </div>
@@ -641,6 +656,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-rift" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="5" data-s-name="void rift" data-s-hp="1.2" data-s-pressure="1.1">
         <div class="wcard-h">
+
           <h4>Void Rift</h4>
           <span class="wcard-accent" style="background:#d43cff"></span>
         </div>
@@ -666,6 +682,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-inferno" tabindex="-1" data-access="unlockable" data-water="present" data-oil="present" data-s-roster="6" data-s-name="hellmouth" data-s-hp="1.25" data-s-pressure="1.12">
         <div class="wcard-h">
+
           <h4>Hellmouth</h4>
           <span class="wcard-accent" style="background:#ff3316"></span>
         </div>
@@ -691,6 +708,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-glimmerOrchard" tabindex="-1" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="7" data-s-name="glimmer orchard" data-s-hp="1" data-s-pressure="1">
         <div class="wcard-h">
+
           <h4>Glimmer Orchard</h4>
           <span class="wcard-accent" style="background:#f3a8bd"></span>
         </div>
@@ -716,6 +734,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-suncoastShallows" tabindex="-1" data-access="unlockable" data-water="present" data-oil="absent" data-s-roster="8" data-s-name="mirage flats" data-s-hp="1" data-s-pressure="1">
         <div class="wcard-h">
+
           <h4>Mirage Flats</h4>
           <span class="wcard-accent" style="background:#39cfd0"></span>
         </div>
@@ -741,6 +760,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-gildedCanyon" tabindex="-1" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="9" data-s-name="gilded canyon" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
+
           <h4>Gilded Canyon</h4>
           <span class="wcard-accent" style="background:#e6a64f"></span>
         </div>
@@ -766,11 +786,12 @@ footer a{color:var(--cyan);text-decoration:none}
       </article></div>
     </section>
     <section class="wgroup" data-group="additional" id="g-additional">
-      <div class="wgroup-h"><h3>Additional campaign worlds</h3><span class="wgroup-n">2</span></div>
-      <p class="wgroup-note">Registered campaign worlds outside the primary campaign id list.</p>
+      <div class="wgroup-h"><h3>Additional worlds</h3><span class="wgroup-n">2</span></div>
+      <p class="wgroup-note">Built, registered and playable, and not on that chain.</p>
       <div class="wgrid">
       <article class="wcard" id="e-frostreachPines" tabindex="-1" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="10" data-s-name="frostreach pines" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
+
           <h4>Frostreach Pines</h4>
           <span class="wcard-accent" style="background:#9fd8f0"></span>
         </div>
@@ -796,6 +817,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-shiverpeakSummit" tabindex="-1" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="11" data-s-name="shiverpeak summit" data-s-hp="1.1" data-s-pressure="1.05">
         <div class="wcard-h">
+
           <h4>Shiverpeak Summit</h4>
           <span class="wcard-accent" style="background:#5f93b4"></span>
         </div>
@@ -824,7 +846,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

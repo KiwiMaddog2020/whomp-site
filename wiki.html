@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -487,13 +497,13 @@ footer a{color:var(--cyan);text-decoration:none}
           </a>
           <a class="whubcard" href="wiki-tiers.html">
             <span class="n">33 weapons · 83 evidence rows</span>
-            <h3>Automatic-weapon sim tiers</h3>
-            <p>2 controlled simulation fixtures, with sample and spread attached.</p>
+            <h3>Automatic weapons, measured</h3>
+            <p>Two lab tests, run over and over, with the spread left in.</p>
           </a>
           <a class="whubcard" href="wiki-builds.html">
             <span class="n">300 controlled pairs · 4 search paths</span>
-            <h3>Automatic-weapon sim loadouts</h3>
-            <p>Every controlled pair and the greedy loadout paths the fixture found.</p>
+            <h3>Automatic weapons in pairs</h3>
+            <p>What two weapons do together, against what they do apart.</p>
           </a>
           <a class="whubcard" href="wiki-tomes.html">
             <span class="n">17 entries</span>
@@ -503,42 +513,42 @@ footer a{color:var(--cyan);text-decoration:none}
           <a class="whubcard" href="wiki-relics.html">
             <span class="n">36 entries</span>
             <h3>Relics</h3>
-            <p>Stackable finds, with every trade written down.</p>
+            <p>Small things you pick up, and keep picking up.</p>
           </a>
           <a class="whubcard" href="wiki-legendaries.html">
             <span class="n">17 entries</span>
             <h3>Legendary upgrades</h3>
-            <p>Run-defining effects with their real payload attached.</p>
+            <p>A run holds four of the 17.</p>
           </a>
           <a class="whubcard" href="wiki-blessings.html">
             <span class="n">20 entries</span>
             <h3>Shrine blessings</h3>
-            <p>20 authored blessing options in the shrine's blessing-trio portion.</p>
+            <p>The three a shrine puts in front of you.</p>
           </a>
           <a class="whubcard" href="wiki-shrine-movement.html">
             <span class="n">5 entries</span>
             <h3>Shrine movement</h3>
-            <p>5 live movement offerings from activated world shrines.</p>
+            <p>The five ways a shrine changes how you move.</p>
           </a>
           <a class="whubcard" href="wiki-utilities.html">
             <span class="n">8 entries</span>
             <h3>Utility abilities</h3>
-            <p>Your F-slot options, costs and cooldowns.</p>
+            <p>The F key, and what you put under it.</p>
           </a>
           <a class="whubcard" href="wiki-ultimates.html">
             <span class="n">1 entry</span>
             <h3>WHOMP Ultimate</h3>
-            <p>The player-held Q-slot ability. Armed from the start in standard player runs.</p>
+            <p>One ability, held on Q. Armed from the first second of a normal run.</p>
           </a>
           <a class="whubcard" href="wiki-evolutions.html">
             <span class="n">8 entries</span>
             <h3>Evolution recipes</h3>
-            <p>Every base weapon, tome and terminal form.</p>
+            <p>Eight recipes, each one the end of a weapon.</p>
           </a>
           <a class="whubcard" href="wiki-jump-augments.html">
             <span class="n">2 entries</span>
             <h3>Legacy jump augment aliases</h3>
-            <p>2 legacy card/progression aliases linked to live Shrine movement offerings.</p>
+            <p>Two old names for offerings that live somewhere else now.</p>
           </a></div>
       </section><section class="whubsection" id="section-heroes">
         <div class="whubsection-h"><h3>Heroes</h3><span>3 guides</span></div>
@@ -546,7 +556,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <a class="whubcard" href="wiki-characters.html">
             <span class="n">11 entries</span>
             <h3>Characters</h3>
-            <p>Loadout suggestions and source-authored identity inputs.</p>
+            <p>Who you start as, before the run starts rewriting it.</p>
           </a>
           <a class="whubcard" href="wiki-innates.html">
             <span class="n">11 entries</span>
@@ -556,7 +566,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <a class="whubcard" href="wiki-signatures.html">
             <span class="n">11 entries</span>
             <h3>Signatures</h3>
-            <p>The R-slot move that defines each character.</p>
+            <p>One move bound to R, and then the wait.</p>
           </a></div>
       </section><section class="whubsection" id="section-world">
         <div class="whubsection-h"><h3>World</h3><span>6 guides</span></div>
@@ -564,32 +574,32 @@ footer a{color:var(--cyan);text-decoration:none}
           <a class="whubcard" href="wiki-bestiary.html">
             <span class="n">53 entries</span>
             <h3>Bestiary</h3>
-            <p>Every canonical enemy kind, from horde units to encounter threats.</p>
+            <p>Every kind in the game. Several of them never come near you.</p>
           </a>
           <a class="whubcard" href="wiki-worlds.html">
             <span class="n">12 entries</span>
             <h3>Campaign worlds</h3>
-            <p>Arenas, unlock chain, authored tables and cadence evidence.</p>
+            <p>The campaign, in the order it lets you have it.</p>
           </a>
           <a class="whubcard" href="wiki-expeditions.html">
             <span class="n">2 entries</span>
             <h3>Expeditions</h3>
-            <p>Standalone arenas with authored tables and cadence evidence.</p>
+            <p>Arenas that sit outside the campaign entirely.</p>
           </a>
           <a class="whubcard" href="wiki-modes.html">
             <span class="n">2 entries</span>
             <h3>Run modes</h3>
-            <p>The pacing and movement profiles a run actually reads.</p>
+            <p>The clock and the handling a whole run is played on.</p>
           </a>
           <a class="whubcard" href="wiki-world-events.html">
             <span class="n">3 entries</span>
             <h3>Rare world events</h3>
-            <p>The discoverable event pool and its exact world allow-lists.</p>
+            <p>Placed before you arrive, and found only by walking into them.</p>
           </a>
           <a class="whubcard" href="wiki-ambient-events.html">
             <span class="n">14 entries</span>
             <h3>Ambient events</h3>
-            <p>The exact event and theme placements registered per world.</p>
+            <p>The things a world does whether or not you are watching.</p>
           </a></div>
       </section><section class="whubsection" id="section-progression">
         <div class="whubsection-h"><h3>Progression</h3><span>6 guides</span></div>
@@ -597,32 +607,32 @@ footer a{color:var(--cyan);text-decoration:none}
           <a class="whubcard" href="wiki-achievements.html">
             <span class="n">26 entries</span>
             <h3>Achievements</h3>
-            <p>Every goal and every payload it unlocks.</p>
+            <p>What the game counts, and what it pays out for.</p>
           </a>
           <a class="whubcard" href="wiki-quests.html">
             <span class="n">24 quests · 7 chains · 7 titles</span>
             <h3>Quests and rewards</h3>
-            <p>Every chain, objective, giver, response and validated reward.</p>
+            <p>One ask at a time, from somebody who wants something specific.</p>
           </a>
           <a class="whubcard" href="wiki-shop.html">
             <span class="n">23 upgrades · 89 ranks · 5935g all-in</span>
-            <h3>Meta shop</h3>
-            <p>Every permanent upgrade, rank price, tier and gate.</p>
+            <h3>Shop</h3>
+            <p>Every rank you buy stays bought.</p>
           </a>
           <a class="whubcard" href="wiki-ship-cores.html">
             <span class="n">10 entries</span>
             <h3>Ship cores</h3>
-            <p>Recovered systems, tied back to their worlds.</p>
+            <p>10 pieces of your ship, and a world is sitting on each one.</p>
           </a>
           <a class="whubcard" href="wiki-ship-systems.html">
             <span class="n">10 sockets · 4 rebuild tiers</span>
             <h3>Ship systems</h3>
-            <p>Every socket, its core and the complete rebuild ladder.</p>
+            <p>One socket per core, and what the ship looks like as they fill.</p>
           </a>
           <a class="whubcard" href="wiki-ship-fragments.html">
             <span class="n">3 entries</span>
             <h3>Ship fragments</h3>
-            <p>The route pieces scattered beyond the core recoveries.</p>
+            <p>3 pieces of the ship that never made it to the wreck.</p>
           </a></div>
       </section><section class="whubsection" id="section-collection">
         <div class="whubsection-h"><h3>Collection</h3><span>2 guides</span></div>
@@ -630,7 +640,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <a class="whubcard" href="wiki-wearables.html">
             <span class="n">13 entries</span>
             <h3>Wearables</h3>
-            <p>Cosmetic pieces, anchors and trail behavior.</p>
+            <p>What the village hands you for doing it a favour.</p>
           </a>
           <a class="whubcard" href="wiki-cosmetics.html">
             <span class="n">9 entries</span>
@@ -642,7 +652,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from the three verified artifacts <code>data/game-data.json</code>, <code>data/tier-rankings.json</code>, and <code>data/wiki-visuals.json</code>.
   <a href="log.html#views">Dev log</a>
 </footer>

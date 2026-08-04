@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP expeditions</title>
-<meta name="description" content="Expeditions: Standalone arenas with authored tables and cadence evidence. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Expeditions: Arenas that sit outside the campaign entirely. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -205,8 +205,18 @@ html,body{max-width:100%;overflow-x:hidden}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
 .wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wcard-h h4{margin:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
 .wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
 .wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
 .wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
 .wvisual-runtime-render img{width:min(256px,100%)}
@@ -365,7 +375,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP expeditions</h1>
-        <p class="subtag">Standalone arenas with authored tables and cadence evidence.</p>
+        <p class="subtag">Arenas that sit outside the campaign entirely.</p>
       </span>
     </a>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
@@ -400,8 +410,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
         <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
-        <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
+        <a href="wiki-tiers.html">Automatic weapons, measured</a>
+        <a href="wiki-builds.html">Automatic weapons in pairs</a>
         <a href="wiki-tomes.html">Tomes</a>
         <a href="wiki-relics.html">Relics</a>
         <a href="wiki-legendaries.html">Legendary upgrades</a>
@@ -437,7 +447,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wside-links">
         <a href="wiki-achievements.html">Achievements</a>
         <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Meta shop</a>
+        <a href="wiki-shop.html">Shop</a>
         <a href="wiki-ship-cores.html">Ship cores</a>
         <a href="wiki-ship-systems.html">Ship systems</a>
         <a href="wiki-ship-fragments.html">Ship fragments</a>
@@ -459,12 +469,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Expeditions</span></nav>
     <h2 class="chroma">Expeditions</h2>
-    <p class="lede">Expeditions use the same canonical level shape as campaign worlds but sit in their own source domain. Every authored spawn, signature boss, fixture, surface and tuning multiplier is shown alongside the limited automatic-miniboss cadence contract.</p>
+    <p class="lede">An expedition is built like a campaign world and connected to none of it. Nothing unlocks it, nothing follows it and no ship core comes out of it, so the only reason to go is that you wanted to.</p>
 
     <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit"><b>These surfaces do not form an exact encounter timeline.</b> The per-expedition tables publish authored rows; the cadence contract publishes an interval and reservation rule while explicitly withholding automatic-miniboss identity and actual spawn time. Authored schedule times are converted only while the shared pace scale is valid. The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks.</p>
+    <p class="womit"><b>Nothing on this page is progression.</b> An expedition unlocks nothing and is unlocked by nothing, so a card here is only ever the arena itself. Its rows and its signature-boss times were written by hand the same way a world is, and the automatic minibosses laid over them are the same unpublished interval: how often, never which one and never when. The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks.</p>
 
 
     <section class="wfeature" aria-labelledby="expedition-encounter-schedule">
@@ -491,10 +501,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
       <div class="wgroup-h"><h3>Expedition roster</h3><span class="wgroup-n">2</span></div>
-      <p class="wgroup-note">Every registered expedition.</p>
+      <p class="wgroup-note">Every expedition there is, in the order the game lists them.</p>
       <div class="wgrid">
       <article class="wcard" id="e-meadowfall" tabindex="-1" data-access="from the start" data-s-roster="0" data-s-name="meadowfall">
         <div class="wcard-h">
+
           <h4>Meadowfall</h4>
 
         </div>
@@ -520,6 +531,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article>
       <article class="wcard" id="e-sunkenSteps" tabindex="-1" data-access="from the start" data-s-roster="1" data-s-name="sunken sands">
         <div class="wcard-h">
+
           <h4>Sunken Sands</h4>
 
         </div>
@@ -548,7 +560,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
+  Generated 2026-08-04 19:27 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
