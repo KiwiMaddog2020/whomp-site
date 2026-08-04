@@ -637,14 +637,17 @@ for (const roster of rosters) {
           requireThat(card.includes(`${esc(visualOutputPath(variant.path))} ${variant.width}w`),
             `${file}#e-${entry.id} omits responsive variant ${variant.label}`);
         }
-        requireThat(/\bsizes="[^"]+"/.test(card) && card.includes('Isolated production render')
-          && card.includes('not an in-game screenshot or live-world lighting')
+        // Same four disclosures as before the voice pass, in plain words: the
+        // render is isolated, it is not live play, and the artifact's own
+        // limitation string is reproduced verbatim rather than paraphrased.
+        requireThat(/\bsizes="[^"]+"/.test(card) && card.includes('The game drew this on its own, alone')
+          && card.includes('It is not a screenshot, and it is not how it looks in a live world')
           && card.includes(esc(visual.renderContext.limitation)),
         `${file}#e-${entry.id} does not disclose its isolated neutral render context and limitation`);
-        requireThat(card.includes('<b>Canonical runtime render</b>') && !/<b>Canonical[^<]*(?:sprite|screenshot)/i.test(card),
+        requireThat(card.includes('<b>Drawn by the game</b>') && !/<b>[^<]*(?:sprite|screenshot)/i.test(card),
           `${file}#e-${entry.id} mislabels a deterministic runtime render as a sprite or screenshot`);
         const expectedCameraView = roster.domain === 'wearables' && D.domains.wearables.entries[entry.id]?.trails === true ? 'rear' : 'front';
-        requireThat(card.includes(`bounds-fit ${expectedCameraView} camera`),
+        requireThat(card.includes(`seen from the ${expectedCameraView}`),
           `${file}#e-${entry.id} hides or mislabels its ${expectedCameraView} presentation camera`);
         if (expectedCameraView === 'rear') {
           requireThat(/\brear\b/i.test(visual.alt.text) && /\brear\b/i.test(visual.renderContext.limitation)

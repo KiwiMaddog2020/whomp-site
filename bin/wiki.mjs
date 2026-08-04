@@ -173,7 +173,7 @@ const PATTERN_NOTE = {
   meteor: { _: 'Paints a shadow on the ground, then drops a strike into it a moment later. You are hitting a place, not a target.' },
   chain: {
     _: 'Hits one enemy at full damage, then jumps to the nearest one it has not hit yet, each jump landing a flat share of the first.',
-    daggers: 'Strikes the nearest few enemies to YOU at full damage each. It does not hop between them, so it does not care how they are spaced.',
+    daggers: 'Strikes the nearest few enemies at full damage each. It picks them by their distance from you rather than from each other, so it does not care how they are spaced.',
   },
   cone: {
     _: 'Sprays a wedge in front of you and hits everything caught inside it at once.',
@@ -184,7 +184,7 @@ const PATTERN_NOTE = {
     _: 'A field around you that ticks damage into whatever is standing in it. Always on, never aimed.',
     toxic: 'Poisons what it touches instead of hitting it once, so the damage keeps arriving after the enemy has left the field.',
   },
-  ricochet: { _: 'A disc thrown at a lead, then bouncing on to a budget of further targets that grows with level.' },
+  ricochet: { _: 'A disc thrown at where the target is going, then bouncing on to the next one. It gets more bounces as it levels.' },
   beam: {
     _: 'Holds persistent locks on targets and ramps its damage the longer a lock survives, with splash around where it lands.',
     faultline: 'Ruptures the ground in a line rather than firing a beam, throwing up pillars along it.',
@@ -194,7 +194,7 @@ const PATTERN_NOTE = {
     shotgun: 'A pellet volley that hits much harder up close than far away. The spread is the range limit.',
   },
   blackHole: { _: 'Drops a well that drags enemies inward and ticks damage into them while it lasts.' },
-  pathEcho: { _: 'A lashing chain of nodes that trails the path you walked, heaviest at the front and tapering to the tail.' },
+  pathEcho: { _: 'A lashing chain that trails the path you walked, heaviest at the front and tapering off toward the tail.' },
   meleeArc: {
     _: 'Sweeps an arc around you at close range. Nothing to lead, and nothing to lose at distance because there is no distance.',
     scytheSweep: 'Sweeps a wide arc around you facing the way you are moving, leaving only a gap directly behind.',
@@ -468,11 +468,16 @@ const patternGloss = (entry) => {
   return table._ || '';
 };
 
+/* WHAT THE PICTURE IS, in words a player already owns. Every one of these used
+ * to lead with "Canonical", which is a word about our pipeline and not about
+ * the image. The label still has to be exact: a render is not a screenshot and
+ * a painted card glyph is not a sprite, and bin/wiki-check.mjs pins the render
+ * label so a future rewrite cannot quietly promote one into the other. */
 const visualKindLabel = (kind) => ({
-  'runtime-render': 'Canonical runtime render',
-  'runtime-glyph': 'Canonical runtime glyph',
-  'palette-strip': 'Authored palette strip',
-  'evolution-strip': 'Deterministic evolution composition',
+  'runtime-render': 'Drawn by the game',
+  'runtime-glyph': 'Card art, painted by the game',
+  'palette-strip': 'The colors it is made of',
+  'evolution-strip': 'The pieces it comes from',
 }[kind] || humanize(kind));
 
 const visualIndex = (V) => new Map((V?.entries || []).map((entry) => [`${entry.domain}:${entry.id}`, entry]));
@@ -493,8 +498,13 @@ function renderWikiVisual(entry, esc, { primary = false, use = 'entry', compact 
     return `<span class="wvisual-compact" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">${image}</span>`;
   }
   const cameraView = entry.renderContext?.camera?.view || 'front';
+  /* THE SAME FOUR DISCLOSURES, in plain words. It still says: the render is
+   * isolated, the palette is a neutral stand-in or the subject's own, the
+   * camera view, and that none of this is a screenshot of live play. Those are
+   * the claims bin/wiki-check.mjs pins, because getting any of them wrong is
+   * how a wiki starts passing off a studio render as evidence of a world. */
   const renderContext = entry.renderContext && typeof entry.renderContext === 'object'
-    ? `<span><b>Presentation:</b> Isolated production render · ${entry.renderContext.palette?.id === 'toyMeadow' ? 'neutral toyMeadow presentation palette' : 'renderer-owned materials'} · fixed gallery lighting and bounds-fit ${esc(cameraView)} camera · ${esc(humanize(String(entry.renderContext.frame?.mode || 'neutral frame').replace(/[-_]+/g, ' ')))} · not an in-game screenshot or live-world lighting</span>`
+    ? `<span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the ${esc(cameraView)}, ${entry.renderContext.palette?.id === 'toyMeadow' ? 'in stand-in colors a live world may repaint' : 'in its own colors'}. It is not a screenshot, and it is not how it looks in a live world. Frame: ${esc(humanize(String(entry.renderContext.frame?.mode || 'neutral frame').replace(/[-_]+/g, ' ')))}.</span>`
     : '';
   const limitation = entry.renderContext?.limitation || entry.limitation;
   return `<figure class="wvisual wvisual-${esc(entry.kind)}" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">
@@ -2636,7 +2646,7 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
     <div class="wbar">${facetBar}${sortBar}</div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>No entries match these filters.</b>
+      <b>Nothing here matches all of that at once.</b>
       <button type="button" id="wreset">Reset filters</button>
     </div>
 
