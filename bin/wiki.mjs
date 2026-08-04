@@ -286,7 +286,9 @@ const WIKI_CSS = `
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -2520,10 +2522,8 @@ function renderRosterPage(roster, ctx) {
   const { esc, chrome, D, V } = ctx;
   const qualifiedTitle = /^WHOMP\b/i.test(roster.title) ? roster.title : `WHOMP ${roster.title.toLowerCase()}`;
   const sourceDomain = roster.domain ? D.domains[roster.domain] : null;
-  const noted = sourceDomain?.noted || 0;
   const total = roster.entries.length;
   const visuals = visualIndex(V);
-  const pageVisualKeys = new Set();
   let primaryVisualUsed = /<img\b[^>]*\bloading="eager"/.test(roster.featureHtml || '');
 
   const facetBar = roster.facets.map((f) => {
@@ -2569,7 +2569,6 @@ function renderRosterPage(roster, ctx) {
           ? [{ domain: roster.domain, id: e.id }]
           : [];
       const visualEntries = visualRefs.map((ref) => visuals.get(`${ref.domain}:${ref.id}`)).filter(Boolean);
-      for (const entry of visualEntries) pageVisualKeys.add(entry.assetKey);
       const isPrimaryVisual = !primaryVisualUsed && visualEntries.length > 0;
       if (isPrimaryVisual) primaryVisualUsed = true;
       const visualHtml = roster.visualRefs
@@ -2627,13 +2626,8 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
     <h2 class="chroma">${esc(roster.title)}</h2>
     <p class="lede">${esc(roster.lede)}</p>
 
-    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
-      <b>game@${esc(chrome.headSha)}</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>${esc(roster.sourceLabel || sourceDomain?.source || 'generated measurement artifact')}</code>.
-      ${sourceDomain ? (noted === 0
-    ? `Optional director notes have <b>0 of ${total}</b> coverage, so these cards use canonical mechanics and authored registry copy only.`
-    : `<b>${noted} of ${total}</b> carry an additional director note.`) : ''}
-      ${pageVisualKeys.size ? `This route also uses <b>${pageVisualKeys.size}</b> game-owned visual association${pageVisualKeys.size === 1 ? '' : 's'} from <code>data/wiki-visuals.json</code> (content <code>${esc(V.contentFingerprint)}</code>, source <code>${esc(V.sourceFingerprint)}</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.` : ''}</p>
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@${esc(chrome.headSha)}</b>.
+      <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a></p>
 
     ${roster.omissions ? `<p class="womit">${roster.omissions}</p>` : ''}
 
@@ -2793,18 +2787,15 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <h2 class="chroma">The wiki</h2>
-    <p class="lede">Every player-facing catalog in the generated public data layer, plus the controlled automatic-weapon measurements the simulation can honestly support.</p>
+    <p class="lede">Everything the game knows about itself, laid out flat. The numbers are read out of it rather than copied over, so they cannot quietly go stale.</p>
 
-    <p class="wprov">This wiki is <b>generated and fail-closed</b>. Every value and relation is read from the
-      verified artifacts built from <b>game@${esc(chrome.headSha)}</b>. All <b>${D.coverage.domains}</b> public
-      registries have a route, with <b>${catalogEntries}</b> rendered source entries. The controlled-simulation section adds
-      <b>${T?.coverage?.rows || 0}</b> automatic-weapon evidence rows and <b>${T?.measuredBuilds?.pairs?.length || 0}</b> exhaustive controlled
-      pairs. The visual encyclopedia adds <b>${V.coverage.entries}</b> game-owned entry associations and <b>${V.coverage.variants}</b> verified PNG variants within a <b>${V.performanceBudget.totalBytes}</b>-byte aggregate budget. A stale artifact, unclassified domain, missing card, broken visual association, missing search entry or dead link stops generation.</p>
+    <p class="wprov">Every one of the game's <b>${D.coverage.domains}</b> catalogs has a page here, <b>${catalogEntries}</b> entries in all, plus
+      <b>${T?.coverage?.rows || 0}</b> measured weapon rows, <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, and <b>${V.coverage.entries}</b> pictures the game drew of its own
+      contents. Read at build <b>game@${esc(chrome.headSha)}</b>. <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a></p>
 
-    <p class="womit">Where the game has no answer, these pages say so instead of guessing. Several numbers that a
-      normal wiki would print are deliberately absent, and each roster explains which ones and why at the top of
-      its own page. A missing column here means the value the game runs on is not the value the registry
-      carries, so printing it would be a confident lie rather than a gap.</p>
+    <p class="womit">Where the game has no answer, these pages say so rather than guess. A few numbers an ordinary wiki
+      would print are missing on purpose, and every page names its own gaps at the top. A gap here means the number
+      the game runs on is not the number the page could show you, and half a truth about damage is worse than none.</p>
 
     ${sections.map((section) => {
       const pages = rosters.filter((r) => r.section === section);
