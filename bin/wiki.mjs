@@ -1785,10 +1785,11 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'ship-cores',
     domain: 'shipCores',
     title: 'Ship cores',
-    tagline: 'Recovered systems, tied back to their worlds.',
-    lede: 'Each ship core is a named system with canonical memory text and a world relation derived by the shared data layer.',
+    tagline: `${shipCoreEntries.length} pieces of your ship, and a world is sitting on each one.`,
+    lede: 'A core is one of your own ship systems, carried back off the boss that closes a world. Each one is awarded once and never again, and each one comes home with a memory in it.',
+    omissions: '<b>There is no bonus column here, because a core does not have one.</b> Bringing one home changes the ship and the ground it stands on, and it does nothing at all to the numbers in your next run.',
     entries: shipCoreEntries,
-    groups: [{ key: 'all', title: 'Recovered systems', note: 'Every registered ship core.', has: () => true }],
+    groups: [{ key: 'all', title: 'Recovered systems', note: `All ${shipCoreEntries.length}, in the order the campaign hands them over.`, has: () => true }],
     facets: [{ key: 'system', label: 'System', of: (e) => e.system }],
     sorts: [
       { key: 'roster', label: 'Recovery order', of: (e) => shipCoreEntries.indexOf(e) },
@@ -1810,10 +1811,11 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'ship-fragments',
     domain: 'shipFragments',
     title: 'Ship fragments',
-    tagline: 'The route pieces scattered beyond the core recoveries.',
-    lede: 'Fragments carry a route, system, physical form and memory line in the canonical registry. This page reproduces all four fields without adding a location or reward the source does not state.',
+    tagline: `${shipFragmentEntries.length} pieces of the ship that never made it to the wreck.`,
+    lede: 'These came down away from the wreck and stayed where they landed, out along the routes that lead off the hub. Nobody local has been in a hurry about them.',
+    omissions: '<b>The route is as precise as this gets.</b> A fragment is somewhere out along the one route named on its card, and which somewhere is a thing the hub knows and this page does not.',
     entries: shipFragmentEntries,
-    groups: [{ key: 'all', title: 'Fragment registry', note: 'Every authored ship fragment.', has: () => true }],
+    groups: [{ key: 'all', title: 'The fragments', note: `All ${shipFragmentEntries.length}, in the order the hub lays the routes out.`, has: () => true }],
     facets: [
       { key: 'route', label: 'Route', of: (e) => e.route },
       { key: 'system', label: 'System', of: (e) => e.system },
@@ -1836,7 +1838,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     : '';
   const shipSystemFeature = `
     <section class="wfeature" aria-labelledby="ship-rebuild-tiers">
-      <div><span class="eyebrow">Canonical topology</span><h3 id="ship-rebuild-tiers">Rebuild tiers and fragment route labels</h3></div>
+      <div><span class="eyebrow">How the wreck comes back</span><h3 id="ship-rebuild-tiers">The rebuild, stage by stage</h3></div>
       <div class="wbuild-grid">
         ${(SS.rebuildTiers || []).map((tier) => `<article>
           <span class="wtag ink-gold">Tier ${num(tier.tier)} at ${num(tier.minCores)} cores</span>
@@ -1853,15 +1855,15 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'ship-systems',
     domain: 'shipSystems',
     title: 'Ship systems',
-    tagline: 'Every socket, its core and the complete rebuild ladder.',
-    lede: `The ship topology contract validates exactly one recovered core per socket, marks the heart socket, preserves recovery order and publishes ${SS.rebuildTierCount} rebuild thresholds with a lookup for every source-listed core count${rebuildCoreRange}.`,
-    omissions: '<b>Fragments do not occupy these sockets.</b> The canonical contract exposes route labels for fragments but deliberately does not claim a fragment-to-socket relation.',
+    tagline: 'One socket per core, and what the ship looks like as they fill.',
+    lede: `There is one socket per core, laid out in the order the campaign fills them, with the memory archive at the centre of the ring instead of out on it. As the cores come back the wreck stops looking like a wreck, in ${SS.rebuildTierCount} stages. Every count of cores you could be holding${rebuildCoreRange} is written down against the stage it puts you at.`,
+    omissions: '<b>Fragments do not seat in these sockets.</b> A fragment names a system, and a socket names a system, and the game never says the one goes into the other.',
     featureHtml: shipSystemFeature,
     countLabel: `${SS.count} sockets · ${SS.rebuildTierCount} rebuild tiers`,
     entries: shipSystemEntries,
     groups: [
-      { key: 'heart', title: 'Heart socket', note: 'The one socket marked as the ship’s heart by source metadata.', has: (e) => e.heart },
-      { key: 'systems', title: 'System sockets', note: 'Every remaining validated core socket.', has: (e) => !e.heart },
+      { key: 'heart', title: 'Heart socket', note: 'The one socket at the centre of the ring rather than out on it. The whole story is about this one.', has: (e) => e.heart },
+      { key: 'systems', title: 'System sockets', note: 'The rest of the ring, in the order the campaign fills it.', has: (e) => !e.heart },
     ],
     facets: [{ key: 'heart', label: 'Heart socket', of: (e) => e.heart ? 'yes' : 'no' }],
     sorts: [
@@ -1887,18 +1889,27 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     if (kind === 'level') return cardLink('worlds', id, esc(levelName(id)));
     return `<code>${esc(kind)}:${esc(id)}</code>`;
   };
+  /* Counted, never typed out. The ladder can grow a row without a schema bump,
+     and a hand-written "15 weapons" in the lede would quietly go wrong the day
+     it does. Payload kinds are counted per payload, not per achievement,
+     because one achievement can pay out more than one thing. */
+  const achievementPayloads = achievementEntries.reduce((tally, e) => {
+    for (const kind of Object.keys(e.unlocks || {})) tally[kind] = (tally[kind] || 0) + 1;
+    return tally;
+  }, {});
   const achievementsRoster = {
     section: 'Progression',
     slug: 'achievements',
     domain: 'achievements',
     title: 'Achievements',
-    tagline: 'Every goal and every payload it unlocks.',
-    lede: 'The achievement registry is the unlock ladder. Cards show the canonical requirement, measurement kind, optional world condition and every unlock payload with a live link to its destination.',
+    tagline: 'What the game counts, and what it pays out for.',
+    lede: `An achievement is a counter with a payout at the end. ${achievementPayloads.weapon || 0} weapons and ${achievementPayloads.passive || 0} tomes sit behind this list, which makes it less a trophy cabinet than a list of what is not in your level-up pool yet.`,
+    omissions: '<b>How far along you are is not here.</b> Every card carries the counter and the number it wants, and the running total is on your save, where this page cannot see it.',
     entries: achievementEntries,
     groups: [
-      { key: 'run', title: 'Single-run goals', note: 'Measured inside one run.', has: (e) => e.kind === 'runStat' },
-      { key: 'lifetime', title: 'Lifetime goals', note: 'Measured across the save.', has: (e) => e.kind === 'lifetime' },
-      { key: 'event', title: 'Milestones', note: 'Completed by a named event rather than a counter.', has: (e) => e.kind === 'event' },
+      { key: 'run', title: 'Single-run goals', note: 'Counted inside one run. The counter goes back to zero when the run does.', has: (e) => e.kind === 'runStat' },
+      { key: 'lifetime', title: 'Lifetime goals', note: 'Counted across every run on the save. These are the patient ones.', has: (e) => e.kind === 'lifetime' },
+      { key: 'event', title: 'Milestones', note: 'No counter on these. Something specific either happened or it did not.', has: (e) => e.kind === 'event' },
     ],
     facets: [
       { key: 'kind', label: 'Kind', of: (e) => e.kind },
@@ -1955,15 +1966,15 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'quests',
     domain: 'quests',
     title: 'Quests and rewards',
-    tagline: 'Every chain, objective, giver, response and validated reward.',
-    lede: 'Quest cards preserve the registry’s authored request and reaction lines, exact objective contract, previous and next links, and reward target. The title gallery is derived from the same chain metadata.',
+    tagline: 'One ask at a time, from somebody who wants something specific.',
+    lede: `One ask is active at a time, it comes from a person and never from a board, and the next step of a chain opens only when you turn in the one before it. ${Q.giverOrder.length} villagers want ${Q.count} very specific things.`,
     featureHtml: questTitleFeature,
     countLabel: `${Q.count} quests · ${Q.chainOrder.length} chains · ${Q.titleOrder.length} titles`,
     entries: questEntries,
     groups: (Q.chainOrder || []).map((chainId) => ({
       key: chainId,
       title: humanize(chainId),
-      note: `${Q.chainQuests[chainId].length} source-ordered steps.`,
+      note: `${Q.chainQuests[chainId].length} steps, in the order they are offered.`,
       has: (e) => e.chainId === chainId,
     })),
     facets: [
@@ -2000,8 +2011,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const shopRankRows = shopEntries.reduce((sum, e) => sum + (SH.refs[e.id]?.ranks?.length || 0), 0);
   const shopFeature = `
     <section class="wfeature" aria-labelledby="shop-gates">
-      <div><span class="eyebrow">Canonical purchase ladder</span><h3 id="shop-gates">Gates and all-in cost</h3></div>
-      <p><b>${num(SH.grandTotal)}g</b> buys every published rank and both gates. The artifact expands the ${SH.count} upgrade rows into <b>${shopRankRows}</b> exact rank purchases.</p>
+      <div><span class="eyebrow">What it all costs</span><h3 id="shop-gates">The two gates, and the bill</h3></div>
+      <p><b>${num(SH.grandTotal)}g</b> buys every rank and both gates. The ${SH.count} rows on this page come apart into <b>${shopRankRows}</b> separate purchases.</p>
       <div class="wbuild-grid">
         ${(SH.gateOrder || []).map((id) => {
           const gate = SH.gates[id];
@@ -2019,15 +2030,20 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     section: 'Progression',
     slug: 'shop',
     domain: 'shop',
-    title: 'Meta shop',
-    tagline: 'Every permanent upgrade, rank price, tier and gate.',
-    lede: 'Each source stat stays one card, with its complete canonical rank ladder expanded underneath. Prices, gates and tier assignments come from runtime exports rather than a duplicated pricing formula.',
+    /* Not "Meta shop": "meta" is a design word, and rule 12 of docs/VOICE.md
+       keeps design words out of player-facing copy. Not "The shop" either: the
+       page title is also the document title, as "WHOMP <title>" in lower case,
+       and "WHOMP the shop" reads as a gag this page is not making. */
+    title: 'Shop',
+    tagline: 'Every rank you buy stays bought.',
+    lede: `Gold you carry out of a run buys permanent ranks between runs: ${SH.count} rows here, ${num(SH.grandTotal)}g for every rank and both gates. The price band is the whole message, and hitting harder costs more than picking gold up faster.`,
+    omissions: '<b>The per-rank number is what the game stores, not what you will feel.</b> A rank lands alongside everything else your run picked up, and the attack-speed row still goes through the soft knee on the way, so this page prices the ladder and stops there.',
     featureHtml: shopFeature,
     countLabel: `${SH.count} upgrades · ${shopRankRows} ranks · ${num(SH.grandTotal)}g all-in`,
     entries: shopEntries,
     groups: [
-      { key: 'power', title: 'Power', note: 'Rows whose canonical lane is power.', has: (e) => e.lane === 'power' },
-      { key: 'qol', title: 'Quality of life', note: 'Rows whose canonical lane is qol.', has: (e) => e.lane === 'qol' },
+      { key: 'power', title: 'Power', note: 'The rows that move your numbers, from what you hit for down to how much gold survives a bad run.', has: (e) => e.lane === 'power' },
+      { key: 'qol', title: 'Quality of life', note: 'These do not touch your numbers. They change what the level-up screen is allowed to offer you.', has: (e) => e.lane === 'qol' },
     ],
     facets: [
       { key: 'lane', label: 'Lane', of: (e) => e.lane },
@@ -2063,14 +2079,15 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'wearables',
     domain: 'wearables',
     title: 'Wearables',
-    tagline: 'Cosmetic pieces, anchors and trail behavior.',
-    lede: 'Wearables are cosmetic attachments. The registry defines their anchor, blurb, source colors and whether they add trails; those are the only claims this page makes.',
+    tagline: 'What the village hands you for doing it a favour.',
+    lede: 'A wearable is what a quest pays you: somebody wanted something specific, you brought it back, and this is what they handed over. It bolts onto whichever hero you are playing, and it does nothing else.',
+    omissions: '<b>An anchor is where a piece mounts, not a slot you fill.</b> A hero wears one of these at a time, so eyes, head and back are not three things you can have on at once.',
     entries: wearableEntries,
     groups: [
-      { key: 'eyes', title: 'Eyes', note: 'Anchored to the eye slot.', has: (e) => e.anchor === 'eyes' },
-      { key: 'head', title: 'Head', note: 'Anchored to the head slot.', has: (e) => e.anchor === 'head' },
-      { key: 'back', title: 'Back', note: 'Anchored to the back slot.', has: (e) => e.anchor === 'back' },
-      { key: 'other', title: 'Other anchors', note: 'Every remaining canonical anchor.', has: (e) => !['eyes', 'head', 'back'].includes(e.anchor) },
+      { key: 'eyes', title: 'Eyes', note: 'Mounted at the eyes.', has: (e) => e.anchor === 'eyes' },
+      { key: 'head', title: 'Head', note: 'Mounted on the crown, which on a wizard means the tip of the hat.', has: (e) => e.anchor === 'head' },
+      { key: 'back', title: 'Back', note: 'Mounted between the shoulders.', has: (e) => e.anchor === 'back' },
+      { key: 'other', title: 'Other anchors', note: 'Everything that mounts somewhere else, mostly at the neck.', has: (e) => !['eyes', 'head', 'back'].includes(e.anchor) },
     ],
     facets: [
       { key: 'anchor', label: 'Anchor', of: (e) => e.anchor },
