@@ -1030,16 +1030,29 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'bestiary',
     domain: 'enemies',
     title: 'Bestiary',
-    tagline: 'Every canonical enemy kind, from horde units to encounter threats.',
-    lede: 'Every kind in the game and where it turns up, with behavior and contextual stats only where the canonical runtime contract supports them. For basic and special enemies, health, contact damage and kill XP are starting values; each follows its own runtime scaling clock.',
-    omissions: `<b>Every time on this page is minutes of real play.</b> ${clockNote} For basic and special enemies, <b>live-run speed is a base, not a final chase speed</b>; timed and per-instance multipliers still apply. <b>Boss and miniboss health, damage, behavior and final chase speed are UNMEASURED.</b> Their director authority is private, multi-stage and mode-dependent, so registry placeholders and partial bases are not published as encounter facts.`,
+    /* THE TAGLINE IS PINNED BY EXACT EQUALITY in bin/wiki-check.mjs. What the
+       pin protects is the claim that this roster is complete AND that it does
+       not describe every kind as a thing that walks up and touches you: snipers,
+       bombers, strafers and spitters hold their distance on purpose. The second
+       sentence now says that outright instead of merely avoiding the wrong
+       phrasing. Change it and change the equality with it. */
+    tagline: 'Every kind in the game. Several of them never come near you.',
+    lede: 'What each kind does to you, and where you first run into it. Health, contact damage and kill XP are opening numbers that climb on three separate clocks while you play, so the sentence on a card outlives the bars underneath it.',
+    omissions: `<b>Every time on this page is minutes of real play.</b> ${clockNote} For basic and special kinds, <b>the speed shown is a starting speed, not how fast the thing ends up chasing you</b>: the run keeps multiplying it, and single instances carry their own multipliers on top. <b>Bosses and minibosses carry no combat numbers here at all.</b> What they have, how hard they hit and how they move is decided while the fight is running, in stages, and differently by mode, so the leftover values sitting in their rows would be a guess wearing the clothes of a fact.`,
     featureHtml: `${enemyScalingFeature}${speedPolicyFeature}`,
     entries: enemyEntries,
     groups: [
-      { key: 'basic', title: 'Basic', note: 'The bulk of a run, and the only tier that can be promoted to an elite. Their listed basic behaviour runs in live combat; individually not the problem, the count is the problem.', has: (e) => e.tier === 'basic' },
-      { key: 'special', title: 'Special', note: 'Kinds that change how a fight works rather than adding to its size. Their listed special behaviour also runs in live combat.', has: (e) => e.tier === 'special' },
-      { key: 'miniboss', title: 'Minibosses', note: 'Bruiser, Warden, Ravager and Harrier are the recurring automatic-cadence pool. The Maw is a separate authored set-piece; it is not another cadence roll. The boss director owns their contextual numbers and movement.', has: (e) => e.tier === 'miniboss' },
-      { key: 'boss', title: 'Bosses', note: 'The run’s punctuation, scheduled per level rather than rolled. Their movement is directed rather than run off the behaviour below.', has: (e) => e.tier === 'boss' },
+      /* THE FIRST THREE NOTES CARRY PINNED SUBSTRINGS, checked against the
+         rendered page by bin/wiki-check.mjs. Two of them promise that the
+         behaviour sentence on a basic or special card is the behaviour that
+         actually runs, which is what separates these tiers from the boss and
+         miniboss rows; the third keeps the Maw out of the recurring cadence
+         pool it does not belong to. Reword around them and move the pins with
+         the wording, but never drop either claim. */
+      { key: 'basic', title: 'Basic', note: 'The bulk of a run, and the only tier an elite can be promoted out of. The listed basic behaviour runs in live combat exactly as written, and one of these is never the problem: the count is the problem.', has: (e) => e.tier === 'basic' },
+      { key: 'special', title: 'Special', note: 'Kinds that change how a fight works instead of how big it is. Their listed special behaviour also runs in live combat.', has: (e) => e.tier === 'special' },
+      { key: 'miniboss', title: 'Minibosses', note: 'Bruiser, Warden, Ravager and Harrier are the four that keep coming back on a timer. The Maw is a separate authored set-piece and is not another turn of that timer. None of them arrives with numbers attached: what a miniboss is worth gets decided when it is sent.', has: (e) => e.tier === 'miniboss' },
+      { key: 'boss', title: 'Bosses', note: 'Booked into a world at a fixed time rather than rolled for, and driven directly once they arrive. The behaviour names in this roster do not describe how a boss moves.', has: (e) => e.tier === 'boss' },
     ],
     facets: [
       { key: 'tier', label: 'Tier', of: (e) => e.tier },
@@ -1430,12 +1443,18 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'characters',
     domain: 'characters',
     title: 'Characters',
-    tagline: 'Loadout suggestions and source-authored identity inputs.',
-    lede: 'Each character card composes the canonical character, suggested-weapon, innate and signature registries. The weapon id is a default-loadout suggestion, not an unconditional solo-campaign pickup. Health is the run-start base before bonuses; speed is a relative-to-6 identity input, not metres per second; might is a multiplicative identity input, not final damage.',
+    tagline: 'Who you start as, before the run starts rewriting it.',
+    /* THE SECOND SENTENCE CARRIES THREE REGRESSION GUARDS in plain words, and
+       bin/wiki-check.mjs pins their labelled forms on the cards and the sort
+       menu: health is a run-start base, the speed number is an identity input
+       rather than metres per second, might is a multiplier rather than final
+       damage, and the listed weapon is a suggestion the solo campaign does not
+       actually hand you. Reword freely and keep all four true. */
+    lede: 'A character is a starting health number, a speed, a damage multiplier, one passive rule and one signature move. The three numbers are inputs the run multiplies, not the speed you travel at or the damage you land, and the weapon named on a card is a suggestion rather than something you walk in holding.',
     featureHtml: characterBaseFeature,
     entries: characterEntries,
     groups: [
-      { key: 'start', title: 'Character roster', note: 'The complete selectable roster in source order.', has: () => true },
+      { key: 'start', title: 'Character roster', note: 'Every one of them, in the order the game lists them.', has: () => true },
     ],
     facets: [
       { key: 'weapon', label: 'Suggested weapon', of: (e) => e.startWeaponId, name: weaponName },
@@ -1469,10 +1488,12 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'innates',
     domain: 'innates',
     title: 'Innates',
+    /* The tagline was already right: concrete, one turn, no machinery. Left
+       alone on purpose rather than rewritten for the sake of a diff. */
     tagline: 'The passive rule each character brings.',
-    lede: 'Innates are character-bound passive rules. The character-select sentence is canonical copy; base, growth and cap are read from the same registry row.',
+    lede: 'An innate belongs to one character and arrives with them, and the sentence on each card is the one you are shown at character select. You do not pick it and you do not spend anything on it; the three numbers underneath are where it starts, what a level adds, and where it stops climbing.',
     entries: innateEntries,
-    groups: [{ key: 'all', title: 'Innate roster', note: 'One source entry per character-bound innate.', has: () => true }],
+    groups: [{ key: 'all', title: 'Innate roster', note: 'One for each character, in the order the characters are listed.', has: () => true }],
     facets: [
       { key: 'effect', label: 'Effect', of: (e) => e.effect },
       { key: 'value', label: 'Value kind', of: (e) => e.valueKind },
@@ -1502,10 +1523,10 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'signatures',
     domain: 'signatures',
     title: 'Signatures',
-    tagline: 'The R-slot move that defines each character.',
-    lede: 'Every signature card shows the canonical action sentence, cooldown, bound character and full source parameter payload.',
+    tagline: 'One move bound to R, and then the wait.',
+    lede: 'A signature is the one thing you press on purpose that is not a weapon. Each character has exactly one, nobody shares, and the only thing standing between two uses of it is the cooldown.',
     entries: signatureEntries,
-    groups: [{ key: 'all', title: 'Signature roster', note: 'One registered signature per character.', has: () => true }],
+    groups: [{ key: 'all', title: 'Signature roster', note: 'One for each character, and no two of them overlap.', has: () => true }],
     facets: [{ key: 'cooldown', label: 'Cooldown band', of: (e) => e.cooldownMs <= 8000 ? '8 seconds or less' : e.cooldownMs <= 15000 ? '9 to 15 seconds' : 'over 15 seconds' }],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => signatureEntries.indexOf(e) },
@@ -1568,14 +1589,22 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'worlds',
     domain: 'levels',
     title: 'Campaign worlds',
-    tagline: 'Arenas, unlock chain, authored tables and cadence evidence.',
-    lede: 'Every campaign world card joins its authored identity to tuning, surfaces, fixtures, unlock relation, spawn table, authored signature-boss slots and recovered ship core. The shared encounter contract adds automatic-miniboss interval and reservation evidence without inventing identity or exact spawn time.',
-    omissions: `<b>These surfaces do not form an exact encounter timeline.</b> The per-world tables publish authored rows; the cadence contract publishes an interval and reservation rule while explicitly withholding automatic-miniboss identity and actual spawn time. Authored schedule times are converted only while the shared pace scale is valid. ${clockNote}`,
+    /* EVERY WORLD SHIPS ITS OWN TAGLINE and the card prints it verbatim from
+       src/data/levels.ts. Scorchdune telling you to bring water, and that it
+       will not help, is better than anything this page can put above it, so the
+       page copy frames those lines and never competes with them. */
+    tagline: 'The campaign, in the order it lets you have it.',
+    lede: 'Each world names itself in one line, and that line is usually the honest summary. Underneath it is everything the line leaves out: what spawns there and when, which bosses are already booked, what the ground is made of, and which world you have to get through to reach it.',
+    /* Deliberately NOT the same paragraph as the expeditions omissions box. The
+       shared limit underneath both is real, so both still state it, but a reader
+       moving between the two pages should be told the thing that is true of the
+       page they are on, not handed the same notice twice. */
+    omissions: `<b>The boss slots are booked, the minibosses are not.</b> Each world was written with the rows and the signature-boss times you see on its card. The automatic minibosses run to an interval laid over all of that, so the game will tell you how often one is due and never which one or exactly when. Authored times became real minutes only where the shared pace scale holds. ${clockNote}`,
     featureHtml: encounterScheduleFeature('campaign-encounter-schedule'),
     entries: worldEntries,
     groups: [
-      { key: 'campaign', title: 'Campaign route', note: 'World ids named by the canonical campaign list.', has: (e) => (L.campaignLevelIds || []).includes(e.id) },
-      { key: 'additional', title: 'Additional campaign worlds', note: 'Registered campaign worlds outside the primary campaign id list.', has: (e) => !(L.campaignLevelIds || []).includes(e.id) },
+      { key: 'campaign', title: 'Campaign route', note: 'The chain the game walks you along, in order.', has: (e) => (L.campaignLevelIds || []).includes(e.id) },
+      { key: 'additional', title: 'Additional worlds', note: 'Built, registered and playable, and not on that chain.', has: (e) => !(L.campaignLevelIds || []).includes(e.id) },
     ],
     facets: [
       { key: 'access', label: 'Availability', of: (e) => e.unlockedFromStart ? 'from the start' : 'unlockable' },
@@ -1599,12 +1628,17 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'expeditions',
     domain: 'expeditions',
     title: 'Expeditions',
-    tagline: 'Standalone arenas with authored tables and cadence evidence.',
-    lede: 'Expeditions use the same canonical level shape as campaign worlds but sit in their own source domain. Every authored spawn, signature boss, fixture, surface and tuning multiplier is shown alongside the limited automatic-miniboss cadence contract.',
-    omissions: `<b>These surfaces do not form an exact encounter timeline.</b> The per-expedition tables publish authored rows; the cadence contract publishes an interval and reservation rule while explicitly withholding automatic-miniboss identity and actual spawn time. Authored schedule times are converted only while the shared pace scale is valid. ${clockNote}`,
+    tagline: 'Arenas that sit outside the campaign entirely.',
+    /* The "connected to none of it" claim is structural, not editorial: an
+       expedition entry carries no unlocks field, nothing unlocks it, and its
+       refs carry no shipCore, unlike every world on the campaign route. See
+       the registry header in src/data/levels.ts, which calls them a parallel
+       mode rather than part of the unlock ladder. */
+    lede: 'An expedition is built like a campaign world and connected to none of it. Nothing unlocks it, nothing follows it and no ship core comes out of it, so the only reason to go is that you wanted to.',
+    omissions: `<b>Nothing on this page is progression.</b> An expedition unlocks nothing and is unlocked by nothing, so a card here is only ever the arena itself. Its rows and its signature-boss times were written by hand the same way a world is, and the automatic minibosses laid over them are the same unpublished interval: how often, never which one and never when. ${clockNote}`,
     featureHtml: encounterScheduleFeature('expedition-encounter-schedule'),
     entries: expeditionEntries,
-    groups: [{ key: 'all', title: 'Expedition roster', note: 'Every registered expedition.', has: () => true }],
+    groups: [{ key: 'all', title: 'Expedition roster', note: 'Every expedition there is, in the order the game lists them.', has: () => true }],
     facets: [{ key: 'access', label: 'Availability', of: (e) => e.unlockedFromStart ? 'from the start' : 'unlockable' }],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => expeditionEntries.indexOf(e) },
@@ -1630,11 +1664,11 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'modes',
     domain: 'runModes',
     title: 'Run modes',
-    tagline: 'The pacing and movement profiles a run actually reads.',
-    lede: 'Run modes are complete configuration profiles. The player-facing timing summary is derived from their pace clock and bank; the full profile remains available as source parameters on each card.',
+    tagline: 'The clock and the handling a whole run is played on.',
+    lede: 'A mode is not a difficulty setting. It is the entire set of numbers a run is played on: how fast its clock runs against real time, when the pacing bank closes, when the final horde is due, how you move, and how hard the opening pushes back.',
     featureHtml: openingEnemyHpFeature,
     entries: modeEntries,
-    groups: [{ key: 'all', title: 'Mode profiles', note: 'Every registered run-mode profile.', has: () => true }],
+    groups: [{ key: 'all', title: 'Mode profiles', note: 'Every mode the game will put you in, with nothing held back from the profile.', has: () => true }],
     facets: [
       { key: 'flyers', label: 'Flying enemies', of: (e) => e.allowFlyers ? 'enabled' : 'disabled' },
       { key: 'ladder', label: 'Tier ladder', of: (e) => e.tierLadderEnabled ? 'enabled' : 'disabled' },
@@ -1668,11 +1702,11 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'world-events',
     domain: 'worldEvents',
     title: 'Rare world events',
-    tagline: 'The discoverable event pool and its exact world allow-lists.',
-    lede: 'This catalog publishes only what the canonical rare-event contract supplies: registry id, weight, per-run cap, spacing and validated campaign or expedition availability.',
+    tagline: 'Placed before you arrive, and found only by walking into them.',
+    lede: 'A rare event is put somewhere in a world before you get there and then stays put. Each one carries a weight that decides how often it is picked, a limit on how many a single run can hold, a minimum distance from the others, and a list of worlds that will take it.',
     featureHtml: worldEventFeature,
     entries: worldEventEntries,
-    groups: [{ key: 'all', title: 'Rare-event registry', note: 'Every source-defined rare world event.', has: () => true }],
+    groups: [{ key: 'all', title: 'The rare-event pool', note: 'A single run only ever places a few of these.', has: () => true }],
     facets: [
       { key: 'expedition', label: 'Expedition eligible', of: (e) => WE.refs[e.id]?.expeditions?.length ? 'yes' : 'no' },
       { key: 'worlds', label: 'World coverage', of: (e) => e.allowedWorlds.length === WE.allEventWorlds.length ? 'all listed worlds' : `${e.allowedWorlds.length} listed worlds` },
@@ -1717,13 +1751,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'ambient-events',
     domain: 'ambientEvents',
     title: 'Ambient events',
-    tagline: 'The exact event and theme placements registered per world.',
-    lede: 'The source is world-keyed, so this guide keeps that shape: one card per campaign world or expedition, with every verbatim event id and theme id listed together.',
+    tagline: 'The things a world does whether or not you are watching.',
+    lede: 'Ambient events are set per world rather than per event, so the cards here are worlds. Each one lists what that place is allowed to grow, drop or send drifting past you, and a world only ever runs what is on its own line.',
     featureHtml: ambientFeature,
     entries: ambientEntries,
     groups: [
-      { key: 'campaign', title: 'Campaign worlds', note: 'Rows with a validated campaign-level backlink.', has: (e) => !!AE.refs[e.id]?.campaignLevel },
-      { key: 'expedition', title: 'Expeditions', note: 'Rows with a validated expedition backlink.', has: (e) => !!AE.refs[e.id]?.expedition },
+      { key: 'campaign', title: 'Campaign worlds', note: 'Campaign worlds that keep a table of their own.', has: (e) => !!AE.refs[e.id]?.campaignLevel },
+      { key: 'expedition', title: 'Expeditions', note: 'The expedition arenas, which keep separate tables.', has: (e) => !!AE.refs[e.id]?.expedition },
     ],
     facets: [{ key: 'event', label: 'Includes event', of: (e) => e.events.map((row) => row.event), multi: true }],
     sorts: [

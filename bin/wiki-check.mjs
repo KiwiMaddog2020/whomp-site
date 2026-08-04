@@ -130,7 +130,12 @@ const coreRosterCopy = rosters.find((roster) => roster.domain === 'coreWeapons')
 const enemyRosterCopy = rosters.find((roster) => roster.domain === 'enemies');
 requireThat(coreRosterCopy?.lede.includes('locks in that aimed-weapon slot') && !/only decision that shapes a whole run/i.test(coreRosterCopy.lede),
   'core guide overstates the aimed-weapon choice as the only pre-run decision');
-requireThat(enemyRosterCopy?.tagline === 'Every canonical enemy kind, from horde units to encounter threats.'
+// The tagline must promise a complete roster AND must not describe the roster as
+// things that come and touch you: snipers, bombers, strafers and spitters keep
+// their distance deliberately. The wording moved; both halves of the guard did
+// not. The forbidden phrase is the exact wrong claim this page carried before,
+// so it stays forbidden whatever the true sentence sounds like.
+requireThat(enemyRosterCopy?.tagline === 'Every kind in the game. Several of them never come near you.'
   && !/everything that wants to touch you/i.test(enemyRosterCopy.tagline),
   'bestiary tagline misclassifies ranged or kiting enemies as contact threats');
 requireThat(
