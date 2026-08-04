@@ -232,7 +232,7 @@ const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
  * which the director cut as "a bit much" for a public page: leading with someone
  * else's games sells theirs, not ours. This is the one string on the site that is
  * marketing copy rather than repo truth, so it lives here and Kevin owns it. */
-const TAGLINE = 'A 3D horde-survivor where you aim it yourself.';
+const TAGLINE = 'A 3D horde-survivor where one weapon is yours to aim.';
 
 /* Provenance names the exact checkout whose artifacts were just verified, not
  * whatever commit the local `main` ref happens to point at. Deploy normally
@@ -1110,7 +1110,7 @@ ${script}
 </body>
 </html>`;
 
-const SEARCH_PLACEHOLDER = 'Search wiki guides, cards, and the dev log...';
+const SEARCH_PLACEHOLDER = 'Search the wiki and the dev log';
 
 /* The wiki's own sidebar. It lives here rather than in wiki.mjs because it names
  * the pages that are NOT rosters too, and because "you are here" is page chrome.
@@ -1211,8 +1211,8 @@ ${AUTHBAR}
     <a class="btn ghost" href="wiki.html">Browse the wiki</a>
     <a class="btn ghost" href="log.html">Read the dev log</a>
   </div>
-  <p class="doorway">The wiki is every weapon, core and enemy, generated from the game's own
-    data. The dev log is every build: what shipped, what's still broken, what's next.</p>
+  <p class="doorway">The wiki is every weapon, core and enemy, read straight out of the game.
+    The dev log is every build: what shipped, what is still broken, what is next.</p>
 </header>
 
 <section>
@@ -1328,7 +1328,7 @@ const logHtml = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP dev log</title>
-<meta name="description" content="The WHOMP development log: what shipped, what's known-broken, and what's coming next.">
+<meta name="description" content="The WHOMP dev log: what shipped, what is still broken, and what is coming next.">
 <link rel="icon" href="${FAVICON}">
 <style>
 ${SHARED_CSS}
