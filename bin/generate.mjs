@@ -45,6 +45,7 @@ import { createHash } from 'node:crypto';
 import { writeFileSync, readFileSync, readdirSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
 import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import { buildWiki, rosterSpecs, visualOutputPath, WIKI_CSS } from './wiki.mjs';
 
 const SITE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -1767,15 +1768,7 @@ for (const o of OUTPUTS) {
  * so an untracked stale preview file cannot make `git add` fail. */
 const outputFiles = [...OUTPUTS.map((output) => output.file), ...visualAssets.map((asset) => asset.file)];
 const expectedWikiFiles = new Set(outputFiles.filter((file) => /^wiki.*\.html$/.test(file)));
-let trackedGeneratedFiles = [];
-try {
-  trackedGeneratedFiles = execFileSync(
-    'git', ['-C', OUTDIR, 'ls-files', '--', 'wiki*.html', 'wiki-assets'], { encoding: 'utf8' },
-  ).trim().split('\n').filter(Boolean);
-} catch {
-  // A temporary preview directory is normally not a repository. Its stale
-  // generated files are still removed, but there is no deletion to stage.
-}
+const trackedGeneratedFiles = listTrackedGeneratedFiles(OUTDIR);
 const trackedGeneratedWikiFiles = trackedGeneratedFiles.filter((file) => /^wiki.*\.html$/.test(file));
 const trackedGeneratedVisualFiles = trackedGeneratedFiles.filter((file) => file.startsWith('wiki-assets/'));
 const invalidTrackedGeneratedFiles = trackedGeneratedFiles.filter((file) => !/^wiki.*\.html$/.test(file)
