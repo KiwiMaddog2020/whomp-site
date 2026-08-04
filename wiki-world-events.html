@@ -163,7 +163,9 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -366,8 +368,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">The discoverable event pool and its exact world allow-lists.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -375,7 +377,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -391,12 +393,13 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
+    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
     <details class="wside-section">
       <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-power-ceilings.html">Diminishing returns</a>
         <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
         <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
@@ -458,11 +461,8 @@ footer a{color:var(--cyan);text-decoration:none}
     <h2 class="chroma">Rare world events</h2>
     <p class="lede">This catalog publishes only what the canonical rare-event contract supplies: registry id, weight, per-run cap, spacing and validated campaign or expedition availability.</p>
 
-    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
-      <b>game@0cb53bbe</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/worldEvents.ts#WORLD_EVENT_DEFS</code>.
-      Optional director notes have <b>0 of 3</b> coverage, so these cards use canonical mechanics and authored registry copy only.
-      </p>
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
+      <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
 
 
@@ -490,7 +490,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>No entries match these filters.</b>
+      <b>Nothing here matches all of that at once.</b>
       <button type="button" id="wreset">Reset filters</button>
     </div>
 
@@ -555,7 +555,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>,
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

@@ -163,7 +163,9 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -366,8 +368,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Generated from the game, not written about it.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -375,7 +377,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -391,12 +393,13 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html" class="is-here" aria-current="page">All guides</a>
+    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
     <details class="wside-section">
       <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-power-ceilings.html">Diminishing returns</a>
         <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
         <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
@@ -454,18 +457,15 @@ footer a{color:var(--cyan);text-decoration:none}
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <h2 class="chroma">The wiki</h2>
-    <p class="lede">Every player-facing catalog in the generated public data layer, plus the controlled automatic-weapon measurements the simulation can honestly support.</p>
+    <p class="lede">Everything the game knows about itself, laid out flat. The numbers are read out of it rather than copied over, so they cannot quietly go stale.</p>
 
-    <p class="wprov">This wiki is <b>generated and fail-closed</b>. Every value and relation is read from the
-      verified artifacts built from <b>game@0cb53bbe</b>. All <b>28</b> public
-      registries have a route, with <b>392</b> rendered source entries. The controlled-simulation section adds
-      <b>83</b> automatic-weapon evidence rows and <b>300</b> exhaustive controlled
-      pairs. The visual encyclopedia adds <b>241</b> game-owned entry associations and <b>321</b> verified PNG variants within a <b>67108864</b>-byte aggregate budget. A stale artifact, unclassified domain, missing card, broken visual association, missing search entry or dead link stops generation.</p>
+    <p class="wprov">Every one of the game's <b>28</b> catalogs has a page here, <b>392</b> entries in all, plus
+      <b>83</b> measured weapon rows, <b>300</b> measured pairs, and <b>241</b> pictures the game drew of its own
+      contents. Read at build <b>game@c736ebea</b>. <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit">Where the game has no answer, these pages say so instead of guessing. Several numbers that a
-      normal wiki would print are deliberately absent, and each roster explains which ones and why at the top of
-      its own page. A missing column here means the value the game runs on is not the value the registry
-      carries, so printing it would be a confident lie rather than a gap.</p>
+    <p class="womit">Where the game has no answer, these pages say so rather than guess. A few numbers an ordinary wiki
+      would print are missing on purpose, and every page names its own gaps at the top. A gap here means the number
+      the game runs on is not the number the page could show you, and half a truth about damage is worse than none.</p>
 
     <section class="whubsection" id="section-buildcraft">
         <div class="whubsection-h"><h3>Buildcraft</h3><span>14 guides</span></div>
@@ -481,9 +481,9 @@ footer a{color:var(--cyan);text-decoration:none}
             <p>The one you aim yourself.</p>
           </a>
           <a class="whubcard" href="wiki-power-ceilings.html">
-            <span class="n">4 source dials</span>
-            <h3>Power soft knees</h3>
-            <p>4 exported permanent-power dials, without an invented build result.</p>
+            <span class="n">4 dials</span>
+            <h3>Diminishing returns</h3>
+            <p>Attack speed and crit each stop paying full price somewhere.</p>
           </a>
           <a class="whubcard" href="wiki-tiers.html">
             <span class="n">33 weapons · 83 evidence rows</span>
@@ -635,14 +635,14 @@ footer a{color:var(--cyan);text-decoration:none}
           <a class="whubcard" href="wiki-cosmetics.html">
             <span class="n">9 entries</span>
             <h3>Cosmetic styles</h3>
-            <p>Every body, rim and accent palette.</p>
+            <p>Three colors each, and not one of them makes you stronger.</p>
           </a></div>
       </section>
   </main>
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>,
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
   content derived from the three verified artifacts <code>data/game-data.json</code>, <code>data/tier-rankings.json</code>, and <code>data/wiki-visuals.json</code>.
   <a href="log.html#views">Dev log</a>
 </footer>

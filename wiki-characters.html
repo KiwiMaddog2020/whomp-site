@@ -163,7 +163,9 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -366,8 +368,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Loadout suggestions and source-authored identity inputs.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -375,7 +377,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -391,12 +393,13 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
+    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
     <details class="wside-section">
       <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-power-ceilings.html">Diminishing returns</a>
         <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
         <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
@@ -458,11 +461,8 @@ footer a{color:var(--cyan);text-decoration:none}
     <h2 class="chroma">Characters</h2>
     <p class="lede">Each character card composes the canonical character, suggested-weapon, innate and signature registries. The weapon id is a default-loadout suggestion, not an unconditional solo-campaign pickup. Health is the run-start base before bonuses; speed is a relative-to-6 identity input, not metres per second; might is a multiplicative identity input, not final damage.</p>
 
-    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
-      <b>game@0cb53bbe</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/characters.ts#CHARACTERS</code>.
-      Optional director notes have <b>0 of 11</b> coverage, so these cards use canonical mechanics and authored registry copy only.
-      This route also uses <b>11</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>4d058131f50c38888083b2639cbc8f2eeea2687d922918f5319b91a8c28556ae</code>, source <code>f0e7a0e675f77795add2cc21b94b408486169add9d0fc5d7f1d20ab10ca6778b</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
+      <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
 
 
@@ -499,7 +499,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>No entries match these filters.</b>
+      <b>Nothing here matches all of that at once.</b>
       <button type="button" id="wreset">Reset filters</button>
     </div>
 
@@ -515,7 +515,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:bonkrat" data-visual-use="entry">
     <img src="wiki-assets/characters/bonkrat-256w.png" srcset="wiki-assets/characters/bonkrat-256w.png 256w, wiki-assets/characters/bonkrat-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Capsule Signal. Lights the boosters and grins through the visor." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -537,7 +537,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:wispmother" data-visual-use="entry">
     <img src="wiki-assets/characters/wispmother-256w.png" srcset="wiki-assets/characters/wispmother-256w.png 256w, wiki-assets/characters/wispmother-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Grim Hex. Made of glass. Hexes anyway." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -559,7 +559,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:cragjaw" data-visual-use="entry">
     <img src="wiki-assets/characters/cragjaw-256w.png" srcset="wiki-assets/characters/cragjaw-256w.png 256w, wiki-assets/characters/cragjaw-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Orbital Mechanic. Heavy boots. Comes down like a dropped wrench." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -581,7 +581,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:hookline" data-visual-use="entry">
     <img src="wiki-assets/characters/hookline-256w.png" srcset="wiki-assets/characters/hookline-256w.png 256w, wiki-assets/characters/hookline-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Bubblehead. Sealed in glass. Reels straight toward the fight." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -603,7 +603,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:slipstream" data-visual-use="entry">
     <img src="wiki-assets/characters/slipstream-256w.png" srcset="wiki-assets/characters/slipstream-256w.png 256w, wiki-assets/characters/slipstream-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Apprentice. First week on the job. Never stops running." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -625,7 +625,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:echoKnight" data-visual-use="entry">
     <img src="wiki-assets/characters/echo-knight-256w.png" srcset="wiki-assets/characters/echo-knight-256w.png 256w, wiki-assets/characters/echo-knight-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Elder Star. Casts twice. Once now, once a heartbeat later." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -647,7 +647,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:graviton" data-visual-use="entry">
     <img src="wiki-assets/characters/graviton-256w.png" srcset="wiki-assets/characters/graviton-256w.png 256w, wiki-assets/characters/graviton-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Event Horizon. The horde falls inward. It was always going to." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -669,7 +669,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:sentinel" data-visual-use="entry">
     <img src="wiki-assets/characters/sentinel-256w.png" srcset="wiki-assets/characters/sentinel-256w.png 256w, wiki-assets/characters/sentinel-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Sentinel. Plants the shield where the trouble is headed." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -691,7 +691,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:berserker" data-visual-use="entry">
     <img src="wiki-assets/characters/berserker-256w.png" srcset="wiki-assets/characters/berserker-256w.png 256w, wiki-assets/characters/berserker-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Berserker. Counts to one, then runs through the answer." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -713,7 +713,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:puppeteer" data-visual-use="entry">
     <img src="wiki-assets/characters/puppeteer-256w.png" srcset="wiki-assets/characters/puppeteer-256w.png 256w, wiki-assets/characters/puppeteer-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Puppeteer. Never fights alone. Technically." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -735,7 +735,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="characters:medic" data-visual-use="entry">
     <img src="wiki-assets/characters/medic-256w.png" srcset="wiki-assets/characters/medic-256w.png 256w, wiki-assets/characters/medic-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game character render of Medic. Drops a clinic wherever the panic gets loudest." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime render</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>Presentation:</b> Isolated production render · neutral toyMeadow presentation palette · fixed gallery lighting and bounds-fit front camera · Canonical neutral avatar pose · not an in-game screenshot or live-world lighting</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/characters.ts#CHARACTERS + src/render/playerAvatar.ts#ROSTER/buildAvatar</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Canonical neutral avatar pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -755,7 +755,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>,
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

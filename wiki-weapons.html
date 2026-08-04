@@ -163,7 +163,9 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -366,8 +368,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">The half of your build that fires itself.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -375,7 +377,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -391,12 +393,13 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
+    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
     <details class="wside-section is-current-section" open>
       <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html" class="is-here" aria-current="page">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-power-ceilings.html">Diminishing returns</a>
         <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
         <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
@@ -456,15 +459,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Weapons</span></nav>
     <h2 class="chroma">Weapons</h2>
-    <p class="lede">Weapons fire on their own. You are offered them as you level, you level them up, and 8 of them are terminal forms reached with the right tome and a boss chest. The weapon you aim by hand is the core weapon, and it has its own page.</p>
+    <p class="lede">Weapons fire on their own. You are offered them as you level, you feed the levels back into them, and 8 of them are end forms that only arrive with the right tome and a boss chest. The one you aim by hand is a core weapon, and it has its own page.</p>
 
-    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
-      <b>game@0cb53bbe</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/weapons.ts#WEAPONS</code>.
-      Optional director notes have <b>0 of 33</b> coverage, so these cards use canonical mechanics and authored registry copy only.
-      This route also uses <b>33</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>4d058131f50c38888083b2639cbc8f2eeea2687d922918f5319b91a8c28556ae</code>, source <code>f0e7a0e675f77795add2cc21b94b408486169add9d0fc5d7f1d20ab10ca6778b</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
+      <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-    <p class="womit">There is no damage-per-second column here, and that is deliberate. The game does not compute one: your might and crit multiply the damage, your attack speed divides the interval, and half of these do not have "damage times shots per second" semantics in the first place. A beam ramps the longer it holds, chain jumps land a flat share of the first hit, the shotgun pays more up close. A single number would be wrong on most of these cards, so the page gives you the base figures and the growth rule and lets you compare like with like. <b>Element is a look, not a rule</b>: it picks the effect tint and nothing in the game reads it for damage, resistance or status.</p>
+    <p class="womit"><b>There is no damage-per-second column, on purpose.</b> The game never works one out: your might and your crit multiply the damage, your attack speed divides the interval, and half of these do not fire in a way that "damage times shots per second" describes at all. A beam ramps the longer it holds, a chain jump lands a flat share of the first hit, the shotgun pays more up close. One number would be wrong on most of these cards, so you get the base figures and the growth rule and you compare like with like. <b>Element is a look, not a rule</b>: it picks the color of the effect, and nothing in the game reads it for damage, resistance or status.</p>
 
 
 
@@ -498,14 +498,14 @@ footer a{color:var(--cyan);text-decoration:none}
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>No entries match these filters.</b>
+      <b>Nothing here matches all of that at once.</b>
       <button type="button" id="wreset">Reset filters</button>
     </div>
 
     <div id="wiki-groups">
     <section class="wgroup" data-group="base" id="g-base">
       <div class="wgroup-h"><h3>Base weapons</h3><span class="wgroup-n">25</span></div>
-      <p class="wgroup-note">What the level-up offer draws from. 10 are available on a fresh save; the rest use the quest and/or achievement routes listed on each card. Character weapon ids are suggestions, not campaign starting grants.</p>
+      <p class="wgroup-note">What the level-up offer draws from. 10 are there on a fresh save, and the rest arrive through the quest or achievement routes named on each card. The weapon a character lists is a suggestion, not something they walk in holding.</p>
       <div class="wgrid">
       <article class="wcard" id="e-energyBolt" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="start" data-s-roster="0" data-s-name="energy bolt" data-s-damage="9.6" data-s-range="21.45" data-s-cadence="560">
         <div class="wcard-h">
@@ -514,7 +514,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:energyBolt" data-visual-use="entry">
     <img src="wiki-assets/weapons/energy-bolt.png" width="128" height="128" alt="Canonical in-game weapon glyph for Energy Bolt." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -547,7 +547,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:plasmaOrbit" data-visual-use="entry">
     <img src="wiki-assets/weapons/plasma-orbit.png" width="128" height="128" alt="Canonical in-game weapon glyph for Plasma Shield." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -580,7 +580,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:spiritOrbs" data-visual-use="entry">
     <img src="wiki-assets/weapons/spirit-orbs.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ghost Orbs." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -613,7 +613,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:boomerang" data-visual-use="entry">
     <img src="wiki-assets/weapons/boomerang.png" width="128" height="128" alt="Canonical in-game weapon glyph for Boomerang." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -646,7 +646,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:meteorStrike" data-visual-use="entry">
     <img src="wiki-assets/weapons/meteor-strike.png" width="128" height="128" alt="Canonical in-game weapon glyph for Meteor Strike." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -679,7 +679,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:chainLightning" data-visual-use="entry">
     <img src="wiki-assets/weapons/chain-lightning.png" width="128" height="128" alt="Canonical in-game weapon glyph for Chain Lightning." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -712,7 +712,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:iceShard" data-visual-use="entry">
     <img src="wiki-assets/weapons/ice-shard.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ice Shards." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -745,7 +745,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:toxicAura" data-visual-use="entry">
     <img src="wiki-assets/weapons/toxic-aura.png" width="128" height="128" alt="Canonical in-game weapon glyph for Toxic Aura." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -778,7 +778,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:ricochetDisc" data-visual-use="entry">
     <img src="wiki-assets/weapons/ricochet-disc.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ricochet Disc." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -787,7 +787,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <span class="wtag ink-cyan">Ricochet</span>
         </div>
         <p class="wdesc">Disc bounces between enemies.</p>
-        <p class="wgloss">A disc thrown at a lead, then bouncing on to a budget of further targets that grows with level.</p>
+        <p class="wgloss">A disc thrown at where the target is going, then bouncing on to the next one. It gets more bounces as it levels.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-bigSpender">Big Spender</a>, then it joins the level-up pool.</span></div>
 
@@ -811,7 +811,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:beam" data-visual-use="entry">
     <img src="wiki-assets/weapons/beam.png" width="128" height="128" alt="Canonical in-game weapon glyph for Beam." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -844,7 +844,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:shotgun" data-visual-use="entry">
     <img src="wiki-assets/weapons/shotgun.png" width="128" height="128" alt="Canonical in-game weapon glyph for Shotgun." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -877,7 +877,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:gravityWell" data-visual-use="entry">
     <img src="wiki-assets/weapons/gravity-well.png" width="128" height="128" alt="Canonical in-game weapon glyph for Gravity Well." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -910,7 +910,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:encore" data-visual-use="entry">
     <img src="wiki-assets/weapons/encore.png" width="128" height="128" alt="Canonical in-game weapon glyph for Echo." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -919,7 +919,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <span class="wtag ink-cyan">Path echo</span>
         </div>
         <p class="wdesc">It's you, but it already left. Now it brought friends.</p>
-        <p class="wgloss">A lashing chain of nodes that trails the path you walked, heaviest at the front and tapering to the tail.</p>
+        <p class="wgloss">A lashing chain that trails the path you walked, heaviest at the front and tapering off toward the tail.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-emberCleared">Ember Cleared</a>, then it joins the level-up pool.</span></div>
 
@@ -943,7 +943,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:photonScythe" data-visual-use="entry">
     <img src="wiki-assets/weapons/photon-scythe.png" width="128" height="128" alt="Canonical in-game weapon glyph for Photon Scythe." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -976,7 +976,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:voidRailgun" data-visual-use="entry">
     <img src="wiki-assets/weapons/void-railgun.png" width="128" height="128" alt="Canonical in-game weapon glyph for Void Railgun." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1009,7 +1009,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:lighthouse" data-visual-use="entry">
     <img src="wiki-assets/weapons/lighthouse.png" width="128" height="128" alt="Canonical in-game weapon glyph for Faultline." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1042,7 +1042,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:stormSentry" data-visual-use="entry">
     <img src="wiki-assets/weapons/storm-sentry.png" width="128" height="128" alt="Canonical in-game weapon glyph for Storm Sentry." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1075,7 +1075,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:blackSquirrel" data-visual-use="entry">
     <img src="wiki-assets/weapons/black-squirrel.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ghost Pup." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1108,7 +1108,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:thunderStrike" data-visual-use="entry">
     <img src="wiki-assets/weapons/thunder-strike.png" width="128" height="128" alt="Canonical in-game weapon glyph for Lightning Strike." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1141,7 +1141,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:voidDaggers" data-visual-use="entry">
     <img src="wiki-assets/weapons/void-daggers.png" width="128" height="128" alt="Canonical in-game weapon glyph for Void Daggers." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1150,7 +1150,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <span class="wtag ink-cyan">Chain</span>
         </div>
         <p class="wdesc">They arrive from the side you were not watching.</p>
-        <p class="wgloss">Strikes the nearest few enemies to YOU at full damage each. It does not hop between them, so it does not care how they are spaced.</p>
+        <p class="wgloss">Strikes the nearest few enemies at full damage each. It picks them by their distance from you rather than from each other, so it does not care how they are spaced.</p>
         <div class="wfacts">
           <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Unlocked by <a href="wiki-achievements.html#e-survivor10">Survivor</a>, then it joins the level-up pool.</span></div>
 
@@ -1174,7 +1174,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:flameThrower" data-visual-use="entry">
     <img src="wiki-assets/weapons/flame-thrower.png" width="128" height="128" alt="Canonical in-game weapon glyph for Flame Thrower." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1207,7 +1207,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:spectralArrows" data-visual-use="entry">
     <img src="wiki-assets/weapons/spectral-arrows.png" width="128" height="128" alt="Canonical in-game weapon glyph for Spectral Arrows." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1240,7 +1240,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:starField" data-visual-use="entry">
     <img src="wiki-assets/weapons/star-field.png" width="128" height="128" alt="Canonical in-game weapon glyph for Star Field." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1273,7 +1273,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:pulseMine" data-visual-use="entry">
     <img src="wiki-assets/weapons/pulse-mine.png" width="128" height="128" alt="Canonical in-game weapon glyph for Pulse Mine." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1306,7 +1306,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:boomBox" data-visual-use="entry">
     <img src="wiki-assets/weapons/boom-box.png" width="128" height="128" alt="Canonical in-game weapon glyph for Boom Box." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1335,7 +1335,7 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="evolved" id="g-evolved">
       <div class="wgroup-h"><h3>Evolutions</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">Terminal forms, never offered directly. Each one is the payoff for maxing a specific weapon, holding its paired tome, and opening a boss chest. Turning it down is not permanent, the offer comes back at the next one.</p>
+      <p class="wgroup-note">End forms, never offered straight up. Each one is the payoff for maxing a specific weapon, holding its paired tome, and opening a boss chest. Turning one down is not final, the offer comes back at the next chest.</p>
       <div class="wgrid">
       <article class="wcard" id="e-novaLance" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="evolution" data-s-roster="25" data-s-name="nova lance" data-s-damage="19.5672" data-s-range="21.45" data-s-cadence="647.7182143255357">
         <div class="wcard-h">
@@ -1344,7 +1344,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:novaLance" data-visual-use="entry">
     <img src="wiki-assets/weapons/nova-lance.png" width="128" height="128" alt="Canonical in-game weapon glyph for Nova Lance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1377,7 +1377,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:ringOfRuin" data-visual-use="entry">
     <img src="wiki-assets/weapons/ring-of-ruin.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ring of Ruin." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1410,7 +1410,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:hellscatter" data-visual-use="entry">
     <img src="wiki-assets/weapons/hellscatter.png" width="128" height="128" alt="Canonical in-game weapon glyph for Hellscatter." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1443,7 +1443,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:dragonsBreath" data-visual-use="entry">
     <img src="wiki-assets/weapons/dragons-breath.png" width="128" height="128" alt="Canonical in-game weapon glyph for Dragon's Breath." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1476,7 +1476,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:glacierLance" data-visual-use="entry">
     <img src="wiki-assets/weapons/glacier-lance.png" width="128" height="128" alt="Canonical in-game weapon glyph for Glacier Lance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1509,7 +1509,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:constellation" data-visual-use="entry">
     <img src="wiki-assets/weapons/constellation.png" width="128" height="128" alt="Canonical in-game weapon glyph for Constellation." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1542,7 +1542,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:deathray" data-visual-use="entry">
     <img src="wiki-assets/weapons/deathray.png" width="128" height="128" alt="Canonical in-game weapon glyph for Deathray." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1575,7 +1575,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:goldReaver" data-visual-use="entry">
     <img src="wiki-assets/weapons/gold-reaver.png" width="128" height="128" alt="Canonical in-game weapon glyph for Gold Reaver." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
         <div class="wtags">
@@ -1606,7 +1606,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>,
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

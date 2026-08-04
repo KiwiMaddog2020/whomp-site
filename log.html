@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP dev log</title>
-<meta name="description" content="The WHOMP development log: what shipped, what's known-broken, and what's coming next.">
+<meta name="description" content="The WHOMP dev log: what shipped, what is still broken, and what is coming next.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -286,8 +286,8 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -295,7 +295,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -371,6 +371,61 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-04</h4>
 
+    <div class="row" data-kind="fix" id="chg-aaeb158f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">clear canonical HUD rails <span class="scope">(coop)</span></span>
+      <span class="sha">aaeb158f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f2849170">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">harden shared run HUD presentation <span class="scope">(coop)</span></span>
+      <span class="sha">f2849170</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ed2529d0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">reuse canonical run HUD <span class="scope">(coop)</span></span>
+      <span class="sha">ed2529d0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-342463c3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">hold due elites during hourglass <span class="scope">(coop)</span></span>
+      <span class="sha">342463c3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2178ae9b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">freeze enemy time for hourglass <span class="scope">(coop)</span></span>
+      <span class="sha">2178ae9b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3a1c82ca">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">repair two defects the first repair introduced <span class="scope">(signal)</span></span>
+      <span class="sha">3a1c82ca</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e6c1f5cd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close the holes independent review found in the guards <span class="scope">(signal)</span></span>
+      <span class="sha">e6c1f5cd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5b9a7f8c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bound unjoined seats, floods and protocol faults <span class="scope">(signal)</span></span>
+      <span class="sha">5b9a7f8c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6f15e84d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">compose per-seat locomotion stats <span class="scope">(coop)</span></span>
+      <span class="sha">6f15e84d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f7ee17c1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">lock helper map identity <span class="scope">(coop)</span></span>
+      <span class="sha">f7ee17c1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-560f7b44">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">construct every offered map <span class="scope">(coop)</span></span>
+      <span class="sha">560f7b44</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-0cb53bbe">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">parse publisher plans explicitly <span class="scope">(release)</span></span>
@@ -415,37 +470,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">bind publication to exact source <span class="scope">(release)</span></span>
       <span class="sha">3cfb7fa2</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f0f6edff">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">enforce two-channel publication cadence <span class="scope">(release)</span></span>
-      <span class="sha">f0f6edff</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-39505df5">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">isolate release channel installs <span class="scope">(pwa)</span></span>
-      <span class="sha">39505df5</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d1ca540c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">add safe build track chooser <span class="scope">(title)</span></span>
-      <span class="sha">d1ca540c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0d929372">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">admit Preview online traffic <span class="scope">(workers)</span></span>
-      <span class="sha">0d929372</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-cd2adbcc">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">separate online release tracks <span class="scope">(net)</span></span>
-      <span class="sha">cd2adbcc</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-cb02df2d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">tag stable and preview builds <span class="scope">(telemetry)</span></span>
-      <span class="sha">cb02df2d</span>
-    </div>
+    </div><div class="row more">+ 6 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-03</h4>
@@ -1168,11 +1193,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>.
-  Live build <code>0cb53bbe</code> (current).
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>.
+  Live build could not be reached at generation time, so no live sha is claimed.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">568 player-visible changes in the last 7 days, across 7 active days, 981 internal-only commits filtered out</div>
+  <div class="stat">579 player-visible changes in the last 7 days, across 7 active days, 1003 internal-only commits filtered out</div>
 </footer>
 
 

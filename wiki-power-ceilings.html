@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP power soft knees</title>
-<meta name="description" content="Power soft knees: 4 exported permanent-power dials, without an invented build result. Canonical facts generated from verified game artifacts.">
+<title>WHOMP diminishing returns</title>
+<meta name="description" content="Diminishing returns: Attack speed and crit each stop paying full price somewhere. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -163,7 +163,9 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -362,12 +364,12 @@ footer a{color:var(--cyan);text-decoration:none}
   <div class="wtopbar-row">
     <a class="brand" href="index.html">
       <span>
-        <h1 class="chroma">WHOMP power soft knees</h1>
-        <p class="subtag">4 exported permanent-power dials, without an invented build result.</p>
+        <h1 class="chroma">WHOMP diminishing returns</h1>
+        <p class="subtag">Attack speed and crit each stop paying full price somewhere.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -375,7 +377,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -391,12 +393,13 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
+    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
     <details class="wside-section is-current-section" open>
       <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html" class="is-here" aria-current="page">Power soft knees</a>
+        <a href="wiki-power-ceilings.html" class="is-here" aria-current="page">Diminishing returns</a>
         <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
         <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
@@ -450,25 +453,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <span class="wside-h">Elsewhere</span>
     <a href="log.html#views">Dev log</a>
     <a href="index.html">&larr; Back to WHOMP</a>
-    <div class="stat">4 source dials, read straight out of the game</div>
+    <div class="stat">4 dials, read straight out of the game</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
-    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Power soft knees</span></nav>
-    <h2 class="chroma">Power soft knees</h2>
-    <p class="lede">The root powerCeiling contract exposes its knee and factor fields. This guide prints the exact field names and values alongside the artifact’s own semantics.</p>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Diminishing returns</span></nav>
+    <h2 class="chroma">Diminishing returns</h2>
+    <p class="lede">Permanent power does not climb forever. Past a point, more attack speed and more crit each buy you less than the last one did, and these four numbers are where that starts and how hard it bites.</p>
 
-    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
-      <b>game@0cb53bbe</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/powerCeiling.ts#POWER_CEILING</code>.
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
+      <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-      </p>
-
-    <p class="womit"><b>No effective-power number is computed here.</b> The contract does not include a build’s permanent attack-speed bonus or crit product, and temporary buffs apply after these curves.</p>
+    <p class="womit"><b>This page will not work out what your own build gets.</b> The game keeps your permanent attack-speed bonus and your crit product to itself, and the buffs that come and go during a run land after these curves anyway. So the four numbers are here and the arithmetic on your run is not.</p>
 
 
     <section class="wfeature" aria-labelledby="power-ceiling-semantics">
-      <div><span class="eyebrow">Global system mechanic</span><h3 id="power-ceiling-semantics">Permanent-power soft knees</h3></div>
+      <div><span class="eyebrow">How the curve bends</span><h3 id="power-ceiling-semantics">The knee, in the game's own words</h3></div>
       <p>These soft knees apply to permanent power before temporary buffs.</p><p>attackSpeedKnee/factor apply to permanent attack-speed bonus above the knee.</p><p>critKnee/factor apply to the permanent crit-chance × crit-damage product above the knee.</p>
       <details class="wraw"><summary>Power-ceiling provenance <span>1</span></summary><dl><div><dt><code>source</code></dt><dd>src/data/powerCeiling.ts#POWER_CEILING</dd></div></dl></details>
     </section>
@@ -483,20 +483,20 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <div class="wfacet">
         <label class="wfacet-h" for="wsort">Sort</label>
-        <select class="wsort" id="wsort" aria-label="Sort Power soft knees">
+        <select class="wsort" id="wsort" aria-label="Sort Diminishing returns">
           <option value="roster" data-desc="0" data-text="0">Source order</option><option value="name" data-desc="0" data-text="1">Field name</option><option value="value" data-desc="1" data-text="0">Source value</option>
         </select>
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>No entries match these filters.</b>
+      <b>Nothing here matches all of that at once.</b>
       <button type="button" id="wreset">Reset filters</button>
     </div>
 
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
-      <div class="wgroup-h"><h3>Exported configuration</h3><span class="wgroup-n">4</span></div>
-      <p class="wgroup-note">Every field in powerCeiling.config, in source order.</p>
+      <div class="wgroup-h"><h3>The four dials</h3><span class="wgroup-n">4</span></div>
+      <p class="wgroup-note">All four, in the order the game keeps them.</p>
       <div class="wgrid">
       <article class="wcard" id="e-attackSpeedKnee" tabindex="-1" data-system="attack speed" data-s-roster="0" data-s-name="attackspeedknee" data-s-value="0.8">
         <div class="wcard-h">
@@ -559,7 +559,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>,
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
   content derived from <code>src/data/powerCeiling.ts#POWER_CEILING</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

@@ -163,7 +163,9 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -366,8 +368,8 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Stackable finds, with every trade written down.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -375,7 +377,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -391,12 +393,13 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
+    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
     <details class="wside-section is-current-section" open>
       <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-power-ceilings.html">Diminishing returns</a>
         <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
         <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
@@ -458,11 +461,8 @@ footer a{color:var(--cyan);text-decoration:none}
     <h2 class="chroma">Relics</h2>
     <p class="lede">Relics are stackable run pickups. Their cards carry the game description, rarity, stack ceiling, source stat payload and whether the arena draft includes them.</p>
 
-    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
-      <b>game@0cb53bbe</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/relics.ts#RELICS</code>.
-      Optional director notes have <b>0 of 36</b> coverage, so these cards use canonical mechanics and authored registry copy only.
-      This route also uses <b>36</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>4d058131f50c38888083b2639cbc8f2eeea2687d922918f5319b91a8c28556ae</code>, source <code>f0e7a0e675f77795add2cc21b94b408486169add9d0fc5d7f1d20ab10ca6778b</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
+      <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
     <p class="womit">There is no relic tier letter here. The measurement artifact explicitly does not cover relics because a relic needs a reference build and chest-economy model before its delta means anything. The roster is complete; the ranking is honestly unmeasured.</p>
 
@@ -498,7 +498,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>No entries match these filters.</b>
+      <b>Nothing here matches all of that at once.</b>
       <button type="button" id="wreset">Reset filters</button>
     </div>
 
@@ -514,7 +514,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:moldySandwich" data-visual-use="entry">
     <img src="wiki-assets/relics/moldy-sandwich.png" width="128" height="128" alt="Canonical in-game relic glyph for Forager's Ration." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -534,7 +534,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:crackedDrumstick" data-visual-use="entry">
     <img src="wiki-assets/relics/cracked-drumstick.png" width="128" height="128" alt="Canonical in-game relic glyph for Splintered Wand." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -554,7 +554,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:blownAmp" data-visual-use="entry">
     <img src="wiki-assets/relics/blown-amp.png" width="128" height="128" alt="Canonical in-game relic glyph for Cracked Power Core." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -574,7 +574,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:frayedCable" data-visual-use="entry">
     <img src="wiki-assets/relics/frayed-cable.png" width="128" height="128" alt="Canonical in-game relic glyph for Frayed Conduit." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -594,7 +594,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:setlistScrap" data-visual-use="entry">
     <img src="wiki-assets/relics/setlist-scrap.png" width="128" height="128" alt="Canonical in-game relic glyph for Scout's Notes." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -614,7 +614,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:guitarPick" data-visual-use="entry">
     <img src="wiki-assets/relics/guitar-pick.png" width="128" height="128" alt="Canonical in-game relic glyph for Lucky Fang." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -634,7 +634,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:ductTape" data-visual-use="entry">
     <img src="wiki-assets/relics/duct-tape.png" width="128" height="128" alt="Canonical in-game relic glyph for Field Repair Kit." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -654,7 +654,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:merchCoin" data-visual-use="entry">
     <img src="wiki-assets/relics/merch-coin.png" width="128" height="128" alt="Canonical in-game relic glyph for Tarnished Coin." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -674,7 +674,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:stageLightGel" data-visual-use="entry">
     <img src="wiki-assets/relics/stage-light-gel.png" width="128" height="128" alt="Canonical in-game relic glyph for Prism Shard." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -694,7 +694,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:wornTourShirt" data-visual-use="entry">
     <img src="wiki-assets/relics/worn-tour-shirt.png" width="128" height="128" alt="Canonical in-game relic glyph for Weathered Cloak." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -714,7 +714,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:popFilter" data-visual-use="entry">
     <img src="wiki-assets/relics/pop-filter.png" width="128" height="128" alt="Canonical in-game relic glyph for Ward Mesh." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -739,7 +739,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:reverbPedal" data-visual-use="entry">
     <img src="wiki-assets/relics/reverb-pedal.png" width="128" height="128" alt="Canonical in-game relic glyph for Echo Stone." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -759,7 +759,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:spareStrings" data-visual-use="entry">
     <img src="wiki-assets/relics/spare-strings.png" width="128" height="128" alt="Canonical in-game relic glyph for Giant's Thread." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -779,7 +779,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:roadieGloves" data-visual-use="entry">
     <img src="wiki-assets/relics/roadie-gloves.png" width="128" height="128" alt="Canonical in-game relic glyph for Pathfinder Gloves." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -799,7 +799,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:energyDrink" data-visual-use="entry">
     <img src="wiki-assets/relics/energy-drink.png" width="128" height="128" alt="Canonical in-game relic glyph for Energy Drink Case." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -819,7 +819,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:backstagePass" data-visual-use="entry">
     <img src="wiki-assets/relics/backstage-pass.png" width="128" height="128" alt="Canonical in-game relic glyph for Merchant's Seal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -839,7 +839,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:feedbackLoop" data-visual-use="entry">
     <img src="wiki-assets/relics/feedback-loop.png" width="128" height="128" alt="Canonical in-game relic glyph for Resonance Loop." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -859,7 +859,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:fogMachine" data-visual-use="entry">
     <img src="wiki-assets/relics/fog-machine.png" width="128" height="128" alt="Canonical in-game relic glyph for Fog Machine." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -879,7 +879,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:extraVerse" data-visual-use="entry">
     <img src="wiki-assets/relics/extra-verse.png" width="128" height="128" alt="Canonical in-game relic glyph for Scholar's Echo." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -899,7 +899,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:cursedSetlist" data-visual-use="entry">
     <img src="wiki-assets/relics/cursed-setlist.png" width="128" height="128" alt="Canonical in-game relic glyph for Cursed Ledger." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -919,7 +919,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:feedbackScreamer" data-visual-use="entry">
     <img src="wiki-assets/relics/feedback-screamer.png" width="128" height="128" alt="Canonical in-game relic glyph for Bossbane Sigil." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -939,7 +939,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:evpRecorder" data-visual-use="entry">
     <img src="wiki-assets/relics/evp-recorder.png" width="128" height="128" alt="Canonical in-game relic glyph for Spirit Vessel." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -964,7 +964,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:overdrivenAmp" data-visual-use="entry">
     <img src="wiki-assets/relics/overdriven-amp.png" width="128" height="128" alt="Canonical in-game relic glyph for Overcharged Core." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -984,7 +984,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:pyroRig" data-visual-use="entry">
     <img src="wiki-assets/relics/pyro-rig.png" width="128" height="128" alt="Canonical in-game relic glyph for Volatile Furnace." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1004,7 +1004,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:bassDrop" data-visual-use="entry">
     <img src="wiki-assets/relics/bass-drop.png" width="128" height="128" alt="Canonical in-game relic glyph for Quake Heart." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1024,7 +1024,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:crowdSurfPads" data-visual-use="entry">
     <img src="wiki-assets/relics/crowd-surf-pads.png" width="128" height="128" alt="Canonical in-game relic glyph for Momentum Greaves." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1044,7 +1044,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:bootlegRecording" data-visual-use="entry">
     <img src="wiki-assets/relics/bootleg-recording.png" width="128" height="128" alt="Canonical in-game relic glyph for Forbidden Codex." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1064,7 +1064,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:goldenKazoo" data-visual-use="entry">
     <img src="wiki-assets/relics/golden-kazoo.png" width="128" height="128" alt="Canonical in-game relic glyph for Golden Idol." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1084,7 +1084,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:heavyCab" data-visual-use="entry">
     <img src="wiki-assets/relics/heavy-cab.png" width="128" height="128" alt="Canonical in-game relic glyph for Bastion Plate." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -1104,7 +1104,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:strobeRig" data-visual-use="entry">
     <img src="wiki-assets/relics/strobe-rig.png" width="128" height="128" alt="Canonical in-game relic glyph for Blink Engine." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -1124,7 +1124,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:signatureSolo" data-visual-use="entry">
     <img src="wiki-assets/relics/signature-solo.png" width="128" height="128" alt="Canonical in-game relic glyph for Duelist's Crest." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -1149,7 +1149,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:platinumRecord" data-visual-use="entry">
     <img src="wiki-assets/relics/platinum-record.png" width="128" height="128" alt="Canonical in-game relic glyph for Astral Prism." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Stat effect</span></div>
@@ -1169,7 +1169,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:encoreFlare" data-visual-use="entry">
     <img src="wiki-assets/relics/encore-flare.png" width="128" height="128" alt="Canonical in-game relic glyph for Phoenix Flare." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1189,7 +1189,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:masterTape" data-visual-use="entry">
     <img src="wiki-assets/relics/master-tape.png" width="128" height="128" alt="Canonical in-game relic glyph for Prime Blueprint." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1209,7 +1209,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:tourBus" data-visual-use="entry">
     <img src="wiki-assets/relics/tour-bus.png" width="128" height="128" alt="Canonical in-game relic glyph for Wayfarer's Compass." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1229,7 +1229,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:goldMasterDisc" data-visual-use="entry">
     <img src="wiki-assets/relics/gold-master-disc.png" width="128" height="128" alt="Canonical in-game relic glyph for Gilded Hourglass." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Canonical runtime glyph</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
+    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#relicGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Runtime effect</span></div>
@@ -1247,7 +1247,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>,
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

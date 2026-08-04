@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP cosmetic styles</title>
-<meta name="description" content="Cosmetic styles: Every body, rim and accent palette. Canonical facts generated from verified game artifacts.">
+<meta name="description" content="Cosmetic styles: Three colors each, and not one of them makes you stronger. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
 <style>
 
@@ -163,7 +163,9 @@ html,body{max-width:100%;overflow-x:hidden}
 
 /* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
    that it cannot go stale, and a reader has no way to know that unless the page
-   says so. Said once per page, quietly, near the top. */
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
 .wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
   background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
 .wprov b{color:var(--cream);font-weight:700}
@@ -363,11 +365,11 @@ footer a{color:var(--cyan);text-decoration:none}
     <a class="brand" href="index.html">
       <span>
         <h1 class="chroma">WHOMP cosmetic styles</h1>
-        <p class="subtag">Every body, rim and accent palette.</p>
+        <p class="subtag">Three colors each, and not one of them makes you stronger.</p>
       </span>
     </a>
-    <div class="chips"><span class="chip"><span class="dot" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · current wiki source</span>
+    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
+  live build <b>unverified</b> · offline provenance</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
@@ -375,7 +377,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="searchwrap" role="search">
   <label class="searchlabel" for="search">Search WHOMP</label>
-  <input class="searchbox" id="search" type="search" placeholder="Search wiki guides, cards, and the dev log..." autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -391,12 +393,13 @@ footer a{color:var(--cyan);text-decoration:none}
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html">All guides</a>
+    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
     <details class="wside-section">
       <summary>Buildcraft <span>14</span></summary>
       <div class="wside-links">
         <a href="wiki-weapons.html">Weapons</a>
         <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html">Power soft knees</a>
+        <a href="wiki-power-ceilings.html">Diminishing returns</a>
         <a href="wiki-tiers.html">Automatic-weapon sim tiers</a>
         <a href="wiki-builds.html">Automatic-weapon sim loadouts</a>
         <a href="wiki-tomes.html">Tomes</a>
@@ -456,15 +459,12 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Cosmetic styles</span></nav>
     <h2 class="chroma">Cosmetic styles</h2>
-    <p class="lede">Cosmetic styles are complete source palettes. Each card shows availability, achievement route when one exists, and the exact body, rim and accent values stored by the registry.</p>
+    <p class="lede">A style is three colors: body, rim and accent. It changes nothing about how a run goes, which is the entire point of it.</p>
 
-    <p class="wprov">Canonical fields and measurements on this page are read from a verified generated artifact at build time, against
-      <b>game@0cb53bbe</b>. Player-facing labels and explanations are either artifact semantics or source-audited editorial context; they never introduce an unsourced magnitude. The generator refuses stale artifacts, missing domains, missing entries
-      and dead relations before it writes a page. Source: <code>src/data/cosmetics.ts#COSMETICS</code>.
-      Optional director notes have <b>0 of 9</b> coverage, so these cards use canonical mechanics and authored registry copy only.
-      This route also uses <b>9</b> game-owned visual associations from <code>data/wiki-visuals.json</code> (content <code>4d058131f50c38888083b2639cbc8f2eeea2687d922918f5319b91a8c28556ae</code>, source <code>f0e7a0e675f77795add2cc21b94b408486169add9d0fc5d7f1d20ab10ca6778b</code>). Runtime portraits are deterministic isolated production renders in a neutral presentation context; they are not sprites, screenshots, live-world lighting, or mechanics evidence.</p>
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
+      <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
-
+    <p class="womit"><b>These are the colors, not the look.</b> The strip on each card is the three stored values side by side, exact and flat, and it is not a picture of anyone wearing anything. What the game currently does with those colors is on the card too, in the game's own words, and it is less than you would expect.</p>
 
 
 
@@ -484,14 +484,14 @@ footer a{color:var(--cyan);text-decoration:none}
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>No entries match these filters.</b>
+      <b>Nothing here matches all of that at once.</b>
       <button type="button" id="wreset">Reset filters</button>
     </div>
 
     <div id="wiki-groups">
     <section class="wgroup" data-group="start" id="g-start">
       <div class="wgroup-h"><h3>Available from the start</h3><span class="wgroup-n">1</span></div>
-      <p class="wgroup-note">Present on a fresh save.</p>
+      <p class="wgroup-note">Yours before you have done anything.</p>
       <div class="wgrid">
       <article class="wcard" id="e-classic" tabindex="-1" data-access="from the start" data-s-roster="0" data-s-name="classic">
         <div class="wcard-h">
@@ -500,7 +500,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:classic" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/classic.png" width="384" height="72" alt="Authored cosmetic palette for Classic; this does not depict a modeled cosmetic appearance." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
@@ -515,7 +515,7 @@ footer a{color:var(--cyan);text-decoration:none}
     </section>
     <section class="wgroup" data-group="earned" id="g-earned">
       <div class="wgroup-h"><h3>Earned styles</h3><span class="wgroup-n">8</span></div>
-      <p class="wgroup-note">Achievement-linked styles.</p>
+      <p class="wgroup-note">Earned by doing one specific thing. The achievement that pays out is named on the card.</p>
       <div class="wgrid">
       <article class="wcard" id="e-shades" tabindex="-1" data-access="achievement" data-s-roster="1" data-s-name="shades">
         <div class="wcard-h">
@@ -524,7 +524,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:shades" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/shades.png" width="384" height="72" alt="Authored cosmetic palette for Shades; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -543,7 +543,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:mossy" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/mossy.png" width="384" height="72" alt="Authored cosmetic palette for Mossy; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -562,7 +562,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:skully" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/skully.png" width="384" height="72" alt="Authored cosmetic palette for Skully; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -581,7 +581,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:blazer" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/blazer.png" width="384" height="72" alt="Authored cosmetic palette for Blazer; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -600,7 +600,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:cosmic" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/cosmic.png" width="384" height="72" alt="Authored cosmetic palette for Cosmic; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -619,7 +619,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:captain" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/captain.png" width="384" height="72" alt="Authored cosmetic palette for Captain; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -638,7 +638,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:demon" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/demon.png" width="384" height="72" alt="Authored cosmetic palette for Demon; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -657,7 +657,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-palette-strip" data-visual-key="cosmetics:legend" data-visual-use="entry">
     <img src="wiki-assets/cosmetics/legend.png" width="384" height="72" alt="Authored cosmetic palette for Legend; this does not depict a modeled cosmetic appearance." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Authored palette strip</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
+    <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/data/cosmetics.ts#COSMETICS</span><span class="wvisual-limit">The current avatar renderer tracks cosmeticId but does not apply these colors or re-author cosmetic meshes across the playable roster.</span></figcaption>
   </figure>
 
         <div class="wtags"><span class="wtag ink-gold">Achievement</span></div>
@@ -674,7 +674,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 10:44 UTC from <code>game@0cb53bbe</code>,
+  Generated 2026-08-04 18:46 UTC from <code>game@c736ebea</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
