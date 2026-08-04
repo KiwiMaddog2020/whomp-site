@@ -744,7 +744,12 @@ for (const source of Object.values(D.domains.shrineMovement.runtime.provenance))
   requireThat(shrineMovementHtml.includes(esc(source)) && blessingsHtml.includes(esc(source)),
     `Shrine routes hide provenance ${source}`);
 }
-requireThat(/blessing-trio portion/.test(blessingsHtml) && /not the complete set of shrine outcomes/.test(blessingsHtml),
+// Regression guard, reworded with the copy it guards. Both halves survive: the
+// page must still say the blessing trio is a PART of what an activation does,
+// and must still say it is not the whole set of outcomes. The first phrasing
+// moved from "blessing-trio portion" to "only part of what a shrine can do" in
+// the voice pass. The claim being forbidden did not move.
+requireThat(/only part of what a shrine can do/.test(blessingsHtml) && /not the complete set of shrine outcomes/.test(blessingsHtml),
   'Shrine blessings route overstates its registry as the complete live outcome pool');
 requireThat(/Legacy jump augment aliases/.test(jumpAliasesHtml) && !/chest-only|small and complete/i.test(jumpAliasesHtml),
   'legacy jump route has regressed to chest-only or complete-live-pool copy');

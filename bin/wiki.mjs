@@ -105,6 +105,14 @@ const num = (n, places = 2) => {
 
 const pct = (x) => `${x >= 0 ? '+' : ''}${num(x * 100, 1)}%`;
 
+/* A count inside a sentence is a word; a count inside a table is a digit. These
+   are still read from the data, so the copy cannot drift when a roster grows.
+   It only stops the prose reading like "the 5 ways a shrine changes how you
+   move". Past twelve the digits win, because "three hundred pairs" is worse. */
+const SPELLED = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const spell = (n) => (Number.isInteger(Number(n)) && n >= 0 && n < SPELLED.length ? SPELLED[n] : String(n));
+const spellCap = (n) => spell(n).replace(/^./, (c) => c.toUpperCase());
+
 /** Title Case a camelCase enum for display, so a value that gains a new member
  *  in src/data still renders readably instead of falling through to blank.
  *
@@ -849,7 +857,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     .join('')}</dl></details>`;
   const aimPolicyFeature = `
     <section class="wfeature" aria-labelledby="aim-policy">
-      <div><span class="eyebrow">Global core mechanic</span><h3 id="aim-policy">Aim-assist policy</h3></div>
+      <div><span class="eyebrow">The same for every core</span><h3 id="aim-policy">How much the game helps you aim</h3></div>
       <div class="wmethod-grid">
         ${(C.aimPolicy.assistLevels || []).map((level) => `<div><b>${esc(humanize(level))}</b><span>Assist scale</span><code>${num(C.aimPolicy.assistScale[level], 4)}</code></div>`).join('')}
         <div><b>${esc(humanize(C.aimPolicy.defaultAssist))}</b><span>Default assist level</span><code>${esc(C.aimPolicy.defaultAssist)}</code></div>
@@ -857,7 +865,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         <div><b>${num(C.aimPolicy.minimumRangeM)} m</b><span>Minimum acquisition range</span><code>minimumRangeM</code></div>
         <div><b>${list(C.aimPolicy.minimumRangeExempt.map((id) => cardLink('cores', id, esc(coreName(id)))))}</b><span>Range-floor exemption</span><code>minimumRangeExempt</code></div>
       </div>
-      <p>These are targeting-assistance and forgiveness parameters. They are not damage values, weapon-strength scores or measured rankings.</p>
+      <p>Every number here decides how much help you get pointing at something. None of them is damage, none of them is strength, and none of them is a ranking.</p>
       ${sourceParams(C.aimPolicy.provenance, 'Aim-policy provenance')}
     </section>`;
   const coresRoster = {
@@ -866,11 +874,16 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     domain: 'coreWeapons',
     title: 'Core weapons',
     tagline: 'The one you aim yourself.',
-    lede: `A core weapon is the aimed weapon under your hand. Picking one locks in that aimed-weapon slot before a run starts. All ${C.count} are available on a fresh save, you take exactly one, and the draft can never offer you another. The technical targeting profile on each card is the complete runtime forgiveness row, not a rating.`,
-    omissions: `No damage figures on this page, on purpose. Every clip size, reload, cooldown and damage multiplier for these ${C.count} lives outside the shared artifact, so this page will not retype private constants. The reserved evolution labels in the registry are not a playable mechanic and are not presented as available or upcoming content. <b>Aim and forgiveness values describe targeting generosity only</b>; they do not imply damage strength. The pip count is shown because the game suite pins it against the real clip size.`,
+    /* THE PIN. bin/wiki-check.mjs requires this lede to keep saying that the
+       choice locks the aimed slot, and forbids the older claim that it was the
+       only decision shaping a whole run, which was false: tomes, weapons,
+       relics and blessings all shape one too. Reword around the kept phrase and
+       leave the ban alone. */
+    lede: `A core weapon is the one you point yourself. Picking it locks in that aimed-weapon slot before the run starts, all ${spell(C.count)} are open on a fresh save, and the level-up draft can never hand you a second one. The aim numbers on each card say how much the game helps you point it, and nothing at all about how hard it lands.`,
+    omissions: `<b>No damage figures on this page, on purpose.</b> Clip size, reload, cooldown and damage multiplier for these ${C.count} are kept somewhere this page cannot read, and it will not guess at a number it cannot see. The unused evolution names sitting in the game files are not a mechanic you can reach and are not a promise of one. <b>Aim and forgiveness say how generous the targeting is</b>, never how much damage arrives. The pip count is here because the game tests it against the real clip.`,
     featureHtml: aimPolicyFeature,
     entries: coreEntries,
-    groups: [{ key: 'all', title: 'Core selection', note: 'In the source picker’s selectOrder. This is display order, not a ladder.', has: () => true }],
+    groups: [{ key: 'all', title: 'Core selection', note: 'The order the picker puts them in. It is an order, not a ladder.', has: () => true }],
     facets: [
       { key: 'cadence', label: 'Rhythm', of: (e) => e.cadence },
       { key: 'feel', label: 'Asks you for', of: (e) => e.feel },
@@ -1130,19 +1143,22 @@ export function rosterSpecs(D, esc, T = null, V = null) {
 
   // ---- relics -------------------------------------------------------------
   const relicEntries = ordered(R);
+  const relicWeightTotal = Object.values(R.baseWeights || {}).reduce((sum, weight) => sum + weight, 0);
   const relicsRoster = {
     section: 'Buildcraft',
     slug: 'relics',
     domain: 'relics',
     title: 'Relics',
-    tagline: 'Stackable finds, with every trade written down.',
-    lede: 'Relics are stackable run pickups. Their cards carry the game description, rarity, stack ceiling, source stat payload and whether the arena draft includes them.',
-    omissions: 'There is no relic tier letter here. The measurement artifact explicitly does not cover relics because a relic needs a reference build and chest-economy model before its delta means anything. The roster is complete; the ranking is honestly unmeasured.',
+    tagline: 'Small things you pick up, and keep picking up.',
+    lede: 'A relic is a find you can take again and again until it hits its ceiling. Most of them are one small number in your favor, a few of them are one small number in your favor and a smaller one against you, and the rare ones are rare because the game says so.',
+    omissions: '<b>No relic has a letter grade here.</b> Grading one would mean first deciding which build it is sitting in and what the chests cost that run, and neither of those has been measured, so a ladder would be a guess said with a straight face. Every relic in the game is on this page. The order they sit in is not a ranking.',
     entries: relicEntries,
     groups: ['common', 'rare', 'epic', 'legendary'].map((rarity) => ({
       key: rarity,
       title: humanize(rarity),
-      note: R.baseWeights?.[rarity] !== undefined ? `Base rarity weight ${R.baseWeights[rarity]}.` : '',
+      note: R.baseWeights?.[rarity] !== undefined
+        ? `Drawn with weight ${R.baseWeights[rarity]} out of ${relicWeightTotal}.`
+        : '',
       has: (e) => e.rarity === rarity,
     })),
     facets: [
@@ -1186,13 +1202,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     domain: 'passives',
     title: 'Tomes',
     tagline: 'The stat half of your build.',
-    lede: 'Tomes level a named player stat. Every card shows the registry description, exact per-level payload, maximum level, unlock route and any weapon evolution recipe that requires it.',
-    omissions: 'There is no tome tier letter here. The measurement artifact says a tome is a delta against a reference build, and that reference has not been chosen or measured. A made-up order would turn complete source data into an unsupported claim.',
+    lede: `A tome raises one number and keeps raising it every time you take it again. Nothing here fires, aims or lands: this is the half of a build that quietly makes the other half bigger, and ${spell(evolutionsByPassive.size)} of them are also the key to a weapon end form.`,
+    omissions: '<b>No tome has a letter grade here.</b> A tome is worth whatever the build around it is worth, and nobody has picked the build to measure it against yet, so putting these in order would be inventing a fact rather than reporting one. What each level actually adds is on the card, and you can do the comparing.',
     entries: passiveEntries,
     groups: [
-      { key: 'start', title: 'Available from the start', note: 'In the tome pool on a fresh save.', has: (e) => e.unlockedFromStart },
-      { key: 'milestone', title: 'Campaign milestone unlock', note: 'Permanently joins future draft pools after the canonical signature-boss milestone.', has: (e) => !!P.refs[e.id]?.runtimeUnlock },
-      { key: 'earned', title: 'Achievement unlocks', note: 'Each card links to the achievement that adds it.', has: (e) => !e.unlockedFromStart && !P.refs[e.id]?.runtimeUnlock },
+      { key: 'start', title: 'Available from the start', note: 'Offered from the first run, before you have earned anything.', has: (e) => e.unlockedFromStart },
+      { key: 'milestone', title: 'Campaign milestone unlock', note: 'Arrives when the campaign hits its signature-boss milestone, and stays in the pool afterwards.', has: (e) => !!P.refs[e.id]?.runtimeUnlock },
+      { key: 'earned', title: 'Achievement unlocks', note: 'Locked until you do the thing. The achievement that opens each one is on its card.', has: (e) => !e.unlockedFromStart && !P.refs[e.id]?.runtimeUnlock },
     ],
     facets: [
       { key: 'access', label: 'Availability', of: passiveAccess },
@@ -1232,10 +1248,10 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'legendaries',
     domain: 'legendaries',
     title: 'Legendary upgrades',
-    tagline: 'Run-defining effects with their real payload attached.',
-    lede: `The legendary registry contains ${legendaryEntries.length} upgrades. The shared artifact also sets the run cap to ${LG.cap}; each card reproduces the canonical description, effect line and parameter payload.`,
+    tagline: `A run holds ${spell(LG.cap)} of the ${legendaryEntries.length}.`,
+    lede: `A legendary is the upgrade a run gets remembered for. There are ${legendaryEntries.length} of them and you can carry ${spell(LG.cap)} at once, so most of this page is the part you did not get.`,
     entries: legendaryEntries,
-    groups: [{ key: 'all', title: 'Legendary pool', note: `A run can hold up to ${LG.cap}.`, has: () => true }],
+    groups: [{ key: 'all', title: 'Legendary pool', note: `All ${legendaryEntries.length}. You will be holding ${spell(LG.cap)} at most.`, has: () => true }],
     facets: [{ key: 'shape', label: 'Parameter shape', of: (e) => Object.keys(e.params || {}).length > 1 ? 'multi-part' : 'single-part' }],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => legendaryEntries.indexOf(e) },
@@ -1255,8 +1271,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const blessingEntries = ordered(BL);
   const shrineRuntimeFeature = (id) => `
     <section class="wfeature" aria-labelledby="${id}">
-      <div><span class="eyebrow">World-shrine activation contract</span><h3 id="${id}">Blessing trio, legendary replacement and movement offering</h3></div>
-      <p>A qualifying normal activation has <b>${num(SM.runtime.normalWorldShrineMovementSlots)}</b> movement slot. The gate requires a world shrine and no legendary replacement; directive and merchant blessing offers have no movement slot.</p>
+      <div><span class="eyebrow">What lighting one up actually does</span><h3 id="${id}">Blessings first, then a legendary or a way to move</h3></div>
+      <p>A normal world shrine that lights up has <b>${num(SM.runtime.normalWorldShrineMovementSlots)}</b> movement slot to fill, and it only fills if no legendary replacement arrived first. Directive and merchant offers do not carry that slot at all.</p>
       ${(SM.runtime.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
       ${sourceParams(SM.runtime.provenance, 'Shrine runtime provenance')}
     </section>`;
@@ -1265,11 +1281,16 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'blessings',
     domain: 'shrineBlessings',
     title: 'Shrine blessings',
-    tagline: `${blessingEntries.length} authored blessing options in the shrine's blessing-trio portion.`,
-    lede: 'This registry supplies the blessing trio portion of an activated world shrine. A legendary replacement can return before the blessing menu and movement draw, so these cards are not the complete set of shrine outcomes.',
+    tagline: 'The three a shrine puts in front of you.',
+    /* THE PIN, and bin/wiki-check.mjs holds both halves of it. This page used to
+       read as the whole of what a shrine can do, which it is not: a legendary
+       replacement can arrive instead, and a movement offering can follow. Both
+       sentences below are pinned by their wording. Reword them freely, move the
+       pin with them, and keep saying that the trio is a part and not the total. */
+    lede: `A shrine you activate offers three, drawn from these ${blessingEntries.length}. That trio is only part of what a shrine can do, because a legendary replacement can turn up ahead of the blessing menu and a way to move can follow it, so this page is not the complete set of shrine outcomes.`,
     featureHtml: shrineRuntimeFeature('blessing-shrine-runtime'),
     entries: blessingEntries,
-    groups: [{ key: 'all', title: 'Blessing registry', note: 'All authored options for the blessing trio; movement offerings are catalogued separately.', has: () => true }],
+    groups: [{ key: 'all', title: 'Blessing registry', note: 'Every option the trio can be drawn from. The movement offering that can follow it has its own page.', has: () => true }],
     facets: [{ key: 'stat', label: 'Stat', of: (e) => e.stat }],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => blessingEntries.indexOf(e) },
@@ -1286,16 +1307,18 @@ export function rosterSpecs(D, esc, T = null, V = null) {
 
   // ---- live shrine movement offerings ------------------------------------
   const shrineMovementEntries = ordered(SM);
+  const cappedMovementCount = shrineMovementEntries.filter((entry) => entry.maxStacks !== undefined).length;
+  const uncappedMovementNames = shrineMovementEntries.filter((entry) => entry.maxStacks === undefined).map((entry) => entry.name);
   const shrineMovementRoster = {
     section: 'Buildcraft',
     slug: 'shrine-movement',
     domain: 'shrineMovement',
     title: 'Shrine movement',
-    tagline: `${shrineMovementEntries.length} live movement offerings from activated world shrines.`,
-    lede: 'After an activated world shrine rolls its blessing trio, it draws one eligible movement offering from this canonical pool unless a legendary replacement already returned. Stack-capped entries leave the pool at cap; the uncapped Extra Jump keeps it non-empty.',
+    tagline: `The ${spell(shrineMovementEntries.length)} ways a shrine changes how you move.`,
+    lede: `Once a shrine has offered its blessings, it draws one movement offering from these ${spell(shrineMovementEntries.length)}, unless a legendary replacement took that slot first. ${spellCap(cappedMovementCount)} of them stop being offered once you have taken them to their ceiling, and ${list(uncappedMovementNames)} never does, so there is always something left to draw.`,
     featureHtml: shrineRuntimeFeature('movement-shrine-runtime'),
     entries: shrineMovementEntries,
-    groups: [{ key: 'all', title: 'Live movement offering pool', note: 'Every source-owned world-shrine movement option, in canonical draw order.', has: () => true }],
+    groups: [{ key: 'all', title: 'Live movement offering pool', note: `All ${spell(shrineMovementEntries.length)}, in the order the game draws them.`, has: () => true }],
     facets: [{ key: 'stat', label: 'Stat', of: (e) => e.stat }],
     sorts: [
       { key: 'roster', label: 'Draw order', of: (e) => shrineMovementEntries.indexOf(e) },
@@ -1321,12 +1344,12 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'utilities',
     domain: 'utilities',
     title: 'Utility abilities',
-    tagline: 'Your F-slot options, costs and cooldowns.',
-    lede: 'The utility registry defines the complete selectable F-slot pool. Every current entry is implemented; cards show targeting, availability, gold cost, cooldown and the exact source parameters.',
+    tagline: 'The F key, and what you put under it.',
+    lede: `You carry one of these and you press F. ${UT.entries[UT.starterId]?.name || 'The starter'} is the one you already have, the other ${spell(utilityEntries.length - 1)} cost gold, and every one of them is a cooldown you have to spend at the right moment.`,
     entries: utilityEntries,
     groups: [
-      { key: 'starter', title: 'Starter utility', note: 'Selected by the starter id in the shared artifact.', has: (e) => e.id === UT.starterId },
-      { key: 'forge', title: 'Unlockable utilities', note: 'The remaining implemented utility choices.', has: (e) => e.id !== UT.starterId },
+      { key: 'starter', title: 'Starter utility', note: 'What you are holding before you buy anything.', has: (e) => e.id === UT.starterId },
+      { key: 'forge', title: 'Unlockable utilities', note: 'The rest, each with a price on it.', has: (e) => e.id !== UT.starterId },
     ],
     facets: [
       { key: 'targeting', label: 'Targeting', of: (e) => e.targeted ? 'targeted' : 'immediate' },
@@ -1356,14 +1379,14 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const ultimateRuntime = UL.runtime || { owner: '', slot: '', availability: {}, semantics: [] };
   const ultimateAvailability = ultimateRuntime.availability.fromRunStart
     ? ultimateRuntime.availability.scope === 'standard-player-run'
-      ? 'Armed from the start in standard player runs'
-      : 'Armed from run start'
+      ? 'Armed from the first second of a normal run'
+      : 'Armed from the first second of the run'
     : ultimateRuntime.availability.requiresBossKill
-      ? 'Armed after a boss kill'
-      : 'Armed by the runtime gate';
+      ? 'Armed once a boss goes down'
+      : 'Armed when the game decides to arm it';
   const ultimateRuntimeFeature = `
     <section class="wfeature" aria-labelledby="ultimate-runtime">
-      <div><span class="eyebrow">Canonical runtime semantics</span><h3 id="ultimate-runtime">A ${esc(ultimateRuntime.owner)}-held ${esc(ultimateRuntime.slot)}-slot ability</h3></div>
+      <div><span class="eyebrow">What the game promises about it</span><h3 id="ultimate-runtime">Who holds it, and when it is ready</h3></div>
       <ul>${ultimateRuntime.semantics.map((line) => `<li>${esc(line)}</li>`).join('')}</ul>
       ${sourceParams(ultimateRuntime.availability || {}, 'Ultimate availability contract')}
       ${sourceParams(ultimateRuntime.provenance || {}, 'Ultimate runtime provenance')}
@@ -1372,12 +1395,23 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     section: 'Buildcraft',
     slug: 'ultimates',
     domain: 'ultimates',
+    /* The heading and the document title are both pinned to this exact string
+       by bin/wiki-check.mjs, which also forbids the doubled "WHOMP whomp
+       ultimate" the qualifier used to produce. The page name stays put; the
+       tagline and lede carry the voice. */
     title: 'WHOMP Ultimate',
-    tagline: `The ${ultimateRuntime.owner}-held ${ultimateRuntime.slot}-slot ability. ${ultimateAvailability}.`,
-    lede: 'The complete canonical ultimate registry and the runtime semantics that define how the player holds and activates it.',
+    tagline: `One ability, held on ${ultimateRuntime.slot}. ${ultimateAvailability}.`,
+    lede: `There is exactly one ultimate and the ${ultimateRuntime.owner} is the one holding it. ${ultimateAvailability}, it comes down on ${ultimateRuntime.slot}, and the cooldown printed here is the number the game starts from before anything you are carrying cuts into it.`,
     featureHtml: ultimateRuntimeFeature,
     entries: ultimateEntries,
-    groups: [{ key: 'all', title: `${humanize(ultimateRuntime.owner)} ultimate ability`, note: `Every registered ${ultimateRuntime.owner}-held ${ultimateRuntime.slot}-slot ultimate.`, has: () => true }],
+    groups: [{
+      key: 'all',
+      title: `${humanize(ultimateRuntime.owner)} ultimate ability`,
+      note: ultimateEntries.length === 1
+        ? `Every ultimate the ${ultimateRuntime.owner} can hold. There is one of them.`
+        : `Every ultimate the ${ultimateRuntime.owner} can hold, and there are ${ultimateEntries.length}.`,
+      has: () => true,
+    }],
     facets: [],
     sorts: [{ key: 'roster', label: 'Roster order', of: (e) => ultimateEntries.indexOf(e) }],
     searchText: (e) => `${e.desc} ${ultimateRuntime.owner} ultimate ability ${ultimateRuntime.slot} slot ${ultimateAvailability} ${ultimateRuntime.availability.scope || ''} ${ultimateRuntime.semantics.join(' ')} ${Object.keys(e.params || {}).join(' ')}`,
@@ -1389,8 +1423,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         ${fact('Owner', `<b>${esc(humanize(ultimateRuntime.owner))}</b>`)}
         ${fact('Input slot', `<b>${esc(ultimateRuntime.slot)}</b>`)}
         ${fact('Availability', `<b>${esc(ultimateAvailability)}</b>${ultimateRuntime.availability.requiresBossKill ? '' : ' · no boss kill required'}`)}
-        ${fact('Availability scope', `<b>${esc(humanize(String(ultimateRuntime.availability.scope).replace(/[-_]+/g, ' ')))}</b>`)}
-        ${fact('Registry base cooldown', `<b>${cooldown(e.cooldownMs)}</b>`)}
+        ${fact('Applies to', `<b>${esc(humanize(String(ultimateRuntime.availability.scope).replace(/[-_]+/g, ' ')))}</b>`)}
+        ${fact('Base cooldown', `<b>${cooldown(e.cooldownMs)}</b>, before your own gear touches it`)}
       </div>
       ${sourceParams(e.params)}`,
   };
@@ -1406,10 +1440,10 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'evolutions',
     domain: 'evolutions',
     title: 'Evolution recipes',
-    tagline: 'Every base weapon, tome and terminal form.',
-    lede: 'Each recipe is one complete three-way relation from the game data: max the base weapon, hold the named tome, then take the evolved result from a boss chest.',
+    tagline: `${spellCap(evolutionEntries.length)} recipes, each one the end of a weapon.`,
+    lede: `Max the weapon, hold the tome it wants, then open a boss chest. What comes out is the end form, it does not level any further, and these ${spell(evolutionEntries.length)} are all of them.`,
     entries: evolutionEntries,
-    groups: [{ key: 'all', title: 'Recipes', note: 'The complete evolution registry.', has: () => true }],
+    groups: [{ key: 'all', title: 'Recipes', note: `All ${spell(evolutionEntries.length)}. There is not another one waiting to be found.`, has: () => true }],
     facets: [],
     sorts: [
       { key: 'roster', label: 'Registry order', of: (e) => evolutionEntries.indexOf(e) },
@@ -1431,11 +1465,15 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     section: 'Buildcraft',
     slug: 'jump-augments',
     domain: 'jumpAugments',
+    /* THE TITLE IS PINNED by bin/wiki-check.mjs, which also forbids the two
+       claims this page used to make: that these arrive from chests, and that
+       this short list is the whole live movement pool. Neither is true. Keep
+       the word "Legacy" doing its job and keep both bans intact. */
     title: 'Legacy jump augment aliases',
-    tagline: `${jumpEntries.length} legacy card/progression aliases linked to live Shrine movement offerings.`,
-    lede: `This ${jumpEntries.length}-entry registry preserves older card and progression aliases for Spring Step and Extra Jump. It is an alias surface, not an acquisition rule or the complete live movement pool; each card links to its canonical Shrine movement offering.`,
+    tagline: `${spellCap(jumpEntries.length)} old names for offerings that live somewhere else now.`,
+    lede: `The game still keeps ${spell(jumpEntries.length)} older names for ${list(jumpEntries.map((entry) => entry.name))}. They are names and nothing more: neither one is handed out here, the shrine is where both are actually offered, and every card points at the offering it stands for.`,
     entries: jumpEntries,
-    groups: [{ key: 'all', title: 'Legacy aliases', note: 'Compatibility aliases only; use Shrine movement for the complete live offering pool.', has: () => true }],
+    groups: [{ key: 'all', title: 'Legacy aliases', note: 'Names only. The pool you actually draw from is on the Shrine movement page.', has: () => true }],
     facets: [{ key: 'stat', label: 'Stat', of: (e) => e.stat }],
     sorts: [{ key: 'roster', label: 'Roster order', of: (e) => jumpEntries.indexOf(e) }],
     searchText: (e) => `${e.desc} ${e.stat} legacy jump movement augment alias ${SM.entries[JA.refs[e.id]?.shrineMovementOffering]?.name || ''}`,
@@ -1446,8 +1484,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         <div class="wtags">${tag('Legacy alias', 'gold')}${tag(esc(humanize(e.stat)), 'cyan')}</div>
         <p class="wdesc">${esc(e.desc)}</p>
         <div class="wfacts">
-          ${fact('Source payload', `<b>${num(e.perLevel)}</b> per level${e.maxLevel ? `, <b>${e.maxLevel}</b> levels max` : ''}`)}
-          ${fact('Live Shrine offering', cardLink('shrine-movement', offeringId, esc(SM.entries[offeringId]?.name || humanize(offeringId))))}
+          ${fact('What it adds', `<b>${num(e.perLevel)}</b> per level${e.maxLevel ? `, <b>${e.maxLevel}</b> levels max` : ''}`)}
+          ${fact('Offered as', cardLink('shrine-movement', offeringId, esc(SM.entries[offeringId]?.name || humanize(offeringId))))}
         </div>`;
     },
   };
@@ -2195,7 +2233,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   };
   const tierFeature = tierEvidenceReady ? `
     <section class="wfeature" aria-labelledby="measurement-method">
-      <div><span class="eyebrow">Controlled automatic-weapon simulation</span><h3 id="measurement-method">Artifact-defined fixtures and cohort tiers</h3></div>
+      <div><span class="eyebrow">How the measuring was done</span><h3 id="measurement-method">The tests, and what they hold still</h3></div>
       <p>${esc(T.metric.whyTwo)}</p>
       <div class="wmethod-grid">
         ${T.metric.axes.map((axis) => `<div><b>${esc(axis.label || (axis.key === 'trashClear' ? 'Controlled trash sim' : axis.key === 'bossDamage' ? 'Stationary-target sim' : humanize(axis.key)))}</b><span>${esc(axis.job)} ${esc(axis.what)}</span><code>${esc(axis.unit)}</code></div>`).join('')}
@@ -2213,20 +2251,20 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'tiers',
     domain: null,
     sourceKind: 'controlled simulation',
-    title: 'Automatic-weapon sim tiers',
-    tagline: `${T.metric.axes.length} controlled simulation fixtures, with sample and spread attached.`,
-    lede: `${T.coverage.measured} of ${T.coverage.weaponDefs} automatic weapons are represented across ${T.coverage.rows} form-and-level evidence rows in deterministic controlled fixtures. These are laboratory comparisons, not whole-run or human-play rankings. Each assigned letter is relative to its artifact-defined cohort; UNMEASURED axes are excluded rather than forced into the ladder.`,
-    omissions: `<b>Core weapons, tomes, relics and characters are named as unmeasured by the artifact.</b> ${Object.entries(T.notCovered).map(([key, reason]) => `<b>${esc(humanize(key))}:</b> ${esc(reason)}`).join(' ')}`,
+    title: 'Automatic weapons, measured',
+    tagline: `${spellCap(T.metric.axes.length)} lab tests, run over and over, with the spread left in.`,
+    lede: `${T.coverage.measured === T.coverage.weaponDefs ? `Every one of the ${T.coverage.weaponDefs} automatic weapons` : `${T.coverage.measured} of the ${T.coverage.weaponDefs} automatic weapons`} went through the same ${spell(T.metric.axes.length)} tests, at ${T.coverage.rows} combinations of form and level. This is a laboratory and not a run: nothing here dodges, nothing here is aimed, and a letter only says where a row landed against the other rows it was compared with. Where a test could not honestly produce a number, the row says so instead of taking a guess.`,
+    omissions: `<b>Core weapons, tomes, relics and characters have no letters here, and the measurement says why.</b> ${Object.entries(T.notCovered).map(([key, reason]) => `<b>${esc(humanize(key))}:</b> ${esc(reason)}`).join(' ')}`,
     featureHtml: tierFeature,
     sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint} · source ${T.sourceContract.digest}`,
     countLabel: `${T.coverage.measured} weapons · ${T.coverage.rows} evidence rows`,
     entries: tierRows,
     visualRefs: (entry) => [{ domain: 'weapons', id: entry.weaponId }],
     groups: [
-      { key: 'base-1', title: 'Base weapons · level 1', note: `${T.sample.singles.seeds} seeds per row, ranked only against this cohort.`, has: (e) => e.cohort === 'base:1' },
-      { key: 'base-4', title: 'Base weapons · level 4', note: `${T.sample.singles.seeds} seeds per row, ranked only against this cohort.`, has: (e) => e.cohort === 'base:4' },
-      { key: 'base-8', title: 'Base weapons · level 8', note: `${T.sample.singles.seeds} seeds per row, ranked only against this cohort.`, has: (e) => e.cohort === 'base:8' },
-      { key: 'evolved-1', title: 'Evolved forms', note: `${T.sample.singles.seeds} seeds per row, ranked only against evolved forms.`, has: (e) => e.cohort === 'evolved:1' },
+      { key: 'base-1', title: 'Base weapons · level 1', note: `${T.sample.singles.seeds} seeds per row, and a row is only ranked against the others in this group.`, has: (e) => e.cohort === 'base:1' },
+      { key: 'base-4', title: 'Base weapons · level 4', note: `${T.sample.singles.seeds} seeds per row, and a row is only ranked against the others in this group.`, has: (e) => e.cohort === 'base:4' },
+      { key: 'base-8', title: 'Base weapons · level 8', note: `${T.sample.singles.seeds} seeds per row, and a row is only ranked against the others in this group.`, has: (e) => e.cohort === 'base:8' },
+      { key: 'evolved-1', title: 'Evolved forms', note: `${T.sample.singles.seeds} seeds per row, and an end form is only ranked against other end forms.`, has: (e) => e.cohort === 'evolved:1' },
     ],
     facets: [
       { key: 'form', label: 'Form', of: (e) => e.form },
@@ -2261,8 +2299,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const attributedRows = (byWeapon, unit) => Object.entries(byWeapon || {}).map(([id, reading]) => `${cardLink('weapons', id, esc(weaponName(id)))}: <b>${num(reading.median)}</b> ${esc(unit)} median${reading.shareOfAttributed ? ` · <b>${pct(reading.shareOfAttributed.median)}</b> of attributed damage` : ''}`).join('<br>');
   const buildFeature = tierEvidenceReady ? `
     <section class="wfeature" aria-labelledby="measured-builds">
-      <div><span class="eyebrow">Controlled-sim search paths</span><h3 id="measured-builds">Greedy automatic-weapon loadout paths</h3></div>
-      <p>${esc(MB.method)} Each path starts from a controlled solo fixture and adds the best measured next automatic weapon for that fixture. It is not a claim about human aiming, terrain, mobility, unlock timing or a complete live run.</p>
+      <div><span class="eyebrow">How the paths were found</span><h3 id="measured-builds">One weapon at a time, best next each time</h3></div>
+      <p>${esc(MB.method)} Each path starts from one weapon alone in the lab and adds whichever weapon measured best next to it. It says nothing about aiming, terrain, moving, when a weapon becomes available, or how a real run goes.</p>
       <div class="wbuild-grid">
         ${MB.builds.map((build, buildIndex) => `<article>
           <span class="wtag ink-${build.axis === 'trashClear' ? 'cyan' : 'pink'}">${esc(build.label)} · ${esc(build.axis === 'trashClear' ? 'controlled trash sim' : 'stationary-target sim')}</span>
@@ -2282,16 +2320,16 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'builds',
     domain: null,
     sourceKind: 'controlled simulation',
-    title: 'Automatic-weapon sim loadouts',
-    tagline: 'Every controlled pair and the greedy loadout paths the fixture found.',
-    lede: `${MB.pairs.length} level-${MB.pairLevel} automatic-weapon pairs were measured exhaustively on a deterministic ${buildSample.seeds}-seed controlled cohort. Pair output, spread, per-weapon attributed damage and the ratio to solo-sum output are shown on both fixtures; the ${MB.builds.length} paths are laboratory search results, not whole-run recommendations.`,
-    omissions: `<b>Pair and build samples use ${buildSample.seeds} seeds, not the ${T.sample.singles.seeds}-seed single-weapon sweep.</b> ${esc(MB.partnerQualityNote)} ${selectionBiasLimits.map((line) => esc(line)).join(' ')} ${esc(T.loadoutContract.orderLimit)} Unlock rows report eligibility only; they do not model when a weapon enters a live run.`,
+    title: 'Automatic weapons in pairs',
+    tagline: 'What two weapons do together, against what they do apart.',
+    lede: `Every one of the ${MB.pairs.length} pairs you can make at level ${MB.pairLevel} was run on the same ${buildSample.seeds} seeds, on both tests. Each card says what the pair put out, how much of that each weapon was responsible for, and whether the two of them together beat the two of them separately. The ${spell(MB.builds.length)} longer paths at the top are what a search found in a laboratory, and a laboratory is not a run.`,
+    omissions: `<b>Pairs and paths were run on ${buildSample.seeds} seeds, not the ${T.sample.singles.seeds} the single-weapon sweep used.</b> ${esc(MB.partnerQualityNote)} ${selectionBiasLimits.map((line) => esc(line)).join(' ')} ${esc(T.loadoutContract.orderLimit)} The unlock lines say only whether you could have a weapon, never when it would actually turn up in a run.`,
     featureHtml: buildFeature,
     sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint} · source ${T.sourceContract.digest}`,
     countLabel: `${MB.pairs.length} controlled pairs · ${MB.builds.length} search paths`,
     entries: pairEntries,
     visualRefs: (entry) => entry.ids.map((id) => ({ domain: 'weapons', id })),
-    groups: [{ key: 'all', title: 'Every controlled-sim pair', note: `All unordered pairs across the ${Object.keys(MB.solo).length}-weapon eligible roster, ${buildSample.seeds} deterministic seeds per pair.`, has: () => true }],
+    groups: [{ key: 'all', title: 'Every controlled-sim pair', note: `Every pair that can be made from the ${spell(Object.keys(MB.solo).length)} eligible weapons, ${buildSample.seeds} seeds each, order ignored.`, has: () => true }],
     facets: [
       { key: 'weapon', label: 'Includes weapon', of: (e) => e.ids, multi: true, name: weaponName },
     ],
