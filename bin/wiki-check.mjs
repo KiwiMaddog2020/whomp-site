@@ -74,6 +74,7 @@ const D = readJson(join(REPO, 'data/game-data.json'));
 const T = readJson(join(REPO, 'data/tier-rankings.json'));
 const V = readJson(join(REPO, 'data/wiki-visuals.json'));
 const generatorSource = readFileSync(join(SITE_ROOT, 'bin/generate.mjs'), 'utf8');
+const generatedOutputGitSource = readFileSync(join(SITE_ROOT, 'bin/generated-output-git.mjs'), 'utf8');
 requireThat(/verifyGameArtifact\('wiki-visuals\.mjs', '--verify', 'data\/wiki-visuals\.json'\)/.test(generatorSource),
   'site generator does not require the full visual rerender verification gate');
 requireThat(/const ENTRY_HASH_PATTERN = \/\^#e-\[A-Za-z0-9\._-\]\+\$\//.test(generatorSource)
@@ -84,10 +85,14 @@ requireThat(/const ENTRY_HASH_PATTERN = \/\^#e-\[A-Za-z0-9\._-\]\+\$\//.test(gen
 'search focus does not restrict load/hashchange focus to valid programmatically focusable #e-* entry targets');
 requireThat(/destination\.pathname === location\.pathname && destination\.search === location\.search/.test(generatorSource),
   'same-page search reveal/focus does not prove that the destination is the current document');
-requireThat(/'git', \['-C', OUTDIR, 'ls-files', '--', 'wiki\*\.html', 'wiki-assets'\]/.test(generatorSource)
+requireThat(/const trackedGeneratedFiles = listTrackedGeneratedFiles\(OUTDIR\);/.test(generatorSource)
+  && /if \(!gitWorktreeRoot\(root\)\) return \[\];/.test(generatedOutputGitSource)
+  && /'git', \['-C', root, 'ls-files', '--', 'wiki\*\.html', 'wiki-assets'\]/.test(generatedOutputGitSource)
+  && /stdio: \['ignore', 'pipe', 'pipe'\]/.test(generatedOutputGitSource)
+  && /catch \(cause\) \{\s*throw new Error\(`Unable to enumerate tracked generated outputs in Git worktree/.test(generatedOutputGitSource)
   && /trackedRetiredWikiFiles = trackedGeneratedWikiFiles\.filter/.test(generatorSource)
   && /trackedRetiredVisualFiles = trackedGeneratedVisualFiles\.filter/.test(generatorSource),
-'generator does not enumerate missing tracked routes/assets when building the retirement staging manifest');
+'generator/helper do not safely enumerate missing tracked routes/assets when building the retirement staging manifest');
 const declaredRosters = rosterSpecs(D, esc, T, V);
 const chrome = {
   AUTHBAR: '',
