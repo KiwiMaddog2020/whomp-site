@@ -880,7 +880,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
        relics and blessings all shape one too. Reword around the kept phrase and
        leave the ban alone. */
     lede: `A core weapon is the one you point yourself. Picking it locks in that aimed-weapon slot before the run starts, all ${spell(C.count)} are open on a fresh save, and the level-up draft can never hand you a second one. The aim numbers on each card say how much the game helps you point it, and nothing at all about how hard it lands.`,
-    omissions: `<b>No damage figures on this page, on purpose.</b> Clip size, reload, cooldown and damage multiplier for these ${C.count} are kept somewhere this page cannot read, and it will not guess at a number it cannot see. The unused evolution names sitting in the game files are not a mechanic you can reach and are not a promise of one. <b>Aim and forgiveness say how generous the targeting is</b>, never how much damage arrives. The pip count is here because the game tests it against the real clip.`,
+    omissions: `<b>No damage figures on this page, on purpose.</b> Clip size, reload, cooldown and damage multiplier for these ${spell(C.count)} are kept somewhere this page cannot read, and it will not guess at a number it cannot see. The unused evolution names sitting in the game files are not a mechanic you can reach and are not a promise of one. <b>Aim and forgiveness say how generous the targeting is</b>, never how much damage arrives. The pip count is here because the game tests it against the real clip.`,
     featureHtml: aimPolicyFeature,
     entries: coreEntries,
     groups: [{ key: 'all', title: 'Core selection', note: 'The order the picker puts them in. It is an order, not a ladder.', has: () => true }],
