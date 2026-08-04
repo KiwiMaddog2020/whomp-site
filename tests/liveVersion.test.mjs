@@ -53,6 +53,44 @@ test('network failure and non-success HTTP remain honestly unverified', async ()
   ), null);
 });
 
+test('the explicit deadline settles a header stall and aborts the request', { timeout: 1000 }, async () => {
+  let aborted = false;
+  const live = await fetchStableLiveVersion(
+    'https://example.test/version.json',
+    async (_url, { signal }) => new Promise(() => {
+      signal.addEventListener('abort', () => { aborted = true; }, { once: true });
+    }),
+    10,
+  );
+
+  assert.equal(live, null);
+  assert.equal(aborted, true);
+});
+
+test('the same deadline settles a stalled HTTP-200 body read', { timeout: 1000 }, async () => {
+  let aborted = false;
+  let bodyRead = false;
+  const live = await fetchStableLiveVersion(
+    'https://example.test/version.json',
+    async (_url, { signal }) => {
+      signal.addEventListener('abort', () => { aborted = true; }, { once: true });
+      return {
+        ok: true,
+        status: 200,
+        json: async () => {
+          bodyRead = true;
+          return new Promise(() => {});
+        },
+      };
+    },
+    10,
+  );
+
+  assert.equal(live, null);
+  assert.equal(bodyRead, true);
+  assert.equal(aborted, true);
+});
+
 test('a valid HTTP-200 response is no-store and normalized', async () => {
   let request;
   const live = await fetchStableLiveVersion(

@@ -55,26 +55,44 @@ export async function fetchStableLiveVersion(url, fetchFn = fetch, timeoutMs = 8
     fail('timeout must be an integer from 1 through 60000 milliseconds');
   }
 
-  let response;
-  try {
-    response = await fetchFn(url, {
-      cache: 'no-store',
-      signal: AbortSignal.timeout(timeoutMs),
-    });
-  } catch {
-    return null;
-  }
-  if (!response || typeof response.ok !== 'boolean' || typeof response.status !== 'number') {
-    fail('fetch returned an invalid response object');
-  }
-  if (!response.ok) return null;
-  if (response.status !== 200) fail(`successful response used unexpected HTTP ${response.status}`);
+  const controller = new AbortController();
+  const timedOut = Symbol('Stable live metadata timeout');
+  let timer;
+  const deadline = new Promise((resolve) => {
+    timer = setTimeout(() => {
+      controller.abort();
+      resolve(timedOut);
+    }, timeoutMs);
+  });
+  const request = (async () => {
+    let response;
+    try {
+      response = await fetchFn(url, {
+        cache: 'no-store',
+        signal: controller.signal,
+      });
+    } catch {
+      return null;
+    }
+    if (!response || typeof response.ok !== 'boolean' || typeof response.status !== 'number') {
+      fail('fetch returned an invalid response object');
+    }
+    if (!response.ok) return null;
+    if (response.status !== 200) fail(`successful response used unexpected HTTP ${response.status}`);
 
-  let payload;
+    let payload;
+    try {
+      payload = await response.json();
+    } catch (cause) {
+      fail('HTTP 200 body is not valid JSON', { cause });
+    }
+    return normalizeStableLiveMetadata(payload);
+  })();
+
   try {
-    payload = await response.json();
-  } catch (cause) {
-    fail('HTTP 200 body is not valid JSON', { cause });
+    const result = await Promise.race([request, deadline]);
+    return result === timedOut ? null : result;
+  } finally {
+    clearTimeout(timer);
   }
-  return normalizeStableLiveMetadata(payload);
 }

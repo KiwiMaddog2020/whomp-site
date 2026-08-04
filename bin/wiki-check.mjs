@@ -92,7 +92,10 @@ requireThat(/live = normalizeSuppliedLiveVersion\(SHA_ARG, VERSION_ARG \|\| pkg\
   && /sha: payload\.sourceSha\.slice\(0, 8\)/.test(liveVersionSource)
   && /version,\s*builtAt: payload\.publishedAt/.test(liveVersionSource)
   && /if \(!response\.ok\) return null;/.test(liveVersionSource)
-  && /fail\('HTTP 200 body is not valid JSON'/.test(liveVersionSource),
+  && /fail\('HTTP 200 body is not valid JSON'/.test(liveVersionSource)
+  && /timer = setTimeout\(\(\) => \{\s*controller\.abort\(\);\s*resolve\(timedOut\);/.test(liveVersionSource)
+  && /await Promise\.race\(\[request, deadline\]\)/.test(liveVersionSource)
+  && /finally \{\s*clearTimeout\(timer\);/.test(liveVersionSource),
 'generator does not distinguish unreachable Stable metadata from a malformed HTTP-200 release contract');
 requireThat(/const trackedGeneratedFiles = listTrackedGeneratedFiles\(OUTDIR\);/.test(generatorSource)
   && /if \(!gitWorktreeRoot\(root\)\) return \[\];/.test(generatedOutputGitSource)
