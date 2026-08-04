@@ -67,6 +67,25 @@ import { createHash } from 'node:crypto';
  *  writes, so adding a route never requires another filename list.
  */
 
+/* THE ONE EXPLAINER, instead of the same disclaimer thirty-two times.
+ *
+ * Every roster page used to carry a five-line paragraph about verified
+ * artifacts, unsourced magnitudes and fail-closed generation. It was true, it
+ * was in nobody's voice, and repeating it on every route made it furniture
+ * rather than an argument. A reader who wants to know whether to trust a number
+ * deserves one page that actually earns it; a reader who does not want to know
+ * deserves one sentence and a link.
+ *
+ * The filename must begin "wiki" because bin/generate.mjs and bin/wiki-check.mjs
+ * both treat the wiki*.html namespace as the set of generated routes, and a page
+ * outside that namespace would be invisible to the retirement and manifest
+ * checks that keep dead routes from shipping. */
+const EXPLAINER_SLUG = 'how-it-is-built';
+const EXPLAINER_FILE = `wiki-${EXPLAINER_SLUG}.html`;
+const EXPLAINER_TITLE = 'Where the numbers come from';
+const EXPLAINER_LINK_TEXT = 'Where the numbers come from';
+export { EXPLAINER_SLUG, EXPLAINER_FILE, EXPLAINER_TITLE, EXPLAINER_LINK_TEXT };
+
 // ---------------------------------------------------------------- small helpers
 const mmss = (sec) => {
   const s = Math.max(0, Math.round(Number(sec) || 0));
@@ -2819,6 +2838,102 @@ ${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
   };
 }
 
+// ================================================================ the explainer
+/* One page that has to earn what thirty-two repeated paragraphs only asserted.
+ *
+ * Every claim on it is checkable in this repo, and every count in it is read
+ * from the same artifacts the rest of the wiki reads, for the obvious reason: a
+ * page about not retyping numbers cannot retype numbers. */
+function renderExplainer(rosters, ctx) {
+  const { esc, chrome, D, T, V } = ctx;
+  const catalogEntries = rosters.filter((r) => r.domain).reduce((sum, r) => sum + r.entries.length, 0);
+
+  const section = (eyebrow, heading, id, paragraphs) => `
+    <section class="wfeature" aria-labelledby="${esc(id)}">
+      <div><span class="eyebrow">${esc(eyebrow)}</span><h3 id="${esc(id)}">${esc(heading)}</h3></div>
+      ${paragraphs.map((line) => `<p>${line}</p>`).join('')}
+    </section>`;
+
+  const body = `
+<div class="wtopbar">
+  ${chrome.AUTHBAR}
+  <div class="wtopbar-row">
+    <a class="brand" href="index.html">
+      <span>
+        <h1 class="chroma">${esc(EXPLAINER_TITLE)}</h1>
+        <p class="subtag">Nobody typed them in.</p>
+      </span>
+    </a>
+    <div class="chips">${chrome.liveChip()}</div>
+  </div>
+</div>
+
+${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
+
+<div class="wshell">
+  <nav class="wside" aria-label="Wiki navigation">
+    ${chrome.wikiNav(EXPLAINER_SLUG)}
+  </nav>
+  <main class="wmain" id="wiki-main" tabindex="-1">
+    <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">${esc(EXPLAINER_TITLE)}</span></nav>
+    <h2 class="chroma">${esc(EXPLAINER_TITLE)}</h2>
+    <p class="lede">Every figure on every page here was read out of the game while this site was being built. The pages are assembled from the same files the game itself loads to run.</p>
+
+    <p class="wprov">This copy of the wiki was built ${esc(chrome.buildStamp)} from <b>game@${esc(chrome.headSha)}</b>.</p>
+
+    ${section('The short version', 'Nothing here is a copy', 'not-a-copy', [
+    'An ordinary wiki is a copy. Somebody reads a damage number, types it onto a page, and the page stays right until the next balance pass, which nobody tells it about.',
+    'This one keeps no copy to go stale. The number is read at build time out of the game\'s own catalogs, so tuning a weapon moves this page the next time it is built, and nobody has to remember that it exists.',
+  ])}
+
+    ${section('The authored half', 'Sentences, never numbers', 'sentences-not-numbers', [
+    'The game stores a weapon\'s firing style as <code>pierceLine</code>. That is exact and it is useless to read, so the wiki writes the sentence underneath it, and every one of those sentences was checked against the code that actually reads the value.',
+    'Where it could not be checked, the page shows the bare value instead. An honest <b>spitter</b> beats a confident wrong sentence about spitters.',
+  ])}
+
+    ${section('The refusals', 'It would rather publish nothing', 'the-refusals', [
+    'The build stops, with no partial output, if the catalogs are older than the game, if a catalog has no page, if a page is missing a card it claims to hold, if any link on the site points at nothing, or if a picture differs by one byte from the one the game just drew.',
+    'Then it reads back the pages it wrote and checks them again. There is no warning mode and nothing to acknowledge, because a warning nobody reads is how a wrong number ships.',
+  ])}
+
+    ${section('The pictures', 'The game drew them, alone', 'the-pictures', [
+    `The <b>${V.coverage.entries}</b> images on these pages are not screenshots, and nobody drew them for the site. The game rendered each one itself, on a clear background under fixed light, and the build redraws all of them to compare against what it is about to publish.`,
+    'A live world lights and repaints the same thing differently. Treat a picture here as the shape of a thing rather than the sight of it.',
+  ])}
+
+    ${section('Who wrote what', 'The game speaks for itself', 'who-wrote-what', [
+    'Every name, description and line of flavor text on this site was written for the game and is reproduced here word for word. The explaining around it was written for the wiki.',
+    'So if a description reads oddly, it reads that way in the game too, and this is not the place it gets fixed.',
+  ])}
+
+    <p class="womit">Some numbers exist in the game and are still kept off these pages. Damage per second is the loud one: your might and
+      your crit multiply it, your attack speed divides the interval, and half the weapons here do not have "damage times shots per second"
+      behavior in the first place, so a single column would be wrong on most cards. Every page names its own gaps at the top, and the
+      reason has the same shape every time. <b>The number the game runs on is not the number the page could show you</b>, and half a truth
+      about damage is worse than an obvious hole.</p>
+
+    <p class="wcount">Coverage right now: <b>${D.coverage.domains}</b> catalogs, <b>${catalogEntries}</b> entries, <b>${T?.coverage?.rows || 0}</b> measured weapon rows,
+      <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, <b>${V.coverage.entries}</b> pictures.</p>
+  </main>
+</div>
+
+<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
+  Generated ${esc(chrome.buildStamp)} from <code>game@${esc(chrome.headSha)}</code>.
+  <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
+</footer>`;
+
+  return {
+    file: EXPLAINER_FILE,
+    html: ctx.page({
+      title: `WHOMP wiki: ${EXPLAINER_TITLE.toLowerCase()}`,
+      description: 'How the WHOMP wiki is built, what it refuses to publish, and why its numbers cannot quietly go stale.',
+      body,
+      script: chrome.SEARCH_SCRIPT(''),
+    }),
+  };
+}
+
 // ================================================================ evidence contract
 const HEX_256 = /^[a-f0-9]{64}$/;
 const DAMAGE_ATTRIBUTION_LABEL = 'Damage attribution/share only; not kill credit and not causal marginal contribution.';
@@ -3606,10 +3721,17 @@ export function buildWiki(ctx) {
     if (buildsRoster?.entries.length !== T.measuredBuilds?.pairs?.length) violations.push(`build route emits ${buildsRoster?.entries.length || 0} pairs, artifact declares ${T.measuredBuilds?.pairs?.length}`);
   }
   if (violations.length) throw new Error(`Wiki source contract failed (${violations.length}):\n  ${violations.join('\n  ')}`);
-  const pages = [renderHub(rosters, ctx), ...rosters.map((r) => renderRosterPage(r, ctx))];
+  const pages = [renderHub(rosters, ctx), renderExplainer(rosters, ctx), ...rosters.map((r) => renderRosterPage(r, ctx))];
 
   const searchEntries = [];
   searchEntries.push({ type: 'wiki', title: 'WHOMP wiki', text: `All ${D.coverage.domains} source catalogs and controlled-simulation evidence guides`, anchor: '', href: 'wiki.html' });
+  searchEntries.push({
+    type: 'wiki',
+    title: EXPLAINER_TITLE,
+    text: 'How the wiki is built, what stops the build, what is deliberately missing, and who wrote which words',
+    anchor: '',
+    href: EXPLAINER_FILE,
+  });
   for (const r of rosters) {
     searchEntries.push({ type: 'wiki page', title: r.title, text: `${r.section} ${r.tagline} ${r.lede}`, anchor: '', href: `wiki-${r.slug}.html` });
     for (const e of r.entries) {
@@ -3622,7 +3744,9 @@ export function buildWiki(ctx) {
       });
     }
   }
-  const expectedSearchEntries = 1 + rosters.length + rosters.reduce((sum, roster) => sum + roster.entries.length, 0);
+  /* Two non-roster routes now: the hub and the explainer. Both are real pages a
+     reader can land on, so both owe the search index exactly one entry. */
+  const expectedSearchEntries = 2 + rosters.length + rosters.reduce((sum, roster) => sum + roster.entries.length, 0);
   if (searchEntries.length !== expectedSearchEntries) throw new Error(`Wiki search coverage is ${searchEntries.length}, expected ${expectedSearchEntries}. Every route and card needs one generated entry.`);
 
   /* GLOSSARY GAPS, said out loud in the build output. An enum with no authored

@@ -47,7 +47,9 @@ import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import { fetchStableLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
-import { buildWiki, rosterSpecs, visualOutputPath, WIKI_CSS } from './wiki.mjs';
+import {
+  buildWiki, EXPLAINER_FILE, EXPLAINER_SLUG, EXPLAINER_TITLE, rosterSpecs, visualOutputPath, WIKI_CSS,
+} from './wiki.mjs';
 
 const SITE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -1137,6 +1139,7 @@ const wikiNav = (here) => `
     </a>
     <span class="wside-h">Wiki</span>
     <a href="wiki.html"${currentNavAttrs(here === '')}>All guides</a>
+    <a href="${EXPLAINER_FILE}"${currentNavAttrs(here === EXPLAINER_SLUG)}>${esc(EXPLAINER_TITLE)}</a>
     ${wikiNavSections.map((section) => {
       const containsCurrent = section.rosters.some((r) => r.slug === here);
       return `<details class="wside-section${containsCurrent ? ' is-current-section' : ''}"${containsCurrent ? ' open' : ''}>

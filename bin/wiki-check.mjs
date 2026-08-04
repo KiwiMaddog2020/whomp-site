@@ -17,6 +17,7 @@ import {
   DISPLAY_FIELD_PATHS,
   DISPLAY_REF_FIELD_PATHS,
   DISPLAY_ROOT_FIELD_PATHS,
+  EXPLAINER_FILE,
   rosterSpecs,
   SEARCH_TYPE,
   visualOutputPath,
@@ -122,7 +123,9 @@ const chrome = {
 // same route declaration the real generator consumes.
 const model = buildWiki({ D, T, V, esc, chrome, page: ({ body }) => body });
 const rosters = model.rosters;
-requireThat(model.pages.length === rosters.length + 1, `model emitted ${model.pages.length} pages for ${rosters.length} guides`);
+// The hub and the build explainer are the two non-roster routes.
+requireThat(model.pages.length === rosters.length + 2, `model emitted ${model.pages.length} pages for ${rosters.length} guides`);
+requireThat(model.pages.some((page) => page.file === EXPLAINER_FILE), `the wiki emits no ${EXPLAINER_FILE} build explainer`);
 const coreRosterCopy = rosters.find((roster) => roster.domain === 'coreWeapons');
 const enemyRosterCopy = rosters.find((roster) => roster.domain === 'enemies');
 requireThat(coreRosterCopy?.lede.includes('locks in that aimed-weapon slot') && !/only decision that shapes a whole run/i.test(coreRosterCopy.lede),
@@ -140,7 +143,8 @@ requireThat(D.coverage.domains === D.domainOrder.length, `artifact covers ${D.co
 requireThat(D.coverage.entries === expectedSourceEntries, `artifact covers ${D.coverage.entries} entries but its domain counts total ${expectedSourceEntries}`);
 
 const expectedCards = rosters.reduce((sum, roster) => sum + roster.entries.length, 0);
-const expectedModelSearchEntries = 1 + rosters.length + expectedCards;
+// One entry per landable route (the hub and the explainer), one per guide, one per card.
+const expectedModelSearchEntries = 2 + rosters.length + expectedCards;
 requireThat(
   model.searchEntries.length === expectedModelSearchEntries,
   `model emitted ${model.searchEntries.length} search entries, expected ${expectedModelSearchEntries} from its routes and cards`,
