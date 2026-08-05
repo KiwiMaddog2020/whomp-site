@@ -114,7 +114,9 @@ const chrome = {
   searchMarkup: () => '<input role="combobox">',
   SEARCH_SCRIPT: () => '',
   SEARCH_PLACEHOLDER: '',
+  wikiBrand: '',
   wikiNav: () => '',
+  NAV_SCRIPT: '',
   headSha: 'contract',
   buildStamp: 'contract',
 };
