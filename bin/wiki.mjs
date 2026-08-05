@@ -288,6 +288,28 @@ const WIKI_CSS = `
 .wtopbar-brandrow .authbar{padding:0}
 .wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 0 0}
 
+/* SEARCH IN THE SAME PLACE ON EVERY PAGE, AND STILL THERE AT CARD 400.
+   These pages are long (the bestiary runs past 50,000px on a phone), and a search
+   box that scrolls away is only findable from the top of the page. Sticky keeps
+   the one entry point to all 990 index entries within reach at any scroll depth.
+   The band, not .searchwrap, is what sticks: .searchwrap is position:relative
+   because the result panel is absolutely positioned inside it, and a sticky
+   element cannot also be the containing block that panel needs. Wiki-only, so
+   log.html's own copy of the widget is untouched.
+
+   THE BACKDROP IS PAINTED ONLY WHILE THE BAND IS ACTUALLY STUCK. A permanent one
+   is a flat ink rectangle sitting on top of the body's radial ground, which seams
+   visibly across the page at rest for no benefit: at scroll zero there is nothing
+   behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
+   band still sticks and still works, it just carries no backdrop, which is the
+   right way round for a decoration. */
+.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
+  pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
+  border-bottom:1px solid rgba(255,243,207,.07)}
+.is-stuck .wsearchband::before{opacity:1}
+@media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
+.wsearchband .searchwrap{margin-top:14px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
@@ -295,7 +317,7 @@ const WIKI_CSS = `
 .wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
 .wside a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--cyan)}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
+.wside .stat{padding:12px 12px 2px;margin-top:6px;border-top:1px solid rgba(255,243,207,.06);color:var(--dim);font-size:.76rem;line-height:1.45}
 .wmain{flex:1;min-width:0}
 .wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 14px;color:var(--dim);font-size:.78rem;letter-spacing:.01em}
 .wbreadcrumb a{color:var(--cyan);text-decoration:none}
@@ -326,16 +348,16 @@ const WIKI_CSS = `
 .wf.is-active{color:var(--cream);border-color:var(--cyan);background:rgba(36,240,255,.08)}
 .wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
   font-family:var(--font);font-size:.82rem}
-.wcount{color:var(--dim);font-size:.82rem;margin:0 0 18px;font-variant-numeric:tabular-nums}
+.wcount{color:var(--body);font-size:.82rem;margin:0 0 20px;font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.01em}
 .wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
 .wempty b{display:block;color:var(--cream);margin-bottom:8px}
 .wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
 
 .wgroup{margin-bottom:38px;scroll-margin-top:calc(var(--band) + 18px)}
-.wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
-.wgroup-h h3{margin:0;font-size:1.15rem;color:var(--cream)}
-.wgroup-n{color:var(--dim);font-size:.8rem;font-variant-numeric:tabular-nums}
-.wgroup-note{color:var(--dim);font-size:.86rem;margin:0 0 14px;max-width:74ch}
+.wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px;padding-bottom:7px;border-bottom:var(--edge)}
+.wgroup-h h3{margin:0;font-size:1.22rem;color:var(--cream);letter-spacing:-.01em}
+.wgroup-n{color:var(--gold);font-size:.72rem;font-weight:800;letter-spacing:.07em;font-variant-numeric:tabular-nums}
+.wgroup-note{color:var(--dim);font-size:.86rem;margin:8px 0 15px;max-width:74ch}
 .wgroup[data-empty="1"]{display:none}
 
 .wgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
@@ -439,13 +461,13 @@ const WIKI_CSS = `
 .whubcard{border:var(--edge);border-radius:14px;padding:20px 22px;background:rgba(255,243,207,.025);
   text-decoration:none;display:block;transition:border-color .12s ease,transform .12s ease}
 .whubcard:hover{border-color:var(--cyan);transform:translateY(-2px)}
-.whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.2rem}
+.whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.1rem;letter-spacing:.01em}
 .whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
 .whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
 .whubsection{margin:0 0 38px;scroll-margin-top:calc(var(--band) + 18px)}
-.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
-.whubsection-h h3{margin:0;color:var(--cream);font-size:1.08rem}
-.whubsection-h span{color:var(--dim);font-size:.75rem}
+.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;padding-bottom:8px;border-bottom:var(--edge)}
+.whubsection-h h3{margin:0;color:var(--cream);font-size:1.3rem;letter-spacing:-.01em}
+.whubsection-h span{color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
 @media (max-width:760px){
   .wshell{flex-direction:column;gap:16px;padding-top:14px}
   .wside{width:100%;max-height:none;position:static;overflow:visible;padding:0}
@@ -2788,7 +2810,7 @@ function renderRosterPage(roster, ctx) {
   </div>
 </div>
 
-${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
+<div class="wsearchband">${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}</div>
 
 <div class="wshell">
   <nav class="wside" aria-label="Wiki navigation">
@@ -2950,7 +2972,7 @@ function renderHub(rosters, ctx) {
   </div>
 </div>
 
-${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
+<div class="wsearchband">${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}</div>
 
 <div class="wshell">
   <nav class="wside" aria-label="Wiki navigation">
@@ -3034,7 +3056,7 @@ function renderExplainer(rosters, ctx) {
   </div>
 </div>
 
-${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}
+<div class="wsearchband">${chrome.searchMarkup(chrome.SEARCH_PLACEHOLDER)}</div>
 
 <div class="wshell">
   <nav class="wside" aria-label="Wiki navigation">

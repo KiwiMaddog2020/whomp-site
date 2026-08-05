@@ -770,7 +770,11 @@ html,body{max-width:100%;overflow-x:clip}
  * how one of them quietly stops matching the other. */
 const SEARCH_CSS = `
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
-.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.searchlabel{display:flex;align-items:center;gap:8px;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+/* The shortcut is only worth having if a reader knows it is there, so the key is
+   printed on the label rather than left to be discovered. */
+.searchkey{border:var(--edge);border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;
+  font-weight:700;letter-spacing:0;color:var(--dim);background:rgba(255,243,207,.05);text-transform:none;line-height:1.5}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -791,7 +795,7 @@ const SEARCH_CSS = `
 
 const searchMarkup = (placeholder) => `
 <div class="searchwrap" role="search">
-  <label class="searchlabel" for="search">Search WHOMP</label>
+  <label class="searchlabel" for="search">Search WHOMP <kbd class="searchkey">/</kbd></label>
   <input class="searchbox" id="search" type="search" placeholder="${esc(placeholder)}" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
@@ -982,6 +986,21 @@ searchInput.addEventListener('keydown', (e) => {
 });
 document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
 
+/* REACHABLE FROM THE KEYBOARD, ANYWHERE ON THE PAGE. These pages are long enough
+ * that "scroll back up and click the box" is the real cost of a search, and both
+ * keys are what a reader who has used any other documentation site will already
+ * try. Never steals a keystroke that was going somewhere else: any field, any
+ * contenteditable surface and any modified "/" is left alone. */
+const typingTarget = (el) => !!el && (el.isContentEditable
+  || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName));
+document.addEventListener('keydown', (e) => {
+  const shortcut = (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey)
+    || ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey) && !e.altKey);
+  if (!shortcut || typingTarget(e.target)) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.select();
+});
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
