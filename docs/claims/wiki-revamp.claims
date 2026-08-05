@@ -1,0 +1,5 @@
+bin/generate.mjs
+bin/wiki.mjs
+bin/wiki-check.mjs
+docs/claims/wiki-revamp.claims
+docs/lane-reports/wiki-revamp.md
