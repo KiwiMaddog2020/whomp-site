@@ -751,8 +751,16 @@ footer code{color:var(--body)}
    than a fix: the per-element fixes are real but the next long token will arrive
    somewhere nobody predicted, and this was reported twice on mobile before it got
    one. Lives in SHARED_CSS because the second report was on the log while the wiki
-   pages had no protection at all. */
-html,body{max-width:100%;overflow-x:hidden}
+   pages had no protection at all.
+
+   CLIP, NOT HIDDEN, AND THE DIFFERENCE IS LOAD BEARING. overflow-x:hidden makes
+   the element a scroll container, and a scroll container on html/body silently
+   defeats position:sticky for EVERY descendant on the page: the wiki's sticky
+   search band scrolled away with the document and looked simply unimplemented.
+   overflow-x:clip clips exactly the same overflow without becoming a scroll
+   container, so the sideways-scroll floor this rule exists for is unchanged and
+   sticky positioning works again. Verified on all three surfaces. */
+html,body{max-width:100%;overflow-x:clip}
 `;
 
 /* SEARCH, shared by log.html and every wiki page. Kept OUT of SHARED_CSS on
