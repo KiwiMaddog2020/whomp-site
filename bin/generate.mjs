@@ -869,8 +869,16 @@ footer code{color:var(--body)}
    than a fix: the per-element fixes are real but the next long token will arrive
    somewhere nobody predicted, and this was reported twice on mobile before it got
    one. Lives in SHARED_CSS because the second report was on the log while the wiki
-   pages had no protection at all. */
-html,body{max-width:100%;overflow-x:hidden}
+   pages had no protection at all.
+
+   CLIP, NOT HIDDEN, AND THE DIFFERENCE IS LOAD BEARING. overflow-x:hidden makes
+   the element a scroll container, and a scroll container on html/body silently
+   defeats position:sticky for EVERY descendant on the page: the wiki's sticky
+   search band scrolled away with the document and looked simply unimplemented.
+   overflow-x:clip clips exactly the same overflow without becoming a scroll
+   container, so the sideways-scroll floor this rule exists for is unchanged and
+   sticky positioning works again. Verified on all three surfaces. */
+html,body{max-width:100%;overflow-x:clip}
 `;
 
 /* SEARCH, shared by log.html and every wiki page. Kept OUT of SHARED_CSS on
@@ -880,7 +888,11 @@ html,body{max-width:100%;overflow-x:hidden}
  * how one of them quietly stops matching the other. */
 const SEARCH_CSS = `
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
-.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.searchlabel{display:flex;align-items:center;gap:8px;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+/* The shortcut is only worth having if a reader knows it is there, so the key is
+   printed on the label rather than left to be discovered. */
+.searchkey{border:var(--edge);border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;
+  font-weight:700;letter-spacing:0;color:var(--dim);background:rgba(255,243,207,.05);text-transform:none;line-height:1.5}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -901,7 +913,7 @@ const SEARCH_CSS = `
 
 const searchMarkup = (placeholder) => `
 <div class="searchwrap" role="search">
-  <label class="searchlabel" for="search">Search WHOMP</label>
+  <label class="searchlabel" for="search">Search WHOMP <kbd class="searchkey">/</kbd></label>
   <input class="searchbox" id="search" type="search" placeholder="${esc(placeholder)}" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
@@ -1091,6 +1103,22 @@ searchInput.addEventListener('keydown', (e) => {
   if (e.key === 'Tab') setSearchOpen(false);
 });
 document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
+
+/* REACHABLE FROM THE KEYBOARD, ANYWHERE ON THE PAGE. These pages are long enough
+ * that "scroll back up and click the box" is the real cost of a search, and both
+ * keys are what a reader who has used any other documentation site will already
+ * try. Never steals a keystroke that was going somewhere else: any field, any
+ * contenteditable surface and any modified "/" is left alone. */
+const typingTarget = (el) => !!el && (el.isContentEditable
+  || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName));
+document.addEventListener('keydown', (e) => {
+  const shortcut = (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey)
+    || ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey) && !e.altKey);
+  if (!shortcut || typingTarget(e.target)) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.select();
+});
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
@@ -1197,22 +1225,41 @@ ${WIKI_CSS}
 .wside-section[open] summary{color:var(--cream)}
 .wside-links{padding:0 0 5px 7px}
 .wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
-.wside a.wiki-home{display:flex;align-items:center;gap:10px;padding:7px 10px 12px;margin:0 0 4px;border-bottom:var(--edge)}
+
+/* The outer disclosure. Above 760px its summary is dressed as the plain section
+   heading it replaced (same gold, same tracking as .wside-h) and the count sits
+   on the right, so the sidebar keeps the silhouette it already had. Below 760px
+   it becomes a real, tappable row. */
+.wside-all{border:0}
+.wside-all>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;
+  padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:8px;list-style:none}
+.wside-all>summary::-webkit-details-marker{display:none}
+.wside-all>summary span{color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums;font-weight:700}
+.wside-all>summary:hover{background:rgba(255,243,207,.04)}
+.wside-all>summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside-all-body{display:flex;flex-direction:column;gap:2px}
+
+.wiki-home{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
 .wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
 .wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
-.wiki-home-copy b{color:var(--cream);font-size:.94rem;letter-spacing:.02em}
-.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:4px}
+.wiki-home-copy b{color:var(--cream);font-size:1.02rem;letter-spacing:.02em}
+.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:3px}
+.wiki-home:hover .wiki-home-copy b{color:#fff}
+.wiki-home:hover .wiki-home-icon{transform:translateY(-1px)}
+.wiki-home:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
+@media (prefers-reduced-motion:no-preference){.wiki-home-icon{transition:transform .12s ease}}
 @media(max-width:760px){
-  .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
-  .wside a.wiki-home{width:100%;padding:8px 10px 13px}
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:6px;background:rgba(255,243,207,.02)}
+  .wside-all>summary{padding:12px;min-height:44px;background:rgba(255,243,207,.03)}
+  .wside-all[open]>summary{color:var(--cream);margin-bottom:2px}
   .wside-section summary{padding:12px}
   .wside-links{padding-left:8px}
   .wside-links a{padding:10px 12px}
 }
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand .wm{margin:0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
 .brand h1{font-size:1.6rem;margin:0}
-.subtag{color:var(--dim);font-size:.85rem;margin:2px 0 0}
+.subtag{color:var(--dim);font-size:.85rem;margin:3px 0 0}
 h2{font-size:1.5rem;margin:0 0 6px}
 .lede{color:var(--dim);margin:0 0 20px;font-size:.92rem;max-width:78ch}
 footer a{color:var(--cyan);text-decoration:none}
@@ -1250,26 +1297,83 @@ for (const roster of wikiRosterNav) {
   section.rosters.push(roster);
 }
 const currentNavAttrs = (current) => current ? ' class="is-here" aria-current="page"' : '';
-const wikiNav = (here) => `
+
+/* THE MARK AND THE NAME, IN THE TOP BAR OF EVERY PAGE (director ask, 2026-08-05).
+ * MOVED here from the top of the sidebar rather than drawn a second time:
+ * bin/wiki-check.mjs pins the canonical icon to EXACTLY ONE `wiki-home` link per
+ * page, and it also forbids `<svg class="wm">` in page-header content, so a second
+ * mark is not something this file is allowed to add even if it wanted to. Both
+ * guards survive the move untouched, which is the point of moving instead of
+ * adding: the icon a reader sees at the top is still the one canonical asset read
+ * out of the game's public/icons/icon.svg at build time. */
+const wikiBrand = `
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
       <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
-    </a>
-    <span class="wside-h">Wiki</span>
-    <a href="wiki.html"${currentNavAttrs(here === '')}>All guides</a>
-    <a href="${EXPLAINER_FILE}"${currentNavAttrs(here === EXPLAINER_SLUG)}>${esc(EXPLAINER_TITLE)}</a>
-    ${wikiNavSections.map((section) => {
-      const containsCurrent = section.rosters.some((r) => r.slug === here);
-      return `<details class="wside-section${containsCurrent ? ' is-current-section' : ''}"${containsCurrent ? ' open' : ''}>
-      <summary>${esc(section.name)} <span>${section.rosters.length}</span></summary>
-      <div class="wside-links">
-        ${section.rosters.map((r) => `<a href="wiki-${esc(r.slug)}.html"${currentNavAttrs(here === r.slug)}>${esc(r.title)}</a>`).join('\n        ')}
+    </a>`;
+
+/* The section list is wrapped in one more disclosure, the SAME details/summary
+ * part the sections themselves already use, for one reason: on a narrow screen
+ * the sidebar sits above the content and used to cost half a phone screen before
+ * the reader reached the page they opened. Closed, it costs one row.
+ *
+ * Its summary replaces the static "Wiki" heading that stood here, so on a wide
+ * screen the sidebar reads exactly as it did. NAV_SCRIPT opens it above 760px.
+ * With no script at all it stays open, because `open` is in the markup: the
+ * failure mode is a long sidebar, never an unreachable one. */
+const wikiNav = (here) => `
+    <details class="wside-all" open>
+      <summary>Wiki <span>${wikiRosterNav.length}</span></summary>
+      <div class="wside-all-body">
+        <a href="wiki.html"${currentNavAttrs(here === '')}>All guides</a>
+        <a href="${EXPLAINER_FILE}"${currentNavAttrs(here === EXPLAINER_SLUG)}>${esc(EXPLAINER_TITLE)}</a>
+        ${wikiNavSections.map((section) => {
+          const containsCurrent = section.rosters.some((r) => r.slug === here);
+          return `<details class="wside-section${containsCurrent ? ' is-current-section' : ''}"${containsCurrent ? ' open' : ''}>
+          <summary>${esc(section.name)} <span>${section.rosters.length}</span></summary>
+          <div class="wside-links">
+            ${section.rosters.map((r) => `<a href="wiki-${esc(r.slug)}.html"${currentNavAttrs(here === r.slug)}>${esc(r.title)}</a>`).join('\n            ')}
+          </div>
+        </details>`;
+        }).join('\n        ')}
+        <span class="wside-h">Elsewhere</span>
+        <a href="log.html#views">Dev log</a>
+        <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>`;
-    }).join('\n    ')}
-    <span class="wside-h">Elsewhere</span>
-    <a href="log.html#views">Dev log</a>
-    <a href="index.html">&larr; Back to WHOMP</a>`;
+
+/* WIKI NAVIGATION BEHAVIOR, on every wiki page rather than only the rosters.
+ * The mobile-navigation sync used to live in the roster page's own script, so
+ * wiki.html and the explainer never ran it. That was the whole of the hub's
+ * narrow-screen bug: they render a sidebar nobody had taught to collapse.
+ *
+ * Two rules, and nothing else: the outer disclosure is open above 760px and shut
+ * below it, and the section holding the current page stays open at every width so
+ * opening the drawer lands a reader where they already are.
+ *
+ * It also owns the sticky search band's .is-stuck flag, for the reason given on
+ * .wsearchband in WIKI_CSS. Read-only against scrollY and toggled on a class, so
+ * it never measures layout and never writes a style. */
+const NAV_SCRIPT = `
+const navAll = document.querySelector('.wside-all');
+const navNarrow = window.matchMedia('(max-width:760px)');
+function syncWikiNav() {
+  if (navAll) navAll.open = !navNarrow.matches;
+}
+syncWikiNav();
+navNarrow.addEventListener?.('change', syncWikiNav);
+
+const stuckRoot = document.documentElement;
+let stuckFrame = 0;
+function syncStuck() {
+  stuckFrame = 0;
+  stuckRoot.classList.toggle('is-stuck', window.scrollY > 8);
+}
+syncStuck();
+window.addEventListener('scroll', () => {
+  if (!stuckFrame) stuckFrame = requestAnimationFrame(syncStuck);
+}, { passive: true });
+`;
 
 const wiki = buildWiki({
   D: gameData,
@@ -1279,7 +1383,7 @@ const wiki = buildWiki({
   page: wikiPage,
   chrome: {
     AUTHBAR, wordmark, liveChip, searchMarkup, SEARCH_SCRIPT, SEARCH_PLACEHOLDER,
-    wikiNav, headSha, buildStamp,
+    wikiBrand, wikiNav, NAV_SCRIPT, headSha, buildStamp,
   },
 });
 
