@@ -643,18 +643,30 @@ if (existsSync(NOTES_DIR)) {
  * an apology on every entry. */
 const releases = readPatchReleases(REPO);
 
-/* HAND-WRITTEN WINS, COMPLETELY, and the key is the DATE rather than the note's
- * `version` field. That is not a coin flip, it is what the one real note says:
- * notes/2026-07-30.md declares `version: 0.5.0`, while PATCH_RELEASES dates
- * 0.5.0 to 2026-07-25 and puts the duel fixes that note is actually about in
- * 0.6.0. The front-matter version is display metadata and is demonstrably
- * loose; the filename is the note's identity and cannot drift from it.
+/* HAND-WRITTEN WINS, COMPLETELY. A note replaces the generated entry for the
+ * DAY it is dated and for the VERSION it declares. Both keys, because both are
+ * explicit acts by the author and neither alone is enough:
  *
- * A note therefore replaces the DAY. Two releases can share a date in the
- * history here (0.2.0 and 0.2.1 are both 2026-07-17, from before the current
- * one-release-per-Vancouver-date cadence), and a note written on such a day
- * replaces both, which is what "Kevin wrote the entry for that day" means. */
+ *   DATE alone is not enough. notes/2026-07-30.md declares `version: 0.5.0`
+ *   while PATCH_RELEASES dates 0.5.0 to 2026-07-25, so on the date key nothing
+ *   is suppressed and the page renders two entries chipped v0.5.0 with
+ *   different content in them. Two entries claiming one version is worse than
+ *   either of them being missing.
+ *
+ *   VERSION alone is not enough either. The field is optional, and a note
+ *   written on release day without one still has to replace that day's entry.
+ *
+ * A date can cover two releases (0.2.0 and 0.2.1 are both 2026-07-17, from
+ * before the current one-release-per-Vancouver-date cadence) and a note on such
+ * a day replaces both, which is what "Kevin wrote that day's entry" means.
+ *
+ * THE COST, SAID OUT LOUD: a note that names a version takes that version's
+ * slot, so the release notes for it are not published. That is the contract
+ * working, not a bug, but it does mean a note carrying the wrong version number
+ * hides a release. Deleting the `version:` line from the front matter publishes
+ * both; there is nothing to turn off and no flag to remember. */
 const authoredDates = new Set(notes.map((n) => n.date));
+const authoredVersions = new Set(notes.map((n) => n.version).filter(Boolean));
 
 /* bugFixes is not capped at the source the way keyChanges is (0.6.0 carries
  * ten), and ten fix lines under four highlights is the drift back into a full
@@ -672,7 +684,7 @@ const BUG_FIXES_SHOWN = 4;
 const CONCISE_RELEASES_CAP = 24;
 
 const releaseEntries = releases
-  .filter((r) => !authoredDates.has(r.date))
+  .filter((r) => !authoredDates.has(r.date) && !authoredVersions.has(r.version))
   .map((r) => ({
     kind: 'release',
     date: r.date,
@@ -1876,6 +1888,17 @@ for (const p of emittedDocuments) {
   }
   emittedAnchors.set(p.file, uniqueIds);
 }
+/* THE CONCISE VIEW ACTUALLY REACHED THE PAGE. Stated directly rather than left
+ * to the href sweep below, which only proves it as a side effect of every
+ * concise entry also emitting a search row. This surface's whole failure mode is
+ * a run that exits zero having rendered nothing into the view a visitor sees
+ * first, and the check for that should not be a coincidence of another check. */
+const conciseAnchors = emittedAnchors.get('log.html');
+const missingEntries = conciseShown.filter((e) => !conciseAnchors.has(e.anchor));
+if (missingEntries.length) {
+  throw new Error(`log.html is missing ${missingEntries.length} concise entr${missingEntries.length === 1 ? 'y' : 'ies'} that were derived for it: ${missingEntries.map((e) => `${e.kind} ${e.version || e.date}`).join(', ')}. The generator ran clean and published a view with holes in it, which is the failure this check exists to refuse.`);
+}
+
 const brokenLinks = duplicateAnchors.map((anchor) => `duplicate id ${anchor}`);
 const checkHref = (href, where, currentFile = '') => {
   if (/^(?:https?:|mailto:|data:)/.test(href)) return;
