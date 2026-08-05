@@ -120,12 +120,24 @@ footer code{color:var(--body)}
    than a fix: the per-element fixes are real but the next long token will arrive
    somewhere nobody predicted, and this was reported twice on mobile before it got
    one. Lives in SHARED_CSS because the second report was on the log while the wiki
-   pages had no protection at all. */
-html,body{max-width:100%;overflow-x:hidden}
+   pages had no protection at all.
+
+   CLIP, NOT HIDDEN, AND THE DIFFERENCE IS LOAD BEARING. overflow-x:hidden makes
+   the element a scroll container, and a scroll container on html/body silently
+   defeats position:sticky for EVERY descendant on the page: the wiki's sticky
+   search band scrolled away with the document and looked simply unimplemented.
+   overflow-x:clip clips exactly the same overflow without becoming a scroll
+   container, so the sideways-scroll floor this rule exists for is unchanged and
+   sticky positioning works again. Verified on all three surfaces. */
+html,body{max-width:100%;overflow-x:clip}
 
 
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
-.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.searchlabel{display:flex;align-items:center;gap:8px;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+/* The shortcut is only worth having if a reader knows it is there, so the key is
+   printed on the label rather than left to be discovered. */
+.searchkey{border:var(--edge);border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;
+  font-weight:700;letter-spacing:0;color:var(--dim);background:rgba(255,243,207,.05);text-transform:none;line-height:1.5}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -144,20 +156,51 @@ html,body{max-width:100%;overflow-x:hidden}
   overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
 
+/* One number, because four things depend on the height of the sticky search
+   band: what the band clears, where the sidebar starts sticking, how tall the
+   sidebar may be, and how far an anchored card must sit below the fold so a deep
+   link does not land underneath the band. Naming it once is what stops those four
+   from drifting apart the next time the band gains a row. */
+:root{--band:103px}
 .skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
 .skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
-.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
-.wshell{max-width:1180px;margin:0 auto;padding:28px 24px 96px;display:flex;gap:36px;align-items:flex-start}
-.wside{width:220px;max-height:calc(100vh - 40px);overflow-y:auto;flex:none;position:sticky;top:20px;display:flex;flex-direction:column;gap:2px;padding-right:5px}
+.wtopbar-brandrow{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0 0}
+.wtopbar-brandrow .authbar{padding:0}
+.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 0 0}
+
+/* SEARCH IN THE SAME PLACE ON EVERY PAGE, AND STILL THERE AT CARD 400.
+   These pages are long (the bestiary runs past 50,000px on a phone), and a search
+   box that scrolls away is only findable from the top of the page. Sticky keeps
+   the one entry point to all 990 index entries within reach at any scroll depth.
+   The band, not .searchwrap, is what sticks: .searchwrap is position:relative
+   because the result panel is absolutely positioned inside it, and a sticky
+   element cannot also be the containing block that panel needs. Wiki-only, so
+   log.html's own copy of the widget is untouched.
+
+   THE BACKDROP IS PAINTED ONLY WHILE THE BAND IS ACTUALLY STUCK. A permanent one
+   is a flat ink rectangle sitting on top of the body's radial ground, which seams
+   visibly across the page at rest for no benefit: at scroll zero there is nothing
+   behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
+   band still sticks and still works, it just carries no backdrop, which is the
+   right way round for a decoration. */
+.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
+  pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
+  border-bottom:1px solid rgba(255,243,207,.07)}
+.is-stuck .wsearchband::before{opacity:1}
+@media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
+.wsearchband .searchwrap{margin-top:14px}
+.wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
+.wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
 .wside a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
 .wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
 .wside a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--cyan)}
 .wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.wside .stat{padding:9px 12px;color:var(--dim);font-size:.78rem}
+.wside .stat{padding:12px 12px 2px;margin-top:6px;border-top:1px solid rgba(255,243,207,.06);color:var(--dim);font-size:.76rem;line-height:1.45}
 .wmain{flex:1;min-width:0}
-.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:var(--dim);font-size:.78rem}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 14px;color:var(--dim);font-size:.78rem;letter-spacing:.01em}
 .wbreadcrumb a{color:var(--cyan);text-decoration:none}
 .wbreadcrumb [aria-current="page"]{color:var(--body)}
 
@@ -186,21 +229,21 @@ html,body{max-width:100%;overflow-x:hidden}
 .wf.is-active{color:var(--cream);border-color:var(--cyan);background:rgba(36,240,255,.08)}
 .wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
   font-family:var(--font);font-size:.82rem}
-.wcount{color:var(--dim);font-size:.82rem;margin:0 0 18px;font-variant-numeric:tabular-nums}
+.wcount{color:var(--body);font-size:.82rem;margin:0 0 20px;font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.01em}
 .wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
 .wempty b{display:block;color:var(--cream);margin-bottom:8px}
 .wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
 
-.wgroup{margin-bottom:34px}
-.wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
-.wgroup-h h3{margin:0;font-size:1.15rem;color:var(--cream)}
-.wgroup-n{color:var(--dim);font-size:.8rem;font-variant-numeric:tabular-nums}
-.wgroup-note{color:var(--dim);font-size:.86rem;margin:0 0 14px;max-width:74ch}
+.wgroup{margin-bottom:38px;scroll-margin-top:calc(var(--band) + 18px)}
+.wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px;padding-bottom:7px;border-bottom:var(--edge)}
+.wgroup-h h3{margin:0;font-size:1.22rem;color:var(--cream);letter-spacing:-.01em}
+.wgroup-n{color:var(--gold);font-size:.72rem;font-weight:800;letter-spacing:.07em;font-variant-numeric:tabular-nums}
+.wgroup-note{color:var(--dim);font-size:.86rem;margin:8px 0 15px;max-width:74ch}
 .wgroup[data-empty="1"]{display:none}
 
 .wgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
 .wcard{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025);
-  display:flex;flex-direction:column;gap:10px;scroll-margin-top:24px}
+  display:flex;flex-direction:column;gap:10px;scroll-margin-top:calc(var(--band) + 18px)}
 .wcard[data-hidden="1"]{display:none}
 .wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
 .wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
@@ -299,15 +342,15 @@ html,body{max-width:100%;overflow-x:hidden}
 .whubcard{border:var(--edge);border-radius:14px;padding:20px 22px;background:rgba(255,243,207,.025);
   text-decoration:none;display:block;transition:border-color .12s ease,transform .12s ease}
 .whubcard:hover{border-color:var(--cyan);transform:translateY(-2px)}
-.whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.2rem}
+.whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.1rem;letter-spacing:.01em}
 .whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
 .whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
-.whubsection{margin:0 0 34px;scroll-margin-top:24px}
-.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
-.whubsection-h h3{margin:0;color:var(--cream);font-size:1.08rem}
-.whubsection-h span{color:var(--dim);font-size:.75rem}
+.whubsection{margin:0 0 38px;scroll-margin-top:calc(var(--band) + 18px)}
+.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;padding-bottom:8px;border-bottom:var(--edge)}
+.whubsection-h h3{margin:0;color:var(--cream);font-size:1.3rem;letter-spacing:-.01em}
+.whubsection-h span{color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
 @media (max-width:760px){
-  .wshell{flex-direction:column;gap:18px}
+  .wshell{flex-direction:column;gap:16px;padding-top:14px}
   .wside{width:100%;max-height:none;position:static;overflow:visible;padding:0}
   .wgrid{grid-template-columns:1fr}
   .wfact-k,.wmeter-k{width:84px}
@@ -315,8 +358,25 @@ html,body{max-width:100%;overflow-x:hidden}
   .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
   .wfeature{padding:16px}
   .wtopbar,.wshell{padding-left:16px;padding-right:16px}
-  .wside-section:not(.is-current-section){display:none}
+  .wsearchband{padding-left:0;padding-right:0}
+  /* WAS: .wside-section:not(.is-current-section){display:none}
+     That hid four of the five sections on a phone, so a reader on Weapons could
+     reach the thirteen other Buildcraft guides and none of the seventeen
+     elsewhere, and the hub (which has no current section) hid all five. The
+     sidebar is now one closed disclosure instead, which costs less room than the
+     old single open section did and still reaches all thirty-one guides. */
   .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
+  /* A phone has no room for the page title, the tagline, two provenance chips and
+     a search box before the content starts. The title and tagline stay; the chips
+     shrink to one scannable row and give their vertical space back. */
+  .wtopbar-row{gap:10px;padding-top:16px}
+  .brand h1{font-size:1.32rem}
+  .chips{gap:7px}
+  .chip{padding:5px 11px;font-size:.74rem}
+  .wtopbar-brandrow{padding-top:12px}
+  .wiki-home-icon{width:38px;height:38px}
+  .wbreadcrumb{flex-wrap:wrap;row-gap:2px}
+  .wprov,.womit{padding:11px 13px}
 }
 @media (max-width:420px){
   .wcard{padding:14px}
@@ -336,22 +396,41 @@ html,body{max-width:100%;overflow-x:hidden}
 .wside-section[open] summary{color:var(--cream)}
 .wside-links{padding:0 0 5px 7px}
 .wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
-.wside a.wiki-home{display:flex;align-items:center;gap:10px;padding:7px 10px 12px;margin:0 0 4px;border-bottom:var(--edge)}
+
+/* The outer disclosure. Above 760px its summary is dressed as the plain section
+   heading it replaced (same gold, same tracking as .wside-h) and the count sits
+   on the right, so the sidebar keeps the silhouette it already had. Below 760px
+   it becomes a real, tappable row. */
+.wside-all{border:0}
+.wside-all>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;
+  padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:8px;list-style:none}
+.wside-all>summary::-webkit-details-marker{display:none}
+.wside-all>summary span{color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums;font-weight:700}
+.wside-all>summary:hover{background:rgba(255,243,207,.04)}
+.wside-all>summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside-all-body{display:flex;flex-direction:column;gap:2px}
+
+.wiki-home{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
 .wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
 .wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
-.wiki-home-copy b{color:var(--cream);font-size:.94rem;letter-spacing:.02em}
-.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:4px}
+.wiki-home-copy b{color:var(--cream);font-size:1.02rem;letter-spacing:.02em}
+.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:3px}
+.wiki-home:hover .wiki-home-copy b{color:#fff}
+.wiki-home:hover .wiki-home-icon{transform:translateY(-1px)}
+.wiki-home:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
+@media (prefers-reduced-motion:no-preference){.wiki-home-icon{transition:transform .12s ease}}
 @media(max-width:760px){
-  .wside{display:block;border:var(--edge);border-radius:12px;padding:8px;background:rgba(255,243,207,.02)}
-  .wside a.wiki-home{width:100%;padding:8px 10px 13px}
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:6px;background:rgba(255,243,207,.02)}
+  .wside-all>summary{padding:12px;min-height:44px;background:rgba(255,243,207,.03)}
+  .wside-all[open]>summary{color:var(--cream);margin-bottom:2px}
   .wside-section summary{padding:12px}
   .wside-links{padding-left:8px}
   .wside-links a{padding:10px 12px}
 }
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand .wm{margin:0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
 .brand h1{font-size:1.6rem;margin:0}
-.subtag{color:var(--dim);font-size:.85rem;margin:2px 0 0}
+.subtag{color:var(--dim);font-size:.85rem;margin:3px 0 0}
 h2{font-size:1.5rem;margin:0 0 6px}
 .lede{color:var(--dim);margin:0 0 20px;font-size:.92rem;max-width:78ch}
 footer a{color:var(--cyan);text-decoration:none}
@@ -361,6 +440,12 @@ footer a{color:var(--cyan);text-decoration:none}
 <a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
+  <div class="wtopbar-brandrow">
+
+    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
+      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
+      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
+    </a>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -371,107 +456,108 @@ footer a{color:var(--cyan);text-decoration:none}
     <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
   </span>
 </div>
+  </div>
   <div class="wtopbar-row">
-    <a class="brand" href="index.html">
+    <span class="brand">
       <span>
         <h1 class="chroma">WHOMP automatic weapons, measured</h1>
         <p class="subtag">Two lab tests, run over and over, with the spread left in.</p>
       </span>
-    </a>
+    </span>
     <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
   live <b>0cb53bbe</b> · different from wiki source</span>
   <span class="chip">version <b>0.6.1</b></span></div>
   </div>
 </div>
 
-
+<div class="wsearchband">
 <div class="searchwrap" role="search">
-  <label class="searchlabel" for="search">Search WHOMP</label>
+  <label class="searchlabel" for="search">Search WHOMP <kbd class="searchkey">/</kbd></label>
   <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
   <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
-</div>
+</div></div>
 
 <div class="wshell">
   <nav class="wside" aria-label="Wiki navigation">
 
-    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
-      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
-      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
-    </a>
-    <span class="wside-h">Wiki</span>
-    <a href="wiki.html">All guides</a>
-    <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
-    <details class="wside-section is-current-section" open>
-      <summary>Buildcraft <span>14</span></summary>
-      <div class="wside-links">
-        <a href="wiki-weapons.html">Weapons</a>
-        <a href="wiki-cores.html">Core weapons</a>
-        <a href="wiki-power-ceilings.html">Diminishing returns</a>
-        <a href="wiki-tiers.html" class="is-here" aria-current="page">Automatic weapons, measured</a>
-        <a href="wiki-builds.html">Automatic weapons in pairs</a>
-        <a href="wiki-tomes.html">Tomes</a>
-        <a href="wiki-relics.html">Relics</a>
-        <a href="wiki-legendaries.html">Legendary upgrades</a>
-        <a href="wiki-blessings.html">Shrine blessings</a>
-        <a href="wiki-shrine-movement.html">Shrine movement</a>
-        <a href="wiki-utilities.html">Utility abilities</a>
-        <a href="wiki-ultimates.html">WHOMP Ultimate</a>
-        <a href="wiki-evolutions.html">Evolution recipes</a>
-        <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
+    <details class="wside-all" open>
+      <summary>Wiki <span>31</span></summary>
+      <div class="wside-all-body">
+        <a href="wiki.html">All guides</a>
+        <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
+        <details class="wside-section is-current-section" open>
+          <summary>Buildcraft <span>14</span></summary>
+          <div class="wside-links">
+            <a href="wiki-weapons.html">Weapons</a>
+            <a href="wiki-cores.html">Core weapons</a>
+            <a href="wiki-power-ceilings.html">Diminishing returns</a>
+            <a href="wiki-tiers.html" class="is-here" aria-current="page">Automatic weapons, measured</a>
+            <a href="wiki-builds.html">Automatic weapons in pairs</a>
+            <a href="wiki-tomes.html">Tomes</a>
+            <a href="wiki-relics.html">Relics</a>
+            <a href="wiki-legendaries.html">Legendary upgrades</a>
+            <a href="wiki-blessings.html">Shrine blessings</a>
+            <a href="wiki-shrine-movement.html">Shrine movement</a>
+            <a href="wiki-utilities.html">Utility abilities</a>
+            <a href="wiki-ultimates.html">WHOMP Ultimate</a>
+            <a href="wiki-evolutions.html">Evolution recipes</a>
+            <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
+          </div>
+        </details>
+        <details class="wside-section">
+          <summary>Heroes <span>3</span></summary>
+          <div class="wside-links">
+            <a href="wiki-characters.html">Characters</a>
+            <a href="wiki-innates.html">Innates</a>
+            <a href="wiki-signatures.html">Signatures</a>
+          </div>
+        </details>
+        <details class="wside-section">
+          <summary>World <span>6</span></summary>
+          <div class="wside-links">
+            <a href="wiki-bestiary.html">Bestiary</a>
+            <a href="wiki-worlds.html">Campaign worlds</a>
+            <a href="wiki-expeditions.html">Expeditions</a>
+            <a href="wiki-modes.html">Run modes</a>
+            <a href="wiki-world-events.html">Rare world events</a>
+            <a href="wiki-ambient-events.html">Ambient events</a>
+          </div>
+        </details>
+        <details class="wside-section">
+          <summary>Progression <span>6</span></summary>
+          <div class="wside-links">
+            <a href="wiki-achievements.html">Achievements</a>
+            <a href="wiki-quests.html">Quests and rewards</a>
+            <a href="wiki-shop.html">Shop</a>
+            <a href="wiki-ship-cores.html">Ship cores</a>
+            <a href="wiki-ship-systems.html">Ship systems</a>
+            <a href="wiki-ship-fragments.html">Ship fragments</a>
+          </div>
+        </details>
+        <details class="wside-section">
+          <summary>Collection <span>2</span></summary>
+          <div class="wside-links">
+            <a href="wiki-wearables.html">Wearables</a>
+            <a href="wiki-cosmetics.html">Cosmetic styles</a>
+          </div>
+        </details>
+        <span class="wside-h">Elsewhere</span>
+        <a href="log.html#views">Dev log</a>
+        <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>
-    <details class="wside-section">
-      <summary>Heroes <span>3</span></summary>
-      <div class="wside-links">
-        <a href="wiki-characters.html">Characters</a>
-        <a href="wiki-innates.html">Innates</a>
-        <a href="wiki-signatures.html">Signatures</a>
-      </div>
-    </details>
-    <details class="wside-section">
-      <summary>World <span>6</span></summary>
-      <div class="wside-links">
-        <a href="wiki-bestiary.html">Bestiary</a>
-        <a href="wiki-worlds.html">Campaign worlds</a>
-        <a href="wiki-expeditions.html">Expeditions</a>
-        <a href="wiki-modes.html">Run modes</a>
-        <a href="wiki-world-events.html">Rare world events</a>
-        <a href="wiki-ambient-events.html">Ambient events</a>
-      </div>
-    </details>
-    <details class="wside-section">
-      <summary>Progression <span>6</span></summary>
-      <div class="wside-links">
-        <a href="wiki-achievements.html">Achievements</a>
-        <a href="wiki-quests.html">Quests and rewards</a>
-        <a href="wiki-shop.html">Shop</a>
-        <a href="wiki-ship-cores.html">Ship cores</a>
-        <a href="wiki-ship-systems.html">Ship systems</a>
-        <a href="wiki-ship-fragments.html">Ship fragments</a>
-      </div>
-    </details>
-    <details class="wside-section">
-      <summary>Collection <span>2</span></summary>
-      <div class="wside-links">
-        <a href="wiki-wearables.html">Wearables</a>
-        <a href="wiki-cosmetics.html">Cosmetic styles</a>
-      </div>
-    </details>
-    <span class="wside-h">Elsewhere</span>
-    <a href="log.html#views">Dev log</a>
-    <a href="index.html">&larr; Back to WHOMP</a>
     <div class="stat">33 weapons · 83 evidence rows, read straight out of the game</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
-    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">Automatic weapons, measured</span></nav>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-buildcraft">Buildcraft</a><span aria-hidden="true">/</span><span aria-current="page">Automatic weapons, measured</span></nav>
     <h2 class="chroma">Automatic weapons, measured</h2>
     <p class="lede">Every one of the 33 automatic weapons went through the same two tests, at 83 combinations of form and level. This is a laboratory and not a run: nothing here dodges, nothing here is aimed, and a letter only says where a row landed against the other rows it was compared with. Where a test could not honestly produce a number, the row says so instead of taking a guess.</p>
 
-    <p class="wprov">Every number on this page was read out of the game, at build <b>game@c736ebea</b>.
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@bc134616</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
     <p class="womit"><b>Core weapons, tomes, relics and characters have no letters here, and the measurement says why.</b> <b>Tomes:</b> A tome has no standalone output; its number is a DELTA against a reference build, and choosing that reference is a design decision this lane was not scoped to make. Named follow-on lane. <b>Relics:</b> Relics span direct stats, economy, survival, movement and event effects. No universal reference build or grade was selected. <b>Characters:</b> Confounded by innate + signature + starting weapon at once; not separable on this rig. <b>Core weapons:</b> Campaign cores are aimed/manual-control weapons with a separate runtime registry. This automatic WeaponSystem orbit cannot measure human aim.</p>
@@ -487,7 +573,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wsub">Survival is the metric a run cares about and it is NOT reachable per weapon: src/dev/headlessSim.ts has no per-weapon damage attribution (damageByWeapon is keyed by source phase), no starting-weapon override, and its draft puts four weapons in the run within minutes. Locking the others out does not isolate either, because partitionLockedOut falls back to the held ids when a pool empties. Reported as a correct negative rather than faked.</p>
       <p class="wsub">Worker count changes wall-clock execution only. The CLI disables V8 Maglev before simulation, fixture workers inherit that process policy, and seeded tasks return in canonical order; numeric evidence and fingerprint are worker-count invariant. Workers used: 4 of cap 4; execution-only, not measurement evidence.</p>
       <details class="wraw"><summary>Evidence and limits <span>10 named limits</span></summary>
-        <dl><div><dt>Fixture fingerprint</dt><dd><code>79ea25bce7ee7a9862b6792a833600a4</code></dd></div><div><dt>Source-contract digest</dt><dd><code>fb58922ea217c1649fdc30b278f8b2fcf1a18ecc1b76e877b1e3b092a9dc7632</code></dd></div></dl>
+        <dl><div><dt>Fixture fingerprint</dt><dd><code>08e75edbeaa7e22f2c04f5d87a338a63</code></dd></div><div><dt>Source-contract digest</dt><dd><code>aca68d70006a8dad25f01865508953afeda84fae2edd39e8ff0b4c30daefb676</code></dd></div></dl>
         <ul><li>This ranks bare automatic WeaponSystem weapons, not aimed core weapons and not full-run builds. A weapon that scales with stats is measured without those stats.</li><li>The rig is WeaponSystem + Projectiles + GroundPatches. No director, elites, boss attacks/phases, player damage, survival, XP or draft economy.</li><li>The trash fixture respawns on death, so kills/min measures throughput and is not capped by a finite population.</li><li>The boss-class fixture is stationary and stands 5.1-7.9m from the orbiting player. It does not execute authored boss movement, attacks, or phases; this is target-damage evidence, not boss-fight performance.</li><li>A weapon whose reach is shorter than the controlled target distance measures ZERO there, and that zero is a fact about this fixture as much as about the weapon.</li><li>Echo's wake does not intersect the stationary boss-class fixture. Those bossDamage rows are explicitly UNMEASURED and receive no tier or rank.</li><li>Order statistics are discrete, never interpolated: quantiles use the nearest zero-based sample index round((n - 1) * q), and even-sized medians use the upper middle sample.</li><li>Measured controlled-sim builds are greedy four-weapon chains, not exhaustive optima or live-play recommendations.</li><li>Greedy build selection and reported build performance use the same deterministic seed cohort; there is no holdout cohort, so selection bias is possible.</li><li>Multi-weapon rows use a fixed lexicographic insertion order. Other acquisition orders are not measured and can change cast interleave.</li></ul>
       </details>
     </section>
@@ -2545,8 +2631,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 19:32 UTC from <code>game@c736ebea</code>,
-  content derived from <code>data/tier-rankings.json · fingerprint 79ea25bce7ee7a9862b6792a833600a4 · source fb58922ea217c1649fdc30b278f8b2fcf1a18ecc1b76e877b1e3b092a9dc7632</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
+  Generated 2026-08-05 19:18 UTC from <code>game@bc134616</code>,
+  content derived from <code>data/tier-rankings.json · fingerprint 08e75edbeaa7e22f2c04f5d87a338a63 · source aca68d70006a8dad25f01865508953afeda84fae2edd39e8ff0b4c30daefb676</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
@@ -2647,14 +2733,27 @@ function sortCards() {
 if (sortSel) sortSel.addEventListener('change', sortCards);
 sortCards();
 
-// ---- compact mobile navigation ----
-const currentNavSection = document.querySelector('.wside-section.is-current-section');
-const mobileNav = window.matchMedia('(max-width:760px)');
-function syncCurrentNav() {
-  if (currentNavSection) currentNavSection.open = !mobileNav.matches;
+// ---- wiki navigation ----
+
+const navAll = document.querySelector('.wside-all');
+const navNarrow = window.matchMedia('(max-width:760px)');
+function syncWikiNav() {
+  if (navAll) navAll.open = !navNarrow.matches;
 }
-syncCurrentNav();
-mobileNav.addEventListener?.('change', syncCurrentNav);
+syncWikiNav();
+navNarrow.addEventListener?.('change', syncWikiNav);
+
+const stuckRoot = document.documentElement;
+let stuckFrame = 0;
+function syncStuck() {
+  stuckFrame = 0;
+  stuckRoot.classList.toggle('is-stuck', window.scrollY > 8);
+}
+syncStuck();
+window.addEventListener('scroll', () => {
+  if (!stuckFrame) stuckFrame = requestAnimationFrame(syncStuck);
+}, { passive: true });
+
 apply();
 // ---- search: clear the filters before jumping, so a hit is never display:none ----
 
@@ -2829,6 +2928,22 @@ searchInput.addEventListener('keydown', (e) => {
   if (e.key === 'Tab') setSearchOpen(false);
 });
 document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
+
+/* REACHABLE FROM THE KEYBOARD, ANYWHERE ON THE PAGE. These pages are long enough
+ * that "scroll back up and click the box" is the real cost of a search, and both
+ * keys are what a reader who has used any other documentation site will already
+ * try. Never steals a keystroke that was going somewhere else: any field, any
+ * contenteditable surface and any modified "/" is left alone. */
+const typingTarget = (el) => !!el && (el.isContentEditable
+  || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName));
+document.addEventListener('keydown', (e) => {
+  const shortcut = (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey)
+    || ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey) && !e.altKey);
+  if (!shortcut || typingTarget(e.target)) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.select();
+});
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;

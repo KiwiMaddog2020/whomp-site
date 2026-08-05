@@ -120,8 +120,16 @@ footer code{color:var(--body)}
    than a fix: the per-element fixes are real but the next long token will arrive
    somewhere nobody predicted, and this was reported twice on mobile before it got
    one. Lives in SHARED_CSS because the second report was on the log while the wiki
-   pages had no protection at all. */
-html,body{max-width:100%;overflow-x:hidden}
+   pages had no protection at all.
+
+   CLIP, NOT HIDDEN, AND THE DIFFERENCE IS LOAD BEARING. overflow-x:hidden makes
+   the element a scroll container, and a scroll container on html/body silently
+   defeats position:sticky for EVERY descendant on the page: the wiki's sticky
+   search band scrolled away with the document and looked simply unimplemented.
+   overflow-x:clip clips exactly the same overflow without becoming a scroll
+   container, so the sideways-scroll floor this rule exists for is unchanged and
+   sticky positioning works again. Verified on all three surfaces. */
+html,body{max-width:100%;overflow-x:clip}
 
 .topbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
@@ -132,7 +140,11 @@ html,body{max-width:100%;overflow-x:hidden}
 
 
 .searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
-.searchlabel{display:block;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.searchlabel{display:flex;align-items:center;gap:8px;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+/* The shortcut is only worth having if a reader knows it is there, so the key is
+   printed on the label rather than left to be discovered. */
+.searchkey{border:var(--edge);border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;
+  font-weight:700;letter-spacing:0;color:var(--dim);background:rgba(255,243,207,.05);text-transform:none;line-height:1.5}
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
   color:var(--cream);font-family:var(--font);font-size:1rem}
 .searchbox::placeholder{color:var(--dim)}
@@ -173,6 +185,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 .notecard-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
 .notecard-date{color:var(--dim);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
 .notecard-version{color:var(--dim);font-size:.78rem;font-family:var(--mono)}
+/* Provenance, not a badge. Same weight and colour as the date beside it, so it
+   reads as the third fact in a row of facts rather than as a verdict on the
+   entry it sits above. It never gets a border, a background or an accent ink. */
+.notecard-source{color:var(--dim);font-size:.78rem;letter-spacing:.04em}
+.bucket-more{margin-top:8px;color:var(--dim);font-size:.82rem}
 .notecard p{margin:10px 0}
 .notecard ul{margin:8px 0;padding-left:20px}
 .notecard li{margin:6px 0}
@@ -294,7 +311,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
 
 <div class="searchwrap" role="search">
-  <label class="searchlabel" for="search">Search WHOMP</label>
+  <label class="searchlabel" for="search">Search WHOMP <kbd class="searchkey">/</kbd></label>
   <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
@@ -323,8 +340,10 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="shipped">
     <div class="rule"></div>
     <h2 class="chroma">Shipped</h2>
-    <p class="lede">Two ways to read it. Concise is Kevin's own notes, written for players. Full is the raw
-      engineering log, generated straight from git, unedited, so a curious player can see everything.</p>
+    <p class="lede">Two ways to read it. Concise is one entry per release, in the words the release
+      notes were written in for players, with Kevin's own note in its place on any day he wrote one.
+      Full is the raw engineering log, generated straight from git, unedited, so a curious player can
+      see everything.</p>
 
     <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
          lands ON the Concise / Full choice rather than above it. -->
@@ -335,12 +354,81 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="note-2026-08-05">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-05</span>
+      <span class="notecard-version">v0.6.2</span>
+      <span class="notecard-source">written for the log</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">A week of releases, caught up in one entry</h3>
+
+    <p>This log went quiet for six days while three releases shipped. That is the gap, and this entry closes it. From today each release writes its own entry here as it is cut, so a week like this one cannot go unrecorded again.</p><p>The three are 0.6.0 on July 31, 0.6.1 on August 4, and 0.6.2 today. The two older ones have their own entries below this one. This entry is the week.</p>
+    <div class="buckets">
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">New</h4>
+      <ul><li><strong>Two snow worlds are reachable.</strong> Frostreach Pines and Shiverpeak Summit sit behind the Frost Gate, so a run now goes hearth, desert, frost, void. They borrow desert enemies for this release while their own roster is built.</li><li><strong>Build tracks.</strong> Stable is the recommended weekly build, Preview is the latest fully green one. Each installs as its own app with its own on-device progress, and online rooms now match on both track and exact build, so a Stable player and a Preview player cannot start a divergent match by accident.</li><li><strong>Your core weapon reads more of your build.</strong> The scattergun and the longbow respond to victims, arc and area, so four upgrade paths that previously did nothing for them now change how they fire. Cores also declare an element, and committing a build to one sharpens what that element does rather than handing you a flat bonus.</li><li><strong>Duels and arena matches end on a scope-out screen.</strong> Both sides, side by side, with what each was running and how the fight actually went.</li></ul>
+    </div>
+    <div class="bucket">
+      <h4 style="color:var(--violet)">Better</h4>
+      <ul><li>Mouse look is the default for mouse and keyboard. The camera turns the way it does in a shooter and the cursor stays parked above your character. There is a Cursor Height slider in Settings, and click to aim is still under Controls.</li><li>Starfall no longer lands in the opening minutes. The first shard falls after five minutes and the crown after nine, so an early lucky pickup cannot decide the run.</li></ul>
+    </div>
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li><strong>Duels stop dragging.</strong> Lifesteal and health regeneration were both measured against unscaled health while every damage number in a duel was scaled, so the safety cap never bound and every seat healed at the same flat rate whatever it drafted. Both are fixed, and in testing every stalemate resolved.</li><li><strong>The laser telegraphs its return sweep.</strong> The second pass used to arrive with no warning, which made a readable attack read as a random one.</li><li><strong>Co-op runs have sound.</strong> Hits, pickups, level ups and everything else were silent for every player in a co-op game.</li><li><strong>The challenge bell and its reward drop were silent and now are not.</strong></li><li>The snow levels no longer grow meadow clover and gold flowers on the ice.</li><li>The village has cats.</li></ul>
+    </div>
+    <div class="bucket">
+      <h4 style="color:var(--gold)">Coming</h4>
+      <ul><li>The snow tier gets enemies of its own, so the frost worlds stop borrowing from the desert.</li><li><span class="spoiler" tabindex="0" role="button" aria-label="Spoiler, click to reveal">A boss to close the snow tier out.</span></li></ul>
+    </div></div>
+  </article>
+  <article class="notecard" id="release-0-6-1">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-04</span>
+      <span class="notecard-version">v0.6.1</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The Whomp Lab becomes a private director workspace, and new Stable and Preview tracks make it safer to try the latest green build.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Choose your build track from the title screen. Stable is the recommended weekly build; Preview is the latest fully green build. Each is its own installable PWA with separate on-device progress, and switching always goes to one fixed, trusted WHOMP address.</li><li>The Whomp Lab is reorganized into Explore, Practice, Review and QA. Seven taps on THE WHOMP LAB reveal a session-only Director Console with the local Studio Board and a copy-and-paste decision workspace for coordinating development without putting credentials or remote execution inside the game.</li><li>Online rooms now match both the build track and exact build. A Stable player and a Preview player cannot accidentally start a divergent duel or co-op run, and the lobby explains how to get everyone onto the same track.</li><li>Preview is intentionally low-risk: it keeps cloud saves and public leaderboard writes on Stable while still sending clearly labelled feedback, crash reports and play-session evidence so the newest build can improve quickly.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Level-up velocity offers no longer appear when none of your live weapons can use them.</li><li>Account name dialogs can be escaped cleanly, keep keyboard focus available, and ignore stale results from an earlier modal session.</li><li>Preview no longer offers account sign-in or cloud-save controls that it cannot safely use.</li><li>Cross-track online mismatches now fail closed instead of retrying an incompatible room.</li></ul><p class="bucket-more">2 more fixes shipped in this release. The full log has all of them.</p>
+    </div>
+  </div>
+  </article>
+  <article class="notecard" id="release-0-6-0">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-07-31</span>
+      <span class="notecard-version">v0.6.0</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Duels stop dragging, the snow tier opens behind the Frost Gate, and two long-standing sustain leaks are finally closed.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Two new worlds are reachable. Frostreach Pines and Shiverpeak Summit sit behind the Frost Gate, so the run now goes hearth, desert, frost, void. Their enemies are borrowed from the desert tier for this release while their own roster is built.</li><li>Duels no longer drag. Every seat was quietly regenerating health at the same rate whether it built for it or not, and lifesteal was recovering roughly half of all incoming damage instead of a trickle. Both are fixed, and in testing every single stalemate disappeared.</li><li>Sign in with your account. The accounts panel is live, so one login covers the game and the dev log site.</li><li>Mouse look is the new default. The camera turns with the mouse the way it does in a shooter, and the cursor stays parked just above your character instead of roaming the screen. Settings has a Cursor Height slider if it sits wrong for you, and the old click to aim scheme is still there under Controls.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Fixed duels that could run past the intended length and occasionally never resolve at all.</li><li>Starfall no longer lands in the opening minutes. The first shard falls after five minutes and the crown after nine, so an early lucky pickup cannot decide the run.</li><li>Fixed starfall rewards sinking into sloped ground while you walked over to pick them up.</li><li>Co-op runs have sound. Hits, pickups, level ups and everything else were silent for every player in a co-op game.</li></ul><p class="bucket-more">6 more fixes shipped in this release. The full log has all of them.</p>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="note-2026-07-30">
     <div class="notecard-head">
       <span class="notecard-date">2026-07-30</span>
       <span class="notecard-version">v0.5.0</span>
+      <span class="notecard-source">written for the log</span>
     </div>
     <h3 class="chroma" style="font-size:1.4rem">Duels stop dragging, and sign-in shows up</h3>
+
     <p>If you have played the arena the last few days, you already know the problem: fights that should end in fifteen or twenty seconds were stretching on and on. Today's build tracks down why and fixes it for good.</p>
     <div class="buckets">
     <div class="bucket">
@@ -360,6 +448,87 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <ul><li>More PvP tuning is already queued behind this fix. We want a good read and a clean hit to matter without turning every duel into a coinflip.</li><li><span class="spoiler" tabindex="0" role="button" aria-label="Spoiler, click to reveal">Accounts unlocking cross-device saves and a real leaderboard are next.</span></li></ul>
     </div></div>
   </article>
+  <article class="notecard" id="release-0-4-0">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-07-20</span>
+      <span class="notecard-version">v0.4.0</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Heroic Leap joins the kit, multiplayer duels get a real feel pass, and a big craft sweep across movement, depth, and sprites.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>The full standard control kit is ready from the start: Boost, WHOMP, your character signature, and Heroic Leap on F. Seven alternate F utilities remain separate unlocks in the Arsenal Forge: Recall Rune, Second Wind, Bulwark, Boop, Hook, Stasis, and Chasm.</li><li>Multiplayer duels got a full feel pass: your HUD now carries into the ring, phase changes show loading screens instead of hard freezes, a pre-duel 3-2-1 countdown and a round score card frame each bout, a dropped opponent hands you the win, and the top-left score readout was cleaned up. Hitting Escape mid-duel now opens the menu without freezing your opponent, and online lobbies support up to four players in a free-for-all beta.</li><li>Movement and traversal polish: the walk gait speeds up toward a jog and scales with your speed, jump pads launch twice as high, pits are deeper with pitch-black bottoms that no longer catch stray shadows from above, and paired in-run portals let you stumble onto a teleport across the map.</li><li>A craft sweep on how things sit in the world: ground rings (starfield, aura, jump-landing dust) always render above the ground yet under the trees, rings centered on you ride your jump and pass correctly over the trees when you are airborne above them, and your shadow now shrinks and fades as you rise so it reads your height.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>The home-world camera no longer stutters or shakes while strafing; it now interpolates smoothly at any framerate, matching the in-run feel.</li><li>The Apprentice wand is now properly gripped in the right hand instead of floating beside the hip, and every character got rounder joints where limbs read jagged.</li><li>In default Drag to Look, holding either mouse button locks the pointer in place and hides it; releasing the final held button restores it. Classic Mouse Look remains an opt-in persistent lock.</li><li>The full-download build launches fullscreen. Web browsers may show their own brief pointer-lock guidance when a look drag begins.</li></ul>
+    </div>
+  </div>
+  </article>
+  <article class="notecard" id="release-0-3-0">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-07-18</span>
+      <span class="notecard-version">v0.3.0</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">THE WHOMP lands, the Hub grows into districts, and every world finally has its own sky.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>THE WHOMP replaces the old boss-steal ultimate: Q now unleashes one massive area stun-slam with a tiered stun (trash frozen, minibosses staggered, signature bosses staggered then supercharged), armed the same way as before.</li><li>HUBWORLD Phase 1 more than doubles the hub to roughly 140 m: two new districts, Ember Hollow and Void Terrace, sit behind live progress-gated arches, alongside six collectible Keepsakes and a trophy room with an 8-socket charm wall.</li><li>Every campaign world now wears its own tailored sky, closing out the two-round skybox project across Neon Meadow, Gloom Marsh, Neon Necropolis, Ember Wastes, Inferno, and Void Rift.</li><li>Base movement speed is up another 10% for the megabonk-era pace (enemies are deliberately not rescaled yet; a horde rebalance follows).</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>The hub campfire’s log pyre no longer sprawls onto the keeper’s lap and no longer buries the flames it should frame.</li><li>Ground weapon decals (toxic aura, faultline, gravity well, pulse mine, stomp and landing patches) render above grass again instead of getting punched through by a blade standing in front of them.</li><li>Run-map floor effect cues stay readable instead of getting lost under terrain drape.</li><li>The hub’s bottom-center interact card no longer sits under the boost dial after the dial’s move to the run-HUD anchor.</li></ul>
+    </div>
+  </div>
+  </article>
+  <article class="notecard" id="release-0-2-1">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-07-17</span>
+      <span class="notecard-version">v0.2.1</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Bigger worlds, a Ghost Pup at your side, and a HUD that behaves on every screen.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Every run map has grown to 390 m with proportional terrain, denser routes, and more shrines, which now rebuild six minutes after use.</li><li>A new companion joins: the Ghost Pup, a rebuilt sidekick with real pet AI that pounces, swipes, and returns to your side.</li><li>Weapons look like themselves now: thin chain lightning, staged ice shards, faced ghost orbs, neon discs, plus rebuilt field, strike, and shotgun effects under eight bespoke skies.</li><li>Mouse-drag look no longer triggers the browser pointer-lock banner, the run HUD reads timer, then HP, then level, and the post-run screen is a clean pair of buttons.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Releasing a right-button camera drag over a weapon or tome slot no longer pops the native context menu.</li><li>On narrow windows the centered health stack and the battle round row now shrink instead of sliding under the minimap or side rails.</li><li>Airborne boosts keep their momentum through the landing instead of losing it on touchdown.</li></ul>
+    </div>
+  </div>
+  </article>
+  <article class="notecard" id="release-0-2-0">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-07-17</span>
+      <span class="notecard-version">v0.2.0</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Discoverable secrets, sharper pursuit, a living Hub, and a mountain of polish.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Seven map-aware world events now interrupt runs: mimic chests, ancient bells, treasure mounds, golden wisps, ghost gatherings, themed fairy rings, and meteor showers.</li><li>The BOO loop arrives earlier: directives begin at 4:00, Reroll/Banish use their proper 1→4 meta capacity, and distant enemies catch up without speeding up on screen.</li><li>The Hub has a two-draw campfire resident with deadpan lore, shared loading tips, a full training forge, movement playground, trophy garden, daily obelisk, and eight spaced portals.</li><li>Combat presentation is clearer: rounded boss HP capsules, rebuilt weapon effects/icons, real Battle Mode damage and ring pressure, plus upgraded characters and world identity.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Rigged Dice no longer applies 100× too much luck and flood early drafts with Epic cards.</li><li>Invisible void seams are visible pits now; players glide along rims, enemies route around them, and XP no longer strands inside.</li><li>Simultaneous same-kind bosses each render their own body and health bar.</li><li>Text fields keep every typed key, and right-click camera control no longer opens the browser menu.</li></ul>
+    </div>
+  </div>
+  </article>
+
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -369,108 +538,212 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-05</h4>
+
+    <div class="row" data-kind="fix" id="chg-d6fa1fa5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">five red files, one recurring shape, and a real gap it exposed <span class="scope">(gate)</span></span>
+      <span class="sha">d6fa1fa5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e2d2061f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the glow-up pass, make the comb an actual telegraph <span class="scope">(borealisk)</span></span>
+      <span class="sha">e2d2061f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f6e39ee1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">enforce the cross-family scenery gap in the apron expansion <span class="scope">(terrain)</span></span>
+      <span class="sha">f6e39ee1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-573d40c0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">drop the frost trail paving clear of the district plate <span class="scope">(hub)</span></span>
+      <span class="sha">573d40c0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cb5bfd90">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">lift the rooftop boards clear of Hearthwick's chimney courses <span class="scope">(hub)</span></span>
+      <span class="sha">cb5bfd90</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-58376756">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the one-pixel read, so the horde colour map is complete <span class="scope">(borealisk)</span></span>
+      <span class="sha">58376756</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4b5fcfbb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">stinger, and no plinth for a boss whose map has not landed <span class="scope">(borealisk)</span></span>
+      <span class="sha">4b5fcfbb</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7b63af6f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the apron expansion band start is a transition, not a threshold <span class="scope">(terrain)</span></span>
+      <span class="sha">7b63af6f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5b6f0c35">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the rig, at the rig-less-ten bar <span class="scope">(borealisk)</span></span>
+      <span class="sha">5b6f0c35</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-875ac456">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">landing a lane IS pushing it, because the note did not hold <span class="scope">(train)</span></span>
+      <span class="sha">875ac456</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-3c8e4eef">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">bucket the coplanarity instrument on a plan grid, same verdict <span class="scope">(test)</span></span>
+      <span class="sha">3c8e4eef</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7b997e35">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the animal, its phase machine and its registry rows <span class="scope">(borealisk)</span></span>
+      <span class="sha">7b997e35</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d2884bef">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">measure the draw budget on the assembled hub, once <span class="scope">(hub)</span></span>
+      <span class="sha">d2884bef</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ed2b94f5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">fishing, a discoverable pond with a fight the player can lose <span class="scope">(hub)</span></span>
+      <span class="sha">ed2b94f5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-244f66af">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one shared ground registry, with the base and rung read by position <span class="scope">(hub)</span></span>
+      <span class="sha">244f66af</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c9761dd0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">push main after every merge batch, not only before a deploy <span class="scope">(cloud)</span></span>
+      <span class="sha">c9761dd0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4de734a1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the gaze reaches the screen and the run <span class="scope">(borealisk-hud)</span></span>
+      <span class="sha">4de734a1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d55beaba">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">glow-up pass on the four snow natives, plus artifact and pin upkeep <span class="scope">(snow)</span></span>
+      <span class="sha">d55beaba</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6924961b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire the village cats, which no player could see until now <span class="scope">(hub)</span></span>
+      <span class="sha">6924961b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b49de39a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">author the snow tier's four basic enemies and retire the dune borrow <span class="scope">(snow)</span></span>
+      <span class="sha">b49de39a</span>
+    </div><div class="row more">+ 50 more that day, not shown</div>
+  </div>
+  <div class="day">
     <h4>2026-08-04</h4>
 
-    <div class="row" data-kind="fix" id="chg-aaeb158f">
+    <div class="row" data-kind="fix" id="chg-a92f0581">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">clear canonical HUD rails <span class="scope">(coop)</span></span>
-      <span class="sha">aaeb158f</span>
+      <span class="what">the composer dropped a field two lanes disagreed about <span class="scope">(core)</span></span>
+      <span class="sha">a92f0581</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-f2849170">
+    <div class="row" data-kind="fix" id="chg-c5548740">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">harden shared run HUD presentation <span class="scope">(coop)</span></span>
-      <span class="sha">f2849170</span>
+      <span class="what">the labs roster census gains the DEV CONSOLE row <span class="scope">(seat)</span></span>
+      <span class="sha">c5548740</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-ed2529d0">
+    <div class="row" data-kind="fix" id="chg-1ab11b71">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">inspect through the waiter instead of refusing it blind <span class="scope">(guard)</span></span>
+      <span class="sha">1ab11b71</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4118fd09">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a merge is not a gate launch, and its message is not an invocation <span class="scope">(gate)</span></span>
+      <span class="sha">4118fd09</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c8ea5240">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">every merge refusal names the command that fixes it <span class="scope">(guard)</span></span>
+      <span class="sha">c8ea5240</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-433a403a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">three of the five gate reds, two of them mine <span class="scope">(tests)</span></span>
+      <span class="sha">433a403a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-837ea870">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">half of bin/ could not be run the way the docs now say to run it <span class="scope">(tooling)</span></span>
+      <span class="sha">837ea870</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-635cca2f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a lane that has committed nothing is not a lane that finished <span class="scope">(claims)</span></span>
+      <span class="sha">635cca2f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-22d7e9f7">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">reuse canonical run HUD <span class="scope">(coop)</span></span>
-      <span class="sha">ed2529d0</span>
+      <span class="what">make the aimed-core sim read the effect bag <span class="scope">(core)</span></span>
+      <span class="sha">22d7e9f7</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-342463c3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">hold due elites during hourglass <span class="scope">(coop)</span></span>
-      <span class="sha">342463c3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2178ae9b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">freeze enemy time for hourglass <span class="scope">(coop)</span></span>
-      <span class="sha">2178ae9b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3a1c82ca">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">repair two defects the first repair introduced <span class="scope">(signal)</span></span>
-      <span class="sha">3a1c82ca</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e6c1f5cd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close the holes independent review found in the guards <span class="scope">(signal)</span></span>
-      <span class="sha">e6c1f5cd</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-5b9a7f8c">
+    <div class="row" data-kind="feat" id="chg-8964b615">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">bound unjoined seats, floods and protocol faults <span class="scope">(signal)</span></span>
-      <span class="sha">5b9a7f8c</span>
+      <span class="what">map all 152 authored upgrades onto the effect vocabulary <span class="scope">(core)</span></span>
+      <span class="sha">8964b615</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-6f15e84d">
+    <div class="row" data-kind="fix" id="chg-f4ae6fb5">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">compose per-seat locomotion stats <span class="scope">(coop)</span></span>
-      <span class="sha">6f15e84d</span>
+      <span class="what">make the shed dressing read at play distance <span class="scope">(render)</span></span>
+      <span class="sha">f4ae6fb5</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-f7ee17c1">
+    <div class="row" data-kind="fix" id="chg-008c1902">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">lock helper map identity <span class="scope">(coop)</span></span>
-      <span class="sha">f7ee17c1</span>
+      <span class="what">restore contact control authority <span class="scope">(pvp)</span></span>
+      <span class="sha">008c1902</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-560f7b44">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">construct every offered map <span class="scope">(coop)</span></span>
-      <span class="sha">560f7b44</span>
+    <div class="row" data-kind="feat" id="chg-f99446f8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">check a brief's citations before a lane burns an hour on them <span class="scope">(tooling)</span></span>
+      <span class="sha">f99446f8</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-0cb53bbe">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">parse publisher plans explicitly <span class="scope">(release)</span></span>
-      <span class="sha">0cb53bbe</span>
+    <div class="row" data-kind="feat" id="chg-84add193">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a payoff chain hangs in the air <span class="scope">(fx)</span></span>
+      <span class="sha">84add193</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-553cb455">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reject provenance path aliases <span class="scope">(wiki)</span></span>
-      <span class="sha">553cb455</span>
+    <div class="row" data-kind="feat" id="chg-6caab720">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add voice dictation and screenshot markup to the report panel <span class="scope">(feedback)</span></span>
+      <span class="sha">6caab720</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-0b2973eb">
+    <div class="row" data-kind="fix" id="chg-c077e439">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">refresh visual provenance without pixels <span class="scope">(wiki)</span></span>
-      <span class="sha">0b2973eb</span>
+      <span class="what">route villagers around buildings and fixtures, not through them <span class="scope">(hub)</span></span>
+      <span class="sha">c077e439</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-300ba2ac">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">contain admission override <span class="scope">(gate)</span></span>
-      <span class="sha">300ba2ac</span>
+    <div class="row" data-kind="feat" id="chg-a8784f68">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add segment-vs-rotated-box collision helper <span class="scope">(hub)</span></span>
+      <span class="sha">a8784f68</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-798d85c7">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">protect short desktop footer <span class="scope">(title)</span></span>
-      <span class="sha">798d85c7</span>
+    <div class="row" data-kind="feat" id="chg-72d88430">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">name the effect vocabulary the authored ladder needs <span class="scope">(core)</span></span>
+      <span class="sha">72d88430</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-b7daa024">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">harden publisher trust boundaries <span class="scope">(release)</span></span>
-      <span class="sha">b7daa024</span>
+    <div class="row" data-kind="feat" id="chg-b1b5d12f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the payoff heart, in each of the four cores own shape <span class="scope">(fx)</span></span>
+      <span class="sha">b1b5d12f</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-9eb199f8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close publisher edge cases <span class="scope">(release)</span></span>
-      <span class="sha">9eb199f8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b8ea05d9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cover both release publishers <span class="scope">(hooks)</span></span>
-      <span class="sha">b8ea05d9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3cfb7fa2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">bind publication to exact source <span class="scope">(release)</span></span>
-      <span class="sha">3cfb7fa2</span>
-    </div><div class="row more">+ 6 more that day, not shown</div>
+    <div class="row" data-kind="feat" id="chg-b98be63a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">give the seven run-map structures their own identity <span class="scope">(render)</span></span>
+      <span class="sha">b98be63a</span>
+    </div><div class="row more">+ 57 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-03</h4>
@@ -992,110 +1265,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">461f41ae</span>
     </div><div class="row more">+ 1 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-07-29</h4>
-
-    <div class="row" data-kind="fix" id="chg-c47ee12e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the accounts panel uses the font token, not a literal stack <span class="scope">(ui)</span></span>
-      <span class="sha">c47ee12e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7bef2216">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the lifesteal ceiling scales with the fight, not with max HP <span class="scope">(battle)</span></span>
-      <span class="sha">7bef2216</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-20aa07bb">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">honour Sacred Tome and Inner Peace in a duel, and ledger the other twelve <span class="scope">(battle)</span></span>
-      <span class="sha">20aa07bb</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e6450159">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">duel regen is the run's rate in the duel's currency, not the run's <span class="scope">(pvp)</span></span>
-      <span class="sha">e6450159</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e82025be">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the entry deadline is a re-arm interval, not a one-shot <span class="scope">(online)</span></span>
-      <span class="sha">e82025be</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3a6ee2a8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the input conflict detector was blind to the whole aimed-core half <span class="scope">(coop)</span></span>
-      <span class="sha">3a6ee2a8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6dda090f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a machine's opinion about the network is not sim state <span class="scope">(coop)</span></span>
-      <span class="sha">6dda090f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0e91036b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a human reading the loadout menu is not a crash <span class="scope">(net)</span></span>
-      <span class="sha">0e91036b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-44e0195e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a seat's blob shadow replaces its cast shadow, it does not join it <span class="scope">(coop)</span></span>
-      <span class="sha">44e0195e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c63890cc">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">census names the unnamed, and stops calling a pool walk a blind spot <span class="scope">(dev)</span></span>
-      <span class="sha">c63890cc</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3f92af81">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">render census - every triangle in a frame attributed to its owner <span class="scope">(dev)</span></span>
-      <span class="sha">3f92af81</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-cbd130dc">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a divergence report names which seat moved <span class="scope">(coop)</span></span>
-      <span class="sha">cbd130dc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4eac7583">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a parked instance is invisible to Matrix4.decompose <span class="scope">(test)</span></span>
-      <span class="sha">4eac7583</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d7de267b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the digest rides one clock, and it is the world's <span class="scope">(coop)</span></span>
-      <span class="sha">d7de267b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-32dd76ce">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">visual lanes get eyes, via bin/shot.sh on the running game <span class="scope">(tooling)</span></span>
-      <span class="sha">32dd76ce</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1e98582b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">take the relic out of the crater <span class="scope">(coop)</span></span>
-      <span class="sha">1e98582b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b15ce74f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the arc, the landfall and the mark, on every client <span class="scope">(coop)</span></span>
-      <span class="sha">b15ce74f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d4d97d0c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the approach's wear stops at the connector's band edge, not on top of it <span class="scope">(hub)</span></span>
-      <span class="sha">d4d97d0c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c7c0e691">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the ember portal row stands back off the canyon's back wall <span class="scope">(hub)</span></span>
-      <span class="sha">c7c0e691</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0e65718f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the market's four reserved plots become its stock racks <span class="scope">(hub)</span></span>
-      <span class="sha">0e65718f</span>
-    </div><div class="row more">+ 105 more that day, not shown</div>
-  </div>
 
     </div>
   </section>
@@ -1193,11 +1362,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-04 19:32 UTC from <code>game@c736ebea</code>.
+  Generated 2026-08-05 19:18 UTC from <code>game@bc134616</code>.
   Live build <code>0cb53bbe</code> (a deploy is pending).
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">579 player-visible changes in the last 7 days, across 7 active days, 1003 internal-only commits filtered out</div>
+  <div class="stat">575 player-visible changes in the last 7 days, across 7 active days, 1116 internal-only commits filtered out</div>
 </footer>
 
 
@@ -1470,6 +1639,22 @@ searchInput.addEventListener('keydown', (e) => {
   if (e.key === 'Tab') setSearchOpen(false);
 });
 document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
+
+/* REACHABLE FROM THE KEYBOARD, ANYWHERE ON THE PAGE. These pages are long enough
+ * that "scroll back up and click the box" is the real cost of a search, and both
+ * keys are what a reader who has used any other documentation site will already
+ * try. Never steals a keystroke that was going somewhere else: any field, any
+ * contenteditable surface and any modified "/" is left alone. */
+const typingTarget = (el) => !!el && (el.isContentEditable
+  || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName));
+document.addEventListener('keydown', (e) => {
+  const shortcut = (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey)
+    || ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey) && !e.altKey);
+  if (!shortcut || typingTarget(e.target)) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.select();
+});
 srPanel.addEventListener('click', (e) => {
   const a = e.target.closest('.sr-item');
   if (!a) return;
