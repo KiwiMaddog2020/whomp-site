@@ -1,0 +1,37 @@
+# concise-log-auto — feed the CONCISE dev log view from the game's own
+# release notes, so the view that a visitor sees first stops being six days
+# behind the game.
+#
+# Lane law: this lane READS the game repo (whomp/src/data/patchNotes.ts) and
+# writes nothing outside whomp-site. No glob below reaches the game checkout,
+# and none can: every path here is relative to the whomp-site worktree root.
+
+# The new source adapter and its wiring into the generator.
+bin/patch-notes.mjs
+bin/generate.mjs
+
+# The lane's own test, run by node --test alongside the two existing suites.
+tests/patchNotes.test.mjs
+
+# The one catch-up note this lane authors by hand, and the notes directory it
+# proves precedence against. Existing notes are read, never rewritten.
+notes/2026-08-05.md
+
+# Prose that describes the surface being changed. PLAN.md's decision table
+# states the concise view "stays empty if unwritten", which this lane makes
+# false; README.md documents the two views for anyone reading the repo cold.
+README.md
+PLAN.md
+
+# Lane paperwork.
+docs/claims/concise-log-auto.claims
+docs/lane-reports/concise-log-auto.md
+
+# Generated output. The generator writes these on every run and the deploy
+# scripts stage exactly what .site-outputs names, so a lane that regenerates
+# the site owns all of them or owns none of them.
+index.html
+log.html
+search-index.json
+wiki*.html
+wiki-assets

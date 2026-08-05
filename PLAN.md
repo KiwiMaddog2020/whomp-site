@@ -6,6 +6,18 @@ Decisions are ratified. This is the build order for the next session.
 > data layer described as open below are now shipped. Public-log gating remains
 > a separate director decision; it is not a missing wiki-data surface.
 
+> Historical plan status (2026-08-05): decision 5 and the table below it are
+> superseded on the CONCISE side only. "Stays empty if unwritten" was the
+> accepted cost of the authored-notes design, and the cost came due: the view a
+> visitor sees first sat on one note from 2026-07-30 while three releases
+> shipped. The architecture argument in the section below is still correct and
+> was NOT reversed. A machine still cannot pick highlights, so the concise view
+> now reads the ones a human already picked, in the game repo's
+> `src/data/patchNotes.ts`, at release-cut time. The two views remain two
+> different sources; only the concise source moved. An authored
+> `notes/<date>.md` still wins for its day, completely. See README.md's "The
+> concise view has no approval step, on purpose".
+
 ## The decisions
 
 1. **Two surfaces.** A short public landing that never grows, and `/log` as a real

@@ -3,8 +3,18 @@
  *
  *  "Generated spine, authored highlights": a job derives deploys, the live sha,
  *  the campaign arcs and the known-bug counts FROM THE REPO, so the site cannot
- *  go stale or lie, and Kevin writes short human notes on top for the part a
- *  machine cannot pick: which changes actually mattered to a player.
+ *  go stale or lie, and the part a machine cannot pick, which changes actually
+ *  mattered to a player, is always a human's words.
+ *
+ *  WHERE THOSE WORDS COME FROM, changed 2026-08-05: the concise view used to
+ *  wait for notes/<date>.md, a second act of writing that only Kevin could
+ *  perform, and it spent six shipping days empty because of it. It now reads the
+ *  game's own release notes (whomp/src/data/patchNotes.ts), which are authored
+ *  by hand at release time and already ship to players in the title screen's
+ *  WHAT'S NEW panel. The human is still the one picking; they are picking once
+ *  instead of twice. An authored notes/<date>.md still replaces the generated
+ *  entry for that day, completely. See "derive: one concise entry per release"
+ *  below and the header of bin/patch-notes.mjs.
  *
  *  IT NEVER TOUCHES THE GAME REPO. It reads. The site lives in its own repo on
  *  GitHub Pages precisely so a site edit can never bump the game's build sha,
@@ -47,6 +57,7 @@ import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import { fetchStableLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
+import { KEY_CHANGE_CAP, readPatchReleases } from './patch-notes.mjs';
 import {
   buildWiki, EXPLAINER_FILE, EXPLAINER_SLUG, EXPLAINER_TITLE, rosterSpecs, visualOutputPath, WIKI_CSS,
 } from './wiki.mjs';
@@ -538,9 +549,14 @@ function parseNote(raw, fallbackDate) {
   return { version: fm.version || '', date: fm.date || fallbackDate, title: fm.title || fallbackDate, body };
 }
 
+/* BUCKET_NAMES is the parsing vocabulary for AUTHORED notes: the four headings
+ * Kevin may write in notes/*.md. BUCKET_INK is the DISPLAY map and carries one
+ * more, "Highlights", which no authored note can produce because it is not in
+ * BUCKET_NAMES. Generated release entries use it for keyChanges, which mix new
+ * and improved and would be a lie under either "New" or "Better". */
 const BUCKET_NAMES = ['New', 'Better', 'Fixed', 'Coming'];
 const BUCKET_RE = new RegExp(`^##\\s+(${BUCKET_NAMES.join('|')})\\s*$`, 'i');
-const BUCKET_INK = { New: '--cyan', Better: '--violet', Fixed: '--pink', Coming: '--gold' };
+const BUCKET_INK = { New: '--cyan', Better: '--violet', Fixed: '--pink', Coming: '--gold', Highlights: '--cyan' };
 
 function parseBody(body) {
   const lines = body.split('\n');
@@ -600,6 +616,108 @@ if (existsSync(NOTES_DIR)) {
     })
     .filter(Boolean)
     .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+// ------------------------------------------- derive: one concise entry per release
+/* THE GUARD MOVED, IT DID NOT VANISH (Kevin 2026-08-05: "i would like a system
+ * where i do not have to approve the drafts. if we can get the voice right and
+ * convey the release info that is the goal. i do not want too many additional
+ * systems to maintain manually and the value is not there for this yet.")
+ *
+ * The comment on parseNote above is still the law of this view: a machine
+ * cannot pick highlights. What this block does is find the place a human ALREADY
+ * picked them. whomp/src/data/patchNotes.ts carries, per release, a headline and
+ * a keyChanges list capped at four, written in player-facing language when the
+ * release is cut and shipped to players in the title screen's WHAT'S NEW panel.
+ * That is the same property notes/*.md existed to supply, already being produced
+ * once as part of shipping. Nothing here composes a sentence about the game; see
+ * the header of bin/patch-notes.mjs for why that is the load-bearing part.
+ *
+ * WHY NOT git log. Because the full view already is git log, and a concise view
+ * sourced from commits is that view with fewer words. The toggle would offer a
+ * reader two doors into the same room.
+ *
+ * NO APPROVAL QUEUE, NO DRAFT STATE, NO BADGE. Ruled out on cost: an approval
+ * surface only Kevin can operate is a weekly tax with no second beneficiary, and
+ * an "unreviewed" mark with no review path would be permanent and would read as
+ * an apology on every entry. */
+const releases = readPatchReleases(REPO);
+
+/* HAND-WRITTEN WINS, COMPLETELY. A note replaces the generated entry for the
+ * DAY it is dated and for the VERSION it declares. Both keys, because both are
+ * explicit acts by the author and neither alone is enough:
+ *
+ *   DATE alone is not enough. notes/2026-07-30.md declares `version: 0.5.0`
+ *   while PATCH_RELEASES dates 0.5.0 to 2026-07-25, so on the date key nothing
+ *   is suppressed and the page renders two entries chipped v0.5.0 with
+ *   different content in them. Two entries claiming one version is worse than
+ *   either of them being missing.
+ *
+ *   VERSION alone is not enough either. The field is optional, and a note
+ *   written on release day without one still has to replace that day's entry.
+ *
+ * A date can cover two releases (0.2.0 and 0.2.1 are both 2026-07-17, from
+ * before the current one-release-per-Vancouver-date cadence) and a note on such
+ * a day replaces both, which is what "Kevin wrote that day's entry" means.
+ *
+ * THE COST, SAID OUT LOUD: a note that names a version takes that version's
+ * slot, so the release notes for it are not published. That is the contract
+ * working, not a bug, but it does mean a note carrying the wrong version number
+ * hides a release. Deleting the `version:` line from the front matter publishes
+ * both; there is nothing to turn off and no flag to remember. */
+const authoredDates = new Set(notes.map((n) => n.date));
+const authoredVersions = new Set(notes.map((n) => n.version).filter(Boolean));
+
+/* bugFixes is not capped at the source the way keyChanges is (0.6.0 carries
+ * ten), and ten fix lines under four highlights is the drift back into a full
+ * list that this view cannot survive. So it is capped HERE, and the remainder
+ * is said out loud rather than silently dropped: same no-silent-caps law as the
+ * "+N more that day, not shown" line in the full feed. The order is the order
+ * the release author wrote them in, which is an authored ordering and not a
+ * machine ranking; the page never claims the shown four are the important four,
+ * only that there are more and where they are. */
+const BUG_FIXES_SHOWN = 4;
+/* A ceiling on the whole view, for the same reason the full feed has one. It is
+ * above the full view's reach on purpose (that view holds 30 days; this holds
+ * roughly two months of releases at the current cadence), because a summary
+ * that remembers less than the raw log is the wrong way round. */
+const CONCISE_RELEASES_CAP = 24;
+
+const releaseEntries = releases
+  .filter((r) => !authoredDates.has(r.date) && !authoredVersions.has(r.version))
+  .map((r) => ({
+    kind: 'release',
+    date: r.date,
+    version: r.version,
+    anchor: `release-${slug(r.version)}`,
+    title: cleanDoc(r.headline),
+    keyChanges: r.keyChanges.map(cleanDoc),
+    bugFixes: r.bugFixes.map(cleanDoc),
+  }));
+
+const authoredEntries = notes.map((n) => ({
+  kind: 'authored',
+  date: n.date,
+  version: n.version,
+  anchor: `note-${n.date}`,
+  title: n.title,
+  intro: n.intro,
+  buckets: n.buckets,
+}));
+
+/* Newest first, and version breaks a date tie so the two 2026-07-17 releases
+ * do not render in whatever order the sort happened to leave them. */
+const conciseEntries = [...authoredEntries, ...releaseEntries]
+  .sort((a, b) => b.date.localeCompare(a.date) || String(b.version).localeCompare(String(a.version)));
+const conciseShown = conciseEntries.slice(0, CONCISE_RELEASES_CAP);
+const conciseDropped = conciseEntries.length - conciseShown.length;
+
+/* LOUD ON EMPTY. This is the failure this whole lane exists to end: a generator
+ * that runs clean, exits zero, and publishes a concise view with nothing in it.
+ * readPatchReleases already refuses a zero-release parse, so reaching here empty
+ * would mean the merge above dropped everything. */
+if (conciseShown.length === 0) {
+  throw new Error('The concise dev log has no entries to publish. Every release was filtered out and no authored note survived, which would ship a blank default view. Fix the merge in bin/generate.mjs rather than publishing an empty page.');
 }
 
 const buildStamp = new Date().toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
@@ -1234,29 +1352,69 @@ ${AUTH_SCRIPT()}
 
 // ============================================================== LOG.HTML
 // The real dev log: sidebar, search, filters, and the two-view toggle.
-//   CONCISE (default) = notes/*.md, Kevin's own words. The product.
+//   CONCISE (default) = one entry per release, from the game's own release
+//                        notes, with an authored notes/<date>.md replacing the
+//                        generated entry for any day Kevin wrote one. The
+//                        product.
 //   FULL              = the generated feed from git log. Labelled honestly as
 //                        the raw engineering log, so it reads as a door left
 //                        open rather than as noise.
-const noteCard = (n) => {
-  const id = `note-${esc(n.date)}`;
-  const introHtml = n.intro.map(renderBlock).join('');
-  const bucketsHtml = n.buckets.map((b) => `
-    <div class="bucket">
-      <h4 style="color:var(${BUCKET_INK[b.name] || '--cream'})">${esc(b.name)}</h4>
-      ${b.blocks.map(renderBlock).join('')}
-    </div>`).join('');
-  return `
-  <article class="notecard" id="${id}">
-    <div class="notecard-head">
-      <span class="notecard-date">${esc(n.date)}</span>
-      ${n.version ? `<span class="notecard-version">v${esc(n.version)}</span>` : ''}
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">${esc(n.title)}</h3>
-    ${introHtml}
-    <div class="buckets">${bucketsHtml}</div>
-  </article>`;
+
+/* HOW A READER TELLS THEM APART: a source chip, alongside the date and version
+ * chips that were already there. It says where the words came from, in the same
+ * register as the build stamp and the "read out of the game at build time"
+ * provenance line the wiki carries on every page.
+ *
+ * BOTH kinds are labelled, not just the generated one. If only generated
+ * entries carried a mark, the mark would be doing two jobs at once, naming a
+ * source and flagging an exception, and the second job is the one that reads as
+ * an apology. Two neutral labels are symmetric, so neither is the deviation.
+ * This is also why there is no "unreviewed" badge: with no review path it would
+ * be permanent, and a permanent apology on every entry is worse than no entry. */
+const SOURCE_LABEL = {
+  authored: 'written for the log',
+  release: 'from the release notes',
 };
+
+const bucketBlock = (name, html) => `
+    <div class="bucket">
+      <h4 style="color:var(${BUCKET_INK[name] || '--cream'})">${esc(name)}</h4>
+      ${html}
+    </div>`;
+
+const list = (items) => `<ul>${items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>`;
+
+/* The generated body is quotation, not composition. Every string below arrives
+ * from PATCH_RELEASES already written by a human for players; this function
+ * escapes it, groups it, and stops. The only sentence it can emit that a person
+ * did not write is the truncation line, which is about the page rather than
+ * about the game. */
+const releaseBody = (e) => {
+  const shown = e.bugFixes.slice(0, BUG_FIXES_SHOWN);
+  const hidden = e.bugFixes.length - shown.length;
+  const more = hidden > 0
+    ? `<p class="bucket-more">${hidden} more fix${hidden === 1 ? '' : 'es'} shipped in this release. The full log has all of them.</p>`
+    : '';
+  return `<div class="buckets">
+    ${bucketBlock('Highlights', list(e.keyChanges))}
+    ${shown.length ? bucketBlock('Fixed', `${list(shown)}${more}`) : ''}
+  </div>`;
+};
+
+const authoredBody = (e) => `
+    ${e.intro.map(renderBlock).join('')}
+    <div class="buckets">${e.buckets.map((b) => bucketBlock(b.name, b.blocks.map(renderBlock).join(''))).join('')}</div>`;
+
+const entryCard = (e) => `
+  <article class="notecard" id="${esc(e.anchor)}">
+    <div class="notecard-head">
+      <span class="notecard-date">${esc(e.date)}</span>
+      ${e.version ? `<span class="notecard-version">v${esc(e.version)}</span>` : ''}
+      <span class="notecard-source">${esc(SOURCE_LABEL[e.kind])}</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">${esc(e.title)}</h3>
+    ${e.kind === 'authored' ? authoredBody(e) : releaseBody(e)}
+  </article>`;
 
 const dayBlock = (date, changes) => {
   const shown = changes.slice(0, PER_DAY_CAP);
@@ -1363,6 +1521,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
 .notecard-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
 .notecard-date{color:var(--dim);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
 .notecard-version{color:var(--dim);font-size:.78rem;font-family:var(--mono)}
+/* Provenance, not a badge. Same weight and colour as the date beside it, so it
+   reads as the third fact in a row of facts rather than as a verdict on the
+   entry it sits above. It never gets a border, a background or an accent ink. */
+.notecard-source{color:var(--dim);font-size:.78rem;letter-spacing:.04em}
+.bucket-more{margin-top:8px;color:var(--dim);font-size:.82rem}
 .notecard p{margin:10px 0}
 .notecard ul{margin:8px 0;padding-left:20px}
 .notecard li{margin:6px 0}
@@ -1482,8 +1645,10 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
   <section id="shipped">
     <div class="rule"></div>
     <h2 class="chroma">Shipped</h2>
-    <p class="lede">Two ways to read it. Concise is Kevin's own notes, written for players. Full is the raw
-      engineering log, generated straight from git, unedited, so a curious player can see everything.</p>
+    <p class="lede">Two ways to read it. Concise is one entry per release, in the words the release
+      notes were written in for players, with Kevin's own note in its place on any day he wrote one.
+      Full is the raw engineering log, generated straight from git, unedited, so a curious player can
+      see everything.</p>
 
     <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
          lands ON the Concise / Full choice rather than above it. -->
@@ -1493,7 +1658,8 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
     </div>
 
     <div class="viewpane" id="view-concise">
-      ${notes.length ? notes.map(noteCard).join('') : '<p class="lede">No notes yet. Check back after the next build.</p>'}
+      ${conciseShown.map(entryCard).join('')}
+      ${conciseDropped > 0 ? `<p class="lede">${conciseDropped} earlier release${conciseDropped === 1 ? '' : 's'} not shown here.</p>` : ''}
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1649,13 +1815,26 @@ ${SEARCH_SCRIPT(`
  * alongside it because the pages' own reveal logic still keys off the id. */
 const logHref = (anchor) => `log.html#${anchor}`;
 const searchIndex = [];
-for (const n of notes) {
-  const anchor = `note-${n.date}`;
-  searchIndex.push({ type: 'note', title: n.title, text: n.intro.join(' ').replace(/[*|]/g, ''), anchor, href: logHref(anchor) });
-  for (const b of n.buckets) {
-    for (const block of b.blocks) {
-      searchIndex.push({ type: b.name.toLowerCase(), title: n.title, text: block.replace(/[*|]/g, '').slice(0, 200), anchor, href: logHref(anchor) });
+/* Indexed from conciseShown, not from `notes`, so search covers exactly what
+ * the page renders. A release that is past CONCISE_RELEASES_CAP is not on the
+ * page, so a hit on it would scroll to nothing. */
+for (const e of conciseShown) {
+  const anchor = e.anchor;
+  if (e.kind === 'authored') {
+    searchIndex.push({ type: 'note', title: e.title, text: e.intro.join(' ').replace(/[*|]/g, ''), anchor, href: logHref(anchor) });
+    for (const b of e.buckets) {
+      for (const block of b.blocks) {
+        searchIndex.push({ type: b.name.toLowerCase(), title: e.title, text: block.replace(/[*|]/g, '').slice(0, 200), anchor, href: logHref(anchor) });
+      }
     }
+    continue;
+  }
+  searchIndex.push({ type: 'release', title: e.title, text: `v${e.version} ${e.date}`, anchor, href: logHref(anchor) });
+  for (const c of e.keyChanges) {
+    searchIndex.push({ type: 'highlights', title: e.title, text: c.slice(0, 200), anchor, href: logHref(anchor) });
+  }
+  for (const f of e.bugFixes.slice(0, BUG_FIXES_SHOWN)) {
+    searchIndex.push({ type: 'fixed', title: e.title, text: f.slice(0, 200), anchor, href: logHref(anchor) });
   }
 }
 for (const c of renderedChanges) {
@@ -1709,6 +1888,17 @@ for (const p of emittedDocuments) {
   }
   emittedAnchors.set(p.file, uniqueIds);
 }
+/* THE CONCISE VIEW ACTUALLY REACHED THE PAGE. Stated directly rather than left
+ * to the href sweep below, which only proves it as a side effect of every
+ * concise entry also emitting a search row. This surface's whole failure mode is
+ * a run that exits zero having rendered nothing into the view a visitor sees
+ * first, and the check for that should not be a coincidence of another check. */
+const conciseAnchors = emittedAnchors.get('log.html');
+const missingEntries = conciseShown.filter((e) => !conciseAnchors.has(e.anchor));
+if (missingEntries.length) {
+  throw new Error(`log.html is missing ${missingEntries.length} concise entr${missingEntries.length === 1 ? 'y' : 'ies'} that were derived for it: ${missingEntries.map((e) => `${e.kind} ${e.version || e.date}`).join(', ')}. The generator ran clean and published a view with holes in it, which is the failure this check exists to refuse.`);
+}
+
 const brokenLinks = duplicateAnchors.map((anchor) => `duplicate id ${anchor}`);
 const checkHref = (href, where, currentFile = '') => {
   if (/^(?:https?:|mailto:|data:)/.test(href)) return;
@@ -1858,7 +2048,11 @@ if (retiredVisualFiles.length) {
 }
 console.log(`  game@${headSha}  live=${live ? live.sha : 'unreachable'}`);
 console.log(`  ${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days since ${windowStart}, across ${allDays.length} active days (${filtered} noise commits filtered)`);
-console.log(`  ${arcs.length} arcs, ${backlogTeasers.length} backlog teasers, ${openBugs.length} open bugs, ${notes.length} authored notes`);
+console.log(`  ${arcs.length} arcs, ${backlogTeasers.length} backlog teasers, ${openBugs.length} open bugs`);
+/* The concise view's counts are printed separately and in full because this is
+ * the surface that used to fail silently. "8 releases read, 1 authored note,
+ * 8 entries published" is a sentence an operator can check against the page. */
+console.log(`  concise log: ${releases.length} releases read (at most ${KEY_CHANGE_CAP} highlights each), ${notes.length} authored note${notes.length === 1 ? '' : 's'}, ${releaseEntries.length} generated, ${conciseShown.length} entries published${conciseDropped > 0 ? `, ${conciseDropped} older not shown` : ''}`);
 console.log(`  wiki: ${wiki.rosters.length} rosters, ${wiki.rosters.map((r) => `${r.title} ${r.entries.length}`).join(', ')}`);
 console.log(`  site: ${[...emittedAnchors.values()].reduce((n, s) => n + s.size, 0)} anchors, all internal links resolve`);
 if (wiki.gaps.length) {
