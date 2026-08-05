@@ -14,11 +14,44 @@ The public WHOMP page: a short pitch (`index.html`), the real development log
 
 ## Two views inside the log
 
-- **Concise** (default) is Kevin's own notes, one file per update in `notes/`.
-  A machine cannot pick highlights, so this view is only ever what a human
-  decided was worth saying.
+- **Concise** (default) is one entry per release version, generated from the
+  game repo's `src/data/patchNotes.ts`. A machine still cannot pick highlights,
+  so it does not try to: every word in a generated entry was written by a person
+  for players when the release was cut, and already ships in the title screen's
+  WHAT'S NEW panel. An authored `notes/<date>.md` replaces the generated entry
+  for that day, completely.
 - **Full** is the generated feed straight from `git log`, labelled honestly as
   the raw engineering log. Nothing is cleaned up for the reader.
+
+### The concise view has no approval step, on purpose
+
+Director change 2026-08-05: *"i would like a system where i do not have to
+approve the drafts. if we can get the voice right and convey the release info
+that is the goal. i do not want too many additional systems to maintain
+manually and the value is not there for this yet."* So there is no queue, no
+review UI, no draft state and no "unreviewed" badge (with no review path a
+badge would be permanent and would read as an apology on every entry).
+
+What makes an unreviewed publish safe is that **the generator never writes a
+sentence about the game**. `bin/patch-notes.mjs` parses, validates and refuses;
+`bin/generate.mjs` escapes, groups and frames. Every claim a visitor reads was
+authored in the game repo. A generator that cannot compose a sentence about the
+game cannot compose a wrong one.
+
+The noise guard that `notes/*.md` used to provide did not vanish, it moved
+upstream and is now enforced on both sides:
+
+- `keyChanges` is capped at four per release by the game's own
+  `tests/patchNotes.test.ts`, **and independently by `KEY_CHANGE_CAP` in
+  `bin/patch-notes.mjs`**, which fails the site build rather than growing a
+  fifth highlight if the game repo ever raises its cap.
+- `bugFixes` is not capped at the source, so the site shows the first four and
+  says how many more shipped. Never a silent truncation.
+- `fullChanges` (the exhaustive shipped ledger, seventeen entries on 0.6.1) is
+  read for shape validation and then deliberately dropped. Rendering it would
+  rebuild the full log with fewer words and kill the view.
+- A parse that yields zero releases is an **error**, not an empty list. A
+  concise view that renders nothing reads to a visitor as "nothing shipped".
 
 The log also carries a **known bugs** summary (aggregate only: fixed/open
 totals, a breakdown by player-facing area, a severity shape, all counts
@@ -79,9 +112,11 @@ site change can never delay, break, or invalidate a game deploy.
   proof of live under the deploy-verification law
 - the arcs, parsed from `docs/CAMPAIGN.md`, which is the file that actually drives
   the work, so there is no second roadmap to drift
+- the concise log's release entries, parsed from `src/data/patchNotes.ts`, whose
+  headline and highlights are hand-written for players at release time
 
-It only ever **reads** the game repo. Kevin writes short human notes on top; the
-machine is not trusted to say why something mattered.
+It only ever **reads** the game repo. The machine is still not trusted to say why
+something mattered; it is trusted to carry across what a human already said.
 
 ```bash
 node bin/generate.mjs --repo ../whomp                # writes every page + search-index.json
