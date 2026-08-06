@@ -1,20 +1,25 @@
 # whomp-site
 
 The public WHOMP page: a short pitch (`index.html`), the real development log
-(`log.html`), and the wiki (`wiki*.html`).
+(`log.html`), how the thing gets made (`built-in-the-open.html`), and the wiki
+(`wiki*.html`).
 
-## Three surfaces
+## Four surfaces
 
 - **`index.html`** is the short public landing page. Four sections, and every
   fact on all four is derived: a hero with one play button per release track, a
   section that says what a run actually is, the newest release lines, and what is
   being built next. It is deliberately small. It does not grow into the log.
-- **`log.html`** is the real dev log: sidebar, search, filters, and a toggle
-  between two views of what shipped.
+- **`log.html`** is the real dev log. It opens with the day by day story, then
+  the two views of what shipped, then known bugs and what is in flight.
+- **`built-in-the-open.html`** is the pitch: how WHOMP gets made, said to
+  somebody who does not work here. It is the only page whose copy is written
+  rather than derived, and every claim on it is pinned to a rule in the game
+  repo. See "The pitch, and why it cannot quietly become false" below.
 - **`wiki.html`** plus one page per roster is the wiki. Every value on it is
   generated from the game's own registries. See "The wiki" below.
 
-All three carry Open Graph and Twitter card tags, so a link to any of them
+All four carry Open Graph and Twitter card tags, so a link to any of them
 unfurls as something rather than as a bare URL. The card image is the canonical
 `public/icons/icon-512.png`, copied byte-for-byte from the game at build time
 exactly as `whomp-icon.svg` is, and the card type is `summary` to match it. A
@@ -61,6 +66,115 @@ pending" dot whenever they differed. They differ by design, so it was on
 permanently, at the top of the page, and a permanent warning is wallpaper. Each
 track now states the version it is serving and the build that came from. The dot
 means measured or not measured, which is the only binary state that exists here.
+
+## The day by day story
+
+`log.html` opens with one card per calendar day over the same seven-day window
+the full feed covers, newest first, **including the days nothing shipped on**.
+
+The two views underneath it are both lists, and neither could answer "what
+happened yesterday", because neither has a day in it that nothing landed on. A
+stranger who followed somebody else's link is not looking for a changelog.
+
+`bin/devlog.mjs` composes it, and it inherits the law `bin/patch-notes.mjs` is
+built on, unchanged:
+
+> This file never writes a sentence about the game.
+
+What it composes are sentences about the **shape** of a day, from counts it
+read: `132 changes landed: 88 new, 41 fixed, 3 performance.` Those are facts
+about the log, not claims about the game. Anything that is a claim about the
+game arrives already written by a person, and is quoted: the release headline
+out of the game's own patch notes, or a line out of the game repo's nightly
+file. A generator that cannot compose a sentence about the game cannot compose
+a wrong one.
+
+**The quiet days are the honest part.** A feed built only from days that had
+commits reads as though every day had commits, which is the same class of
+untruth as a trailing window that reads like a lifetime total.
+
+**An entry dated a day is not a release cut that day.** A hand-written note
+carries the date it was *written*, and `notes/2026-07-30.md` declares `0.5.0`,
+which shipped on the 25th. So the sentence that counts releases counts only
+entries whose version the game's own patch notes date to that exact day. Every
+entry keeps its link regardless: a link is about where to read more.
+
+### `docs/train/nightly.md`, when it exists
+
+The game repo's overnight train has no nightly file yet. The reader is written
+for that: a missing file yields nothing, and the site does not change on the
+night one appears.
+
+The contract is the shape `docs/train/autoland-*.md` already writes in, so a
+nightly file is a rename away rather than a new discipline:
+
+```markdown
+## 2026-08-06 04:45 autoland
+- The snow worlds got their own enemies.
+```
+
+A level-two heading carrying an ISO date, anything else on that line ignored,
+lines underneath it. Several headings may carry the same date; a night that ran
+twice is still one night.
+
+**A line is published only if a stranger could read it.** Every nightly line
+written so far names branches, files, commits and machinery, because it was
+written for the person running the train, and publishing it verbatim is the
+same mistake the known-bugs section already refused: raw internal text on a
+public URL, shipped because it happened to be nearby. A line is refused for
+quoting code, naming a branch, a file or a commit, naming the machinery
+(`docs/VOICE.md` rule 12), breaking house law on dashes and exclamations, or
+not finishing its sentence. Refusals are `SITE NOTE`, never `SITE WARNING`:
+that prose belongs to the game repo and this one does not rewrite it.
+
+`lane`, `gate`, `track`, `build`, `release`, `preview` and `stable` are
+deliberately **not** refused. They are the words `built-in-the-open.html`
+exists to teach, the site already prints them in public copy, and refusing them
+would refuse the only nightly lines worth publishing.
+
+## The pitch, and why it cannot quietly become false
+
+`built-in-the-open.html` explains the gated train itself: lanes, gates, guards,
+the two tracks, and what a lane that stops is worth. It is the reason to follow
+the project rather than a record of it, which is why it is a page with its own
+card and not a section of the log.
+
+Every other page here derives its copy, and that is why none of them can rot.
+This one cannot work that way: "work goes out in lanes" is a process, and no
+amount of parsing turns a process into a sentence a stranger would read.
+
+**So the sentences are written and the right to print them is derived.** Each
+claim in `PITCH_PINS` (`bin/pitch.mjs`) names the file in the game repo that
+makes it true and the patterns that must still be found there:
+
+| The page says | Because the game repo still says |
+|---|---|
+| A lane writes down which files it may touch first | `docs/CLOUD_LANE_RULES.md`, the claims rule |
+| Two lanes are never handed the same file | `AGENTS.md`, one writer per path |
+| A run of tests that reported nothing is a failed run | `docs/CLOUD_LANE_RULES.md`, zero tests is a FAILURE |
+| A new check must be made to fail on purpose | `docs/CLOUD_LANE_RULES.md`, the negative-test rule |
+| Accounts, saves and the deploy get an outside reader | `AGENTS.md`, independent reviewer |
+| A lane that disproves its own job has finished | `docs/CLOUD_LANE_RULES.md`, the correct negative |
+| Green builds go to Preview, Stable is promoted | `AGENTS.md`, the publication contract |
+| Nothing ships without a person naming that build | `AGENTS.md`, publication approval |
+
+A rule that moves stops matching, the claim is **dropped from the page**, and
+the run raises a `SITE WARNING`. That is the opposite severity from a stale arc,
+and deliberately: an arc's prose belongs to the game repo, a pitch sentence is
+this repo's prose about the game repo's rules, so the one-line fix is here.
+
+The patterns are matched with **whitespace collapsed**, which is load-bearing
+rather than tidy. Both source docs wrap prose at about eighty-eight characters,
+so two of the fourteen quotations straddle a line break in the file. A per-line
+matcher finds twelve and calls the other two missing, which is the identical
+defect that ended two campaign arcs on a comma.
+
+The one number on the page counts **lanes**, not commits: commits are already
+counted twice elsewhere here and a third count of the same thing proves nothing
+new. One retired claims file is exactly one merged lane, because the game repo's
+own `docs/claims/README.md` makes retiring part of the merge and makes a reused
+slug non-overwriting. It states a count and a date and no relative anchor, since
+"N days ago" is computed at build time and wrong from the second generation on.
 
 ## Two views inside the log
 
@@ -195,10 +309,37 @@ bin/regenerate-and-verify.sh              # against ../whomp
 bin/regenerate-and-verify.sh --offline    # no network, tracks report unverified
 ```
 
-It regenerates every surface, reads what the generator said about itself, then
-runs the whole suite including `tests/generatedSite.test.mjs`, which reads the
-files just written and checks them the way a reader would. It never pushes;
-publication stays `bin/deploy-site.sh`, with its own branch guard.
+Four steps, stopping at the first failure. It says how old the committed pages
+were before this run touched them, regenerates every surface, reads what the
+generator said about itself, then runs the whole suite including
+`tests/generatedSite.test.mjs`, which reads the files just written and checks
+them the way a reader would. It never pushes; publication stays
+`bin/deploy-site.sh`, with its own branch guard.
+
+**Step 1 cannot fail, and is not decoration.** The dev log now prints one card
+per calendar day under the words "the last 7 days", and the only thing that
+makes that sentence false is nobody running this. So the run reports how far
+behind the committed story had drifted before it fixed it, which is the
+measurement of whether the daily hook below is really wired. Step 4 is what
+refuses a published window that no longer reaches today, and by then this run
+has already repaired it.
+
+### What the drift tests refuse
+
+Every one of these was fired on purpose before it was believed, which is the
+game repo's own rule for a new guard and the reason it is worth writing down:
+
+- a card, a story day or a pitch paragraph that ends mid-sentence
+- a schedule on the landing page that has already happened
+- a story with a hole in its run of days, or two days out of order
+- a story whose newest day is old enough that its own window has gone by
+- a day whose tally chips disagree with the sentence beside them
+- a story that shows a different number of days than its lede claims
+- a pitch that lost its pinned claims, its scale, or grew a relative anchor
+- a page that names a file, a branch or the machinery to a reader
+- an em dash anywhere a visitor can read, an exclamation on either page whose
+  copy is written here
+- a missing social card, a mark drawn twice, a nav link to nothing
 
 ### Two severities, and the split is the point
 
@@ -208,8 +349,11 @@ publication stays `bin/deploy-site.sh`, with its own branch guard.
 | `SITE NOTE` | true, worth saying, owned upstream | passes |
 
 An arc dropped because its sentence trails off is a warning. A teaser for a want
-that has left the wishlist is a warning. An arc whose own description contains
-last Thursday is a **note**: it is real rot, and the fix belongs in the game
+that has left the wishlist is a warning. A claim on the pitch page whose rule has
+moved in the game repo is a warning, because that sentence is this repo's prose
+and so is the one-line fix. An arc whose own description contains
+last Thursday is a **note**, and so is a nightly line held back for naming a
+branch: it is real rot, and the fix belongs in the game
 repo, because this repo refuses to rewrite the game's roadmap prose. A gate that
 is red on its first day for something the lane cannot fix teaches everyone to
 ignore it, which is the same defect as the permanent stale dot, arriving from the
@@ -438,6 +582,19 @@ pink or the cyan, and do not replace the pink; it is load-bearing in the blend.
   there by design, so a site hiccup can never read as a failed game deploy. The
   command the cron should run now exists and is verified (`Keeping the site true`
   above); what is missing is the scheduler entry, which lives in the game repo.
+  **This is now the most load-bearing gap in the repo.** The day by day story
+  publishes a window anchored to the day it was generated, so a week without a
+  run puts a page in front of readers whose central sentence has entirely gone
+  by. `bin/regenerate-and-verify.sh` reports the drift on every run and the
+  drift suite refuses a window that no longer reaches today, which makes the gap
+  loud. Neither makes it close.
+- `docs/train/nightly.md` does not exist in the game repo. The story reads it
+  when it appears and needs no site change on the night it does. Until then the
+  narrative is the derived shape of each day plus the release headlines, which
+  is the whole story on days a release was cut and the bare shape on days one
+  was not. The reader, the reader-safety filter and its eight refusals are
+  tested against fixtures rather than against a file, which is the point of
+  writing them before the file exists.
 - A game-repo edit this site cannot make: `docs/CAMPAIGN.md` describes arc A5 as
   "S1 Thu, S2 Fri/weekend, Deck later", which is a schedule with no anchor. The
   generator reports it as a `SITE NOTE` on every run and renders it unchanged,

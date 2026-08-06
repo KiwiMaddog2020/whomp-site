@@ -7,8 +7,9 @@
  *  quietly becoming untrue while every function keeps returning what it always
  *  did. A date passes. A brief ships. Nothing throws.
  *
- *  So these read index.html, log.html and wiki.html off disk, in the committed
- *  state a visitor would be served, and ask a reader's questions of them. They
+ *  So these read index.html, log.html, wiki.html and built-in-the-open.html off
+ *  disk, in the committed state a visitor would be served, and ask a reader's
+ *  questions of them. They
  *  need no game checkout. bin/regenerate-and-verify.sh runs them immediately
  *  after regenerating, which is what turns "the build passed" into "the page is
  *  still true".
@@ -23,6 +24,8 @@ import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
+import { windowDates } from '../bin/devlog.mjs';
+import { PITCH_PINS } from '../bin/pitch.mjs';
 import { isExpiredSchedule, localDay, trailsOff } from '../bin/landing.mjs';
 
 const SITE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,8 +34,15 @@ const read = (file) => (existsSync(join(SITE_ROOT, file)) ? readFileSync(join(SI
 const index = read('index.html');
 const log = read('log.html');
 const wiki = read('wiki.html');
-const generated = index && log && wiki;
+const pitch = read('built-in-the-open.html');
+const generated = index && log && wiki && pitch;
 const options = generated ? {} : { skip: 'the site has not been generated in this checkout' };
+
+/** The four pages a stranger can land on directly from somebody else's link,
+ *  which is exactly what makes them the four that have to carry a social card,
+ *  the mark, and copy that holds house law. The wiki rosters are a fifth shape
+ *  and bin/wiki-check.mjs owns them. */
+const publicPages = () => [['index.html', index], ['log.html', log], ['wiki.html', wiki], ['built-in-the-open.html', pitch]];
 
 /** Visible copy only: no CSS, no inline script, no markup, no comments. The
  *  house laws below are about what a reader sees, and `!important` is not a
@@ -76,11 +86,17 @@ test('the landing page never prints the name of a file in the repo', options, ()
 });
 
 test('house law holds in the visible copy: no dashes, no exclamations', options, () => {
-  for (const [file, html] of [['index.html', index], ['log.html', log], ['wiki.html', wiki]]) {
+  for (const [file, html] of publicPages()) {
     const text = visibleText(html);
     assert.equal(/[—–]/.test(text), false, `${file} carries an em or en dash`);
   }
-  assert.equal(/!/.test(visibleText(index)), false, 'index.html carries an exclamation mark');
+  // The exclamation check is scoped to the two surfaces whose copy is written
+  // in THIS repo. log.html and the wiki republish the game's own strings, and a
+  // gate that goes red for a sentence this repo may not edit is the permanent
+  // warning that teaches everyone to ignore the gate.
+  for (const [file, html] of [['index.html', index], ['built-in-the-open.html', pitch]]) {
+    assert.equal(/!/.test(visibleText(html)), false, `${file} carries an exclamation mark`);
+  }
 });
 
 /* --------------------------------------------------------------- the two tracks */
@@ -103,7 +119,7 @@ test('one line explains what the two tracks are', options, () => {
 });
 
 test('each track states in words what it is serving, on every surface', options, () => {
-  for (const [file, html] of [['index.html', index], ['log.html', log], ['wiki.html', wiki]]) {
+  for (const [file, html] of publicPages()) {
     for (const label of ['Preview', 'Stable']) {
       assert.match(html, new RegExp(`${label} <b>(?:unverified|\\d+\\.\\d+\\.\\d+)</b>`),
         `${file} does not say what ${label} is serving`);
@@ -112,7 +128,7 @@ test('each track states in words what it is serving, on every surface', options,
 });
 
 test('the permanent "a deploy is pending" dot is gone from every surface', options, () => {
-  for (const [file, html] of [['index.html', index], ['log.html', log], ['wiki.html', wiki]]) {
+  for (const [file, html] of publicPages()) {
     assert.equal(/a deploy is pending/.test(html), false, `${file} still claims a deploy is pending`);
     assert.equal(/class="dot stale"/.test(html), false, `${file} still lights the stale dot`);
   }
@@ -120,30 +136,50 @@ test('the permanent "a deploy is pending" dot is gone from every surface', optio
 
 /* ------------------------------------------------------------------ the chrome */
 
-test('the mark sits at the left end of the nav bar, and only once', options, () => {
-  const bar = /<div class="topbar">([\s\S]*?)<\/div>\s*<\/div>/.exec(index);
-  assert.ok(bar, 'index.html has no top bar');
-  const markAt = bar[1].indexOf('class="brandmark"');
-  const navAt = bar[1].indexOf('class="navlinks"');
-  assert.ok(markAt >= 0, 'the nav bar carries no mark');
-  assert.ok(navAt > markAt, 'the mark is not to the left of the nav links');
+test('the mark sits at the left end of the nav bar, and only once, on every page that has one', options, () => {
+  // The bar is one shared template now (landingTopBar in bin/generate.mjs), so
+  // this holds on both pages that carry it or on neither.
+  for (const [file, html] of [['index.html', index], ['built-in-the-open.html', pitch]]) {
+    const bar = /<div class="topbar">([\s\S]*?)<\/div>\s*<\/div>/.exec(html);
+    assert.ok(bar, `${file} has no top bar`);
+    const markAt = bar[1].indexOf('class="brandmark"');
+    const navAt = bar[1].indexOf('class="navlinks"');
+    assert.ok(markAt >= 0, `${file} nav bar carries no mark`);
+    assert.ok(navAt > markAt, `${file} draws the mark to the right of the nav links`);
+    assert.equal((html.match(/class="brandmark"/g) || []).length, 1, `${file} draws the mark more than once`);
+    // THE WORDMARK LAW, both halves. The bar's mark is the canonical icon file
+    // read out of the game at build time, never a second inline drawing of the
+    // W; bin/wiki-check.mjs pins the same rule on the wiki side.
+    assert.match(bar[1], /<img src="whomp-icon\.svg" alt="" width="34" height="34">/, `${file} bar does not use the canonical icon`);
+    assert.equal(/<svg class="wm"/.test(bar[1]), false, `${file} redraws the mark inside the bar`);
+  }
   // It moved OUT of the header. A second drawing of the same W two sizes apart
   // is what the director asked to be rid of.
   const header = /<header>([\s\S]*?)<\/header>/.exec(index);
   assert.equal(/<svg class="wm"/.test(header[1]), false, 'the header still draws the mark above the wordmark');
-  assert.equal((index.match(/class="brandmark"/g) || []).length, 1, 'the mark is drawn more than once');
 });
 
-test('every nav destination exists', options, () => {
-  const bar = /<nav class="navlinks"[\s\S]*?<\/nav>/.exec(index)[0];
-  const hrefs = [...bar.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
-  assert.ok(hrefs.length >= 4, 'the nav is nearly empty');
-  for (const href of hrefs) {
-    const [file, anchor] = href.split('#');
-    if (file) assert.ok(existsSync(join(SITE_ROOT, file)), `the nav points at missing ${file}`);
-    if (anchor) {
-      const target = file ? read(file) : index;
-      assert.ok(new RegExp(`\\sid="${anchor}"`).test(target), `the nav points at missing #${anchor}`);
+test('every nav destination exists, from every page that carries the nav', options, () => {
+  for (const [from, html] of [['index.html', index], ['built-in-the-open.html', pitch], ['log.html', log]]) {
+    const strip = /<nav class="(?:navlinks|side)"[\s\S]*?<\/nav>/.exec(html);
+    assert.ok(strip, `${from} has no navigation`);
+    const hrefs = [...strip[0].matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+    assert.ok(hrefs.length >= 4, `${from} nav is nearly empty`);
+    for (const href of hrefs) {
+      const [file, anchor] = href.split('#');
+      if (file) assert.ok(existsSync(join(SITE_ROOT, file)), `${from} nav points at missing ${file}`);
+      if (anchor) {
+        const target = file ? read(file) : html;
+        assert.ok(new RegExp(`\\sid="${anchor}"`).test(target), `${from} nav points at missing #${anchor}`);
+      }
+    }
+  }
+  // Every page that carries the bar links to every other one, so a reader who
+  // landed on the pitch from somebody else's link can reach the game and the log.
+  for (const [file, html] of [['index.html', index], ['built-in-the-open.html', pitch]]) {
+    for (const destination of ['log.html', 'wiki.html', 'built-in-the-open.html', 'index.html']) {
+      assert.ok(html.includes(`href="${destination}`) || file === destination,
+        `${file} does not link to ${destination}`);
     }
   }
 });
@@ -170,8 +206,8 @@ test('the landing page carries the newest log entries and every one of them land
 
 /* ---------------------------------------------------------------- the card tags */
 
-test('all three surfaces unfurl as something, not as a bare URL', options, () => {
-  for (const [file, html] of [['index.html', index], ['log.html', log], ['wiki.html', wiki]]) {
+test('every page a stranger can land on unfurls as something, not as a bare URL', options, () => {
+  for (const [file, html] of publicPages()) {
     for (const tag of [
       /<meta property="og:type" content="website">/,
       /<meta property="og:title" content="[^"]+">/,
@@ -224,4 +260,127 @@ test('what is coming is on the page, and it is honest about the size of the queu
   assert.ok(claim, 'the pipeline section does not say how big the queue is');
   assert.equal(Number(claim[2]), cards.length, 'the pipeline miscounts what it is showing');
   assert.ok(Number(claim[1]) >= cards.length, 'the pipeline shows more than it claims is queued');
+});
+
+/* ------------------------------------------------------------------- the story */
+
+/** Every day card the story rendered, in the order it rendered them. */
+const storyDays = (html) => [...html.matchAll(/<article class="storyday([^"]*)" id="day-(\d{4}-\d{2}-\d{2})">([\s\S]*?)<\/article>/g)]
+  .map((m) => ({ quiet: m[1].includes('is-quiet'), date: m[2], body: m[3] }));
+
+test('the story covers a run of calendar days, newest first, with no gaps', options, () => {
+  const days = storyDays(log);
+  assert.ok(days.length >= 2, 'the story rendered almost nothing');
+  const dates = days.map((d) => d.date);
+  assert.deepEqual(dates, windowDates(dates[0], dates.length),
+    'the story skipped a day, repeated one, or ran the wrong way round');
+});
+
+test('the story shows exactly the window its own lede claims', options, () => {
+  // The sentence and the markup are derived from one number in the generator.
+  // This is the check that they still agree, which is the only way a reader can
+  // trust either of them.
+  const claimed = /landed in the last (\d+) days/.exec(visibleText(log))
+    || /Nothing player-visible landed in the last (\d+) days/.exec(visibleText(log));
+  assert.ok(claimed, 'the story never says what window it covers');
+  assert.equal(storyDays(log).length, Number(claimed[1]),
+    'the story shows a different number of days than the number it claims');
+});
+
+test('the committed story still describes a window that includes today', options, () => {
+  // THE DAILY GATE. A story generated a week ago says "the last 7 days" over
+  // seven days that have all since passed, which is the same rot the landing
+  // page's expired schedules were. Inside the window, a stale checkout is
+  // merely behind; outside it, the page's central sentence is false.
+  const days = storyDays(log);
+  assert.ok(windowDates(days[0].date, days.length).includes(localDay()),
+    `the newest day in the story is ${days[0].date} and the window no longer reaches today. Run bin/regenerate-and-verify.sh.`);
+});
+
+test('every day in the story carries one finished sentence about its shape', options, () => {
+  for (const day of storyDays(log)) {
+    const shape = /<p class="storyday-shape">([\s\S]*?)<\/p>/.exec(day.body)?.[1].trim();
+    assert.ok(shape, `${day.date} has no sentence on it at all`);
+    assert.equal(trailsOff(shape), false, `${day.date} trails off: "${shape}"`);
+    assert.equal(/[—–!]/.test(shape), false, `${day.date} breaks house law: "${shape}"`);
+    assert.equal(/undefined|NaN/.test(shape), false, `${day.date} rendered a hole: "${shape}"`);
+  }
+});
+
+test('a day tallies the same number it says in words', options, () => {
+  for (const day of storyDays(log)) {
+    const shape = /<p class="storyday-shape">([\s\S]*?)<\/p>/.exec(day.body)[1];
+    const chips = [...day.body.matchAll(/<span class="storyday-kind"[^>]*>[^<]*?(\d+)<\/span>/g)]
+      .map((m) => Number(m[1]));
+    const tallied = chips.reduce((sum, n) => sum + n, 0);
+    if (day.quiet) {
+      assert.equal(tallied, 0, `${day.date} is marked quiet and carries ${tallied} changes`);
+      assert.match(shape, /Nothing player-visible landed\./);
+      continue;
+    }
+    const said = Number(/^(\d+) changes landed/.exec(shape.trim())?.[1] ?? (/^One change landed/.test(shape.trim()) ? 1 : NaN));
+    assert.equal(said, tallied, `${day.date} says ${said} and tallies ${tallied}`);
+  }
+});
+
+test('every release named on a day links to an entry that is really on the page', options, () => {
+  const links = [...log.matchAll(/<a class="storyday-release" href="#([^"]+)">([\s\S]*?)<\/a>/g)];
+  assert.ok(links.length >= 1, 'not one day in the window names what was cut on it');
+  for (const [, anchor, body] of links) {
+    assert.ok(new RegExp(`\\sid="${anchor}"`).test(log), `a day links #${anchor}, which is not on the page`);
+    const headline = /<span>([\s\S]*?)<\/span>/.exec(body)?.[1].trim();
+    assert.ok(headline && headline.length > 12, `the link to #${anchor} carries no headline`);
+    assert.equal(/(?:\.\.\.|…|,)$/.test(headline), false, `a headline was cut short: "${headline}"`);
+  }
+});
+
+test('the story is the first thing on the dev log, and the pitch is one click away', options, () => {
+  assert.ok(log.indexOf('id="story"') < log.indexOf('id="shipped"'),
+    'the two lists still come before the story a stranger arrived for');
+  assert.match(log, /<a href="built-in-the-open\.html">/);
+});
+
+/* ------------------------------------------------------------------- the pitch */
+
+test('the pitch prints the claims it is pinned to, and prints them whole', options, () => {
+  const text = visibleText(pitch);
+  const printed = PITCH_PINS.filter((pin) => text.includes(pin.claim));
+  assert.ok(printed.length >= 8,
+    `only ${printed.length} of ${PITCH_PINS.length} pinned claims reached the page; the rest lost their evidence`);
+});
+
+test('every paragraph on the pitch is a finished sentence in the house voice', options, () => {
+  const paragraphs = [...pitch.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)]
+    .map((m) => m[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  assert.ok(paragraphs.length >= 12, `the pitch rendered ${paragraphs.length} paragraphs`);
+  for (const paragraph of paragraphs) {
+    assert.equal(trailsOff(paragraph), false, `a paragraph trails off: "${paragraph}"`);
+  }
+});
+
+test('the pitch never names the machinery to the reader', options, () => {
+  // docs/VOICE.md rule 12, on the one page that is ABOUT the machinery. It may
+  // describe the work; it may not print a path, a branch, a sha or a word only
+  // somebody working here would know.
+  const text = visibleText(pitch);
+  for (const offender of [
+    /\b[A-Za-z0-9_.-]+\.(?:md|ts|mjs|tsx|sh|json)\b/,
+    /\b(?:claude|codex|origin)\/[A-Za-z0-9._-]+/,
+    /\b(?:worktree|typecheck|vitest|registry|artifact|semantics|schema)\b/i,
+  ]) {
+    assert.equal(offender.test(text), false, `the pitch prints ${offender.exec(text)?.[0]}`);
+  }
+});
+
+test('the pitch states the scale, and states it without a relative anchor', options, () => {
+  const text = visibleText(pitch);
+  assert.match(text, /\d+ of them have landed since the first commit, on \d{4}-\d{2}-\d{2}\./);
+  assert.equal(/\b(?:days ago|weeks ago|so far this week|last week|next week)\b/.test(text), false,
+    'the pitch carries a relative anchor, which is wrong the day after it is generated');
+});
+
+test('the pitch sends a reader to the log and to the game', options, () => {
+  assert.match(pitch, /href="log\.html#story"/);
+  assert.match(pitch, /href="index\.html"/);
 });

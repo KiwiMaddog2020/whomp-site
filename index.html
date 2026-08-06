@@ -157,6 +157,7 @@ footer code{color:var(--body)}
    sticky positioning works again. Verified on all three surfaces. */
 html,body{max-width:100%;overflow-x:clip}
 
+
 .wrap{max-width:940px;margin:0 auto;padding:0 24px 110px}
 
 /* ---------------------------------------------------------------- THE TOP BAR
@@ -184,6 +185,7 @@ html,body{max-width:100%;overflow-x:clip}
 .navlinks a{color:var(--dim);text-decoration:none;font-size:.78rem;font-weight:800;letter-spacing:.1em;
   text-transform:uppercase;padding:9px 11px;border-radius:8px;white-space:nowrap}
 .navlinks a:hover{color:var(--cream);background:rgba(255,243,207,.05)}
+.navlinks a[aria-current="page"]{color:var(--cream)}
 .navlinks a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .topbar .authbar{padding:0;flex:none}
 /* The strip scrolls, the bar does not, and sign-in stays reachable. Hiding the
@@ -305,6 +307,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 <div class="stars" aria-hidden="true"></div>
 <div class="stars2" aria-hidden="true"></div>
 
+
 <div class="topbar">
   <div class="topbar-inner">
     <a class="brandmark" href="index.html" aria-label="WHOMP home">
@@ -315,6 +318,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
       <a href="#run">The run</a>
       <a href="#shipped">What shipped</a>
       <a href="#next">What is next</a>
+      <a href="built-in-the-open.html">How it is made</a>
       <a href="wiki.html">Wiki</a>
       <a href="log.html">Dev log</a>
     </nav>
@@ -340,20 +344,20 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <p class="spec">A 3D horde-survivor where one weapon is yours to aim.</p>
   <div class="cta">
     <a class="play loud" href="https://whomp-preview.pages.dev/">
-      PLAY THE PREVIEW <em>v0.6.5</em>
+      PLAY THE PREVIEW
     </a>
     <a class="play quiet" href="https://kiwimaddog2020.github.io/whomp-play/">
-      PLAY STABLE <em>v0.6.1</em>
+      PLAY STABLE
     </a>
   </div>
   <p class="tracks"><b>Preview</b> is the newest build that went green, and it moves most days.
     <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself.</p>
   <div class="chips"><span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Preview <b>0.6.5</b> · <code>4969400b</code></span>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Preview <b>unverified</b> · did not answer</span>
   <span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Stable <b>0.6.1</b> · <code>0cb53bbe</code></span></div>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Stable <b>unverified</b> · did not answer</span></div>
 </header>
 
 <section id="run">
@@ -512,8 +516,8 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Generated 2026-08-06 17:08 UTC from <code>game@7c74385c</code>.
-  Preview is serving <code>0.6.5</code> and Stable is serving <code>0.6.1</code>.
+  Generated 2026-08-06 18:05 UTC from <code>game@7c74385c</code>.
+  One of the two tracks could not be reached at generation time, so this page names no version for it.
 </footer>
 
 </div>
