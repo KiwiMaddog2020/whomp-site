@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WHOMP: built in the open</title>
+<meta name="description" content="How WHOMP gets made: one lane at a time, through gates that can fail, onto two tracks, with the dev log public the whole way.">
+<link rel="icon" href="whomp-icon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WHOMP">
+<meta property="og:title" content="WHOMP: built in the open">
+<meta property="og:description" content="How WHOMP gets made: one lane at a time, through gates that can fail, onto two tracks, with the dev log public the whole way.">
+<meta property="og:url" content="https://kiwimaddog2020.github.io/whomp-site/built-in-the-open.html">
+<meta property="og:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The WHOMP mark: a chromatic cream W on a dark violet square.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WHOMP: built in the open">
+<meta name="twitter:description" content="How WHOMP gets made: one lane at a time, through gates that can fail, onto two tracks, with the dev log public the whole way.">
+<meta name="twitter:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<link rel="canonical" href="https://kiwimaddog2020.github.io/whomp-site/built-in-the-open.html">
+<style>
+
+:root{
+  --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
+  --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
+  --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --edge:1px solid rgba(255,243,207,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:radial-gradient(ellipse 120% 80% at 50% -10%,var(--lift),var(--ink) 60%) no-repeat,var(--ink);
+  color:var(--body); font-family:var(--font); line-height:1.6;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+a{color:var(--cyan)}
+button{font-family:var(--font)}
+
+/* THE CHROMATIC OFFSET IS THE SIGNATURE, carried from the icon to type:
+   cyan right-and-down, pink left-and-down, cream face on top. Flat offsets,
+   zero blur, matching the de-BOO flat-plinth doctrine the game already uses. */
+.chroma{
+  color:var(--cream); font-weight:900; letter-spacing:-.02em;
+  text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
+}
+
+/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
+   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
+   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
+   comment explains 1000 exceeds the heaviest real weight of the system
+   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
+   The retro chromatic layering is two ::before/::after copies of the word
+   via content:attr(data-wordmark), every offset and shadow expressed in em
+   rather than px so the layering scales WITH the clamped font-size and holds
+   together at every viewport width instead of drifting apart. SACRED, same
+   as the game's own comment on this block: a frozen copy, not a reference,
+   do not tokenize.
+
+   NOTE 2026-07-30: a Chromium variable-font interpolation fix briefly replaced
+   this stack with a static Black face. The director judged the resulting face
+   worse and it was reverted, here and in the game together, so both surfaces
+   stay identical. The squish and seam report on narrow Android is therefore
+   still OPEN, and any future fix must preserve this face rather than swap it. */
+.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
+  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+  /* PAINT ORDER IS LOAD BEARING. letter-spacing is negative, so glyphs OVERLAP,
+     and a per-glyph stroke would otherwise draw the M's dark outline straight
+     across the O's cream face. That is the seam the director reported, not a
+     font problem. paint-order lays every stroke down first, so they merge into
+     one silhouette, then every fill on top of all of them. Tight tracking and
+     the outline both survive; the lines through the letters do not. */
+  paint-order:stroke fill;
+  text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
+  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
+.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+@keyframes whomp-wordmark-hit{
+  0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
+  2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
+  5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
+}
+@media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
+  border:var(--edge);background:rgba(255,243,207,.04);font-size:.82rem;color:var(--body);
+  font-variant-numeric:tabular-nums;
+}
+.chip b{color:var(--cream);font-weight:700}
+.chip code{font-family:var(--mono);font-size:.92em;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16);flex:none}
+/* Measured or not measured. There is no third state and no verdict; see the
+   comment on trackChip for why the gold dot that used to compare the live sha
+   against the wiki source was retired rather than recoloured. */
+.dot.unknown{background:var(--dim);box-shadow:0 0 0 3px rgba(141,132,161,.14)}
+
+.btn{
+  display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
+  font-weight:700;color:var(--ink);background:var(--sweep);border:0;cursor:pointer;
+  box-shadow:0 4px 0 #7a1440; transition:transform .12s ease,box-shadow .12s ease;font-size:1rem;
+}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 #7a1440}
+.btn.ghost{background:none;color:var(--cream);border:var(--edge);box-shadow:0 4px 0 rgba(0,0,0,.4)}
+.btn.small{padding:9px 18px;font-size:.82rem;box-shadow:none}
+
+.rule{height:3px;border-radius:2px;background:var(--sweep);opacity:.85;margin-bottom:26px;max-width:120px}
+
+.arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+/* A card that does nothing on hover reads as a picture of a card. These lift by
+   one pixel and warm their rim, which is the same gesture the play button makes
+   and the smallest one that still registers. */
+.arc:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .arc{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .arc:hover{transform:translateY(-1px)}
+}
+.arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
+.arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
+.arc p{margin:0;font-size:.88rem;color:var(--dim)}
+
+/* SIGN-IN, reused from the game's own accounts worker so one account covers
+   both surfaces. Same worker, same client id, same session shape. */
+.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:16px 0 0}
+.authbar-name{color:var(--cream);font-weight:700;font-size:.85rem}
+
+.spoiler{cursor:pointer;border-radius:4px;padding:0 2px;background:rgba(255,243,207,.08);color:transparent;text-shadow:0 0 0 transparent;transition:color .12s ease}
+.spoiler::selection{color:transparent}
+.spoiler.revealed{color:var(--cream);background:none}
+.spoiler:not(.revealed)::after{content:"spoiler, click to reveal";color:var(--dim);font-style:italic}
+.spoiler.revealed::after{content:""}
+
+footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);font-size:.82rem;text-align:center}
+footer code{color:var(--body)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* NOTHING may make the page itself scroll sideways, on ANY page. A floor rather
+   than a fix: the per-element fixes are real but the next long token will arrive
+   somewhere nobody predicted, and this was reported twice on mobile before it got
+   one. Lives in SHARED_CSS because the second report was on the log while the wiki
+   pages had no protection at all.
+
+   CLIP, NOT HIDDEN, AND THE DIFFERENCE IS LOAD BEARING. overflow-x:hidden makes
+   the element a scroll container, and a scroll container on html/body silently
+   defeats position:sticky for EVERY descendant on the page: the wiki's sticky
+   search band scrolled away with the document and looked simply unimplemented.
+   overflow-x:clip clips exactly the same overflow without becoming a scroll
+   container, so the sideways-scroll floor this rule exists for is unchanged and
+   sticky positioning works again. Verified on all three surfaces. */
+html,body{max-width:100%;overflow-x:clip}
+
+
+.wrap{max-width:940px;margin:0 auto;padding:0 24px 110px}
+
+/* ---------------------------------------------------------------- THE TOP BAR
+   THE MARK MOVED HERE (director, 2026-08-06: "move the logo from above the
+   header to the left side of the navmenu"). It used to sit centred above the
+   wordmark, which meant the page opened with the W drawn twice at two sizes,
+   fourteen pixels apart, and pushed the button below the fold on a laptop. In
+   the bar it does the job a mark does: it says which site this is while you read
+   something else, and it takes the hero's vertical space back.
+
+   It is the SAME canonical asset the wiki's top bar uses, <img> against the icon
+   copied byte-for-byte from the game at build time, not a second inline drawing
+   of it. One mark, one file, one place it can ever be wrong. */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(6,4,14,.82);
+  border-bottom:1px solid rgba(255,243,207,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.topbar-inner{max-width:940px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;gap:20px}
+.brandmark{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.brandmark img{display:block;width:34px;height:34px;border-radius:8px}
+.brandmark b{color:var(--cream);font-size:1.02rem;font-weight:900;letter-spacing:.04em}
+.brandmark:hover b{color:#fff}
+.brandmark:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:10px}
+.navlinks{display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:.78rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;padding:9px 11px;border-radius:8px;white-space:nowrap}
+.navlinks a:hover{color:var(--cream);background:rgba(255,243,207,.05)}
+.navlinks a[aria-current="page"]{color:var(--cream)}
+.navlinks a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.topbar .authbar{padding:0;flex:none}
+/* The strip scrolls, the bar does not, and sign-in stays reachable. Hiding the
+   only control on the page at 700px was the easy answer and the wrong one. */
+@media (max-width:700px){
+  .topbar-inner{gap:10px;padding:9px 14px}
+  .brandmark b{display:none}
+  .navlinks a{padding:9px 8px;font-size:.74rem}
+}
+
+/* h1 keeps the browser's default block margin unless it is told not to, which
+   on a phone reads as a hundred and fifty pixels of nothing between the bar and
+   the title. The padding here is the whole of the space above it. */
+header{padding:44px 0 8px}
+header h1{margin:0}
+.pitchlede{margin:18px 0 0;max-width:60ch;color:var(--body);font-size:clamp(1rem,2vw,1.12rem)}
+.chips{margin-top:24px}
+section{margin-top:64px}
+.eyebrow{display:block;color:var(--gold);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+/* Wide enough that every section heading lands on one line at this column
+   width. The chromatic offset is a signature for a short heading and turns into
+   noise across two lines of it, so the wrap point is the thing being set here,
+   not the measure. */
+h2{font-size:1.5rem;margin:6px 0 14px;max-width:48ch}
+.pitchbody p{margin:0 0 14px;max-width:66ch;color:var(--body);font-size:.98rem}
+.pitchbody p:last-child{margin-bottom:0}
+/* The first line of a section carries it, so it is the one that gets the ink.
+   Every line after it is the same weight, because a page of emphasis has none. */
+.pitchbody p:first-child{color:var(--cream)}
+.pitchtail{margin-top:64px;padding:22px 24px;border:var(--edge);border-radius:16px;background:rgba(255,243,207,.025)}
+.pitchtail p{margin:0 0 12px;max-width:66ch}
+.pitchtail p:last-child{margin-bottom:0}
+.pitchtail a{font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brandmark" href="index.html" aria-label="WHOMP home">
+      <img src="whomp-icon.svg" alt="" width="34" height="34">
+      <b>WHOMP</b>
+    </a>
+    <nav class="navlinks" aria-label="Sections">
+      <a href="index.html#run">The run</a>
+      <a href="index.html#shipped">What shipped</a>
+      <a href="index.html#next">What is next</a>
+      <a href="built-in-the-open.html" aria-current="page">How it is made</a>
+      <a href="wiki.html">Wiki</a>
+      <a href="log.html">Dev log</a>
+    </nav>
+
+<div class="authbar">
+  <span id="ab-signedout">
+    <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
+  </span>
+  <span id="ab-signedin" style="display:none">
+    <span class="authbar-name" id="ab-name"></span>
+    <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
+  </span>
+</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header>
+
+  <h1 class="chroma">Built in the open</h1>
+  <p class="pitchlede">How WHOMP gets made: one lane at a time, through gates that can fail, onto two tracks, with the dev log public the whole way.</p>
+  <div class="chips"><span class="chip">
+    <span class="dot unknown" aria-hidden="true"></span>
+    Preview <b>unverified</b> · did not answer</span>
+  <span class="chip">
+    <span class="dot unknown" aria-hidden="true"></span>
+    Stable <b>unverified</b> · did not answer</span></div>
+</header>
+
+
+<section id="crew">
+  <div class="rule"></div>
+  <span class="eyebrow">The short version</span>
+  <h2 class="chroma">One person, and a crew that does not get tired</h2>
+  <div class="pitchbody"><p>WHOMP is made by one person directing a crew of AI agents. The crew does the typing.</p><p>Work goes out in lanes. 337 of them have landed since the first commit, on 2026-07-11.</p></div>
+</section>
+<section id="lane">
+  <div class="rule"></div>
+  <span class="eyebrow">The lane</span>
+  <h2 class="chroma">One job, and a written list of what it may touch</h2>
+  <div class="pitchbody"><p>A lane is one job, done in a fresh copy of the game by an agent that has never seen this project and will never see it again.</p><p>A lane writes down which files it is allowed to touch before it touches any of them.</p><p>Two lanes are never handed the same file, because the day they were, the tree stopped building and nothing looked wrong until somebody took an upgrade.</p></div>
+</section>
+<section id="gate">
+  <div class="rule"></div>
+  <span class="eyebrow">The gate</span>
+  <h2 class="chroma">Finished is not a word the lane gets to use</h2>
+  <div class="pitchbody"><p>A lane says it is done. That is where the argument starts.</p><p>A run of tests that reported nothing is a failed run. Zero is not a pass.</p><p>A new check has to be made to fail on purpose before anybody believes it works.</p><p>Anything touching accounts, saves, other players or the deploy is read by somebody who did not write it.</p></div>
+</section>
+<section id="stop">
+  <div class="rule"></div>
+  <span class="eyebrow">The stop</span>
+  <h2 class="chroma">The most useful lane of that week wrote no code</h2>
+  <div class="pitchbody"><p>A lane is handed a premise along with its job, and the premise is sometimes wrong.</p><p>A lane that proves its own job was based on something untrue, and stops, has finished. Three did that in one day, and all three were right.</p></div>
+</section>
+<section id="tracks">
+  <div class="rule"></div>
+  <span class="eyebrow">The deploy</span>
+  <h2 class="chroma">Two tracks, and the careful one is second</h2>
+  <div class="pitchbody"><p>There are two places to play this, and both of them are a link.</p><p>Every build that goes green goes to the preview track. The weekly one is only ever a preview build that already proved itself.</p><p>Nothing ships because it is ready. It ships because a person named that exact build and said to ship it.</p></div>
+</section>
+<section id="holds">
+  <div class="rule"></div>
+  <span class="eyebrow">Why it holds</span>
+  <h2 class="chroma">A rule that cannot fail is not a rule</h2>
+  <div class="pitchbody"><p>A rule nobody can check is a note. Every rule on this page is a check that can fail, and most of them were written the day after they were needed.</p><p>No em dashes in anything a player can read. A machine checks that one, which is the whole point.</p></div>
+</section>
+
+<div class="pitchtail">
+  <p>The dev log on this site is not written for it. It is built out of the same releases and the same
+    changes the work actually produced, so it says what happened rather than what somebody remembered.</p>
+  <p><a href="log.html#story">Read what landed, day by day.</a> Or skip all of it and
+    <a href="index.html">play the thing</a>.</p>
+</div>
+
+<footer>
+  Generated 2026-08-06 18:05 UTC from <code>game@7c74385c</code>.
+  One of the two tracks could not be reached at generation time, so this page names no version for it.
+</footer>
+
+</div>
+
+<script type="module">
+import { getUser, onChange, signIn, signOut } from './bin/auth.js';
+const show = (el, visible) => { if (el) el.style.display = visible ? '' : 'none'; };
+function renderAuth(user) {
+  const signedIn = user !== null;
+  show(document.getElementById('ab-signedout'), !signedIn);
+  show(document.getElementById('ab-signedin'), signedIn);
+  if (signedIn) {
+    const name = user.displayName || user.email;
+    const el = document.getElementById('ab-name');
+    if (el) el.textContent = name;
+  }
+  window.__whompUser = user;
+  document.dispatchEvent(new CustomEvent('whomp-auth', { detail: user }));
+}
+async function runSignIn(button) {
+  button.disabled = true;
+  try { await signIn(); } finally { button.disabled = false; }
+}
+document.getElementById('ab-signin')?.addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('ab-signout')?.addEventListener('click', () => signOut());
+onChange(renderAuth);
+renderAuth(getUser());
+</script>
+</body>
+</html>
