@@ -298,6 +298,33 @@ const TAGLINE = 'A 3D horde-survivor where one weapon is yours to aim.';
  * consumes main, but explicit --repo worktrees must not be mislabeled. */
 const headSha = git('rev-parse', '--short', 'HEAD');
 
+/* AND THE FEED READS `main`, WHICH IS THE OTHER HALF OF THE SAME SENTENCE.
+ *
+ * Every page here stamps `game@<HEAD>` in its footer, and the `git log` below
+ * that builds the day by day story and the raw feed asks `main` instead. On an
+ * ordinary checkout sitting on main those are one commit and nobody notices.
+ * On a detached checkout, a worktree, or a clone whose branch has moved, they
+ * are two, and the page then states a provenance its own feed does not match.
+ *
+ * FOUND BY LOOKING AT THE RENDER, 2026-08-06, not by reasoning: a site built
+ * from a checkout detached at 7c74385c inside a clone whose main pointed 34
+ * commits later published a footer reading game@7c74385c above a story counting
+ * 727 changes, seven of which were not in that tree. Every check passed. The
+ * page was internally consistent and externally false, which is precisely the
+ * failure this repo exists to refuse, arriving through the one door nothing was
+ * watching.
+ *
+ * A WARNING RATHER THAN A THROW, because the situation is legitimate (this is
+ * how a preview build off a worktree is supposed to work) and the fix is one
+ * command in the checkout being read. What is not legitimate is publishing it
+ * without saying so. */
+const mainSha = (() => {
+  try { return git('rev-parse', '--short', 'main'); } catch { return null; }
+})();
+if (mainSha && mainSha !== headSha) {
+  warn(`${REPO} is checked out at ${headSha} but its main ref is at ${mainSha}. Every page stamps the first and the shipped feed is read from the second, so this build would publish a provenance its own dev log does not match. Check out main there, or move main, before publishing.`);
+}
+
 // ---------------------------------------------------------------- derive: title screen wordmark + slogans
 /* Director change 2026-07-30: "copy the title from the title screen EXACTLY"
  * and "use the same rotating slogans... under the title". Both come straight
