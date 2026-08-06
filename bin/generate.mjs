@@ -2601,12 +2601,20 @@ ${socialTags({ title: PITCH_TITLE, description: PITCH_DESCRIPTION, path: PITCH_F
 <style>
 ${SHARED_CSS}
 ${LANDING_CHROME_CSS}
-header{padding:56px 0 8px}
+/* h1 keeps the browser's default block margin unless it is told not to, which
+   on a phone reads as a hundred and fifty pixels of nothing between the bar and
+   the title. The padding here is the whole of the space above it. */
+header{padding:44px 0 8px}
+header h1{margin:0}
 .pitchlede{margin:18px 0 0;max-width:60ch;color:var(--body);font-size:clamp(1rem,2vw,1.12rem)}
 .chips{margin-top:24px}
 section{margin-top:64px}
 .eyebrow{display:block;color:var(--gold);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-h2{font-size:1.5rem;margin:6px 0 14px;max-width:26ch}
+/* Wide enough that every section heading lands on one line at this column
+   width. The chromatic offset is a signature for a short heading and turns into
+   noise across two lines of it, so the wrap point is the thing being set here,
+   not the measure. */
+h2{font-size:1.5rem;margin:6px 0 14px;max-width:48ch}
 .pitchbody p{margin:0 0 14px;max-width:66ch;color:var(--body);font-size:.98rem}
 .pitchbody p:last-child{margin-bottom:0}
 /* The first line of a section carries it, so it is the one that gets the ink.
@@ -2624,7 +2632,8 @@ ${landingTopBar(PITCH_FILE)}
 <div class="wrap">
 
 <header>
-  <span class="eyebrow">How it is made</span>
+  ${/* No eyebrow above this one. The nav strip already marks this page as where
+       you are, and a label repeating it is the same word twice on one screen. */ ''}
   <h1 class="chroma">Built in the open</h1>
   <p class="pitchlede">${esc(PITCH_DESCRIPTION)}</p>
   <div class="chips">${liveChip()}</div>
