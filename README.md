@@ -5,12 +5,62 @@ The public WHOMP page: a short pitch (`index.html`), the real development log
 
 ## Three surfaces
 
-- **`index.html`** is the short public landing page: mark, tagline, live build
-  chip, play button, arcs. It is deliberately small and never grows.
+- **`index.html`** is the short public landing page. Four sections, and every
+  fact on all four is derived: a hero with one play button per release track, a
+  section that says what a run actually is, the newest release lines, and what is
+  being built next. It is deliberately small. It does not grow into the log.
 - **`log.html`** is the real dev log: sidebar, search, filters, and a toggle
   between two views of what shipped.
 - **`wiki.html`** plus one page per roster is the wiki. Every value on it is
   generated from the game's own registries. See "The wiki" below.
+
+All three carry Open Graph and Twitter card tags, so a link to any of them
+unfurls as something rather than as a bare URL. The card image is the canonical
+`public/icons/icon-512.png`, copied byte-for-byte from the game at build time
+exactly as `whomp-icon.svg` is, and the card type is `summary` to match it. A
+screenshot was the alternative and was not taken: a hand-taken hero shot on a
+landing page for a build that moves most days is a promise about a version that
+shipped weeks ago.
+
+### The landing page
+
+Nothing on it is typed twice.
+
+| What it says | Where it read it |
+|---|---|
+| The length of a run, the final horde, the hold | `runModes.classic` in `data/game-data.json` |
+| Worlds, enemies, characters, cores, weapons | the domain counts in the same artifact |
+| Both play button URLs | `src/core/releaseChannel.ts`, the audited channel table |
+| What each track is serving | each track's own `version.json`, measured at build time |
+| The five newest release lines | the same `conciseShown` array `log.html` renders |
+| The arcs | `docs/CAMPAIGN.md` |
+| What is coming | `docs/train/WISHLIST.md`, joined to authored lines |
+| The tagline rotation | `src/ui/mainMenu.ts` `TAGLINES` |
+
+**A run is twenty minutes, not twenty eight.** `docs/GAME_SPEC.md` still opens
+its run-structure section with "28-minute Classic runs". The registry the game
+actually plays on banks at `bankAtElapsedSec: 1200`, and the wiki has been
+publishing 20:00 and 18:00 off that same artifact for weeks. The landing page
+derives from the registry, and `tests/generatedSite.test.mjs` cross-checks the
+figure it printed against the clock on `wiki-modes.html`, because two surfaces of
+one site disagreeing about the length of a run is the exact drift this repo
+exists to prevent. The spec doc is the thing that is stale.
+
+**What is coming is derived rows joined to authored lines.** The rows come from
+the game's own wishlist, which is what makes the section retire itself: a want
+leaving that queue removes its teaser with nobody remembering to, and a teaser
+for work that already shipped is worse than no teaser. The lines are authored in
+`PIPELINE_TEASERS` in `bin/landing.mjs` for the same reason the backlog blurbs
+are authored: the row titles are lane names, several of them are defect reports,
+and a page that publishes those has published an engineering backlog to
+strangers. A want with no line is skipped and counted, never guessed at.
+
+**Neither play button carries a verdict.** The old chip compared the live Stable
+sha against the sha the site was generated from and lit a gold "a deploy is
+pending" dot whenever they differed. They differ by design, so it was on
+permanently, at the top of the page, and a permanent warning is wallpaper. Each
+track now states the version it is serving and the build that came from. The dot
+means measured or not measured, which is the only binary state that exists here.
 
 ## Two views inside the log
 
@@ -119,13 +169,80 @@ It only ever **reads** the game repo. The machine is still not trusted to say wh
 something mattered; it is trusted to carry across what a human already said.
 
 ```bash
-node bin/generate.mjs --repo ../whomp                # writes every page + search-index.json
+bin/regenerate-and-verify.sh                          # rebuild everything, then prove it
+node bin/generate.mjs --repo ../whomp                 # writes every page + search-index.json
 node bin/generate.mjs --repo ../whomp --offline       # skip the live sha fetch
 bin/deploy-site.sh                                    # regenerate and push to GitHub Pages
 ```
 
-The page says so plainly when it could not reach the live build, rather than
-inventing a sha.
+The page says so plainly when it could not reach a track, rather than inventing
+a sha.
+
+## Keeping the site true
+
+The generator has always refused a lot: stale artifacts, dead links, a concise
+view with holes in it, a wiki contract that moved. What it could not refuse was
+**text going quietly out of date**, which is the failure this site actually has.
+The landing page printed `A3 · Wed 7/30` for a week after that Wednesday, ended
+two of its nine arcs mid-sentence, and carried a permanent stale dot. Every
+generation in between exited zero and reported success. Nothing was broken.
+Everything was stale.
+
+`bin/regenerate-and-verify.sh` is the answer, and it is one command:
+
+```bash
+bin/regenerate-and-verify.sh              # against ../whomp
+bin/regenerate-and-verify.sh --offline    # no network, tracks report unverified
+```
+
+It regenerates every surface, reads what the generator said about itself, then
+runs the whole suite including `tests/generatedSite.test.mjs`, which reads the
+files just written and checks them the way a reader would. It never pushes;
+publication stays `bin/deploy-site.sh`, with its own branch guard.
+
+### Two severities, and the split is the point
+
+| | Meaning | Gate |
+|---|---|---|
+| `SITE WARNING` | the page is wrong or incomplete, and the fix is one line someone can open today | **fails** |
+| `SITE NOTE` | true, worth saying, owned upstream | passes |
+
+An arc dropped because its sentence trails off is a warning. A teaser for a want
+that has left the wishlist is a warning. An arc whose own description contains
+last Thursday is a **note**: it is real rot, and the fix belongs in the game
+repo, because this repo refuses to rewrite the game's roadmap prose. A gate that
+is red on its first day for something the lane cannot fix teaches everyone to
+ignore it, which is the same defect as the permanent stale dot, arriving from the
+other direction.
+
+### Two hooks the integrator should wire
+
+Neither is wired from here: `bin/deploy-play.sh` and the overnight tick live in
+the game repo, and this repo only ever reads it.
+
+**1. Per deploy.** `bin/deploy-play.sh` already regenerates the site as part of
+release closure, passing `--sha`/`--version` so the fresh build is not raced
+against CDN propagation. That call must not change. Add verification after it,
+non-fatal for the same reason the whole refresh block is non-fatal, so a site
+hiccup can never read as a failed game deploy:
+
+```bash
+(cd "$SITE_DIR" && node --test tests/*.test.mjs >/dev/null 2>&1) \
+  || echo "WARNING: whomp-site drift tests failed after the refresh; run bin/regenerate-and-verify.sh there" >&2
+```
+
+**2. Once a day, whether or not anything shipped.** This is the half a deploy
+hook cannot cover, and it is the half that caught the July dates: those went
+stale because a Wednesday passed, not because a commit landed. A site that only
+regenerates on deploy is exactly as stale as the last deploy.
+
+```bash
+cd /Users/kevin/whomp-site && git checkout main && bin/regenerate-and-verify.sh && bin/deploy-site.sh
+```
+
+`bin/deploy-site.sh` exits 0 with "site unchanged, nothing to deploy" on a day
+when nothing moved, so running it every night costs one commit only when there is
+something to commit.
 
 ## The wiki
 
@@ -318,7 +435,14 @@ pink or the cyan, and do not replace the pink; it is load-bearing in the blend.
 
 - The daily cron: today `bin/deploy-site.sh` is run by hand. The per-deploy
   refresh is done, folded into the game's `bin/deploy-play.sh` and non-fatal
-  there by design, so a site hiccup can never read as a failed game deploy.
+  there by design, so a site hiccup can never read as a failed game deploy. The
+  command the cron should run now exists and is verified (`Keeping the site true`
+  above); what is missing is the scheduler entry, which lives in the game repo.
+- A game-repo edit this site cannot make: `docs/CAMPAIGN.md` describes arc A5 as
+  "S1 Thu, S2 Fri/weekend, Deck later", which is a schedule with no anchor. The
+  generator reports it as a `SITE NOTE` on every run and renders it unchanged,
+  because rewriting the game's roadmap prose here would make this repo a second
+  author of it.
 - Per-entry flavour notes. The plumbing is live and proven (`data/authored/` in
   the game repo, keyed by entry id, orphans go red in its suite). The current
   source-derived numerator and denominator are printed by every build rather
