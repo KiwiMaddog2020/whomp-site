@@ -1,0 +1,31 @@
+# site-and-community — the landing page grows three things: the W moves into a
+# nav bar, an Upcoming section derives itself from the game's own release notes,
+# and a short pitch explains what happens to a report after you send it.
+#
+# Lane law: this lane READS the game repo (patchNotes.ts, CAMPAIGN.md,
+# mainMenu.ts) and writes nothing outside whomp-site. Every glob below is
+# relative to the whomp-site worktree root.
+
+# The new pure modules and their suites. The index page moves out of
+# bin/generate.mjs for the same reason the wiki did: it is testable alone.
+bin/upcoming.mjs
+bin/index-page.mjs
+tests/upcoming.test.mjs
+tests/indexPage.test.mjs
+
+# The one hunk in the shared generator: the index template is replaced by a call
+# to bin/index-page.mjs, and arcCards grows an option so the landing page can
+# stop printing hand-typed arc dates that are already in the past.
+bin/generate.mjs
+
+# Prose describing the surface that changed.
+README.md
+
+# Lane paperwork.
+docs/claims/site-and-community.claims
+docs/lane-reports/site-and-community.md
+
+# NOT CLAIMED, deliberately: index.html and the rest of the generated output.
+# The three game artifacts this generator verifies before it will run
+# (game-data, tier-rankings, wiki-visuals) are all stale on whomp main today, so
+# no lane can regenerate the site right now. See the lane report.
