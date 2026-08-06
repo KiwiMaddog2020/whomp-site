@@ -5,8 +5,13 @@ The public WHOMP page: a short pitch (`index.html`), the real development log
 
 ## Three surfaces
 
-- **`index.html`** is the short public landing page: mark, tagline, live build
-  chip, play button, arcs. It is deliberately small and never grows.
+- **`index.html`** is the short public landing page: nav bar, tagline, live
+  build chip, play button, what is coming, what happens to a report, arcs. It
+  is deliberately small and stays short. Its template lives in
+  `bin/index-page.mjs` rather than inline in the generator, for the same reason
+  the wiki does: it can be rendered from fixtures and read back, so
+  `tests/indexPage.test.mjs` checks the actual page instead of checking a
+  script that refuses to run without a fresh game checkout beside it.
 - **`log.html`** is the real dev log: sidebar, search, filters, and a toggle
   between two views of what shipped.
 - **`wiki.html`** plus one page per roster is the wiki. Every value on it is
@@ -82,6 +87,53 @@ section's HTML, so there is nothing in `log.html` or `search-index.json` to
 hide with CSS, it is genuinely absent from the payload. See the comment on
 `GATING_ENABLED` and on `ownerBugSection` for how it turns on later and the
 real caveat about static hosting once it does.
+
+## What is coming next, on the landing page
+
+Director change 2026-08-06: *"i also want our page here to automatically update
+upcoming features based on future deploys etc. I want this to update
+automatically like our dev log and wiki."*
+
+`bin/upcoming.mjs` answers it from **releases that have been cut but are not yet
+the live Stable build**: `src/data/patchNotes.ts` in the game repo, compared
+against the version measured from the live `version.json`. Four sources could
+have answered the question and three of them publish wishes. The dispatch queue
+(`docs/CODEX_HANDOFFS/queue/`) held eighteen briefs on 2026-08-06 and none of
+them were dispatchable; `docs/BACKLOG_INVENTORY.md` is larger and looser; a
+claims file means a lane is holding some paths, and a lane is allowed to come
+back and say the premise was false. A cut release is the first point at which
+the version is stamped, the code is merged, and a person has written for players
+what it does.
+
+Two properties follow, and they are the reason for the choice:
+
+- **Nothing reaches the page until the work is done.** A feature that is queued
+  and then dropped was never on the page, because queues are not read here.
+- **It moves on deploys by itself.** Promoting a release to Stable makes it the
+  live version, so it leaves this section and appears in the log as shipped.
+
+`state: 'unknown'` is a distinct answer from "nothing is coming". A generation
+run that could not reach the live build must not publish either claim, so it
+publishes neither.
+
+The **further out** half is the same `docs/CAMPAIGN.md` arcs the log already
+carries, minus their hand-typed `(Wed 7/30)` parentheticals. The landing page
+says out loud that arcs are directions and not dates; the log still prints them,
+because a reader there is reading dated engineering material on purpose.
+
+## What happens to a report, on the landing page
+
+A pitch, not a system. The reporting half is shipped and real: REPORT sits in
+the pause menu in a run and in the hub, it takes a screenshot the player can
+draw on, and reports land in a triaged inventory whose fixed and open counts
+the log already publishes in aggregate.
+
+The **following** half is not built. There is no page where a visitor looks up
+their own report by number and watches its state change, so the section says so
+in its own copy rather than letting the heading imply one, and
+`tests/indexPage.test.mjs` pins that sentence. A pitch for a feature that does
+not exist is the one thing this page cannot survive shipping, because the reader
+finds out by going and looking.
 
 ## Gating
 
