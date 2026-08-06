@@ -55,10 +55,12 @@ import { createHash } from 'node:crypto';
 import { writeFileSync, readFileSync, readdirSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
 import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildStory, readableNights, windowDates } from './devlog.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import {
   buildPipelineTeasers, localDay, parseArcs, parseReleaseChannelUrls, renderableArcs, runShape,
 } from './landing.mjs';
+import { pinWarning, trainScale, verifyPins } from './pitch.mjs';
 import { fetchLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
 import { KEY_CHANGE_CAP, readPatchReleases } from './patch-notes.mjs';
 import {
@@ -408,13 +410,18 @@ const FEED_WINDOW_DAYS = 7;
  * different day for most of the evening in this timezone. It generated
  * "751 changes in the last 7 days ... across 6 active days" — a seven-day window
  * that had quietly become six, off by exactly the UTC offset. The window and the
- * dates it is compared against have to be reckoned in the same clock. */
-const windowStartDate = new Date(Date.now() - (FEED_WINDOW_DAYS - 1) * 86400000);
-const windowStart = [
-  windowStartDate.getFullYear(),
-  String(windowStartDate.getMonth() + 1).padStart(2, '0'),
-  String(windowStartDate.getDate()).padStart(2, '0'),
-].join('-');
+ * dates it is compared against have to be reckoned in the same clock.
+ *
+ * THE SUBTRACTION IS CALENDAR ARITHMETIC NOW, not `Date.now() - 6 * 86400000`,
+ * and the reason is the day-by-day story below. That subtraction is off by an
+ * hour on the two days a year the clocks move, which is harmless for a `--since`
+ * bound and is NOT harmless for a story that renders one card per calendar day:
+ * the feed would carry a commit dated one day outside the range the story drew,
+ * and the story would report its own source as out of window. One function now
+ * produces both, so the two cannot disagree about what seven days means. */
+const REFERENCE_DAY = localDay();
+const STORY_DATES = windowDates(REFERENCE_DAY, FEED_WINDOW_DAYS);
+const windowStart = STORY_DATES[STORY_DATES.length - 1];
 const RAW = git(
   'log', 'main', '--date=short', '--pretty=%h\x1f%ad\x1f%s',
   `--since=${windowStart} 00:00:00`,
@@ -487,8 +494,11 @@ const renderedChanges = fullFeed.flatMap(([, changes]) => changes.slice(0, PER_D
  * it. It folded wrapped lines so A6 and A9 stopped mid-list, it printed
  * "Wed 7/30" for a week after that Wednesday, and it printed "next week" on a
  * static page. Those are text rules, text rules rot silently, and the only way
- * to keep eyes on them is to make them testable. See tests/landing.test.mjs. */
-const REFERENCE_DAY = localDay();
+ * to keep eyes on them is to make them testable. See tests/landing.test.mjs.
+ *
+ * REFERENCE_DAY is derived up beside the feed window now, because the day-by-day
+ * story reads one card per calendar day and has to be reckoned in the same clock
+ * the `git log` bound was. */
 const campaignPath = join(REPO, 'docs/CAMPAIGN.md');
 const parsedArcs = existsSync(campaignPath)
   ? parseArcs(readFileSync(campaignPath, 'utf8')).map((a) => ({ ...a, name: cleanDoc(a.name), when: cleanDoc(a.when), what: cleanDoc(a.what) }))
@@ -840,6 +850,91 @@ const conciseDropped = conciseEntries.length - conciseShown.length;
 if (conciseShown.length === 0) {
   throw new Error('The concise dev log has no entries to publish. Every release was filtered out and no authored note survived, which would ship a blank default view. Fix the merge in bin/generate.mjs rather than publishing an empty page.');
 }
+
+// ------------------------------------------------- derive: the day by day story
+/* THE THIRD READING OF THE SAME TWO ARRAYS. Concise is one entry per release,
+ * Full is git log with the noise removed, and neither of them can answer "what
+ * happened yesterday" because neither has a day in it that nothing shipped on.
+ * The story does: one card per calendar day across the same window the feed
+ * covers, quiet days included, newest first.
+ *
+ * It composes nothing about the game. See the header of bin/devlog.mjs for why
+ * that boundary is the whole design, and bin/patch-notes.mjs for where the rule
+ * came from. What it composes are sentences about the SHAPE of a day, off counts
+ * it read; what it quotes are the release headline and the nightly line, both
+ * written by a person.
+ *
+ * THE NIGHTLY FILE DOES NOT EXIST YET. docs/train/nightly.md in the game repo is
+ * the place the overnight train would write, and it is read here optionally so
+ * that the first night it appears needs no site change. Every line it carries is
+ * refused unless a stranger could read it; the refusals are NOTES, because that
+ * prose belongs to the game repo and this one does not rewrite it. */
+const nightlyPath = join(REPO, 'docs/train/nightly.md');
+const nights = readableNights(existsSync(nightlyPath) ? readFileSync(nightlyPath, 'utf8') : '');
+/* AN ENTRY DATED THAT DAY IS NOT A RELEASE CUT THAT DAY. A hand-written note
+ * carries the date it was WRITTEN, and notes/2026-07-30.md declares 0.5.0, which
+ * shipped on the 25th. So an entry is marked as a cut only when the game's own
+ * patch notes date that exact version to that exact day; the story's sentence
+ * about how many releases were cut counts those, and every entry keeps its link
+ * regardless, because a link is about where to read more. */
+const cutOn = new Set(releases.map((r) => `${r.date}|${r.version}`));
+const releasesByDate = new Map();
+for (const entry of conciseShown) {
+  if (!releasesByDate.has(entry.date)) releasesByDate.set(entry.date, []);
+  releasesByDate.get(entry.date).push({ ...entry, cut: cutOn.has(`${entry.date}|${entry.version}`) });
+}
+const story = buildStory({
+  lastDay: REFERENCE_DAY,
+  windowDays: FEED_WINDOW_DAYS,
+  changesByDate: days,
+  releasesByDate,
+  nightsByDate: nights.byDate,
+});
+/* The window and the feed are drawn by one function now (see THE SUBTRACTION IS
+ * CALENDAR ARITHMETIC above `git log`), so this should be unreachable. It is
+ * kept because the alternative to reporting it is dropping a day of shipped work
+ * on the floor with nobody told, and that is exactly the class of silence this
+ * whole file argues against. */
+for (const date of story.outside) {
+  warn(`${date} carries player-visible commits that fall outside the ${FEED_WINDOW_DAYS} day window the story draws, so that day is in the feed and not in the story. The two are reckoned in one clock in bin/generate.mjs; find where they came apart.`);
+}
+for (const held of nights.trimmed) {
+  note(`${held.date} in ${REPO}/docs/train/nightly.md carries ${held.held} more readable line${held.held === 1 ? '' : 's'} than the story shows. Shorten the night or accept that the rest stays off the page.`);
+}
+for (const gone of nights.refused) {
+  note(`A line dated ${gone.date} in ${REPO}/docs/train/nightly.md is not published because ${gone.reason}: "${gone.line}" The site will not rewrite the game's prose; write the line for a reader or leave it where it is.`);
+}
+
+// ------------------------------------------------------ derive: the pitch's right to speak
+/* built-in-the-open.html is the only page on this site whose copy is authored
+ * rather than derived, because it describes a process and a process is not a
+ * number in a catalog. What IS derived is the right to print each sentence: every
+ * claim names a file in the game repo and the patterns that must still be found
+ * there. See the header of bin/pitch.mjs.
+ *
+ * A claim that stops being earned is DROPPED from the page and WARNED about, the
+ * same call renderableArcs makes for an arc that trails off and for the same
+ * reason: publishing an unearned claim is the failure, and taking the whole site
+ * down over one sentence is not the fix. */
+const readGameDoc = (path) => (existsSync(join(REPO, path)) ? readFileSync(join(REPO, path), 'utf8') : null);
+const pitch = verifyPins(readGameDoc);
+for (const pin of [...pitch.missingSource, ...pitch.missingEvidence]) warn(pinWarning(pin, REPO));
+
+/* ONE NUMBER, AND IT COUNTS LANES RATHER THAN COMMITS. Commits are already
+ * counted twice on this site and a third count of the same thing proves nothing
+ * new. A retired claims file is exactly one merged lane: the game repo's own
+ * docs/claims/README.md makes retiring part of the merge and makes a reused slug
+ * non-overwriting, so the file count is the lane count. */
+const retiredClaimsDir = join(REPO, 'docs/claims/retired');
+const landedLanes = existsSync(retiredClaimsDir)
+  ? readdirSync(retiredClaimsDir).filter((f) => f.endsWith('.claims')).length
+  : 0;
+const rootCommits = git('rev-list', '--max-parents=0', 'HEAD').split('\n').filter(Boolean);
+const firstDay = rootCommits
+  .map((sha) => git('log', '-1', '--date=short', '--pretty=%ad', sha))
+  .sort()[0] || '';
+const scale = trainScale({ landedLanes, firstDay });
+if (!scale.ok) warn(`The page about how this game is built cannot state its scale: ${scale.reason}. Look at ${REPO}/docs/claims/retired before publishing a pitch with a hole where its one number goes.`);
 
 const buildStamp = new Date().toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
 
@@ -1620,20 +1715,45 @@ const teaserCards = pipelineCards.map((t) => `
       <p>${esc(t.line)}</p>
     </div>`).join('');
 
-const INDEX_TITLE = `WHOMP: ${TAGLINE}`;
-const INDEX_DESCRIPTION = `${TAGLINE} A ${run.minutes} minute run in a browser tab, built in the open with the dev log public.`;
+/* ------------------------------------------------------------ THE PUBLIC CHROME
+ * The sticky bar, the mark and the nav strip, HOISTED out of index.html because
+ * built-in-the-open.html is a second page a stranger lands on directly and two
+ * copies of a top bar is two top bars to get wrong. index.html and log.html
+ * still keep their own bespoke heads (log.html's carries a large page-specific
+ * style block, and neither is worth the churn of a rewrite whose only benefit is
+ * symmetry), so what is shared here is the chrome and not the page.
+ *
+ * ONE MARK PER PAGE, AND IT IS THE CANONICAL FILE. The <img> points at the icon
+ * copied byte-for-byte out of the game at build time, exactly as the wiki's own
+ * top bar does. Nothing here draws a second W: bin/wiki-check.mjs pins the wiki
+ * side of that law and tests/generatedSite.test.mjs pins this side, on every page
+ * that carries this bar. */
+const NAV_DESTINATIONS = [
+  { href: 'index.html#run', label: 'The run', on: 'index.html' },
+  { href: 'index.html#shipped', label: 'What shipped', on: 'index.html' },
+  { href: 'index.html#next', label: 'What is next', on: 'index.html' },
+  { href: 'built-in-the-open.html', label: 'How it is made' },
+  { href: 'wiki.html', label: 'Wiki' },
+  { href: 'log.html', label: 'Dev log' },
+];
+/* On its own page an in-page section link stays a bare fragment, so the browser
+ * scrolls instead of reloading; from anywhere else it needs the filename. */
+const navHref = (item, here) => (item.on && item.on === here ? item.href.slice(item.href.indexOf('#')) : item.href);
+const landingTopBar = (here) => `
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brandmark" href="index.html" aria-label="WHOMP home">
+      <img src="${FAVICON}" alt="" width="34" height="34">
+      <b>WHOMP</b>
+    </a>
+    <nav class="navlinks" aria-label="Sections">
+      ${NAV_DESTINATIONS.map((item) => `<a href="${esc(navHref(item, here))}"${item.href === here ? ' aria-current="page"' : ''}>${esc(item.label)}</a>`).join('\n      ')}
+    </nav>
+    ${AUTHBAR}
+  </div>
+</div>`;
 
-const indexHtml = `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(INDEX_TITLE)}</title>
-<meta name="description" content="${esc(INDEX_DESCRIPTION)}">
-<link rel="icon" href="${FAVICON}">
-${socialTags({ title: INDEX_TITLE, description: INDEX_DESCRIPTION, path: 'index.html' })}
-<style>
-${SHARED_CSS}
+const LANDING_CHROME_CSS = `
 .wrap{max-width:940px;margin:0 auto;padding:0 24px 110px}
 
 /* ---------------------------------------------------------------- THE TOP BAR
@@ -1661,6 +1781,7 @@ ${SHARED_CSS}
 .navlinks a{color:var(--dim);text-decoration:none;font-size:.78rem;font-weight:800;letter-spacing:.1em;
   text-transform:uppercase;padding:9px 11px;border-radius:8px;white-space:nowrap}
 .navlinks a:hover{color:var(--cream);background:rgba(255,243,207,.05)}
+.navlinks a[aria-current="page"]{color:var(--cream)}
 .navlinks a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .topbar .authbar{padding:0;flex:none}
 /* The strip scrolls, the bar does not, and sign-in stays reachable. Hiding the
@@ -1670,7 +1791,23 @@ ${SHARED_CSS}
   .brandmark b{display:none}
   .navlinks a{padding:9px 8px;font-size:.74rem}
 }
+`;
 
+const INDEX_TITLE = `WHOMP: ${TAGLINE}`;
+const INDEX_DESCRIPTION = `${TAGLINE} A ${run.minutes} minute run in a browser tab, built in the open with the dev log public.`;
+
+const indexHtml = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(INDEX_TITLE)}</title>
+<meta name="description" content="${esc(INDEX_DESCRIPTION)}">
+<link rel="icon" href="${FAVICON}">
+${socialTags({ title: INDEX_TITLE, description: INDEX_DESCRIPTION, path: 'index.html' })}
+<style>
+${SHARED_CSS}
+${LANDING_CHROME_CSS}
 /* ------------------------------------------------------------ THE STAR DRIFT
    Lifted from drafts/a-cabinet.html, at roughly half its opacity, because the
    draft was a full-bleed attract mode and this page is a column of text on a
@@ -1782,22 +1919,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 <div class="stars" aria-hidden="true"></div>
 <div class="stars2" aria-hidden="true"></div>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <a class="brandmark" href="index.html" aria-label="WHOMP home">
-      <img src="${FAVICON}" alt="" width="34" height="34">
-      <b>WHOMP</b>
-    </a>
-    <nav class="navlinks" aria-label="Sections">
-      <a href="#run">The run</a>
-      <a href="#shipped">What shipped</a>
-      <a href="#next">What is next</a>
-      <a href="wiki.html">Wiki</a>
-      <a href="log.html">Dev log</a>
-    </nav>
-    ${AUTHBAR}
-  </div>
-</div>
+${landingTopBar('index.html')}
 
 <div class="wrap">
 
@@ -2007,6 +2129,28 @@ const flightCard = (t) => `
     <p style="margin-top:8px;color:var(--dim);font-size:.78rem">${t.count} item${t.count === 1 ? '' : 's'} queued</p>
   </div>`;
 
+/* THE DAY, AS A CARD. Three things can be on it and only the first is always
+ * there: what the day was made of (composed here, from counts), what was cut
+ * that day (the release's own headline, written by a person for players), and
+ * what the night wrote (the game repo's own line, published only if a stranger
+ * could read it). See the header of bin/devlog.mjs for why that split is the
+ * whole design.
+ *
+ * A QUIET DAY IS STILL A CARD. It is dimmed and it says so, because a run of
+ * days with the empty ones removed reads as though there were none. */
+const storyCard = (day) => `
+    <article class="storyday${day.quiet ? ' is-quiet' : ''}" id="day-${esc(day.date)}">
+      <div class="storyday-head">
+        <span class="storyday-when">${esc(day.date)}</span>
+        <span class="storyday-kinds">${day.kinds.map((k) => `<span class="storyday-kind" style="background:var(${KIND_INK[k.kind] || '--dim'})">${esc(KIND_LABEL[k.kind] || k.kind)} ${k.count}</span>`).join('')}</span>
+      </div>
+      <p class="storyday-shape">${esc(day.shape)}</p>
+      ${day.releases.map((r) => `<a class="storyday-release" href="#${esc(r.anchor)}">
+        <b>${r.version ? `v${esc(r.version)}` : 'Written up'}</b><span>${esc(r.title)}</span>
+      </a>`).join('')}
+      ${day.nightly.map((line) => `<p class="storyday-night">${esc(line)}</p>`).join('')}
+    </article>`;
+
 const logHtml = `<!doctype html>
 <html lang="en">
 <head>
@@ -2044,6 +2188,28 @@ h2{font-size:1.5rem;margin:0 0 6px}
 .vtab{padding:9px 18px;border-radius:999px;border:var(--edge);background:none;color:var(--dim);cursor:pointer;font-size:.88rem;font-weight:700}
 .vtab.is-active{color:var(--ink);background:var(--sweep);border-color:transparent}
 .viewpane[hidden]{display:none}
+
+/* THE DAY BY DAY STORY. A column of days rather than a grid of cards: the days
+   are consecutive and a grid would let a reader's eye take them in any order,
+   which is the one thing a chronology cannot survive. */
+.storydays{display:flex;flex-direction:column;gap:12px}
+.storyday{border:var(--edge);border-radius:14px;padding:16px 20px;background:rgba(255,243,207,.025)}
+.storyday-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.storyday-when{color:var(--dim);font-size:.78rem;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.storyday-kinds{display:flex;flex-wrap:wrap;gap:6px}
+.storyday-kind{color:#0a0714;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px}
+.storyday-shape{margin:8px 0 0;color:var(--body);font-size:.95rem}
+.storyday-release{display:flex;gap:10px;align-items:baseline;margin-top:10px;padding:9px 12px;border-radius:10px;
+  text-decoration:none;color:var(--body);background:rgba(36,240,255,.06)}
+.storyday-release b{flex:none;color:var(--cream);font-family:var(--mono);font-size:.8rem}
+.storyday-release:hover,.storyday-release:focus-visible{background:rgba(36,240,255,.12);outline:none}
+.storyday-release:focus-visible{box-shadow:inset 2px 0 0 var(--cyan)}
+.storyday-night{margin:10px 0 0;color:var(--dim);font-size:.9rem;border-left:2px solid rgba(255,243,207,.14);padding-left:12px}
+/* A day with nothing on it is dimmed, never dropped. Removing it is what made
+   the feed read as though every day had something on it. */
+.storyday.is-quiet{background:none;border-style:dashed}
+.storyday.is-quiet .storyday-shape{color:var(--dim);font-size:.88rem}
 
 .notecard{border:var(--edge);border-radius:16px;padding:22px 24px;margin-bottom:18px;background:rgba(255,243,207,.025)}
 .notecard-head{display:flex;gap:10px;align-items:center;margin-bottom:6px}
@@ -2154,11 +2320,13 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
 
 <div class="shell">
   <nav class="side">
+    <a href="#story">Day by day</a>
     <a href="#shipped">Shipped</a>
     <a href="#bugs">Known bugs</a>
     <a href="#flight">In flight</a>
     <span class="wside-h" style="padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase">Wiki</span>
     <a href="wiki.html">All rosters</a>
+    <a href="built-in-the-open.html">How it is made</a>
     <a href="index.html">&larr; Back to WHOMP</a>
   </nav>
 
@@ -2169,6 +2337,18 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
        already hides everything inside .gated-section behind the same
        getUser() check the authbar uses, no template change required. -->
   <div class="gated-section" id="gated-content">
+
+  <!-- THE STORY GOES FIRST, and the two lists that were here before it go under
+       it. A stranger who followed a link from a post is not looking for a
+       changelog, they are asking what has been happening, and the two views
+       below could only answer that by making them count. -->
+  <section id="story">
+    <div class="rule"></div>
+    <h2 class="chroma">Day by day</h2>
+    <p class="lede">${story.summary.map(esc).join(' ')}
+      <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
+    <div class="storydays">${story.days.map(storyCard).join('')}</div>
+  </section>
 
   <section id="shipped">
     <div class="rule"></div>
@@ -2331,6 +2511,152 @@ ${SEARCH_SCRIPT(`
 </body>
 </html>`;
 
+// ================================================== BUILT-IN-THE-OPEN.HTML
+/* THE PITCH. Every other page here answers a question about the game. This one
+ * answers a question about the project, and it is the only page on the site
+ * whose copy is authored rather than derived, because a process is not a number
+ * in a catalog and no amount of parsing turns one into a sentence.
+ *
+ * WHAT IS DERIVED IS THE RIGHT TO PRINT IT. Every load-bearing sentence is a pin
+ * in bin/pitch.mjs naming the file in the game repo that makes it true. A rule
+ * that moves stops matching, the claim is dropped from the page, and the lane
+ * goes red until somebody fixes the sentence. The FRAME lines below are the only
+ * unpinned prose on the page and they are deliberately the kind that cannot go
+ * stale: what a lane is, what the page is about to say. Anything with a fact in
+ * it is a pin.
+ *
+ * WHY IT IS A PAGE AND NOT A SECTION OF THE LOG. It is the reason to follow the
+ * project rather than a record of it, a stranger arrives at it from a link
+ * somebody else pasted, and it needs its own card when they do. log.html is
+ * already three sections long.
+ *
+ * NO MACHINERY (docs/VOICE.md rule 12). No branch names, no paths, no shas, no
+ * gate names. The page teaches five words and uses no others: lane, gate, guard,
+ * track, deploy. tests/pitch.test.mjs holds every claim to that. */
+const claimById = new Map(pitch.verified.map((pin) => [pin.id, pin.claim]));
+const PITCH_SECTIONS = [
+  {
+    id: 'crew',
+    eyebrow: 'The short version',
+    heading: 'One person, and a crew that does not get tired',
+    frame: [
+      'WHOMP is made by one person directing a crew of AI agents. The crew does the typing.',
+      scale.ok ? `Work goes out in lanes. ${scale.sentence}` : 'Work goes out in lanes.',
+    ],
+    pins: [],
+  },
+  {
+    id: 'lane',
+    eyebrow: 'The lane',
+    heading: 'One job, and a written list of what it may touch',
+    frame: ['A lane is one job, done in a fresh copy of the game by an agent that has never seen this project and will never see it again.'],
+    pins: ['claimed-first', 'one-writer'],
+  },
+  {
+    id: 'gate',
+    eyebrow: 'The gate',
+    heading: 'Finished is not a word the lane gets to use',
+    frame: ['A lane says it is done. That is where the argument starts.'],
+    pins: ['tests-ran', 'negative-test', 'reviewer'],
+  },
+  {
+    id: 'stop',
+    eyebrow: 'The stop',
+    heading: 'The most useful lane of that week wrote no code',
+    frame: ['A lane is handed a premise along with its job, and the premise is sometimes wrong.'],
+    pins: ['correct-negative'],
+  },
+  {
+    id: 'tracks',
+    eyebrow: 'The deploy',
+    heading: 'Two tracks, and the careful one is second',
+    frame: ['There are two places to play this, and both of them are a link.'],
+    pins: ['preview-first', 'approval'],
+  },
+  {
+    id: 'holds',
+    eyebrow: 'Why it holds',
+    heading: 'A rule that cannot fail is not a rule',
+    frame: [],
+    pins: ['mechanism', 'house-law'],
+  },
+];
+const pitchSections = PITCH_SECTIONS
+  .map((section) => ({ ...section, lines: [...section.frame, ...section.pins.map((id) => claimById.get(id)).filter(Boolean)] }))
+  .filter((section) => section.lines.length);
+
+const PITCH_FILE = 'built-in-the-open.html';
+const PITCH_TITLE = 'WHOMP: built in the open';
+const PITCH_DESCRIPTION = 'How WHOMP gets made: one lane at a time, through gates that can fail, onto two tracks, with the dev log public the whole way.';
+
+const pitchHtml = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(PITCH_TITLE)}</title>
+<meta name="description" content="${esc(PITCH_DESCRIPTION)}">
+<link rel="icon" href="${FAVICON}">
+${socialTags({ title: PITCH_TITLE, description: PITCH_DESCRIPTION, path: PITCH_FILE })}
+<style>
+${SHARED_CSS}
+${LANDING_CHROME_CSS}
+header{padding:56px 0 8px}
+.pitchlede{margin:18px 0 0;max-width:60ch;color:var(--body);font-size:clamp(1rem,2vw,1.12rem)}
+.chips{margin-top:24px}
+section{margin-top:64px}
+.eyebrow{display:block;color:var(--gold);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h2{font-size:1.5rem;margin:6px 0 14px;max-width:26ch}
+.pitchbody p{margin:0 0 14px;max-width:66ch;color:var(--body);font-size:.98rem}
+.pitchbody p:last-child{margin-bottom:0}
+/* The first line of a section carries it, so it is the one that gets the ink.
+   Every line after it is the same weight, because a page of emphasis has none. */
+.pitchbody p:first-child{color:var(--cream)}
+.pitchtail{margin-top:64px;padding:22px 24px;border:var(--edge);border-radius:16px;background:rgba(255,243,207,.025)}
+.pitchtail p{margin:0 0 12px;max-width:66ch}
+.pitchtail p:last-child{margin-bottom:0}
+.pitchtail a{font-weight:700}
+</style>
+</head>
+<body>
+${landingTopBar(PITCH_FILE)}
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">How it is made</span>
+  <h1 class="chroma">Built in the open</h1>
+  <p class="pitchlede">${esc(PITCH_DESCRIPTION)}</p>
+  <div class="chips">${liveChip()}</div>
+</header>
+
+${pitchSections.map((section) => `
+<section id="${esc(section.id)}">
+  <div class="rule"></div>
+  <span class="eyebrow">${esc(section.eyebrow)}</span>
+  <h2 class="chroma">${esc(section.heading)}</h2>
+  <div class="pitchbody">${section.lines.map((line) => `<p>${esc(line)}</p>`).join('')}</div>
+</section>`).join('')}
+
+<div class="pitchtail">
+  <p>The dev log on this site is not written for it. It is built out of the same releases and the same
+    changes the work actually produced, so it says what happened rather than what somebody remembered.</p>
+  <p><a href="log.html#story">Read what landed, day by day.</a> Or skip all of it and
+    <a href="index.html">play the thing</a>.</p>
+</div>
+
+<footer>
+  Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
+  ${tracks.every((t) => t.live)
+    ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
+    : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}
+</footer>
+
+</div>
+${AUTH_SCRIPT()}
+</body>
+</html>`;
+
 // ---------------------------------------------------------------- search index
 /* One small JSON file, built at generate time, over everything the page
  * shows: notes, the rendered commit feed, known bugs, arcs and in-flight work.
@@ -2387,6 +2713,16 @@ for (const a of arcs) {
 for (const t of backlogTeasers) {
   searchIndex.push({ type: 'in flight', title: t.name, text: t.blurb, anchor: `flight-${slug(t.name)}`, href: logHref(`flight-${slug(t.name)}`) });
 }
+/* The pitch is indexed by SECTION rather than by claim, one row each. A claim
+ * that is dropped for losing its evidence takes its words out of search with it,
+ * because the row is built from the lines that survived. Search finding a
+ * sentence the page no longer prints is the same defect as a dead anchor. */
+for (const section of pitchSections) {
+  searchIndex.push({
+    type: 'how it is made', title: section.heading, text: section.lines.join(' ').slice(0, 240),
+    anchor: section.id, href: `${PITCH_FILE}#${section.id}`,
+  });
+}
 searchIndex.push(...wiki.searchEntries);
 
 // ---------------------------------------------------------------- link integrity
@@ -2408,6 +2744,7 @@ searchIndex.push(...wiki.searchEntries);
 const emittedDocuments = [
   { file: 'index.html', html: indexHtml },
   { file: 'log.html', html: logHtml },
+  { file: PITCH_FILE, html: pitchHtml },
   ...wiki.pages,
 ];
 const withoutHtmlComments = (html) => html.replace(/<!--[\s\S]*?-->/g, '');
@@ -2470,6 +2807,7 @@ if (brokenLinks.length) {
 const OUTPUTS = [
   { file: 'index.html', body: indexHtml },
   { file: 'log.html', body: logHtml },
+  { file: PITCH_FILE, body: pitchHtml },
   { file: 'search-index.json', body: JSON.stringify(searchIndex) },
   { file: 'whomp-icon.svg', body: desktopIconSvg },
   /* The social card's image. Bytes, not text, so the raster reaches the write
@@ -2595,6 +2933,15 @@ for (const track of tracks) {
  * the surface that used to fail silently. "8 releases read, 1 authored note,
  * 8 entries published" is a sentence an operator can check against the page. */
 console.log(`  concise log: ${releases.length} releases read (at most ${KEY_CHANGE_CAP} highlights each), ${notes.length} authored note${notes.length === 1 ? '' : 's'}, ${releaseEntries.length} generated, ${conciseShown.length} entries published${conciseDropped > 0 ? `, ${conciseDropped} older not shown` : ''}`);
+/* The story and the pitch print in full for the same reason the concise view
+ * does: these are the surfaces whose failure mode is a page that renders, exits
+ * zero and says less than it did yesterday. "7 days, 2 of them quiet" and "10 of
+ * 10 claims still earned" are sentences an operator can check by looking. */
+const nightlyPublished = [...nights.byDate.values()].reduce((n, lines) => n + lines.length, 0);
+const releasesInWindow = story.days.reduce((n, day) => n + day.releases.length, 0);
+const pitchClaims = pitch.verified.length + pitch.missingSource.length + pitch.missingEvidence.length;
+console.log(`  story: ${story.days.length} days, ${story.days.filter((d) => d.quiet).length} of them quiet, ${releasesInWindow} release${releasesInWindow === 1 ? '' : 's'} cut in the window, ${nightlyPublished} nightly line${nightlyPublished === 1 ? '' : 's'} published${nights.refused.length ? `, ${nights.refused.length} held back as unreadable` : ''}`);
+console.log(`  pitch: ${pitch.verified.length} of ${pitchClaims} claims still earned by the game repo, ${pitchSections.length} sections published${scale.ok ? `, ${scale.landedLanes} lanes landed since ${scale.firstDay}` : ', no scale stated'}`);
 console.log(`  wiki: ${wiki.rosters.length} rosters, ${wiki.rosters.map((r) => `${r.title} ${r.entries.length}`).join(', ')}`);
 console.log(`  site: ${[...emittedAnchors.values()].reduce((n, s) => n + s.size, 0)} anchors, all internal links resolve`);
 if (wiki.gaps.length) {

@@ -253,8 +253,17 @@ export function buildStory({
 
   const active = days.filter((day) => !day.quiet).length;
   const total = days.reduce((sum, day) => sum + day.total, 0);
-  const releaseDays = days.filter((day) => day.releases.length).length;
-  const releaseCount = days.reduce((sum, day) => sum + day.releases.length, 0);
+  /* A DAY'S ENTRIES ARE NOT A DAY'S RELEASES, and the summary counts the second.
+   * A hand-written note is dated the day it was WRITTEN, and one of them
+   * (notes/2026-07-30.md, declaring 0.5.0, which shipped on the 25th) is five
+   * days adrift of the release it covers. Counting entries would have called
+   * that a release cut on the 30th. So the caller marks an entry `cut` only when
+   * the game's own patch notes date that version to that day, and the sentence
+   * that says "releases were cut" counts exactly those. Everything with an entry
+   * still gets its link, because a link is about where to read more and not
+   * about what happened. */
+  const releaseDays = days.filter((day) => day.releases.some((r) => r.cut)).length;
+  const releaseCount = days.reduce((sum, day) => sum + day.releases.filter((r) => r.cut).length, 0);
 
   return { days, outside, summary: summarySentences({ total, active, windowDays, releaseCount, releaseDays }) };
 }

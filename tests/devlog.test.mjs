@@ -87,7 +87,10 @@ const storyFixture = () => buildStory({
     ['2026-08-06', [change('feat'), change('fix')]],
     ['2026-08-04', [change('fix')]],
   ]),
-  releasesByDate: new Map([['2026-08-06', [{ version: '0.6.3', title: 'Snow, and what lives in it', anchor: 'release-0-6-3' }]]]),
+  releasesByDate: new Map([
+    ['2026-08-06', [{ version: '0.6.3', title: 'Snow, and what lives in it', anchor: 'release-0-6-3', cut: true }]],
+    ['2026-08-04', [{ version: '0.6.0', title: 'A week of releases, caught up', anchor: 'note-2026-08-04', cut: false }]],
+  ]),
   nightsByDate: new Map([['2026-08-05', ['The snow worlds got their own enemies.']]]),
 });
 
@@ -103,6 +106,15 @@ test('the story carries every day in the window, including the quiet ones', () =
 test('a quiet day still carries the night that was written on it', () => {
   const story = storyFixture();
   assert.deepEqual(story.days[1].nightly, ['The snow worlds got their own enemies.']);
+});
+
+test('a write-up dated later than the release it covers is not counted as a release', () => {
+  // notes/2026-07-30.md declares 0.5.0, which shipped on the 25th. Counting
+  // entries rather than cuts would have called that a release on the 30th.
+  const story = storyFixture();
+  assert.match(story.summary[1], /^One release was cut on one of those days/);
+  // It still gets its link, because a link says where to read more.
+  assert.equal(story.days[2].releases.length, 1);
 });
 
 test('the story reports a commit dated outside its own window', () => {
