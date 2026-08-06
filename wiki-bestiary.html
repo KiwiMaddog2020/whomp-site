@@ -6,6 +6,20 @@
 <title>WHOMP bestiary</title>
 <meta name="description" content="Bestiary: Every kind in the game. Several of them never come near you. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WHOMP">
+<meta property="og:title" content="WHOMP bestiary">
+<meta property="og:description" content="Bestiary: Every kind in the game. Several of them never come near you. Canonical facts generated from verified game artifacts.">
+<meta property="og:url" content="https://kiwimaddog2020.github.io/whomp-site/wiki-bestiary.html">
+<meta property="og:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The WHOMP mark: a chromatic cream W on a dark violet square.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WHOMP bestiary">
+<meta name="twitter:description" content="Bestiary: Every kind in the game. Several of them never come near you. Canonical facts generated from verified game artifacts.">
+<meta name="twitter:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<link rel="canonical" href="https://kiwimaddog2020.github.io/whomp-site/wiki-bestiary.html">
 <style>
 
 :root{
@@ -81,8 +95,12 @@ button{font-family:var(--font)}
   font-variant-numeric:tabular-nums;
 }
 .chip b{color:var(--cream);font-weight:700}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
-.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+.chip code{font-family:var(--mono);font-size:.92em;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16);flex:none}
+/* Measured or not measured. There is no third state and no verdict; see the
+   comment on trackChip for why the gold dot that used to compare the live sha
+   against the wiki source was retired rather than recoloured. */
+.dot.unknown{background:var(--dim);box-shadow:0 0 0 3px rgba(141,132,161,.14)}
 
 .btn{
   display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
@@ -97,6 +115,14 @@ button{font-family:var(--font)}
 
 .arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+/* A card that does nothing on hover reads as a picture of a card. These lift by
+   one pixel and warm their rim, which is the same gesture the play button makes
+   and the smallest one that still registers. */
+.arc:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .arc{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .arc:hover{transform:translateY(-1px)}
+}
 .arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
 .arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
 .arc p{margin:0;font-size:.88rem;color:var(--dim)}
@@ -464,16 +490,19 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Every kind in the game. Several of them never come near you.</p>
       </span>
     </span>
-    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · different from wiki source</span>
-  <span class="chip">version <b>0.6.1</b></span></div>
+    <div class="chips"><span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Preview <b>0.6.5</b> · <code>4969400b</code></span>
+  <span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Stable <b>0.6.1</b> · <code>0cb53bbe</code></span></div>
   </div>
 </div>
 
 <div class="wsearchband">
 <div class="searchwrap" role="search">
-  <label class="searchlabel" for="search">Search WHOMP <kbd class="searchkey">/</kbd></label>
   <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
+    aria-label="Search WHOMP"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -557,7 +586,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <h2 class="chroma">Bestiary</h2>
     <p class="lede">What each kind does to you, and where you first run into it. Health, contact damage and kill XP are opening numbers that climb on three separate clocks while you play, so the sentence on a card outlives the bars underneath it.</p>
 
-    <p class="wprov">Every number on this page was read out of the game, at build <b>game@bc134616</b>.
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@ce3c1016</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
     <p class="womit"><b>Every time on this page is minutes of real play.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>6:00</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 20:00 mark where the pacing banks. For basic and special kinds, <b>the speed shown is a starting speed, not how fast the thing ends up chasing you</b>: the run keeps multiplying it, and single instances carry their own multipliers on top. <b>Bosses and minibosses carry no combat numbers here at all.</b> What they have, how hard they hit and how they move is decided while the fight is running, in stages, and differently by mode, so the leftover values sitting in their rows would be a guess wearing the clothes of a fact.</p>
@@ -1064,7 +1093,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-leprechaun" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="27" data-s-name="leprechaun" data-s-hp="190" data-s-damage="4.25" data-s-xp="15" data-s-speed="7.1">
+      <article class="wcard" id="e-leprechaun" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="26" data-s-name="leprechaun" data-s-hp="190" data-s-damage="4.25" data-s-xp="15" data-s-speed="7.1">
         <div class="wcard-h">
 
           <h4>Leprechaun</h4>
@@ -1100,7 +1129,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-gravecaller" tabindex="-1" data-tier="special" data-behavior="spitter" data-s-roster="28" data-s-name="gravecaller" data-s-hp="24" data-s-damage="13.6" data-s-xp="5" data-s-speed="5.7024">
+      <article class="wcard" id="e-gravecaller" tabindex="-1" data-tier="special" data-behavior="spitter" data-s-roster="27" data-s-name="gravecaller" data-s-hp="24" data-s-damage="13.6" data-s-xp="5" data-s-speed="5.7024">
         <div class="wcard-h">
 
           <h4>Gravecaller</h4>
@@ -1136,7 +1165,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-cinderWisp" tabindex="-1" data-tier="special" data-behavior="strafer" data-s-roster="29" data-s-name="cinder wisp" data-s-hp="19" data-s-damage="8.5" data-s-xp="4" data-s-speed="8.167738">
+      <article class="wcard" id="e-cinderWisp" tabindex="-1" data-tier="special" data-behavior="strafer" data-s-roster="28" data-s-name="cinder wisp" data-s-hp="19" data-s-damage="8.5" data-s-xp="4" data-s-speed="8.167738">
         <div class="wcard-h">
 
           <h4>Cinder Wisp</h4>
@@ -1172,7 +1201,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-voidSniper" tabindex="-1" data-tier="special" data-behavior="sniper" data-s-roster="30" data-s-name="void sniper" data-s-hp="24" data-s-damage="13.6" data-s-xp="6" data-s-speed="4.0392">
+      <article class="wcard" id="e-voidSniper" tabindex="-1" data-tier="special" data-behavior="sniper" data-s-roster="29" data-s-name="void sniper" data-s-hp="24" data-s-damage="13.6" data-s-xp="6" data-s-speed="4.0392">
         <div class="wcard-h">
 
           <h4>Void Sniper</h4>
@@ -1208,7 +1237,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-bogHopper" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="31" data-s-name="bog hopper" data-s-hp="28" data-s-damage="18.7" data-s-xp="5" data-s-speed="4.752">
+      <article class="wcard" id="e-bogHopper" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="30" data-s-name="bog hopper" data-s-hp="28" data-s-damage="18.7" data-s-xp="5" data-s-speed="4.752">
         <div class="wcard-h">
 
           <h4>Bog Hopper</h4>
@@ -1244,7 +1273,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-mireBeast" tabindex="-1" data-tier="special" data-behavior="tank" data-s-roster="32" data-s-name="mire beast" data-s-hp="46" data-s-damage="20.4" data-s-xp="8" data-s-speed="3.52">
+      <article class="wcard" id="e-mireBeast" tabindex="-1" data-tier="special" data-behavior="tank" data-s-roster="31" data-s-name="mire beast" data-s-hp="46" data-s-damage="20.4" data-s-xp="8" data-s-speed="3.52">
         <div class="wcard-h">
 
           <h4>Mire Beast</h4>
@@ -1280,7 +1309,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-sinkTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="33" data-s-name="sink tick" data-s-hp="6" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
+      <article class="wcard" id="e-sinkTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="32" data-s-name="sink tick" data-s-hp="6" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
 
           <h4>Sink Tick</h4>
@@ -1316,7 +1345,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-boneDrifter" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="34" data-s-name="bone drifter" data-s-hp="8" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
+      <article class="wcard" id="e-boneDrifter" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="33" data-s-name="bone drifter" data-s-hp="8" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
 
           <h4>Bone Drifter</h4>
@@ -1352,7 +1381,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-graveMite" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="35" data-s-name="grave mite" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
+      <article class="wcard" id="e-graveMite" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="34" data-s-name="grave mite" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="6.38">
         <div class="wcard-h">
 
           <h4>Grave Mite</h4>
@@ -1388,7 +1417,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-tombWisp" tabindex="-1" data-tier="special" data-behavior="strafer" data-s-roster="36" data-s-name="tomb wisp" data-s-hp="18" data-s-damage="8.5" data-s-xp="4" data-s-speed="7.522956">
+      <article class="wcard" id="e-tombWisp" tabindex="-1" data-tier="special" data-behavior="strafer" data-s-roster="35" data-s-name="tomb wisp" data-s-hp="18" data-s-damage="8.5" data-s-xp="4" data-s-speed="7.522956">
         <div class="wcard-h">
 
           <h4>Tomb Wisp</h4>
@@ -1424,7 +1453,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-emberSparkling" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="37" data-s-name="ember sparkling" data-s-hp="6" data-s-damage="4.25" data-s-xp="4" data-s-speed="8.06031">
+      <article class="wcard" id="e-emberSparkling" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="36" data-s-name="ember sparkling" data-s-hp="6" data-s-damage="4.25" data-s-xp="4" data-s-speed="8.06031">
         <div class="wcard-h">
 
           <h4>Ember Sparkling</h4>
@@ -1460,7 +1489,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-cinderMoth" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="38" data-s-name="cinder moth" data-s-hp="4" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.415528">
+      <article class="wcard" id="e-cinderMoth" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="37" data-s-name="cinder moth" data-s-hp="4" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.415528">
         <div class="wcard-h">
 
           <h4>Cinder Moth</h4>
@@ -1496,7 +1525,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-magmaLurch" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="39" data-s-name="magma lurch" data-s-hp="26" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.1776">
+      <article class="wcard" id="e-magmaLurch" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="38" data-s-name="magma lurch" data-s-hp="26" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.1776">
         <div class="wcard-h">
 
           <h4>Magma Lurch</h4>
@@ -1532,7 +1561,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-riftSkitter" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="40" data-s-name="rift skitter" data-s-hp="5" data-s-damage="2.55" data-s-xp="4" data-s-speed="7.57667">
+      <article class="wcard" id="e-riftSkitter" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="39" data-s-name="rift skitter" data-s-hp="5" data-s-damage="2.55" data-s-xp="4" data-s-speed="7.57667">
         <div class="wcard-h">
 
           <h4>Rift Skitter</h4>
@@ -1568,7 +1597,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-phaseBlinker" tabindex="-1" data-tier="special" data-behavior="wraith" data-s-roster="41" data-s-name="phase blinker" data-s-hp="22" data-s-damage="17" data-s-xp="5" data-s-speed="6.47136">
+      <article class="wcard" id="e-phaseBlinker" tabindex="-1" data-tier="special" data-behavior="wraith" data-s-roster="40" data-s-name="phase blinker" data-s-hp="22" data-s-damage="17" data-s-xp="5" data-s-speed="6.47136">
         <div class="wcard-h">
 
           <h4>Phase Blinker</h4>
@@ -1604,7 +1633,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-voidChaser" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="42" data-s-name="void chaser" data-s-hp="8" data-s-damage="4.25" data-s-xp="4" data-s-speed="7.737919">
+      <article class="wcard" id="e-voidChaser" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="41" data-s-name="void chaser" data-s-hp="8" data-s-damage="4.25" data-s-xp="4" data-s-speed="7.737919">
         <div class="wcard-h">
 
           <h4>Void Chaser</h4>
@@ -1640,7 +1669,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-cindersworn" tabindex="-1" data-tier="special" data-behavior="exploder" data-s-roster="43" data-s-name="cindersworn" data-s-hp="6" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.28028">
+      <article class="wcard" id="e-cindersworn" tabindex="-1" data-tier="special" data-behavior="exploder" data-s-roster="42" data-s-name="cindersworn" data-s-hp="6" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.28028">
         <div class="wcard-h">
 
           <h4>Cindersworn</h4>
@@ -1676,7 +1705,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-brimTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="44" data-s-name="brim tick" data-s-hp="5" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.254279">
+      <article class="wcard" id="e-brimTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="43" data-s-name="brim tick" data-s-hp="5" data-s-damage="3.4" data-s-xp="4" data-s-speed="7.254279">
         <div class="wcard-h">
 
           <h4>Brim Tick</h4>
@@ -1712,7 +1741,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-hellstalker" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="45" data-s-name="hellstalker" data-s-hp="36" data-s-damage="18.7" data-s-xp="6" data-s-speed="7.307993">
+      <article class="wcard" id="e-hellstalker" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="44" data-s-name="hellstalker" data-s-hp="36" data-s-damage="18.7" data-s-xp="6" data-s-speed="7.307993">
         <div class="wcard-h">
 
           <h4>Hellstalker</h4>
@@ -1748,7 +1777,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-duneScarab" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="47" data-s-name="dune scarab" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.630384">
+      <article class="wcard" id="e-duneScarab" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="46" data-s-name="dune scarab" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.630384">
         <div class="wcard-h">
 
           <h4>Dune Scarab</h4>
@@ -1784,7 +1813,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-dustDevil" tabindex="-1" data-tier="special" data-behavior="chaser" data-s-roster="48" data-s-name="dust devil" data-s-hp="11" data-s-damage="6.8" data-s-xp="3" data-s-speed="7.522956">
+      <article class="wcard" id="e-dustDevil" tabindex="-1" data-tier="special" data-behavior="chaser" data-s-roster="47" data-s-name="dust devil" data-s-hp="11" data-s-damage="6.8" data-s-xp="3" data-s-speed="7.522956">
         <div class="wcard-h">
 
           <h4>Dust Devil</h4>
@@ -1820,7 +1849,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-mirageRunner" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="49" data-s-name="mirage runner" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
+      <article class="wcard" id="e-mirageRunner" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="48" data-s-name="mirage runner" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
 
           <h4>Mirage Runner</h4>
@@ -1856,7 +1885,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-duneStinger" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="50" data-s-name="dune stinger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.9336">
+      <article class="wcard" id="e-duneStinger" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="49" data-s-name="dune stinger" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.9336">
         <div class="wcard-h">
 
           <h4>Dune Stinger</h4>
@@ -1892,7 +1921,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-skydart" tabindex="-1" data-tier="special" data-behavior="diver" data-s-roster="51" data-s-name="skydart" data-s-hp="8" data-s-damage="6" data-s-xp="4" data-s-speed="7.704">
+      <article class="wcard" id="e-skydart" tabindex="-1" data-tier="special" data-behavior="diver" data-s-roster="50" data-s-name="skydart" data-s-hp="8" data-s-damage="6" data-s-xp="4" data-s-speed="7.704">
         <div class="wcard-h">
 
           <h4>Skydart</h4>
@@ -1928,7 +1957,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-loomer" tabindex="-1" data-tier="special" data-behavior="bomber" data-s-roster="52" data-s-name="loomer" data-s-hp="24" data-s-damage="6.8" data-s-xp="6" data-s-speed="3.74">
+      <article class="wcard" id="e-loomer" tabindex="-1" data-tier="special" data-behavior="bomber" data-s-roster="51" data-s-name="loomer" data-s-hp="24" data-s-damage="6.8" data-s-xp="6" data-s-speed="3.74">
         <div class="wcard-h">
 
           <h4>Loomer</h4>
@@ -1964,7 +1993,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-jumper" tabindex="-1" data-tier="special" data-behavior="jumper" data-s-roster="53" data-s-name="jumper" data-s-hp="16" data-s-damage="7" data-s-xp="4" data-s-speed="7.062">
+      <article class="wcard" id="e-jumper" tabindex="-1" data-tier="special" data-behavior="jumper" data-s-roster="52" data-s-name="jumper" data-s-hp="16" data-s-damage="7" data-s-xp="4" data-s-speed="7.062">
         <div class="wcard-h">
 
           <h4>Jumper</h4>
@@ -2000,7 +2029,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-rimeling" tabindex="-1" data-tier="special" data-behavior="chaser" data-s-roster="54" data-s-name="rimeling" data-s-hp="11" data-s-damage="6.8" data-s-xp="3" data-s-speed="7.522956">
+      <article class="wcard" id="e-rimeling" tabindex="-1" data-tier="special" data-behavior="chaser" data-s-roster="53" data-s-name="rimeling" data-s-hp="11" data-s-damage="6.8" data-s-xp="3" data-s-speed="7.522956">
         <div class="wcard-h">
 
           <h4>Rimeling</h4>
@@ -2036,7 +2065,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-glazeSkater" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="55" data-s-name="glaze skater" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
+      <article class="wcard" id="e-glazeSkater" tabindex="-1" data-tier="special" data-behavior="fast" data-s-roster="54" data-s-name="glaze skater" data-s-hp="7" data-s-damage="4.25" data-s-xp="3" data-s-speed="8.06031">
         <div class="wcard-h">
 
           <h4>Glaze Skater</h4>
@@ -2072,7 +2101,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-hailTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="56" data-s-name="hail tick" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.630384">
+      <article class="wcard" id="e-hailTick" tabindex="-1" data-tier="special" data-behavior="swarm" data-s-roster="55" data-s-name="hail tick" data-s-hp="5" data-s-damage="2.55" data-s-xp="3" data-s-speed="7.630384">
         <div class="wcard-h">
 
           <h4>Hail Tick</h4>
@@ -2108,7 +2137,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-glacierBull" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="57" data-s-name="glacier bull" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.9336">
+      <article class="wcard" id="e-glacierBull" tabindex="-1" data-tier="special" data-behavior="charger" data-s-roster="56" data-s-name="glacier bull" data-s-hp="30" data-s-damage="18.7" data-s-xp="5" data-s-speed="6.9336">
         <div class="wcard-h">
 
           <h4>Glacier Bull</h4>
@@ -2293,7 +2322,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-maw" tabindex="-1" data-tier="miniboss" data-s-roster="46" data-s-name="the maw"    >
+      <article class="wcard" id="e-maw" tabindex="-1" data-tier="miniboss" data-s-roster="45" data-s-name="the maw"    >
         <div class="wcard-h">
 
           <h4>The Maw</h4>
@@ -2694,7 +2723,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
       </article>
-      <article class="wcard" id="e-borealisk" tabindex="-1" data-tier="boss" data-s-roster="26" data-s-name="the borealisk"    >
+      <article class="wcard" id="e-borealisk" tabindex="-1" data-tier="boss" data-s-roster="57" data-s-name="the borealisk"    >
         <div class="wcard-h">
 
           <h4>The Borealisk</h4>
@@ -2735,7 +2764,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-05 19:18 UTC from <code>game@bc134616</code>,
+  Generated 2026-08-06 16:15 UTC from <code>game@ce3c1016</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
