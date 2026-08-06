@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  fetchLiveVersion,
   fetchStableLiveVersion,
+  normalizeLiveMetadata,
   normalizeStableLiveMetadata,
   normalizeSuppliedLiveVersion,
 } from '../bin/live-version.mjs';
@@ -126,6 +128,49 @@ test('invalid JSON and malformed successful metadata reject instead of becoming 
     ),
     /schema must be 1/,
   );
+});
+
+/* TWO TRACKS. The landing page states Preview and Stable side by side, so the
+ * one failure that would actually mislead a reader is the two swapping places:
+ * a Preview payload rendered under the word Stable, or the reverse. The channel
+ * is therefore an argument the caller must supply and the payload must agree
+ * with, and these are the eyes on that. */
+test('the preview track reads through the same contract, under its own name', () => {
+  const preview = metadata({ channel: 'preview', gameVersion: '0.6.4' });
+  assert.deepEqual(normalizeLiveMetadata(preview, 'preview'), {
+    sha: '0cb53bbe',
+    version: '0.6.4',
+    builtAt: '2026-08-04T10:07:47.519Z',
+  });
+});
+
+test('neither track will accept the other track\'s payload', () => {
+  assert.throws(
+    () => normalizeLiveMetadata(metadata({ channel: 'preview' }), 'stable'),
+    /Stable live metadata: channel must be stable/,
+  );
+  assert.throws(
+    () => normalizeLiveMetadata(metadata(), 'preview'),
+    /Preview live metadata: channel must be preview/,
+  );
+});
+
+test('a channel the site does not publish is refused before any request is made', async () => {
+  assert.throws(() => normalizeLiveMetadata(metadata(), 'nightly'), /Unknown release channel/);
+  await assert.rejects(
+    fetchLiveVersion('https://example.test/version.json', 'nightly', async () => {
+      throw new Error('the fetch should never have been attempted');
+    }),
+    /Unknown release channel/,
+  );
+});
+
+test('a preview endpoint that is down is honestly unverified, not a stale claim', async () => {
+  assert.equal(await fetchLiveVersion(
+    'https://example.test/version.json',
+    'preview',
+    async () => { throw new TypeError('offline'); },
+  ), null);
 });
 
 test('publisher-supplied live identity is validated separately from network metadata', () => {

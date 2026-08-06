@@ -4,8 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP: A 3D horde-survivor where one weapon is yours to aim.</title>
-<meta name="description" content="A 3D horde-survivor where one weapon is yours to aim. Built in the open, with the dev log public.">
+<meta name="description" content="A 3D horde-survivor where one weapon is yours to aim. A 20 minute run in a browser tab, built in the open with the dev log public.">
 <link rel="icon" href="whomp-icon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WHOMP">
+<meta property="og:title" content="WHOMP: A 3D horde-survivor where one weapon is yours to aim.">
+<meta property="og:description" content="A 3D horde-survivor where one weapon is yours to aim. A 20 minute run in a browser tab, built in the open with the dev log public.">
+<meta property="og:url" content="https://kiwimaddog2020.github.io/whomp-site/">
+<meta property="og:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The WHOMP mark: a chromatic cream W on a dark violet square.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WHOMP: A 3D horde-survivor where one weapon is yours to aim.">
+<meta name="twitter:description" content="A 3D horde-survivor where one weapon is yours to aim. A 20 minute run in a browser tab, built in the open with the dev log public.">
+<meta name="twitter:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<link rel="canonical" href="https://kiwimaddog2020.github.io/whomp-site/">
 <style>
 
 :root{
@@ -81,8 +95,12 @@ button{font-family:var(--font)}
   font-variant-numeric:tabular-nums;
 }
 .chip b{color:var(--cream);font-weight:700}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
-.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+.chip code{font-family:var(--mono);font-size:.92em;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16);flex:none}
+/* Measured or not measured. There is no third state and no verdict; see the
+   comment on trackChip for why the gold dot that used to compare the live sha
+   against the wiki source was retired rather than recoloured. */
+.dot.unknown{background:var(--dim);box-shadow:0 0 0 3px rgba(141,132,161,.14)}
 
 .btn{
   display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
@@ -97,6 +115,14 @@ button{font-family:var(--font)}
 
 .arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+/* A card that does nothing on hover reads as a picture of a card. These lift by
+   one pixel and warm their rim, which is the same gesture the play button makes
+   and the smallest one that still registers. */
+.arc:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .arc{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .arc:hover{transform:translateY(-1px)}
+}
 .arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
 .arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
 .arc p{margin:0;font-size:.88rem;color:var(--dim)}
@@ -131,25 +157,167 @@ footer code{color:var(--body)}
    sticky positioning works again. Verified on all three surfaces. */
 html,body{max-width:100%;overflow-x:clip}
 
-.wrap{max-width:860px;margin:0 auto;padding:0 24px 96px}
-header{padding:56px 0 40px;text-align:center}
-.wm{display:block;margin:0 auto 22px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.45))}
+.wrap{max-width:940px;margin:0 auto;padding:0 24px 110px}
+
+/* ---------------------------------------------------------------- THE TOP BAR
+   THE MARK MOVED HERE (director, 2026-08-06: "move the logo from above the
+   header to the left side of the navmenu"). It used to sit centred above the
+   wordmark, which meant the page opened with the W drawn twice at two sizes,
+   fourteen pixels apart, and pushed the button below the fold on a laptop. In
+   the bar it does the job a mark does: it says which site this is while you read
+   something else, and it takes the hero's vertical space back.
+
+   It is the SAME canonical asset the wiki's top bar uses, <img> against the icon
+   copied byte-for-byte from the game at build time, not a second inline drawing
+   of it. One mark, one file, one place it can ever be wrong. */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(6,4,14,.82);
+  border-bottom:1px solid rgba(255,243,207,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.topbar-inner{max-width:940px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;gap:20px}
+.brandmark{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.brandmark img{display:block;width:34px;height:34px;border-radius:8px}
+.brandmark b{color:var(--cream);font-size:1.02rem;font-weight:900;letter-spacing:.04em}
+.brandmark:hover b{color:#fff}
+.brandmark:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:10px}
+.navlinks{display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:.78rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;padding:9px 11px;border-radius:8px;white-space:nowrap}
+.navlinks a:hover{color:var(--cream);background:rgba(255,243,207,.05)}
+.navlinks a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.topbar .authbar{padding:0;flex:none}
+/* The strip scrolls, the bar does not, and sign-in stays reachable. Hiding the
+   only control on the page at 700px was the easy answer and the wrong one. */
+@media (max-width:700px){
+  .topbar-inner{gap:10px;padding:9px 14px}
+  .brandmark b{display:none}
+  .navlinks a{padding:9px 8px;font-size:.74rem}
+}
+
+/* ------------------------------------------------------------ THE STAR DRIFT
+   Lifted from drafts/a-cabinet.html, at roughly half its opacity, because the
+   draft was a full-bleed attract mode and this page is a column of text on a
+   dark ground. Two tiled sheets on different periods so the parallax never
+   resolves into one moving grid.
+
+   IT IS MASKED TO THE TOP OF THE PAGE. Stars behind body copy is a texture
+   fighting a paragraph; stars behind the wordmark is the title screen. The mask
+   fades them out over the first 1100 pixels, so the hero has weather and the
+   reading has none. Fixed, one composited layer, no scroll listener. */
+.stars,.stars2{position:fixed;inset:-40% -10% auto -10%;height:150vh;z-index:0;pointer-events:none;
+  background-repeat:repeat;
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 380px,transparent 1100px);
+  mask-image:linear-gradient(180deg,#000 0,#000 380px,transparent 1100px)}
+.stars{
+  background-image:
+    radial-gradient(3px 3px at 18% 22%,rgba(255,255,255,.95) 0 22%,rgba(255,255,255,.16) 45%,transparent 70%),
+    radial-gradient(2.4px 2.4px at 62% 8%,rgba(255,243,207,.9) 0 24%,rgba(255,243,207,.14) 48%,transparent 70%),
+    radial-gradient(3.4px 3.4px at 84% 41%,rgba(255,255,255,.9) 0 20%,rgba(255,255,255,.15) 44%,transparent 70%),
+    radial-gradient(3px 3px at 34% 67%,rgba(197,130,255,.95) 0 22%,rgba(177,75,255,.18) 46%,transparent 70%),
+    radial-gradient(2.6px 2.6px at 9% 84%,rgba(255,255,255,.8) 0 24%,rgba(255,255,255,.12) 48%,transparent 70%),
+    radial-gradient(3px 3px at 71% 78%,rgba(120,245,255,.9) 0 22%,rgba(36,240,255,.16) 46%,transparent 70%);
+  background-size:420px 420px;animation:drift 190s linear infinite;opacity:.42}
+.stars2{
+  background-image:
+    radial-gradient(2px 2px at 44% 12%,rgba(255,255,255,.7) 0 26%,transparent 62%),
+    radial-gradient(2px 2px at 88% 62%,rgba(255,255,255,.6) 0 26%,transparent 62%),
+    radial-gradient(2.4px 2.4px at 26% 48%,rgba(255,120,180,.7) 0 24%,transparent 62%),
+    radial-gradient(1.8px 1.8px at 12% 36%,rgba(255,255,255,.5) 0 28%,transparent 64%);
+  background-size:250px 250px;animation:drift 320s linear infinite reverse;opacity:.3}
+@keyframes drift{to{transform:translate3d(-420px,150px,0)}}
+@media (prefers-reduced-motion:reduce){.stars,.stars2{animation:none}}
+/* The bar keeps its own z-index:30 and its own stacking context from
+   position:sticky. Only the column needs lifting off the star layer. */
+.wrap{position:relative;z-index:1}
+
+/* ------------------------------------------------------------------ THE HERO */
+header{padding:64px 0 8px;text-align:center}
 /* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
    700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size
    stays the site's own responsive clamp (the game's is a fixed 16px in a
    fixed-size menu panel, not a full-bleed hero) rather than pinned to 16px. */
-.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:18px auto 0;max-width:34ch;
+.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:20px auto 0;max-width:34ch;
   font-weight:700;font-style:italic;letter-spacing:0.03em}
-.chips{justify-content:center;margin-top:26px}
-.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
-.doorway{text-align:center;color:var(--dim);font-size:.92rem;margin-top:18px}
+.spec{margin:14px auto 0;max-width:56ch;color:var(--body);font-size:clamp(.95rem,1.9vw,1.06rem);text-wrap:balance}
+
+/* THE BUTTON, in the shape the game's own START row uses when it is the active
+   item: the sweep as fill, dark ink, no border, a flat plinth under it. Preview
+   is the loud one because Preview is the newest build that went green and is
+   what a visitor arriving today should press. Stable keeps a real button rather
+   than a text link, because it is a real choice and not a footnote. */
+.cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.play{display:inline-flex;align-items:center;gap:12px;padding:17px 34px;border-radius:14px;border:0;
+  text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:clamp(.98rem,2vw,1.14rem);
+  transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
+.play em{font-style:normal;opacity:.66;font-weight:800;font-size:.74em;letter-spacing:.1em}
+.play.loud{background:var(--sweep);color:#0a0714;box-shadow:0 7px 0 #7a1440,0 16px 30px -12px rgba(255,47,126,.55)}
+.play.loud:hover{transform:translateY(3px);box-shadow:0 4px 0 #7a1440,0 10px 22px -12px rgba(255,47,126,.5)}
+.play.quiet{color:var(--cream);border:2px solid rgba(255,243,207,.2);background:rgba(255,243,207,.05);
+  box-shadow:0 5px 0 rgba(0,0,0,.42)}
+.play.quiet:hover{background:rgba(255,243,207,.12);transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.42)}
+.play:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+.tracks{margin:22px auto 0;max-width:58ch;color:var(--dim);font-size:.88rem}
+.tracks b{color:var(--body);font-weight:800}
+.chips{justify-content:center;margin-top:22px}
+
+/* ---------------------------------------------------------------- THE FLOOR */
+section{margin-top:78px}
 h2{font-size:1.65rem;margin:0 0 6px}
-section{margin-top:64px}
+.lede{color:var(--dim);margin:0 0 22px;font-size:.95rem;max-width:64ch}
+
+/* min() rather than a bare minimum, so the four cards land 2x2 on a wide screen
+   instead of 3-and-a-lonely-one, and still collapse to a single column on a
+   phone without the track needing a media query of its own. */
+.facts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr))}
+.fact{border:var(--edge);border-radius:14px;padding:18px 20px;background:rgba(255,243,207,.025)}
+.fact h3{margin:0 0 7px;color:var(--cream);font-size:1.02rem}
+.fact p{margin:0;color:var(--dim);font-size:.9rem}
+.fact:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .fact{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .fact:hover{transform:translateY(-1px)}
+}
+/* The chips inherit the hero's centring; under a left-aligned grid they have to
+   take it back or the row reads as belonging to something else. */
+.tally{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;justify-content:flex-start}
+
+/* One line per release, date on the left, the release's own headline on the
+   right. A row, not a card: five cards would be a second dev log on the page. */
+.loglines{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;overflow:hidden;
+  background:rgba(255,243,207,.025)}
+.logline{display:flex;gap:16px;align-items:baseline;padding:13px 20px;text-decoration:none;color:var(--body);
+  border-top:1px solid rgba(255,243,207,.06)}
+.logline:first-child{border-top:0}
+.logline:hover,.logline:focus-visible{background:rgba(36,240,255,.07);outline:none}
+.logline:focus-visible{box-shadow:inset 2px 0 0 var(--cyan)}
+.logline-when{flex:none;width:9.5rem;color:var(--dim);font-size:.78rem;letter-spacing:.03em;
+  font-variant-numeric:tabular-nums}
+.logline-what{flex:1;min-width:0;font-size:.94rem;overflow-wrap:break-word}
+.logline:hover .logline-what{color:var(--cream)}
+.more{margin-top:14px;font-size:.88rem}
+@media (max-width:560px){
+  .logline{flex-direction:column;gap:4px}
+  .logline-when{width:auto}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="stars" aria-hidden="true"></div>
+<div class="stars2" aria-hidden="true"></div>
 
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brandmark" href="index.html" aria-label="WHOMP home">
+      <img src="whomp-icon.svg" alt="" width="34" height="34">
+      <b>WHOMP</b>
+    </a>
+    <nav class="navlinks" aria-label="Sections">
+      <a href="#run">The run</a>
+      <a href="#shipped">What shipped</a>
+      <a href="#next">What is next</a>
+      <a href="wiki.html">Wiki</a>
+      <a href="log.html">Dev log</a>
+    </nav>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -160,59 +328,123 @@ section{margin-top:64px}
     <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
   </span>
 </div>
+  </div>
+</div>
+
+<div class="wrap">
 
 <header>
-
-<svg class="wm" viewBox="0 0 512 512" width="112" height="112" aria-hidden="true" focusable="false">
-  <defs><radialGradient id="gh" cx="50%" cy="50%" r="72%">
-    <stop offset="0%" stop-color="#1e0e2a"/><stop offset="100%" stop-color="#06040e"/>
-  </radialGradient></defs>
-  <rect width="512" height="512" rx="96" fill="url(#gh)"/>
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#24f0ff" stroke-width="59" transform="translate(14,26)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#ff2f7e" stroke-width="59" transform="translate(-16,16)"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#151023" stroke-width="69"/>
-    <path d="M81 139 L175 374 L256 251 L337 374 L431 139" stroke="#fff3cf" stroke-width="59"/>
-  </g>
-</svg>
   <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
   <p class="tag" id="hero-tagline">It's a hammer.</p>
   <script>document.getElementById('hero-tagline').textContent=(["It's a hammer.","The horde is a physics object.","The ghosts started it.","Cardio, with consequences.","Politely violent.","The ghosts are unionizing. Whomp faster.","The crowd is never satisfied. Try anyway.","Whomp first. Ask questions never."])[Math.min(8-1,Math.max(0,Math.floor(Math.random()*8)))];</script>
-  <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · different from wiki source</span>
-  <span class="chip">version <b>0.6.1</b></span></div>
+  <p class="spec">A 3D horde-survivor where one weapon is yours to aim.</p>
   <div class="cta">
-    <a class="btn" href="https://kiwimaddog2020.github.io/whomp-play/">Play the current build</a>
-    <a class="btn ghost" href="wiki.html">Browse the wiki</a>
-    <a class="btn ghost" href="log.html">Read the dev log</a>
+    <a class="play loud" href="https://whomp-preview.pages.dev/">
+      PLAY THE PREVIEW <em>v0.6.5</em>
+    </a>
+    <a class="play quiet" href="https://kiwimaddog2020.github.io/whomp-play/">
+      PLAY STABLE <em>v0.6.1</em>
+    </a>
   </div>
-  <p class="doorway">The wiki is every weapon, core and enemy, read straight out of the game.
-    The dev log is every build: what shipped, what is still broken, what is next.</p>
+  <p class="tracks"><b>Preview</b> is the newest build that went green, and it moves most days.
+    <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself.</p>
+  <div class="chips"><span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Preview <b>0.6.5</b> · <code>4969400b</code></span>
+  <span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Stable <b>0.6.1</b> · <code>0cb53bbe</code></span></div>
 </header>
 
-<section>
+<section id="run">
+  <div class="rule"></div>
+  <h2 class="chroma">What a run is</h2>
+  <p class="lede">20 minutes, one weapon you aim yourself, and a horde that treats the ground as a
+    surface to be thrown off. It opens in a browser tab.</p>
+  <div class="facts">
+
+    <div class="fact">
+      <h3>20 minutes, and the last two are the point</h3>
+      <p>The final horde arrives at 18:00 and does not thin out. Hold it for 2 minutes, bank at 20:00, and then either finish or keep going into endless.</p>
+    </div>
+
+    <div class="fact">
+      <h3>One weapon is yours to aim</h3>
+      <p>The core is the one you point. The other 33 weapons fire themselves, and deciding which of them you carry is the rest of it.</p>
+    </div>
+
+    <div class="fact">
+      <h3>Every level is a draft</h3>
+      <p>Three upgrades arrive, you take one, and the other two are gone. 33 weapons and 17 tomes are in that pool, and the run is over long before you see them all.</p>
+    </div>
+
+    <div class="fact">
+      <h3>A tab, and nothing else</h3>
+      <p>No download, no launcher, and no account to make. The link is the game.</p>
+    </div>
+  </div>
+  <div class="chips tally">
+    <span class="chip"><b>12</b> worlds</span>
+    <span class="chip"><b>58</b> enemies</span>
+    <span class="chip"><b>11</b> characters</span>
+    <span class="chip"><b>8</b> aimed cores</span>
+    <span class="chip"><b>33</b> weapons</span>
+  </div>
+</section>
+
+<section id="shipped">
+  <div class="rule"></div>
+  <h2 class="chroma">What just shipped</h2>
+  <p class="lede">The newest 5 releases, in the words they were written in for players.
+    The dev log has the rest of them, and the raw engineering log underneath.</p>
+  <div class="loglines">
+    <a class="logline" href="log.html#release-0-6-6">
+      <span class="logline-when">2026-08-06 &middot; v0.6.6</span>
+      <span class="logline-what">The island's end zone is complete: the Sundermarch opens beside the Cinderfell, and the title screen loses an uninvited scrollbar.</span>
+    </a>
+    <a class="logline" href="log.html#release-0-6-5">
+      <span class="logline-when">2026-08-06 &middot; v0.6.5</span>
+      <span class="logline-what">A new region burns at the end of the island, the hub finds its voice, bosses announce themselves, and a gamepad works.</span>
+    </a>
+    <a class="logline" href="log.html#release-0-6-4">
+      <span class="logline-when">2026-08-06 &middot; v0.6.4</span>
+      <span class="logline-what">Co-op stops ignoring the second player, the hidden area stops flickering, every duel hit wears its true colours, and the birds finally land.</span>
+    </a>
+    <a class="logline" href="log.html#release-0-6-3">
+      <span class="logline-when">2026-08-06 &middot; v0.6.3</span>
+      <span class="logline-what">You can fish now. Also aboard: a minimap that reads the fight, a daily level everyone shares, a jump that belongs to your character, and something with a crest is stalking the Hollow Crown.</span>
+    </a>
+    <a class="logline" href="log.html#note-2026-08-05">
+      <span class="logline-when">2026-08-05 &middot; v0.6.2</span>
+      <span class="logline-what">A week of releases, caught up in one entry</span>
+    </a></div>
+  <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
+</section>
+
+<section id="next">
   <div class="rule"></div>
   <h2 class="chroma">What we are building</h2>
+  <p class="lede">The arcs the work is actually organised into, read out of the campaign the trains run on.</p>
   <div class="arcs">
     <div class="arc" id="flight-quality-bar">
       <div class="id">A1 &middot; live</div>
       <h4>QUALITY BAR</h4>
-      <p>junction law, sprite bar, taste-law enforcement. Rolling.</p>
+      <p>Junction law, sprite bar, taste-law enforcement. Rolling.</p>
     </div>
     <div class="arc" id="flight-weapon-identity">
       <div class="id">A2 &middot; nearly closed</div>
       <h4>WEAPON IDENTITY</h4>
-      <p>integration done; per-weapon focus ranges tier-2.</p>
+      <p>Integration done; per-weapon focus ranges tier-2.</p>
     </div>
     <div class="arc" id="flight-co-op">
-      <div class="id">A3 &middot; Wed 7/30</div>
+      <div class="id">A3</div>
       <h4>CO-OP</h4>
-      <p>the quality push campaign. Second Seat registry seeds it.</p>
+      <p>The quality push campaign. Second Seat registry seeds it.</p>
     </div>
     <div class="arc" id="flight-audio">
-      <div class="id">A4 &middot; Thu 7/31</div>
+      <div class="id">A4</div>
       <h4>AUDIO</h4>
-      <p>own campaign. Every ratified visual beat gets its sound twin.</p>
+      <p>Own campaign. Every ratified visual beat gets its sound twin.</p>
     </div>
     <div class="arc" id="flight-controller">
       <div class="id">A5</div>
@@ -220,9 +452,9 @@ section{margin-top:64px}
       <p>S1 Thu, S2 Fri/weekend, Deck later.</p>
     </div>
     <div class="arc" id="flight-character-progression">
-      <div class="id">A6 &middot; Fri+</div>
+      <div class="id">A6</div>
       <h4>CHARACTER PROGRESSION</h4>
-      <p>starters trio, zone-gated new characters (7 themed),</p>
+      <p>Starters trio, zone-gated new characters (7 themed), Whompus crown, Orbital Mechanic v2, pedestal rework, unlock ceremonies wired.</p>
     </div>
     <div class="arc" id="flight-snow-tier">
       <div class="id">A7 &middot; 0.7</div>
@@ -230,20 +462,58 @@ section{margin-top:64px}
       <p>Borealisk build (ratified card), S1 maps, Hollow Crown capstone.</p>
     </div>
     <div class="arc" id="flight-accounts">
-      <div class="id">A8 &middot; next week, 0.7</div>
+      <div class="id">A8 &middot; 0.7</div>
       <h4>ACCOUNTS</h4>
-      <p>wrangler tap + sync; SAVE COMPAT fixtures first.</p>
+      <p>Wrangler tap + sync; SAVE COMPAT fixtures first.</p>
     </div>
     <div class="arc" id="flight-the-lab-arc">
       <div class="id">A9 &middot; pillar, rolling</div>
       <h4>THE LAB ARC</h4>
-      <p>dev tools graduate to player features. Photo mode +</p>
+      <p>Dev tools graduate to player features. Photo mode + free roam, codex, gallery; L0 secret entry to L3 community pipeline.</p>
+    </div></div>
+</section>
+
+<section id="pipeline">
+  <div class="rule"></div>
+  <h2 class="chroma">Coming down the pipeline</h2>
+  <p class="lede">Wanted, written down, not started. 18 things are in that queue and these are
+    6 of them.</p>
+  <div class="arcs">
+    <div class="arc">
+      <div class="id">QUEUED</div>
+      <h4>Enemies that belong in the snow</h4>
+      <p>The snow worlds still spawn desert enemies. They get a roster of their own, and their bosses after that.</p>
+    </div>
+    <div class="arc">
+      <div class="id">QUEUED</div>
+      <h4>The aimed weapon grows up</h4>
+      <p>The one weapon you aim gets upgrades as it levels. There is an evolution waiting at the end of them.</p>
+    </div>
+    <div class="arc">
+      <div class="id">QUEUED</div>
+      <h4>Five more weapons, and earth</h4>
+      <p>Both pickers have empty rows in them. Five weapons go in, and earth arrives as an element.</p>
+    </div>
+    <div class="arc">
+      <div class="id">QUEUED</div>
+      <h4>A melee verb</h4>
+      <p>Mouse look opened a slot the keyboard never had. Something heavy goes in it.</p>
+    </div>
+    <div class="arc">
+      <div class="id">QUEUED</div>
+      <h4>The last two menus get their coat</h4>
+      <p>The tailor and the upgrade shop never got the pass every other screen got. They get it.</p>
+    </div>
+    <div class="arc">
+      <div class="id">QUEUED</div>
+      <h4>A first room that teaches</h4>
+      <p>The verbs get taught by making you use them. Nothing stops to explain the jump.</p>
     </div></div>
 </section>
 
 <footer>
-  Generated 2026-08-05 19:18 UTC from <code>game@bc134616</code>.
-  Live build <code>0cb53bbe</code> (a deploy is pending).
+  Generated 2026-08-06 16:15 UTC from <code>game@ce3c1016</code>.
+  Preview is serving <code>0.6.5</code> and Stable is serving <code>0.6.1</code>.
 </footer>
 
 </div>

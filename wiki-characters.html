@@ -6,6 +6,20 @@
 <title>WHOMP characters</title>
 <meta name="description" content="Characters: Who you start as, before the run starts rewriting it. Canonical facts generated from verified game artifacts.">
 <link rel="icon" href="whomp-icon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WHOMP">
+<meta property="og:title" content="WHOMP characters">
+<meta property="og:description" content="Characters: Who you start as, before the run starts rewriting it. Canonical facts generated from verified game artifacts.">
+<meta property="og:url" content="https://kiwimaddog2020.github.io/whomp-site/wiki-characters.html">
+<meta property="og:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The WHOMP mark: a chromatic cream W on a dark violet square.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WHOMP characters">
+<meta name="twitter:description" content="Characters: Who you start as, before the run starts rewriting it. Canonical facts generated from verified game artifacts.">
+<meta name="twitter:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<link rel="canonical" href="https://kiwimaddog2020.github.io/whomp-site/wiki-characters.html">
 <style>
 
 :root{
@@ -81,8 +95,12 @@ button{font-family:var(--font)}
   font-variant-numeric:tabular-nums;
 }
 .chip b{color:var(--cream);font-weight:700}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
-.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+.chip code{font-family:var(--mono);font-size:.92em;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16);flex:none}
+/* Measured or not measured. There is no third state and no verdict; see the
+   comment on trackChip for why the gold dot that used to compare the live sha
+   against the wiki source was retired rather than recoloured. */
+.dot.unknown{background:var(--dim);box-shadow:0 0 0 3px rgba(141,132,161,.14)}
 
 .btn{
   display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
@@ -97,6 +115,14 @@ button{font-family:var(--font)}
 
 .arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+/* A card that does nothing on hover reads as a picture of a card. These lift by
+   one pixel and warm their rim, which is the same gesture the play button makes
+   and the smallest one that still registers. */
+.arc:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .arc{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .arc:hover{transform:translateY(-1px)}
+}
 .arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
 .arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
 .arc p{margin:0;font-size:.88rem;color:var(--dim)}
@@ -464,16 +490,19 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="subtag">Who you start as, before the run starts rewriting it.</p>
       </span>
     </span>
-    <div class="chips"><span class="chip"><span class="dot stale" aria-hidden="true"></span>
-  live <b>0cb53bbe</b> · different from wiki source</span>
-  <span class="chip">version <b>0.6.1</b></span></div>
+    <div class="chips"><span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Preview <b>0.6.5</b> · <code>4969400b</code></span>
+  <span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Stable <b>0.6.1</b> · <code>0cb53bbe</code></span></div>
   </div>
 </div>
 
 <div class="wsearchband">
 <div class="searchwrap" role="search">
-  <label class="searchlabel" for="search">Search WHOMP <kbd class="searchkey">/</kbd></label>
   <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
+    aria-label="Search WHOMP"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
@@ -557,7 +586,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <h2 class="chroma">Characters</h2>
     <p class="lede">A character is a starting health number, a speed, a damage multiplier, one passive rule and one signature move. The three numbers are inputs the run multiplies, not the speed you travel at or the damage you land, and the weapon named on a card is a suggestion rather than something you walk in holding.</p>
 
-    <p class="wprov">Every number on this page was read out of the game, at build <b>game@bc134616</b>.
+    <p class="wprov">Every number on this page was read out of the game, at build <b>game@ce3c1016</b>.
       <a href="wiki-how-it-is-built.html">Where the numbers come from</a></p>
 
 
@@ -862,7 +891,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-05 19:18 UTC from <code>game@bc134616</code>,
+  Generated 2026-08-06 16:15 UTC from <code>game@ce3c1016</code>,
   content derived from <code>data/game-data.json</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

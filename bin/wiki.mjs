@@ -2944,6 +2944,7 @@ ${chrome.SEARCH_SCRIPT(`
       description: `${roster.title}: ${roster.tagline} Canonical facts generated from verified game artifacts.`,
       body,
       script,
+      file: `wiki-${roster.slug}.html`,
     }),
   };
 }
@@ -3019,6 +3020,7 @@ function renderHub(rosters, ctx) {
       description: 'The complete generated WHOMP wiki: every public source catalog and controlled automatic-weapon simulation surface.',
       body,
       script: `${chrome.SEARCH_SCRIPT('')}\n${chrome.NAV_SCRIPT}`,
+      file: 'wiki.html',
     }),
   };
 }
@@ -3118,6 +3120,7 @@ function renderExplainer(rosters, ctx) {
       description: 'How the WHOMP wiki is built, what it refuses to publish, and why its numbers cannot quietly go stale.',
       body,
       script: `${chrome.SEARCH_SCRIPT('')}\n${chrome.NAV_SCRIPT}`,
+      file: EXPLAINER_FILE,
     }),
   };
 }
