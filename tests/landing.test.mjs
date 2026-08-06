@@ -18,6 +18,7 @@ import {
   isExpiredSchedule,
   liveSchedule,
   localDay,
+  openingCapital,
   parseArcs,
   parseReleaseChannelUrls,
   parseWishlistWants,
@@ -86,6 +87,16 @@ test('a citation of a repo file never reaches the page, and an arrow becomes a w
   );
   assert.equal(withoutSourceRefs('Second Seat registry seeds it.'), 'Second Seat registry seeds it.');
   assert.equal(withoutSourceRefs('Read the design, see docs/design/TUTORIAL.md.'), 'Read the design.');
+});
+
+test('a description that continues its own title still opens like a sentence', () => {
+  // docs/CAMPAIGN.md writes "A4 AUDIO (Thu 7/31): own campaign." and the site
+  // renders the title as a heading above it, so the description has to stand up
+  // on its own. Capitalising is typography; no word changes.
+  assert.equal(openingCapital('own campaign. Every ratified visual beat gets its sound twin.'),
+    'Own campaign. Every ratified visual beat gets its sound twin.');
+  assert.equal(openingCapital('Already fine.'), 'Already fine.');
+  assert.equal(openingCapital('   '), '');
 });
 
 /* -------------------------------------------------------------------- the arcs */

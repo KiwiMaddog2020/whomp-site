@@ -56,7 +56,10 @@ import { writeFileSync, readFileSync, readdirSync, existsSync, mkdirSync, unlink
 import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
-import { fetchStableLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
+import {
+  buildPipelineTeasers, localDay, parseArcs, parseReleaseChannelUrls, renderableArcs, runShape,
+} from './landing.mjs';
+import { fetchLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
 import { KEY_CHANGE_CAP, readPatchReleases } from './patch-notes.mjs';
 import {
   buildWiki, EXPLAINER_FILE, EXPLAINER_SLUG, EXPLAINER_TITLE, rosterSpecs, visualOutputPath, WIKI_CSS,
@@ -80,7 +83,40 @@ const OFFLINE = args.includes('--offline');
  * no privileged knowledge. */
 const SHA_ARG = arg('--sha', '');
 const VERSION_ARG = arg('--version', '');
-const LIVE_URL = 'https://kiwimaddog2020.github.io/whomp-play';
+
+/* WHERE THE SITE ITSELF LIVES. Only the social-card tags need it: og:url and the
+ * absolute image URL an unfurler fetches, neither of which can be relative. It
+ * is the same origin bin/deploy-site.sh prints when it finishes. */
+const SITE_URL = 'https://kiwimaddog2020.github.io/whomp-site';
+
+/* WARNINGS ARE A GATE, NOT A CONSOLE DECORATION, AND THAT ONLY WORKS IF THEY
+ * ARE RARE. bin/regenerate-and-verify.sh fails the run on a non-zero WARNING
+ * count, which is how a dropped arc or a teaser for work that already shipped
+ * becomes a red lane instead of a line nobody read in a deploy log.
+ *
+ * SO THERE ARE TWO SEVERITIES, and the split is the whole point. A gate that is
+ * red on the first day for something the lane cannot fix teaches everyone to
+ * ignore it, which is the same defect as the permanent gold "a deploy is
+ * pending" dot this train just retired, arriving from the other direction.
+ *
+ *   WARNING  the page is wrong or incomplete AND this repo can fix it, or the
+ *            fix is one line in a file a person can open today. Fails the gate.
+ *   NOTE     true, worth saying, owned upstream. The game's roadmap describing
+ *            an arc with last Thursday in it is real rot and the fix belongs in
+ *            the game repo; the site refuses to rewrite the game's prose, so it
+ *            reports and moves on. Never fails the gate.
+ *
+ * Anything printed through either must name the file a human has to open. */
+const warnings = [];
+const siteNotes = [];
+const warn = (message) => {
+  warnings.push(message);
+  console.warn(`SITE WARNING: ${message}`);
+};
+const note = (message) => {
+  siteNotes.push(message);
+  console.warn(`SITE NOTE: ${message}`);
+};
 
 /* GATING, single flag, one place to flip. Director change 2026-07-30: the log
  * is public today, so this is false. It drives two things at once:
@@ -236,6 +272,16 @@ if (!existsSync(DESKTOP_ICON_PATH)) {
 }
 const desktopIconSvg = readFileSync(DESKTOP_ICON_PATH, 'utf8');
 
+/* The same mark as a raster, for the social card. An unfurler will not render
+ * SVG, so the one place the site needs a bitmap is exactly here. Read as bytes
+ * and written untouched, same contract as every wiki-assets copy: the site never
+ * redraws, rescales or re-encodes canonical game art. */
+const SOCIAL_ICON_PATH = join(REPO, 'public/icons/icon-512.png');
+if (!existsSync(SOCIAL_ICON_PATH)) {
+  throw new Error(`No canonical 512px WHOMP icon at ${SOCIAL_ICON_PATH}. The social card image is copied from the game and is never redrawn or rescaled here.`);
+}
+const socialIconBytes = readFileSync(SOCIAL_ICON_PATH);
+
 // ---------------------------------------------------------------- derive: identity
 const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
 /* AUTHORED, deliberately NOT derived from package.json. The repo description is
@@ -272,14 +318,44 @@ if (gameTaglines.length === 0) {
   throw new Error('No TAGLINES parsed from whomp/src/ui/mainMenu.ts. The title screen file moved or its export shape changed, fix parseGameTaglines rather than shipping an empty rotation.');
 }
 
+// ---------------------------------------------------------------- derive: the two release tracks
+/* BOTH PLAY BUTTONS POINT WHERE THE GAME SAYS. src/core/releaseChannel.ts holds
+ * the audited channel table the game itself links between tracks with, so the
+ * site reads it rather than keeping a second copy that goes wrong the next time
+ * a track moves. The Stable URL used to be a hand-typed constant right here. */
+const RELEASE_CHANNEL_PATH = join(REPO, 'src/core/releaseChannel.ts');
+if (!existsSync(RELEASE_CHANNEL_PATH)) {
+  throw new Error(`No ${RELEASE_CHANNEL_PATH}. Both play buttons are read from the game's audited release-channel table and will not be hand-typed here.`);
+}
+const TRACK_URL = parseReleaseChannelUrls(readFileSync(RELEASE_CHANNEL_PATH, 'utf8'));
+
 // ---------------------------------------------------------------- derive: what is actually live
 /* The live sha is the ONLY proof of live (deploy-verification law), so the site
- * reports it as measured, and says so plainly when it could not measure it. */
+ * reports it as measured, and says so plainly when it could not measure it.
+ *
+ * TWO TRACKS ARE MEASURED NOW, not one. Until 2026-08-06 this page fetched
+ * Stable, printed its sha, compared it against the wiki's source sha and lit a
+ * gold "a deploy is pending" dot whenever they differed. They differ BY DESIGN:
+ * Stable is the weekly promotion and the site regenerates off main, so the dot
+ * was on permanently and was the first thing a stranger read. A comparison
+ * between two things that are supposed to be different is not a status, and it
+ * is replaced by what each track is actually serving.
+ *
+ * --sha/--version still speak for Stable only, because that is the track the
+ * deploy ritual that passes them publishes. Preview is always measured. */
 let live = null;
 if (SHA_ARG) {
   live = normalizeSuppliedLiveVersion(SHA_ARG, VERSION_ARG || pkg.version);
 } else if (!OFFLINE) {
-  live = await fetchStableLiveVersion(`${LIVE_URL}/version.json`);
+  live = await fetchLiveVersion(`${TRACK_URL.stable}version.json`, 'stable');
+}
+const previewLive = OFFLINE ? null : await fetchLiveVersion(`${TRACK_URL.preview}version.json`, 'preview');
+const tracks = [
+  { channel: 'preview', label: 'Preview', url: TRACK_URL.preview, live: previewLive },
+  { channel: 'stable', label: 'Stable', url: TRACK_URL.stable, live },
+];
+for (const track of tracks) {
+  if (!track.live && !OFFLINE) note(`${track.label} did not answer at ${track.url}version.json, so the page says its build is unverified rather than naming one.`);
 }
 
 // ---------------------------------------------------------------- derive: the full shipped feed
@@ -404,15 +480,60 @@ const renderedChanges = fullFeed.flatMap(([, changes]) => changes.slice(0, PER_D
 
 // ---------------------------------------------------------------- derive: the arcs, from CAMPAIGN
 /* CAMPAIGN.md IS the train. Parsing its ARCS block keeps one source of truth
- * rather than a second hand-maintained roadmap that drifts within a week. */
-let arcs = [];
+ * rather than a second hand-maintained roadmap that drifts within a week.
+ *
+ * THE PARSE MOVED TO bin/landing.mjs (2026-08-06) and grew three jobs, because
+ * the roadmap being one source of truth did not stop the PAGE from lying about
+ * it. It folded wrapped lines so A6 and A9 stopped mid-list, it printed
+ * "Wed 7/30" for a week after that Wednesday, and it printed "next week" on a
+ * static page. Those are text rules, text rules rot silently, and the only way
+ * to keep eyes on them is to make them testable. See tests/landing.test.mjs. */
+const REFERENCE_DAY = localDay();
 const campaignPath = join(REPO, 'docs/CAMPAIGN.md');
-if (existsSync(campaignPath)) {
-  const c = readFileSync(campaignPath, 'utf8');
-  const block = c.split(/^## ARCS$/m)[1]?.split(/^## /m)[0] ?? '';
-  arcs = [...block.matchAll(/^- (A\d+) ([^:(]+?)(?:\s*\(([^)]+)\))?:\s*(.+)$/gm)]
-    .map((m) => ({ id: m[1], name: cleanDoc(m[2]), when: cleanDoc(m[3] || ''), what: cleanDoc(m[4]) }));
+const parsedArcs = existsSync(campaignPath)
+  ? parseArcs(readFileSync(campaignPath, 'utf8')).map((a) => ({ ...a, name: cleanDoc(a.name), when: cleanDoc(a.when), what: cleanDoc(a.what) }))
+  : [];
+const arcRender = renderableArcs(parsedArcs, REFERENCE_DAY);
+const arcs = arcRender.cards;
+for (const gone of arcRender.dropped) {
+  warn(`Arc ${gone.id} ${gone.name} was left off the page: ${gone.reason} Fix the line in ${REPO}/docs/CAMPAIGN.md.`);
 }
+/* WHAT THE SITE MAY NOT FIX. An arc whose own description is a schedule
+ * ("S1 Thu, S2 Fri/weekend, Deck later.") cannot be repaired by dropping a
+ * clause without destroying the sentence, and rewriting the game's roadmap prose
+ * here would make this repo a second author of it. So it is reported, every run,
+ * naming the arc and the file, and the fix lands in the game repo. */
+for (const stale of arcRender.expiredBody) {
+  note(`Arc ${stale.id} ${stale.name} describes itself with a schedule that has passed: "${stale.what}" The site will not rewrite the game's roadmap; fix the line in ${REPO}/docs/CAMPAIGN.md.`);
+}
+
+// ---------------------------------------------------------------- derive: what a run is
+/* THE ONE NUMBER A LANDING PAGE FOR THIS GAME HAS TO GET RIGHT. See runShape in
+ * bin/landing.mjs for why it comes out of the mode registry and not out of
+ * docs/GAME_SPEC.md, which still describes a run eight minutes longer than the
+ * one the game actually plays. */
+const run = runShape(gameData);
+
+// ---------------------------------------------------------------- derive: what is coming
+/* The game's own queue, read as rows, said as sentences. buildPipelineTeasers
+ * carries the whole argument for why the rows are derived and the sentences are
+ * authored; the short version is that a row title is a lane name, several of
+ * them are defect reports, and a landing page that publishes those has published
+ * an engineering backlog to strangers. */
+const WISHLIST_PATH = join(REPO, 'docs/train/WISHLIST.md');
+let pipeline = { cards: [], unwritten: [], orphaned: [], queued: 0 };
+if (existsSync(WISHLIST_PATH)) {
+  pipeline = buildPipelineTeasers(readFileSync(WISHLIST_PATH, 'utf8'));
+  for (const file of pipeline.orphaned) {
+    warn(`The landing page carries a teaser for ${file}, which has left docs/train/WISHLIST.md. Either it shipped, in which case delete its entry from PIPELINE_TEASERS in bin/landing.mjs, or the wishlist moved.`);
+  }
+} else {
+  warn(`No ${WISHLIST_PATH}, so the landing page has nothing to say about what is coming. The queue moved.`);
+}
+/* Shown at most six, and the rest are SAID rather than dropped, same
+ * no-silent-caps law as the feed's "+N more that day, not shown". */
+const PIPELINE_SHOWN = 6;
+const pipelineCards = pipeline.cards.slice(0, PIPELINE_SHOWN);
 
 // ---------------------------------------------------------------- derive: known bugs, OPEN only
 /* docs/BUG_INVENTORY.md is a VERIFIED per-item triage, not a hand-list of
@@ -741,9 +862,61 @@ const wordmark = (size, id) => `
 </svg>`;
 const FAVICON = 'whomp-icon.svg';
 
-const liveChip = () => `<span class="chip"><span class="dot${live && live.sha === headSha ? '' : ' stale'}" aria-hidden="true"></span>
-  ${live ? `live <b>${esc(live.sha)}</b> · ${live.sha === headSha ? 'current wiki source' : 'different from wiki source'}` : 'live build <b>unverified</b> · offline provenance'}</span>
-  <span class="chip">version <b>${esc(live?.version ?? pkg.version)}</b></span>`;
+/* THE CARD, on all three surfaces (finding 7, 2026-08-06). A link to any page on
+ * this site unfurled as a bare URL in every chat window, every DM and every post
+ * it was ever pasted into, because none of the three carried a single og: or
+ * twitter: tag. That is the cheapest reach this project has and it was off.
+ *
+ * THE IMAGE IS THE CANONICAL ICON, copied byte-for-byte out of the game's own
+ * public/icons/icon-512.png at build time, exactly as whomp-icon.svg already is.
+ * The alternative was a hand-taken screenshot, and a screenshot on a landing page
+ * for a build that changes most days is a promise about a version that shipped
+ * weeks ago. A 512-square icon is honest, it is already the brand reference by
+ * director ruling, and it never goes stale.
+ *
+ * summary, NOT summary_large_image, for the same reason: the card matches the
+ * asset. A square icon stretched into a 2:1 banner looks like a mistake, and
+ * claiming a large image the site does not have is the wrong kind of confident. */
+const SOCIAL_IMAGE = 'whomp-icon-512.png';
+const socialTags = ({ title, description, path }) => {
+  const url = `${SITE_URL}/${path === 'index.html' ? '' : path}`;
+  return `<meta property="og:type" content="website">
+<meta property="og:site_name" content="WHOMP">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
+<meta property="og:url" content="${esc(url)}">
+<meta property="og:image" content="${esc(`${SITE_URL}/${SOCIAL_IMAGE}`)}">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The WHOMP mark: a chromatic cream W on a dark violet square.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${esc(`${SITE_URL}/${SOCIAL_IMAGE}`)}">
+<link rel="canonical" href="${esc(url)}">`;
+};
+
+/* THE STALE DOT IS GONE, AND IT WAS NOT LYING, WHICH IS WHY IT HAD TO GO.
+ *
+ * It compared the Stable build's sha against the sha this site was generated
+ * from and went gold whenever they differed, under the words "a deploy is
+ * pending". They differ by design: Stable is a deliberate weekly promotion and
+ * the site regenerates off main every time the game deploys, so the two agree
+ * only in the minutes after a promotion. The dot was on permanently, at the top
+ * of the page, and a permanent warning is not a status. It is wallpaper, and
+ * once a reader learns to ignore it, it cannot tell them anything ever again.
+ *
+ * What replaces it is not a softer warning, it is a different question. Each
+ * track says which version it is serving and which build that came from. There
+ * is no verdict, because there was never a verdict to give: neither number is
+ * wrong. The dot now means "this was measured just now" and dims when the track
+ * did not answer, which is the only binary state that actually exists here. */
+const trackChip = (track) => `<span class="chip">
+    <span class="dot${track.live ? '' : ' unknown'}" aria-hidden="true"></span>
+    ${esc(track.label)} ${track.live
+      ? `<b>${esc(track.live.version)}</b> · <code>${esc(track.live.sha)}</code>`
+      : '<b>unverified</b> · did not answer'}</span>`;
+const liveChip = () => tracks.map(trackChip).join('\n  ');
 
 const arcCards = (list) => list.map((a) => `
     <div class="arc" id="flight-${slug(a.name)}">
@@ -830,8 +1003,12 @@ button{font-family:var(--font)}
   font-variant-numeric:tabular-nums;
 }
 .chip b{color:var(--cream);font-weight:700}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16)}
-.dot.stale{background:var(--gold);box-shadow:0 0 0 3px rgba(255,207,63,.16)}
+.chip code{font-family:var(--mono);font-size:.92em;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16);flex:none}
+/* Measured or not measured. There is no third state and no verdict; see the
+   comment on trackChip for why the gold dot that used to compare the live sha
+   against the wiki source was retired rather than recoloured. */
+.dot.unknown{background:var(--dim);box-shadow:0 0 0 3px rgba(141,132,161,.14)}
 
 .btn{
   display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
@@ -846,6 +1023,14 @@ button{font-family:var(--font)}
 
 .arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+/* A card that does nothing on hover reads as a picture of a card. These lift by
+   one pixel and warm their rim, which is the same gesture the play button makes
+   and the smallest one that still registers. */
+.arc:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .arc{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .arc:hover{transform:translateY(-1px)}
+}
 .arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
 .arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
 .arc p{margin:0;font-size:.88rem;color:var(--dim)}
@@ -1204,7 +1389,7 @@ const AUTHBAR = `
  *  predate it and keep their own bespoke heads, deliberately: neither is worth
  *  the churn of a rewrite whose only benefit is symmetry, and log.html's head
  *  carries a large page-specific style block anyway. */
-const wikiPage = ({ title, description, body, script }) => `<!doctype html>
+const wikiPage = ({ title, description, body, script, file }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -1212,6 +1397,7 @@ const wikiPage = ({ title, description, body, script }) => `<!doctype html>
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="icon" href="${FAVICON}">
+${socialTags({ title, description, path: file || 'wiki.html' })}
 <style>
 ${SHARED_CSS}
 ${SEARCH_CSS}
@@ -1388,65 +1574,300 @@ const wiki = buildWiki({
 });
 
 // ============================================================== INDEX.HTML
-// The short public landing page. Mark, tagline, live build chip, play button,
-// arcs. That is the whole page, on purpose: it never grows. Everything else
-// (the log, known bugs, in-flight work, search) lives on log.html.
+/* The short public landing page. It is still short and it still never grows into
+ * the log, but "mark, tagline, chip, button, arcs" was not enough of a page: a
+ * stranger could read all of it and still not know that a run is twenty minutes,
+ * that one weapon is aimed, that it opens in a tab, or that a Preview track
+ * exists at all. Four sections now, each of them derived:
+ *
+ *   the hero      two play buttons, one per release track, each carrying the
+ *                 version that track is actually serving right now
+ *   the run       what twenty minutes of this game is, off the mode registry
+ *   what shipped  the newest concise log entries, the same source log.html uses
+ *   what is next  the campaign arcs, plus the game's own queue as teasers
+ *
+ * NOTHING ON IT IS TYPED TWICE. The clock comes out of runModes, the roster
+ * sizes out of the domain counts, the shipped lines out of the release notes,
+ * the arcs out of CAMPAIGN.md, the teasers out of the wishlist, the play URLs
+ * out of releaseChannel.ts and the versions off the two live endpoints. The
+ * authored half is the framing sentences, and they state no magnitude. */
+const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(track.url)}">
+      ${track.channel === 'preview' ? 'PLAY THE PREVIEW' : 'PLAY STABLE'}${track.live ? ` <em>v${esc(track.live.version)}</em>` : ''}
+    </a>`;
+
+const runCard = (title, body) => `
+    <div class="fact">
+      <h3>${esc(title)}</h3>
+      <p>${esc(body)}</p>
+    </div>`;
+
+/* The dev log, on the landing page, one line each. Same entries log.html renders
+ * in its concise view, from the same array, so the two cannot disagree: this is
+ * a window onto that view rather than a second feed with its own rules. The
+ * headline is the release's own one-line banner, written by a person for players
+ * when the release was cut, and nothing here shortens it. */
+const LANDING_LOG_ENTRIES = 5;
+const landingLog = conciseShown.slice(0, LANDING_LOG_ENTRIES).map((e) => `
+    <a class="logline" href="log.html#${esc(e.anchor)}">
+      <span class="logline-when">${esc(e.date)}${e.version ? ` &middot; v${esc(e.version)}` : ''}</span>
+      <span class="logline-what">${esc(e.title)}</span>
+    </a>`).join('');
+
+const teaserCards = pipelineCards.map((t) => `
+    <div class="arc">
+      <div class="id">QUEUED</div>
+      <h4>${esc(t.title)}</h4>
+      <p>${esc(t.line)}</p>
+    </div>`).join('');
+
+const INDEX_TITLE = `WHOMP: ${TAGLINE}`;
+const INDEX_DESCRIPTION = `${TAGLINE} A ${run.minutes} minute run in a browser tab, built in the open with the dev log public.`;
+
 const indexHtml = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP: ${esc(TAGLINE)}</title>
-<meta name="description" content="${esc(TAGLINE)} Built in the open, with the dev log public.">
+<title>${esc(INDEX_TITLE)}</title>
+<meta name="description" content="${esc(INDEX_DESCRIPTION)}">
 <link rel="icon" href="${FAVICON}">
+${socialTags({ title: INDEX_TITLE, description: INDEX_DESCRIPTION, path: 'index.html' })}
 <style>
 ${SHARED_CSS}
-.wrap{max-width:860px;margin:0 auto;padding:0 24px 96px}
-header{padding:56px 0 40px;text-align:center}
-.wm{display:block;margin:0 auto 22px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.45))}
+.wrap{max-width:940px;margin:0 auto;padding:0 24px 110px}
+
+/* ---------------------------------------------------------------- THE TOP BAR
+   THE MARK MOVED HERE (director, 2026-08-06: "move the logo from above the
+   header to the left side of the navmenu"). It used to sit centred above the
+   wordmark, which meant the page opened with the W drawn twice at two sizes,
+   fourteen pixels apart, and pushed the button below the fold on a laptop. In
+   the bar it does the job a mark does: it says which site this is while you read
+   something else, and it takes the hero's vertical space back.
+
+   It is the SAME canonical asset the wiki's top bar uses, <img> against the icon
+   copied byte-for-byte from the game at build time, not a second inline drawing
+   of it. One mark, one file, one place it can ever be wrong. */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(6,4,14,.82);
+  border-bottom:1px solid rgba(255,243,207,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.topbar-inner{max-width:940px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;gap:20px}
+.brandmark{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+.brandmark img{display:block;width:34px;height:34px;border-radius:8px}
+.brandmark b{color:var(--cream);font-size:1.02rem;font-weight:900;letter-spacing:.04em}
+.brandmark:hover b{color:#fff}
+.brandmark:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:10px}
+.navlinks{display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:.78rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;padding:9px 11px;border-radius:8px;white-space:nowrap}
+.navlinks a:hover{color:var(--cream);background:rgba(255,243,207,.05)}
+.navlinks a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.topbar .authbar{padding:0;flex:none}
+/* The strip scrolls, the bar does not, and sign-in stays reachable. Hiding the
+   only control on the page at 700px was the easy answer and the wrong one. */
+@media (max-width:700px){
+  .topbar-inner{gap:10px;padding:9px 14px}
+  .brandmark b{display:none}
+  .navlinks a{padding:9px 8px;font-size:.74rem}
+}
+
+/* ------------------------------------------------------------ THE STAR DRIFT
+   Lifted from drafts/a-cabinet.html, at roughly half its opacity, because the
+   draft was a full-bleed attract mode and this page is a column of text on a
+   dark ground. Two tiled sheets on different periods so the parallax never
+   resolves into one moving grid.
+
+   IT IS MASKED TO THE TOP OF THE PAGE. Stars behind body copy is a texture
+   fighting a paragraph; stars behind the wordmark is the title screen. The mask
+   fades them out over the first 1100 pixels, so the hero has weather and the
+   reading has none. Fixed, one composited layer, no scroll listener. */
+.stars,.stars2{position:fixed;inset:-40% -10% auto -10%;height:150vh;z-index:0;pointer-events:none;
+  background-repeat:repeat;
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 380px,transparent 1100px);
+  mask-image:linear-gradient(180deg,#000 0,#000 380px,transparent 1100px)}
+.stars{
+  background-image:
+    radial-gradient(3px 3px at 18% 22%,rgba(255,255,255,.95) 0 22%,rgba(255,255,255,.16) 45%,transparent 70%),
+    radial-gradient(2.4px 2.4px at 62% 8%,rgba(255,243,207,.9) 0 24%,rgba(255,243,207,.14) 48%,transparent 70%),
+    radial-gradient(3.4px 3.4px at 84% 41%,rgba(255,255,255,.9) 0 20%,rgba(255,255,255,.15) 44%,transparent 70%),
+    radial-gradient(3px 3px at 34% 67%,rgba(197,130,255,.95) 0 22%,rgba(177,75,255,.18) 46%,transparent 70%),
+    radial-gradient(2.6px 2.6px at 9% 84%,rgba(255,255,255,.8) 0 24%,rgba(255,255,255,.12) 48%,transparent 70%),
+    radial-gradient(3px 3px at 71% 78%,rgba(120,245,255,.9) 0 22%,rgba(36,240,255,.16) 46%,transparent 70%);
+  background-size:420px 420px;animation:drift 190s linear infinite;opacity:.42}
+.stars2{
+  background-image:
+    radial-gradient(2px 2px at 44% 12%,rgba(255,255,255,.7) 0 26%,transparent 62%),
+    radial-gradient(2px 2px at 88% 62%,rgba(255,255,255,.6) 0 26%,transparent 62%),
+    radial-gradient(2.4px 2.4px at 26% 48%,rgba(255,120,180,.7) 0 24%,transparent 62%),
+    radial-gradient(1.8px 1.8px at 12% 36%,rgba(255,255,255,.5) 0 28%,transparent 64%);
+  background-size:250px 250px;animation:drift 320s linear infinite reverse;opacity:.3}
+@keyframes drift{to{transform:translate3d(-420px,150px,0)}}
+@media (prefers-reduced-motion:reduce){.stars,.stars2{animation:none}}
+/* The bar keeps its own z-index:30 and its own stacking context from
+   position:sticky. Only the column needs lifting off the star layer. */
+.wrap{position:relative;z-index:1}
+
+/* ------------------------------------------------------------------ THE HERO */
+header{padding:64px 0 8px;text-align:center}
 /* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
    700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size
    stays the site's own responsive clamp (the game's is a fixed 16px in a
    fixed-size menu panel, not a full-bleed hero) rather than pinned to 16px. */
-.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:18px auto 0;max-width:34ch;
+.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:20px auto 0;max-width:34ch;
   font-weight:700;font-style:italic;letter-spacing:0.03em}
-.chips{justify-content:center;margin-top:26px}
-.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
-.doorway{text-align:center;color:var(--dim);font-size:.92rem;margin-top:18px}
+.spec{margin:14px auto 0;max-width:56ch;color:var(--body);font-size:clamp(.95rem,1.9vw,1.06rem);text-wrap:balance}
+
+/* THE BUTTON, in the shape the game's own START row uses when it is the active
+   item: the sweep as fill, dark ink, no border, a flat plinth under it. Preview
+   is the loud one because Preview is the newest build that went green and is
+   what a visitor arriving today should press. Stable keeps a real button rather
+   than a text link, because it is a real choice and not a footnote. */
+.cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.play{display:inline-flex;align-items:center;gap:12px;padding:17px 34px;border-radius:14px;border:0;
+  text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:clamp(.98rem,2vw,1.14rem);
+  transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
+.play em{font-style:normal;opacity:.66;font-weight:800;font-size:.74em;letter-spacing:.1em}
+.play.loud{background:var(--sweep);color:#0a0714;box-shadow:0 7px 0 #7a1440,0 16px 30px -12px rgba(255,47,126,.55)}
+.play.loud:hover{transform:translateY(3px);box-shadow:0 4px 0 #7a1440,0 10px 22px -12px rgba(255,47,126,.5)}
+.play.quiet{color:var(--cream);border:2px solid rgba(255,243,207,.2);background:rgba(255,243,207,.05);
+  box-shadow:0 5px 0 rgba(0,0,0,.42)}
+.play.quiet:hover{background:rgba(255,243,207,.12);transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.42)}
+.play:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+.tracks{margin:22px auto 0;max-width:58ch;color:var(--dim);font-size:.88rem}
+.tracks b{color:var(--body);font-weight:800}
+.chips{justify-content:center;margin-top:22px}
+
+/* ---------------------------------------------------------------- THE FLOOR */
+section{margin-top:78px}
 h2{font-size:1.65rem;margin:0 0 6px}
-section{margin-top:64px}
+.lede{color:var(--dim);margin:0 0 22px;font-size:.95rem;max-width:64ch}
+
+/* min() rather than a bare minimum, so the four cards land 2x2 on a wide screen
+   instead of 3-and-a-lonely-one, and still collapse to a single column on a
+   phone without the track needing a media query of its own. */
+.facts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr))}
+.fact{border:var(--edge);border-radius:14px;padding:18px 20px;background:rgba(255,243,207,.025)}
+.fact h3{margin:0 0 7px;color:var(--cream);font-size:1.02rem}
+.fact p{margin:0;color:var(--dim);font-size:.9rem}
+.fact:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .fact{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .fact:hover{transform:translateY(-1px)}
+}
+/* The chips inherit the hero's centring; under a left-aligned grid they have to
+   take it back or the row reads as belonging to something else. */
+.tally{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;justify-content:flex-start}
+
+/* One line per release, date on the left, the release's own headline on the
+   right. A row, not a card: five cards would be a second dev log on the page. */
+.loglines{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;overflow:hidden;
+  background:rgba(255,243,207,.025)}
+.logline{display:flex;gap:16px;align-items:baseline;padding:13px 20px;text-decoration:none;color:var(--body);
+  border-top:1px solid rgba(255,243,207,.06)}
+.logline:first-child{border-top:0}
+.logline:hover,.logline:focus-visible{background:rgba(36,240,255,.07);outline:none}
+.logline:focus-visible{box-shadow:inset 2px 0 0 var(--cyan)}
+.logline-when{flex:none;width:9.5rem;color:var(--dim);font-size:.78rem;letter-spacing:.03em;
+  font-variant-numeric:tabular-nums}
+.logline-what{flex:1;min-width:0;font-size:.94rem;overflow-wrap:break-word}
+.logline:hover .logline-what{color:var(--cream)}
+.more{margin-top:14px;font-size:.88rem}
+@media (max-width:560px){
+  .logline{flex-direction:column;gap:4px}
+  .logline-when{width:auto}
+}
 </style>
 </head>
 <body>
+<div class="stars" aria-hidden="true"></div>
+<div class="stars2" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brandmark" href="index.html" aria-label="WHOMP home">
+      <img src="${FAVICON}" alt="" width="34" height="34">
+      <b>WHOMP</b>
+    </a>
+    <nav class="navlinks" aria-label="Sections">
+      <a href="#run">The run</a>
+      <a href="#shipped">What shipped</a>
+      <a href="#next">What is next</a>
+      <a href="wiki.html">Wiki</a>
+      <a href="log.html">Dev log</a>
+    </nav>
+    ${AUTHBAR}
+  </div>
+</div>
+
 <div class="wrap">
 
-${AUTHBAR}
-
 <header>
-  ${wordmark(112, 'h')}
   <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
   <p class="tag" id="hero-tagline">${esc(gameTaglines[0])}</p>
   <script>document.getElementById('hero-tagline').textContent=(${JSON.stringify(gameTaglines)})[Math.min(${gameTaglines.length}-1,Math.max(0,Math.floor(Math.random()*${gameTaglines.length})))];</script>
-  <div class="chips">${liveChip()}</div>
+  <p class="spec">${esc(TAGLINE)}</p>
   <div class="cta">
-    <a class="btn" href="${LIVE_URL}/">Play the current build</a>
-    <a class="btn ghost" href="wiki.html">Browse the wiki</a>
-    <a class="btn ghost" href="log.html">Read the dev log</a>
+    ${trackButton(tracks[0], 'loud')}
+    ${trackButton(tracks[1], 'quiet')}
   </div>
-  <p class="doorway">The wiki is every weapon, core and enemy, read straight out of the game.
-    The dev log is every build: what shipped, what is still broken, what is next.</p>
+  <p class="tracks"><b>Preview</b> is the newest build that went green, and it moves most days.
+    <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself.</p>
+  <div class="chips">${liveChip()}</div>
 </header>
 
-<section>
+<section id="run">
+  <div class="rule"></div>
+  <h2 class="chroma">What a run is</h2>
+  <p class="lede">${run.minutes} minutes, one weapon you aim yourself, and a horde that treats the ground as a
+    surface to be thrown off. It opens in a browser tab.</p>
+  <div class="facts">
+    ${runCard(`${run.minutes} minutes, and the last two are the point`,
+      `The final horde arrives at ${run.finalHorde} and does not thin out. Hold it for ${run.holdMinutes} minutes, bank at ${run.bank}, and then ${run.endless ? 'either finish or keep going into endless' : 'the run is over'}.`)}
+    ${runCard('One weapon is yours to aim',
+      `The core is the one you point. The other ${run.weapons} weapons fire themselves, and deciding which of them you carry is the rest of it.`)}
+    ${runCard('Every level is a draft',
+      `Three upgrades arrive, you take one, and the other two are gone. ${run.weapons} weapons and ${run.tomes} tomes are in that pool, and the run is over long before you see them all.`)}
+    ${runCard('A tab, and nothing else',
+      'No download, no launcher, and no account to make. The link is the game.')}
+  </div>
+  <div class="chips tally">
+    <span class="chip"><b>${run.worlds}</b> worlds</span>
+    <span class="chip"><b>${run.enemies}</b> enemies</span>
+    <span class="chip"><b>${run.characters}</b> characters</span>
+    <span class="chip"><b>${run.cores}</b> aimed cores</span>
+    <span class="chip"><b>${run.weapons}</b> weapons</span>
+  </div>
+</section>
+
+<section id="shipped">
+  <div class="rule"></div>
+  <h2 class="chroma">What just shipped</h2>
+  <p class="lede">The newest ${LANDING_LOG_ENTRIES} releases, in the words they were written in for players.
+    The dev log has the rest of them, and the raw engineering log underneath.</p>
+  <div class="loglines">${landingLog}</div>
+  <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
+</section>
+
+<section id="next">
   <div class="rule"></div>
   <h2 class="chroma">What we are building</h2>
+  <p class="lede">The arcs the work is actually organised into, read out of the campaign the trains run on.</p>
   <div class="arcs">${arcCards(arcs)}</div>
 </section>
+${pipelineCards.length ? `
+<section id="pipeline">
+  <div class="rule"></div>
+  <h2 class="chroma">Coming down the pipeline</h2>
+  <p class="lede">Wanted, written down, not started. ${pipeline.queued} things are in that queue and these are
+    ${pipelineCards.length} of them.</p>
+  <div class="arcs">${teaserCards}</div>
+</section>` : ''}
 
 <footer>
   Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
-  ${live ? `Live build <code>${esc(live.sha)}</code>${live.sha === headSha ? ' (current)' : ' (a deploy is pending)'}.`
-         : 'Live build could not be reached at generation time, so no live sha is claimed.'}
+  ${tracks.every((t) => t.live)
+    ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
+    : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}
 </footer>
 
 </div>
@@ -1479,6 +1900,8 @@ const SOURCE_LABEL = {
   authored: 'written for the log',
   release: 'from the release notes',
 };
+
+const LOG_DESCRIPTION = 'The WHOMP dev log: what shipped, what is still broken, and what is coming next.';
 
 const bucketBlock = (name, html) => `
     <div class="bucket">
@@ -1590,8 +2013,9 @@ const logHtml = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WHOMP dev log</title>
-<meta name="description" content="The WHOMP dev log: what shipped, what is still broken, and what is coming next.">
+<meta name="description" content="${esc(LOG_DESCRIPTION)}">
 <link rel="icon" href="${FAVICON}">
+${socialTags({ title: 'WHOMP dev log', description: LOG_DESCRIPTION, path: 'log.html' })}
 <style>
 ${SHARED_CSS}
 .topbar{max-width:1180px;margin:0 auto;padding:0 24px}
@@ -1807,8 +2231,14 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
   Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
-  ${live ? `Live build <code>${esc(live.sha)}</code>${live.sha === headSha ? ' (current)' : ' (a deploy is pending)'}.`
-         : 'Live build could not be reached at generation time, so no live sha is claimed.'}
+  ${/* Same retirement as the hero chip on index.html, for the same reason: this
+        line compared the live Stable sha against the sha the site was generated
+        from and called the difference a pending deploy. The two are supposed to
+        differ. What each track is serving is a fact; the gap between them was
+        never a status. See the comment on trackChip. */ ''}
+  ${tracks.every((t) => t.live)
+    ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
+    : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
   <div class="stat">${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days, across ${allDays.length} active days, ${filtered} internal-only commits filtered out</div>
@@ -2042,6 +2472,10 @@ const OUTPUTS = [
   { file: 'log.html', body: logHtml },
   { file: 'search-index.json', body: JSON.stringify(searchIndex) },
   { file: 'whomp-icon.svg', body: desktopIconSvg },
+  /* The social card's image. Bytes, not text, so the raster reaches the write
+   * step untouched; see SOCIAL_ICON_PATH for why the card is the canonical icon
+   * rather than a screenshot. */
+  { file: SOCIAL_IMAGE, body: socialIconBytes },
   ...wiki.pages.map((p) => ({ file: p.file, body: p.html })),
 ];
 /* Every manifest path is a lowercase, slash-delimited relative path. Nested
@@ -2153,6 +2587,10 @@ if (retiredVisualFiles.length) {
 console.log(`  game@${headSha}  live=${live ? live.sha : 'unreachable'}`);
 console.log(`  ${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days since ${windowStart}, across ${allDays.length} active days (${filtered} noise commits filtered)`);
 console.log(`  ${arcs.length} arcs, ${backlogTeasers.length} backlog teasers, ${openBugs.length} open bugs`);
+console.log(`  landing: a run is ${run.minutes} minutes (final horde ${run.finalHorde}, ${run.holdMinutes} minute hold, bank ${run.bank}), ${LANDING_LOG_ENTRIES} log lines, ${pipelineCards.length} of ${pipeline.queued} queued wants teased${pipeline.unwritten.length ? `, ${pipeline.unwritten.length} with no teaser line yet` : ''}`);
+for (const track of tracks) {
+  console.log(`  track ${track.label}: ${track.live ? `${track.live.version} at ${track.live.sha}` : 'unverified'}  ${track.url}`);
+}
 /* The concise view's counts are printed separately and in full because this is
  * the surface that used to fail silently. "8 releases read, 1 authored note,
  * 8 entries published" is a sentence an operator can check against the page. */
@@ -2164,3 +2602,8 @@ if (wiki.gaps.length) {
   for (const g of wiki.gaps) console.log(`    ${g}`);
 }
 console.log(`  search index: ${searchIndex.length} entries`);
+/* THE LAST LINE IS THE ONE THE GATE READS. bin/regenerate-and-verify.sh fails
+ * on a non-zero count here, so a dropped arc, an orphaned teaser or a track that
+ * did not answer turns a lane red instead of scrolling past in a deploy log. The
+ * generator still exits zero, because none of those should stop a publish. */
+console.log(`  warnings: ${warnings.length}, notes: ${siteNotes.length}`);

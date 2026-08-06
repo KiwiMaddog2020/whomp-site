@@ -87,17 +87,31 @@ requireThat(/const ENTRY_HASH_PATTERN = \/\^#e-\[A-Za-z0-9\._-\]\+\$\//.test(gen
 'search focus does not restrict load/hashchange focus to valid programmatically focusable #e-* entry targets');
 requireThat(/destination\.pathname === location\.pathname && destination\.search === location\.search/.test(generatorSource),
   'same-page search reveal/focus does not prove that the destination is the current document');
+/* WHAT THIS PIN PROTECTS, unchanged since it was written: a track that cannot be
+ * reached is null and the page says so plainly, while a track that answers HTTP
+ * 200 with a payload failing the release contract is a THROWN error that stops
+ * the build. Those are different failures, and collapsing them would let a
+ * malformed release read as "offline" and publish a page naming no version.
+ *
+ * IT GREW A SECOND JOB ON 2026-08-06, when the landing page began stating both
+ * tracks side by side. The failure that would actually mislead a reader is now
+ * the two swapping places, so the channel is pinned as an argument the caller
+ * supplies and the payload must agree with, at both call sites, and the URLs are
+ * pinned to the game's own audited channel table rather than a constant here. */
 requireThat(/live = normalizeSuppliedLiveVersion\(SHA_ARG, VERSION_ARG \|\| pkg\.version\);/.test(generatorSource)
-  && /live = await fetchStableLiveVersion\(`\$\{LIVE_URL\}\/version\.json`\);/.test(generatorSource)
-  && /if \(payload\.schema !== 1\) fail\('schema must be 1'\);/.test(liveVersionSource)
+  && /live = await fetchLiveVersion\(`\$\{TRACK_URL\.stable\}version\.json`, 'stable'\);/.test(generatorSource)
+  && /const previewLive = OFFLINE \? null : await fetchLiveVersion\(`\$\{TRACK_URL\.preview\}version\.json`, 'preview'\);/.test(generatorSource)
+  && /const TRACK_URL = parseReleaseChannelUrls\(readFileSync\(RELEASE_CHANNEL_PATH, 'utf8'\)\);/.test(generatorSource)
+  && /if \(payload\.schema !== 1\) failIn\(channel, 'schema must be 1'\);/.test(liveVersionSource)
+  && /if \(payload\.channel !== channel\) failIn\(channel, `channel must be \$\{channel\}`\);/.test(liveVersionSource)
   && /sha: payload\.sourceSha\.slice\(0, 8\)/.test(liveVersionSource)
   && /version,\s*builtAt: payload\.publishedAt/.test(liveVersionSource)
   && /if \(!response\.ok\) return null;/.test(liveVersionSource)
-  && /fail\('HTTP 200 body is not valid JSON'/.test(liveVersionSource)
+  && /failIn\(channel, 'HTTP 200 body is not valid JSON'/.test(liveVersionSource)
   && /timer = setTimeout\(\(\) => \{\s*controller\.abort\(\);\s*resolve\(timedOut\);/.test(liveVersionSource)
   && /await Promise\.race\(\[request, deadline\]\)/.test(liveVersionSource)
   && /finally \{\s*clearTimeout\(timer\);/.test(liveVersionSource),
-'generator does not distinguish unreachable Stable metadata from a malformed HTTP-200 release contract');
+'generator does not distinguish an unreachable release track from a malformed HTTP-200 release contract, or does not hold the two tracks apart');
 requireThat(/const trackedGeneratedFiles = listTrackedGeneratedFiles\(OUTDIR\);/.test(generatorSource)
   && /if \(!gitWorktreeRoot\(root\)\) return \[\];/.test(generatedOutputGitSource)
   && /'git', \['-C', root, 'ls-files', '--', 'wiki\*\.html', 'wiki-assets'\]/.test(generatedOutputGitSource)
@@ -547,7 +561,21 @@ function requireSkipTarget(html, file) {
 }
 requireWikiIconContract(hub, 'wiki.html');
 requireSkipTarget(hub, 'wiki.html');
-requireThat(/(?:current wiki source|different from wiki source|offline provenance)/.test(hub), 'wiki live-build state is conveyed only by color');
+/* WHAT THIS PIN PROTECTS: the live-build state must be READABLE, not merely
+ * coloured. It used to require one of three sentences ("current wiki source",
+ * "different from wiki source", "offline provenance"), because the state was a
+ * comparison between the live Stable sha and the sha the site was generated
+ * from, printed beside a dot that went gold whenever the two differed. That
+ * comparison was retired on 2026-08-06: the two differ BY DESIGN, so the dot was
+ * permanently gold and those words permanently said so, which is wallpaper
+ * rather than a status. The guarantee survives the rewrite and now covers both
+ * tracks: each is named in words, and each states in words either the version it
+ * is serving or that it could not be verified. The dot repeats the text, never
+ * replaces it. */
+requireThat(/Preview <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/.test(hub)
+  && /Stable <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/.test(hub)
+  && /'<b>unverified<\/b> · did not answer'/.test(generatorSource),
+'wiki live-build state is conveyed only by color');
 const entryCountLabel = (count) => `${count} ${count === 1 ? 'entry' : 'entries'}`;
 const hubCards = [...hub.matchAll(/<a\s+class="whubcard"\s+href="([^"]+)">([\s\S]*?)<\/a>/g)]
   .map((match) => ({ href: match[1], body: match[2] }));

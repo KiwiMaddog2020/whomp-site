@@ -151,6 +151,17 @@ export function withoutSourceRefs(text) {
 
 const finished = (text) => (/[.?]$/.test(text) ? text : `${text}.`);
 
+/** docs/CAMPAIGN.md continues the arc title into its description, so half the
+ *  descriptions begin in lower case ("own campaign. Every ratified visual beat
+ *  gets its sound twin."). That reads as a fragment on a page where the title is
+ *  a heading above it rather than the first half of the sentence. Capitalising
+ *  the first letter is typography, not rewriting: no word changes and no claim
+ *  moves, which is the line this module does not cross. */
+export function openingCapital(text) {
+  const trimmed = String(text).trim();
+  return trimmed ? trimmed[0].toUpperCase() + trimmed.slice(1) : trimmed;
+}
+
 /* -------------------------------------------------------------------- the arcs */
 
 /** THE FOLD IS THE FIX. docs/CAMPAIGN.md wraps an arc across lines when it runs
@@ -201,7 +212,7 @@ export function renderableArcs(arcs, referenceDay = localDay()) {
   const dropped = [];
   const expiredBody = [];
   for (const arc of arcs) {
-    const what = withoutSourceRefs(arc.what);
+    const what = openingCapital(withoutSourceRefs(arc.what));
     if (trailsOff(what)) {
       dropped.push({ id: arc.id, name: arc.name, reason: `its description trails off: "${what}"` });
       continue;
