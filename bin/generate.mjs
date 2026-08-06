@@ -913,8 +913,8 @@ const SEARCH_CSS = `
 
 const searchMarkup = (placeholder) => `
 <div class="searchwrap" role="search">
-  <label class="searchlabel" for="search">Search WHOMP <kbd class="searchkey">/</kbd></label>
   <input class="searchbox" id="search" type="search" placeholder="${esc(placeholder)}" autocomplete="off" spellcheck="false"
+    aria-label="Search WHOMP"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
   <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
