@@ -58,6 +58,8 @@ import { fileURLToPath } from 'node:url';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import { fetchStableLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
 import { KEY_CHANGE_CAP, readPatchReleases } from './patch-notes.mjs';
+import { parseArcs, selectUpcomingReleases } from './upcoming.mjs';
+import { indexPage } from './index-page.mjs';
 import {
   buildWiki, EXPLAINER_FILE, EXPLAINER_SLUG, EXPLAINER_TITLE, rosterSpecs, visualOutputPath, WIKI_CSS,
 } from './wiki.mjs';
@@ -408,10 +410,7 @@ const renderedChanges = fullFeed.flatMap(([, changes]) => changes.slice(0, PER_D
 let arcs = [];
 const campaignPath = join(REPO, 'docs/CAMPAIGN.md');
 if (existsSync(campaignPath)) {
-  const c = readFileSync(campaignPath, 'utf8');
-  const block = c.split(/^## ARCS$/m)[1]?.split(/^## /m)[0] ?? '';
-  arcs = [...block.matchAll(/^- (A\d+) ([^:(]+?)(?:\s*\(([^)]+)\))?:\s*(.+)$/gm)]
-    .map((m) => ({ id: m[1], name: cleanDoc(m[2]), when: cleanDoc(m[3] || ''), what: cleanDoc(m[4]) }));
+  arcs = parseArcs(readFileSync(campaignPath, 'utf8'), cleanDoc);
 }
 
 // ---------------------------------------------------------------- derive: known bugs, OPEN only
@@ -745,9 +744,19 @@ const liveChip = () => `<span class="chip"><span class="dot${live && live.sha ==
   ${live ? `live <b>${esc(live.sha)}</b> · ${live.sha === headSha ? 'current wiki source' : 'different from wiki source'}` : 'live build <b>unverified</b> · offline provenance'}</span>
   <span class="chip">version <b>${esc(live?.version ?? pkg.version)}</b></span>`;
 
-const arcCards = (list) => list.map((a) => `
+/* `when` is a hand-typed parenthetical in CAMPAIGN.md's ARCS block, and it is
+ * the one part of an arc that is not a description of the work. On 2026-08-06 it
+ * was publishing "Wed 7/30" and "Thu 7/31" to a landing page a week later, which
+ * is a date that has already been missed printed as though it were a plan. The
+ * log keeps showing it, because the log is the engineering surface and a reader
+ * there is reading dated material on purpose. The landing page turns it off and
+ * says out loud that arcs are directions and not dates.
+ *
+ * ONE BOOLEAN, so this is one edit to undo if the director wants the dates
+ * back. Default unchanged, so nothing that already calls this moved. */
+const arcCards = (list, { showWhen = true } = {}) => list.map((a) => `
     <div class="arc" id="flight-${slug(a.name)}">
-      <div class="id">${esc(a.id)}${a.when ? ` &middot; ${esc(a.when)}` : ''}</div>
+      <div class="id">${esc(a.id)}${showWhen && a.when ? ` &middot; ${esc(a.when)}` : ''}</div>
       <h4>${esc(a.name)}</h4>
       <p>${esc(a.what)}</p>
     </div>`).join('');
@@ -1388,71 +1397,28 @@ const wiki = buildWiki({
 });
 
 // ============================================================== INDEX.HTML
-// The short public landing page. Mark, tagline, live build chip, play button,
-// arcs. That is the whole page, on purpose: it never grows. Everything else
-// (the log, known bugs, in-flight work, search) lives on log.html.
-const indexHtml = `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP: ${esc(TAGLINE)}</title>
-<meta name="description" content="${esc(TAGLINE)} Built in the open, with the dev log public.">
-<link rel="icon" href="${FAVICON}">
-<style>
-${SHARED_CSS}
-.wrap{max-width:860px;margin:0 auto;padding:0 24px 96px}
-header{padding:56px 0 40px;text-align:center}
-.wm{display:block;margin:0 auto 22px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.45))}
-/* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
-   700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size
-   stays the site's own responsive clamp (the game's is a fixed 16px in a
-   fixed-size menu panel, not a full-bleed hero) rather than pinned to 16px. */
-.tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:18px auto 0;max-width:34ch;
-  font-weight:700;font-style:italic;letter-spacing:0.03em}
-.chips{justify-content:center;margin-top:26px}
-.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
-.doorway{text-align:center;color:var(--dim);font-size:.92rem;margin-top:18px}
-h2{font-size:1.65rem;margin:0 0 6px}
-section{margin-top:64px}
-</style>
-</head>
-<body>
-<div class="wrap">
+/* The short public landing page. Nav bar, tagline, live build chip, play button,
+ * what is coming, what happens to a report, arcs. That is the whole page, on
+ * purpose: it stays short. Everything else (the log, known bugs, in-flight work,
+ * search) lives on log.html.
+ *
+ * The template itself moved to bin/index-page.mjs so it can be rendered from
+ * fixtures and looked at, the same split bin/wiki.mjs already has. This file
+ * still measures every input and still writes the file. */
 
-${AUTHBAR}
+/* WHICH RELEASES ARE STILL AHEAD OF THE LIVE BUILD. bin/upcoming.mjs carries the
+ * whole argument for reading the game's cut release notes rather than its work
+ * queue; the short version is that a queue publishes wishes and a cut release
+ * publishes finished work. A null live version is a distinct answer here, not
+ * an empty list: an offline run must not claim that nothing is coming. */
+const upcoming = selectUpcomingReleases({ releases, liveVersion: live ? live.version : null });
 
-<header>
-  ${wordmark(112, 'h')}
-  <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
-  <p class="tag" id="hero-tagline">${esc(gameTaglines[0])}</p>
-  <script>document.getElementById('hero-tagline').textContent=(${JSON.stringify(gameTaglines)})[Math.min(${gameTaglines.length}-1,Math.max(0,Math.floor(Math.random()*${gameTaglines.length})))];</script>
-  <div class="chips">${liveChip()}</div>
-  <div class="cta">
-    <a class="btn" href="${LIVE_URL}/">Play the current build</a>
-    <a class="btn ghost" href="wiki.html">Browse the wiki</a>
-    <a class="btn ghost" href="log.html">Read the dev log</a>
-  </div>
-  <p class="doorway">The wiki is every weapon, core and enemy, read straight out of the game.
-    The dev log is every build: what shipped, what is still broken, what is next.</p>
-</header>
-
-<section>
-  <div class="rule"></div>
-  <h2 class="chroma">What we are building</h2>
-  <div class="arcs">${arcCards(arcs)}</div>
-</section>
-
-<footer>
-  Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
-  ${live ? `Live build <code>${esc(live.sha)}</code>${live.sha === headSha ? ' (current)' : ' (a deploy is pending)'}.`
-         : 'Live build could not be reached at generation time, so no live sha is claimed.'}
-</footer>
-
-</div>
-${AUTH_SCRIPT()}
-</body>
-</html>`;
+const indexHtml = indexPage({
+  TAGLINE, FAVICON, SHARED_CSS, AUTHBAR, AUTH_SCRIPT,
+  wordmark, liveChip, arcCards, arcs,
+  gameTaglines, upcoming, live, LIVE_URL,
+  buildStamp, headSha, esc, noEmDash,
+});
 
 // ============================================================== LOG.HTML
 // The real dev log: sidebar, search, filters, and the two-view toggle.
