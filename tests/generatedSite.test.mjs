@@ -101,16 +101,27 @@ test('house law holds in the visible copy: no dashes, no exclamations', options,
 
 /* --------------------------------------------------------------- the two tracks */
 
-test('both release tracks have a real button, Preview first', options, () => {
+/* THE HERO IS A TRIO NOW, NOT TWO TRACK BUTTONS (director, 2026-08-07 00:57 and
+ * 01:03). Stable stopped being a button and became the link inside the tracks
+ * line; Wiki and Dev log left the nav and became the two quiet buttons beside
+ * Play. This test shipped pinned to the old two-button hero and had been failing
+ * on main ever since. What it guards is unchanged: exactly one loud button, it
+ * is Preview, it points at the Preview origin, and Stable is still reachable
+ * from the hero by its own real link. */
+test('the hero leads with Preview, and Stable is still one click away', options, () => {
   const buttons = [...index.matchAll(/<a class="play (loud|quiet)" href="([^"]+)">\s*([^<\n]+)/g)]
     .map((m) => ({ kind: m[1], href: m[2], label: m[3].trim() }));
-  assert.equal(buttons.length, 2, 'the hero does not carry exactly two play buttons');
+  assert.equal(buttons.length, 3, 'the hero does not carry exactly three buttons');
+  assert.equal(buttons.filter((b) => b.kind === 'loud').length, 1, 'the hero has more than one loud button');
   assert.equal(buttons[0].kind, 'loud');
   assert.match(buttons[0].label, /PLAY THE PREVIEW/);
   assert.match(buttons[0].href, /^https:\/\/whomp-preview\.pages\.dev\//);
-  assert.equal(buttons[1].kind, 'quiet');
-  assert.match(buttons[1].label, /PLAY STABLE/);
-  assert.match(buttons[1].href, /^https:\/\/kiwimaddog2020\.github\.io\/whomp-play\//);
+  assert.deepEqual(buttons.slice(1).map((b) => b.label), ['WIKI', 'DEV LOG']);
+  assert.deepEqual(buttons.slice(1).map((b) => b.href), ['wiki.html', 'log.html']);
+  const tracksLine = /<p class="tracks">([\s\S]*?)<\/p>/.exec(index);
+  assert.ok(tracksLine, 'the hero has no tracks line');
+  assert.match(tracksLine[1], /href="https:\/\/kiwimaddog2020\.github\.io\/whomp-play\/"/,
+    'Stable is no longer reachable from the hero');
 });
 
 test('one line explains what the two tracks are', options, () => {
@@ -246,7 +257,11 @@ test('the run section states what it is made of, in numbers it read somewhere', 
   for (const noun of ['worlds', 'enemies', 'characters', 'aimed cores', 'weapons']) {
     assert.match(text, new RegExp(`\\d+ ${noun}`), `the page never counts ${noun}`);
   }
-  assert.match(text, /No download, no launcher, and no account to make/);
+  // The no-friction claim, re-voiced 2026-08-07 ("this sounds way too sterile
+  // to appeal to gamers"). The pin follows the sentence, not the old wording:
+  // what it guards is that the page still states there is nothing to install
+  // and no account to make, which is the one hard promise in this section.
+  assert.match(text, /Nothing to download, nothing to install, and nobody here wants your email address/);
 });
 
 /* -------------------------------------------------------------- the pipeline */

@@ -352,11 +352,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </span>
     </a>
     <div class="chips"><span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Preview <b>0.6.8</b> · <code>4a32b5ed</code></span>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Preview <b>unverified</b> · did not answer</span>
   <span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Stable <b>0.6.7</b> · <code>c6ef999e</code></span></div>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Stable <b>unverified</b> · did not answer</span></div>
   </div>
 </div>
 
@@ -397,26 +397,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">680 player-visible changes landed in the last 7 days, across 7 of them. 9 releases were cut across 4 of those days, and that is the part a player can already play.
+    <p class="lede">446 player-visible changes landed in the last 7 days, across 5 of them. 9 releases were cut across 4 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday" id="day-2026-08-07">
+    <article class="storyday is-quiet" id="day-2026-08-07">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 13</span><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span></span>
+        <span class="storyday-kinds"></span>
       </div>
-      <p class="storyday-shape">20 changes landed: 13 new, 5 fixed, 2 polish.</p>
+      <p class="storyday-shape">Nothing player-visible landed.</p>
       <a class="storyday-release" href="#release-0-7-0">
         <b>v0.7.0</b><span>Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
       </a>
 
     </article>
-    <article class="storyday" id="day-2026-08-06">
+    <article class="storyday is-quiet" id="day-2026-08-06">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-06</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 72</span><span class="storyday-kind" style="background:var(--pink)">Fixed 57</span><span class="storyday-kind" style="background:var(--gold)">Performance 5</span></span>
+        <span class="storyday-kinds"></span>
       </div>
-      <p class="storyday-shape">134 changes landed: 72 new, 57 fixed, 5 performance.</p>
+      <p class="storyday-shape">Nothing player-visible landed.</p>
       <a class="storyday-release" href="#release-0-6-8">
         <b>v0.6.8</b><span>Every upgrade card reads in full, airborne shots leave the barrel, and the desktop app just downloads.</span>
       </a><a class="storyday-release" href="#release-0-6-7">
@@ -435,9 +435,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-08-05">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-05</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 88</span><span class="storyday-kind" style="background:var(--pink)">Fixed 41</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 44</span><span class="storyday-kind" style="background:var(--pink)">Fixed 12</span></span>
       </div>
-      <p class="storyday-shape">132 changes landed: 88 new, 41 fixed, 3 performance.</p>
+      <p class="storyday-shape">56 changes landed: 44 new, 12 fixed.</p>
       <a class="storyday-release" href="#note-2026-08-05">
         <b>v0.6.2</b><span>A week of releases, caught up in one entry</span>
       </a>
@@ -466,9 +466,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-08-02">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-02</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 48</span><span class="storyday-kind" style="background:var(--cyan)">New 32</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 45</span><span class="storyday-kind" style="background:var(--cyan)">New 31</span></span>
       </div>
-      <p class="storyday-shape">80 changes landed: 48 fixed, 32 new.</p>
+      <p class="storyday-shape">76 changes landed: 45 fixed, 31 new.</p>
 
 
     </article>
@@ -486,10 +486,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="shipped">
     <div class="rule"></div>
     <h2 class="chroma">Shipped</h2>
-    <p class="lede">Two ways to read it. Concise is one entry per release, in the words the release
-      notes were written in for players, with Kevin's own note in its place on any day he wrote one.
-      Full is the raw engineering log, generated straight from git, unedited, so a curious player can
-      see everything.</p>
+    <p class="lede">Two ways to read it. Concise is one entry per release, in the words it was written
+      in for players, with Kevin's own note in its place on any day he wrote one. Full is every commit,
+      unedited, including the ones nobody would put in a release note.</p>
 
     <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
          lands ON the Concise / Full choice rather than above it. -->
@@ -824,316 +823,108 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
-    <h4>2026-08-07</h4>
-
-    <div class="row" data-kind="fix" id="chg-b33b16b3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the hole census gets the clock its rendered hub costs, and the doc index learns the Sol brief <span class="scope">(gate)</span></span>
-      <span class="sha">b33b16b3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f7b0e38d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the core upgrade offer card variant, and it prints no rarity <span class="scope">(ui)</span></span>
-      <span class="sha">f7b0e38d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-bfd85138">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">core upgrade art stands on its own socket plate, with no rarity rim <span class="scope">(ui)</span></span>
-      <span class="sha">bfd85138</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-5817d2d8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">condense all 212 core upgrade descriptions to one card size <span class="scope">(core)</span></span>
-      <span class="sha">5817d2d8</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-ae664753">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">the two sticky bands fade where their content is not <span class="scope">(settings)</span></span>
-      <span class="sha">ae664753</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-17af4526">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">no em dash in the composed core-weapon option label <span class="scope">(settings)</span></span>
-      <span class="sha">17af4526</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f4998dd6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the section is one column again, at one content measure <span class="scope">(settings)</span></span>
-      <span class="sha">f4998dd6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-061b95a3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the kennel answers to a name, so the ledger can bill it <span class="scope">(hub)</span></span>
-      <span class="sha">061b95a3</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-dbbf0349">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">dark halo under every markup mark <span class="scope">(feedback)</span></span>
-      <span class="sha">dbbf0349</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e1fe86f9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">circle and arrow markup tools <span class="scope">(feedback)</span></span>
-      <span class="sha">e1fe86f9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e7daa39b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the desktop card downloads the build instead of opening GitHub <span class="scope">(menu)</span></span>
-      <span class="sha">e7daa39b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-76f51d3c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the verdict names where the build went, and the run reports its own clock <span class="scope">(ship)</span></span>
-      <span class="sha">76f51d3c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1d56525a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the shared deploy wires can see a ship <span class="scope">(hooks)</span></span>
-      <span class="sha">1d56525a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d6c85aaa">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a thin front door that hands off to cloud-gate.sh unmodified <span class="scope">(gate)</span></span>
-      <span class="sha">d6c85aaa</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-57346ee8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">decide skip or run from a trusted stamp, before the suite runs <span class="scope">(gate)</span></span>
-      <span class="sha">57346ee8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-352e491a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">shard planner, shard runner and composer for a wide gate <span class="scope">(gate)</span></span>
-      <span class="sha">352e491a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9319fcbb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">orchestrate the whole ship ritual with a real exit check at every joint <span class="scope">(ship)</span></span>
-      <span class="sha">9319fcbb</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-df27714d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">accept a green stamp minted by a cloud gate <span class="scope">(deploy)</span></span>
-      <span class="sha">df27714d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8f538d62">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the stamp can carry what the gate cost <span class="scope">(gate)</span></span>
-      <span class="sha">8f538d62</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-84463848">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a portable green stamp travels on the anchor the ruling names <span class="scope">(gate)</span></span>
-      <span class="sha">84463848</span>
-    </div>
-  </div>
-  <div class="day">
-    <h4>2026-08-06</h4>
-
-    <div class="row" data-kind="feat" id="chg-bf1d0442">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a red shard names its failures, because a count is a verdict nobody can act on <span class="scope">(gate)</span></span>
-      <span class="sha">bf1d0442</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6c72888e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stamp and shard refs move to the branch namespace the containers can actually push <span class="scope">(gate)</span></span>
-      <span class="sha">6c72888e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4b6b06fc">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the sharded verdict can mint the stamp the deploy trusts, over the ruling's own anchor <span class="scope">(gate)</span></span>
-      <span class="sha">4b6b06fc</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8c1ad29a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the desktop card offers WINDOWS, now that a Windows build exists to offer <span class="scope">(menu)</span></span>
-      <span class="sha">8c1ad29a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4f423754">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the muzzle flash holds the barrel, then lets go <span class="scope">(fx)</span></span>
-      <span class="sha">4f423754</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fcb89a12">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the core emitter rig and the co-op muzzle flash ride the body <span class="scope">(fx)</span></span>
-      <span class="sha">fcb89a12</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-45f56efd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stop the offer card truncating its description <span class="scope">(ui)</span></span>
-      <span class="sha">45f56efd</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-74376e6a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">budget and fit the offer card's description <span class="scope">(ui)</span></span>
-      <span class="sha">74376e6a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-be3f6cf7">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">an airborne shot leaves the barrel instead of the ground plane <span class="scope">(projectiles)</span></span>
-      <span class="sha">be3f6cf7</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ae924743">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the desktop explainer takes the house overlay, not the title column <span class="scope">(install)</span></span>
-      <span class="sha">ae924743</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-86e970a9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">browser-aware install guidance and an explained desktop card <span class="scope">(install)</span></span>
-      <span class="sha">86e970a9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3b375b30">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the plates' bands reach the drawn cap, and a 2026-07-29 rejection retires <span class="scope">(hub)</span></span>
-      <span class="sha">3b375b30</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-021238ce">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the winding case actually builds the reversed winding <span class="scope">(test)</span></span>
-      <span class="sha">021238ce</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ffd7ad35">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the Frost arm's band reaches the drawn cap, not the formula <span class="scope">(hub)</span></span>
-      <span class="sha">ffd7ad35</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-20a277df">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">one seam stitcher, and the Frost arm adopts the junction law <span class="scope">(hub)</span></span>
-      <span class="sha">20a277df</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e2941da5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the planet vista turns its back on the rim it was sitting beside <span class="scope">(hub)</span></span>
-      <span class="sha">e2941da5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-06226382">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the forge shop's windows stand a rung off the wall they sit in <span class="scope">(hub)</span></span>
-      <span class="sha">06226382</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4e85c14b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">drop the import the grove re-point orphaned (main's tsc was red) <span class="scope">(tests)</span></span>
-      <span class="sha">4e85c14b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0f42a5d9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">cloud by default, as mechanism <span class="scope">(train)</span></span>
-      <span class="sha">0f42a5d9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b3515cb9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">markup canvas grows to near-viewport size while drawing <span class="scope">(feedback)</span></span>
-      <span class="sha">b3515cb9</span>
-    </div><div class="row more">+ 114 more that day, not shown</div>
-  </div>
-  <div class="day">
     <h4>2026-08-05</h4>
 
-    <div class="row" data-kind="fix" id="chg-16af7ce1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">eyeball-sweep's entrypoint guard resolves symlinks on both sides <span class="scope">(bin)</span></span>
-      <span class="sha">16af7ce1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-53399763">
+    <div class="row" data-kind="feat" id="chg-244f66af">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the contention rule, mechanised <span class="scope">(train)</span></span>
-      <span class="sha">53399763</span>
+      <span class="what">one shared ground registry, with the base and rung read by position <span class="scope">(hub)</span></span>
+      <span class="sha">244f66af</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-63aab715">
+    <div class="row" data-kind="fix" id="chg-c9761dd0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">push main after every merge batch, not only before a deploy <span class="scope">(cloud)</span></span>
+      <span class="sha">c9761dd0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4de734a1">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the brakes are proven before every unattended tick <span class="scope">(train)</span></span>
-      <span class="sha">63aab715</span>
+      <span class="what">the gaze reaches the screen and the run <span class="scope">(borealisk-hud)</span></span>
+      <span class="sha">4de734a1</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-291d1d12">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the wordmark stack matches its own 2026-07-30 ruling, and the train gets its switch <span class="scope">(title)</span></span>
-      <span class="sha">291d1d12</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-373d8edf">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the autolander commits its own log, ending the self-block loop <span class="scope">(train)</span></span>
-      <span class="sha">373d8edf</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0dd6f6e6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Stable promotion refuses while the overnight agent holds a tick <span class="scope">(release)</span></span>
-      <span class="sha">0dd6f6e6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-47513894">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the overnight agent can act, cannot starve itself, and has a voice <span class="scope">(train)</span></span>
-      <span class="sha">47513894</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-52fdcf80">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-measure the three drifted baselines on the merged tree, not from any report <span class="scope">(hub)</span></span>
-      <span class="sha">52fdcf80</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-066289e9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">export the hold list, a VAR=x prefix binds only the first pipeline stage <span class="scope">(train)</span></span>
-      <span class="sha">066289e9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e91d49c3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a maestro finding the tool cannot derive gets a file <span class="scope">(train)</span></span>
-      <span class="sha">e91d49c3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-41b0587a">
+    <div class="row" data-kind="feat" id="chg-d55beaba">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">land the lanes that need no judgement, queue the rest <span class="scope">(train)</span></span>
-      <span class="sha">41b0587a</span>
+      <span class="what">glow-up pass on the four snow natives, plus artifact and pin upkeep <span class="scope">(snow)</span></span>
+      <span class="sha">d55beaba</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-f742c408">
+    <div class="row" data-kind="feat" id="chg-6924961b">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">apply a lane's measured baselines without retyping them <span class="scope">(train)</span></span>
-      <span class="sha">f742c408</span>
+      <span class="what">wire the village cats, which no player could see until now <span class="scope">(hub)</span></span>
+      <span class="sha">6924961b</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-d27730fb">
+    <div class="row" data-kind="feat" id="chg-b49de39a">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">read every lane's objection before spending a merge finding it <span class="scope">(train)</span></span>
-      <span class="sha">d27730fb</span>
+      <span class="what">author the snow tier's four basic enemies and retire the dune borrow <span class="scope">(snow)</span></span>
+      <span class="sha">b49de39a</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-a0564b1a">
+    <div class="row" data-kind="fix" id="chg-3b34dc3f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the grove shoulder closes the desert channel, and the rim follows the desert's own height <span class="scope">(hub)</span></span>
-      <span class="sha">a0564b1a</span>
+      <span class="what">the watcher speaks only when a lane is FINISHED <span class="scope">(train)</span></span>
+      <span class="sha">3b34dc3f</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-eb26ce5b">
+    <div class="row" data-kind="feat" id="chg-affc8314">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the grassland grows grass, through the one flora authority <span class="scope">(hub)</span></span>
-      <span class="sha">eb26ce5b</span>
+      <span class="what">re-land the veteran bot's four behaviours and the harness instrumentation <span class="scope">(sim)</span></span>
+      <span class="sha">affc8314</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-6b87ec10">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the grove detail stands a rung clear of the plate, and the walk is one ribbon <span class="scope">(hub)</span></span>
-      <span class="sha">6b87ec10</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e8096d1e">
+    <div class="row" data-kind="feat" id="chg-409bcbe3">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">read density across the horde the game actually runs, and answer which way to run <span class="scope">(minimap)</span></span>
-      <span class="sha">e8096d1e</span>
+      <span class="what">a durable overnight agent, and the guard that had to be measured to be right <span class="scope">(train)</span></span>
+      <span class="sha">409bcbe3</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-9594e9c5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the village cats were in pieces, and the baker stood inside one <span class="scope">(hub)</span></span>
-      <span class="sha">9594e9c5</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-5b0fc051">
+    <div class="row" data-kind="feat" id="chg-2b87f215">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the grove wood, its landmarks, its flat detail and the Thawmere pond <span class="scope">(hub)</span></span>
-      <span class="sha">5b0fc051</span>
+      <span class="what">a watcher, because 'nothing stops this train' was a note and not a mechanism <span class="scope">(train)</span></span>
+      <span class="sha">2b87f215</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-2ffb7c19">
+    <div class="row" data-kind="feat" id="chg-61b00792">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">two village cats in Hearthwick, on long offset schedules <span class="scope">(hub)</span></span>
+      <span class="sha">61b00792</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fc38e137">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">glow-up pass, and the lane report <span class="scope">(scope-out)</span></span>
+      <span class="sha">fc38e137</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8d8c066e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">side-by-side end-of-match loadout and stat board <span class="scope">(scope-out)</span></span>
+      <span class="sha">8d8c066e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9ada47ae">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the co-op scope-out glow-up pass, from a real headless render <span class="scope">(ui)</span></span>
-      <span class="sha">2ffb7c19</span>
-    </div><div class="row more">+ 112 more that day, not shown</div>
+      <span class="what">the snow maps draw rime, not clover <span class="scope">(render)</span></span>
+      <span class="sha">9ada47ae</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4e741b0b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a script must decide it is the entrypoint on REAL paths <span class="scope">(bin)</span></span>
+      <span class="sha">4e741b0b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1e878de4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">twelve live minors and a freed fork, so no offer rung is silent <span class="scope">(core)</span></span>
+      <span class="sha">1e878de4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-44a5484e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a core spawn stops being a thing that only happens to numbers <span class="scope">(fx)</span></span>
+      <span class="sha">44a5484e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7bd96765">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">enemy-roster biome ownership as data, not prose <span class="scope">(data)</span></span>
+      <span class="sha">7bd96765</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8671b1b0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">voice the six events that reached the player in silence <span class="scope">(audio)</span></span>
+      <span class="sha">8671b1b0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-16a21c1b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the gaze stacks a chill and locks you in place <span class="scope">(borealisk)</span></span>
+      <span class="sha">16a21c1b</span>
+    </div><div class="row more">+ 36 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-04</h4>
@@ -1406,26 +1197,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">make the Codex queue shell-portable <span class="scope">(tooling)</span></span>
       <span class="sha">aed9a15d</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-25c415b7">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the two clipped default pills, now that there is room <span class="scope">(keybinds)</span></span>
-      <span class="sha">25c415b7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-5ed8b9da">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">560 -&gt; 720 wide, so the six tabs stop wrapping <span class="scope">(settings)</span></span>
-      <span class="sha">5ed8b9da</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fc5c6a51">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the panel's form controls were all in Arial <span class="scope">(settings)</span></span>
-      <span class="sha">fc5c6a51</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8e78e2e0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the deck you stand on is the deck you can see (report 230) <span class="scope">(hub)</span></span>
-      <span class="sha">8e78e2e0</span>
-    </div>
     <div class="row" data-kind="fix" id="chg-b156a729">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">three guards caught the build peek, and one of them was reading prose <span class="scope">(guards)</span></span>
@@ -1445,7 +1216,27 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">TAB holds to show your build, and the free reticle is retired <span class="scope">(input)</span></span>
       <span class="sha">4ca341ee</span>
-    </div><div class="row more">+ 60 more that day, not shown</div>
+    </div>
+    <div class="row" data-kind="fix" id="chg-be2de75f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the aimed core is part of the build, so every listing can see it <span class="scope">(sim)</span></span>
+      <span class="sha">be2de75f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d30a17c3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the freed cursor still gets a camera <span class="scope">(input)</span></span>
+      <span class="sha">d30a17c3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e8bfabb3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the draft pool had no stance, so nobody could see it was empty <span class="scope">(second-seat)</span></span>
+      <span class="sha">e8bfabb3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2f1b3804">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a seat announces the tomes it earned, beside the ones it locked out <span class="scope">(lobby)</span></span>
+      <span class="sha">2f1b3804</span>
+    </div><div class="row more">+ 56 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-01</h4>
@@ -1551,6 +1342,110 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">efc2c52e</span>
     </div><div class="row more">+ 151 more that day, not shown</div>
   </div>
+  <div class="day">
+    <h4>2026-07-31</h4>
+
+    <div class="row" data-kind="feat" id="chg-653c5282">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the night session console, 22 decisions, self-contained <span class="scope">(decisions)</span></span>
+      <span class="sha">653c5282</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7e4f050e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the ledger caught me, and a pin that went red on a correct change <span class="scope">(gate)</span></span>
+      <span class="sha">7e4f050e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-902117ce">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the camera law reaches co-op, and the update toast stops interrupting it <span class="scope">(coop)</span></span>
+      <span class="sha">902117ce</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c15cb401">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a living seat can open a menu, change settings, and leave <span class="scope">(coop)</span></span>
+      <span class="sha">c15cb401</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d474374a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mount the run's pause menu on the co-op path <span class="scope">(coop)</span></span>
+      <span class="sha">d474374a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-66b1479c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the seat-menu rules, neutral input, the Escape gate, a real run sheet <span class="scope">(coop)</span></span>
+      <span class="sha">66b1479c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8202e309">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">three optional deps so one menu can serve a surface that cannot pause <span class="scope">(pause)</span></span>
+      <span class="sha">8202e309</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7f6641ce">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the park and the lock become one contract <span class="scope">(input)</span></span>
+      <span class="sha">7f6641ce</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bd2b337e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the park and the lock become one contract <span class="scope">(input)</span></span>
+      <span class="sha">bd2b337e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9abf6073">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the glaive's committed wedge and the arc caster's lock, on the ground <span class="scope">(render)</span></span>
+      <span class="sha">9abf6073</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-353bebab">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the telegraph pool grows a wedge and two caller-driven slots <span class="scope">(render)</span></span>
+      <span class="sha">353bebab</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e5928031">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the training yard's backstop follows the parked reticle too <span class="scope">(hub)</span></span>
+      <span class="sha">e5928031</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-09dd35e5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the park is a screen row, not a world point <span class="scope">(aim)</span></span>
+      <span class="sha">09dd35e5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9c38c849">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the far-bound backstop gates on &quot;pinned to the screen&quot;, not on RMB <span class="scope">(aim)</span></span>
+      <span class="sha">9c38c849</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-77e4f3a3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Mouse Look park is a screen row, not a world point <span class="scope">(aim)</span></span>
+      <span class="sha">77e4f3a3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2eaf928b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the core card reaches the training yard, fed by the yard's sim <span class="scope">(hub)</span></span>
+      <span class="sha">2eaf928b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c4efd502">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">crossing the training yard fence stopped killing the camera <span class="scope">(input)</span></span>
+      <span class="sha">c4efd502</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-89c8f030">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mirror the core card's anticipation spine to both edges <span class="scope">(hud)</span></span>
+      <span class="sha">89c8f030</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4e9d3108">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Mouse Look kept dying at the training yard fence <span class="scope">(input)</span></span>
+      <span class="sha">4e9d3108</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-625692fd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the menu and loadout states tell input they own the pointer <span class="scope">(input)</span></span>
+      <span class="sha">625692fd</span>
+    </div><div class="row more">+ 25 more that day, not shown</div>
+  </div>
 
     </div>
   </section>
@@ -1576,7 +1471,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="flight">
     <div class="rule"></div>
     <h2 class="chroma">In flight</h2>
-    <p class="lede">What is actively being built, live from the campaign that drives the work.</p>
+    <p class="lede">What is on somebody's desk right now, as opposed to what is on the wish list.</p>
     <div class="arcs">
     <div class="arc" id="flight-quality-bar">
       <div class="id">A1 &middot; live</div>
@@ -1648,12 +1543,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-07 08:03 UTC from <code>game@1f6fd8b8</code>.
+  Every number on this page came straight out of the game, read at <code>game@1f6fd8b8</code> on 2026-08-07 08:23 UTC.
 
-  Preview is serving <code>0.6.8</code> and Stable is serving <code>0.6.7</code>.
+  One of the two tracks could not be reached at generation time, so this page names no version for it.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">680 player-visible changes in the last 7 days, across 7 active days, 1479 internal-only commits filtered out</div>
+  <div class="stat">491 player-visible changes in the last 7 days, across 6 active days, 931 internal-only commits filtered out</div>
 </footer>
 
 

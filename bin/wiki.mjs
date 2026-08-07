@@ -2815,16 +2815,13 @@ function renderRosterPage(roster, ctx) {
 <div class="wshell">
   <nav class="wside" aria-label="Wiki navigation">
     ${chrome.wikiNav(roster.slug)}
-    <div class="stat">${esc(roster.countLabel || entryCountLabel(total))}, read straight out of the game</div>
+    <div class="stat">${esc(roster.countLabel || entryCountLabel(total))}</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-${esc(roster.section.toLowerCase())}">${esc(roster.section)}</a><span aria-hidden="true">/</span><span aria-current="page">${esc(roster.title)}</span></nav>
     <h2 class="chroma">${esc(roster.title)}</h2>
     <p class="lede">${esc(roster.lede)}</p>
-
-    <p class="wprov">Every number on this page was read out of the game, at build <b>game@${esc(chrome.headSha)}</b>.
-      <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a></p>
 
     ${roster.omissions ? `<p class="womit">${roster.omissions}</p>` : ''}
 
@@ -2842,9 +2839,10 @@ function renderRosterPage(roster, ctx) {
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated ${esc(chrome.buildStamp)} from <code>game@${esc(chrome.headSha)}</code>,
-  content derived from <code>${esc(roster.sourceLabel || 'data/game-data.json')}</code> and verified visual associations from <code>data/wiki-visuals.json</code>.
-  <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
+  Every number on this page came straight out of the game, read at <code>game@${esc(chrome.headSha)}</code> on ${esc(chrome.buildStamp)}
+  from <code>${esc(roster.sourceLabel || 'data/game-data.json')}</code> and <code>data/wiki-visuals.json</code>.
+  <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a>
+  &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>`;
 
   const script = `
@@ -2941,7 +2939,7 @@ ${chrome.SEARCH_SCRIPT(`
     file: `wiki-${roster.slug}.html`,
     html: ctx.page({
       title: qualifiedTitle,
-      description: `${roster.title}: ${roster.tagline} Canonical facts generated from verified game artifacts.`,
+      description: `${roster.title}: ${roster.tagline} The full list, with the numbers the game actually runs on.`,
       body,
       script,
       file: `wiki-${roster.slug}.html`,
@@ -2966,7 +2964,7 @@ function renderHub(rosters, ctx) {
     <span class="brand">
       <span>
         <h1 class="chroma">WHOMP wiki</h1>
-        <p class="subtag">Generated from the game, not written about it.</p>
+        <p class="subtag">Everything that can kill you, and everything that can help.</p>
       </span>
     </span>
     <div class="chips">${chrome.liveChip()}</div>
@@ -2982,11 +2980,11 @@ function renderHub(rosters, ctx) {
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <h2 class="chroma">The wiki</h2>
-    <p class="lede">Everything the game knows about itself, laid out flat. The numbers are read out of it rather than copied over, so they cannot quietly go stale.</p>
+    <p class="lede">Every weapon, every enemy, every bad idea you can take at a level up. Written by people who have died to all of it.</p>
 
-    <p class="wprov">Every one of the game's <b>${D.coverage.domains}</b> catalogs has a page here, <b>${catalogEntries}</b> entries in all, plus
-      <b>${T?.coverage?.rows || 0}</b> measured weapon rows, <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, and <b>${V.coverage.entries}</b> pictures the game drew of its own
-      contents. Read at build <b>game@${esc(chrome.headSha)}</b>. <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a></p>
+    <p class="wprov"><b>${D.coverage.domains}</b> catalogs have a page here, <b>${catalogEntries}</b> entries in all, plus
+      <b>${T?.coverage?.rows || 0}</b> measured weapon rows, <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, and <b>${V.coverage.entries}</b> pictures the game
+      sat still for.</p>
 
     <p class="womit">Where the game has no answer, these pages say so rather than guess. A few numbers an ordinary wiki
       would print are missing on purpose, and every page names its own gaps at the top. A gap here means the number
@@ -3008,16 +3006,16 @@ function renderHub(rosters, ctx) {
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated ${esc(chrome.buildStamp)} from <code>game@${esc(chrome.headSha)}</code>,
-  content derived from the three verified artifacts <code>data/game-data.json</code>, <code>data/tier-rankings.json</code>, and <code>data/wiki-visuals.json</code>.
-  <a href="log.html#views">Dev log</a>
+  Every number in this wiki came straight out of the game, read at <code>game@${esc(chrome.headSha)}</code> on ${esc(chrome.buildStamp)}
+  from <code>data/game-data.json</code>, <code>data/tier-rankings.json</code>, and <code>data/wiki-visuals.json</code>.
+  <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>`;
 
   return {
     file: 'wiki.html',
     html: ctx.page({
       title: 'WHOMP wiki',
-      description: 'The complete generated WHOMP wiki: every public source catalog and controlled automatic-weapon simulation surface.',
+      description: 'The WHOMP wiki: every weapon, enemy, upgrade and bad idea in the game, plus the lab numbers behind the automatic weapons.',
       body,
       script: `${chrome.SEARCH_SCRIPT('')}\n${chrome.NAV_SCRIPT}`,
       file: 'wiki.html',
@@ -3068,9 +3066,7 @@ function renderExplainer(rosters, ctx) {
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">${esc(EXPLAINER_TITLE)}</span></nav>
     <h2 class="chroma">${esc(EXPLAINER_TITLE)}</h2>
-    <p class="lede">Every figure on every page here was read out of the game while this site was being built. The pages are assembled from the same files the game itself loads to run.</p>
-
-    <p class="wprov">This copy of the wiki was built ${esc(chrome.buildStamp)} from <b>game@${esc(chrome.headSha)}</b>.</p>
+    <p class="lede">Fair question. Nobody sat down and typed these numbers in, which is the only reason they are still right.</p>
 
     ${section('The short version', 'Nothing here is a copy', 'not-a-copy', [
     'An ordinary wiki is a copy. Somebody reads a damage number, types it onto a page, and the page stays right until the next balance pass, which nobody tells it about.',
@@ -3109,7 +3105,7 @@ function renderExplainer(rosters, ctx) {
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated ${esc(chrome.buildStamp)} from <code>game@${esc(chrome.headSha)}</code>.
+  Every number in this wiki came straight out of the game, read at <code>game@${esc(chrome.headSha)}</code> on ${esc(chrome.buildStamp)}.
   <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>`;
 

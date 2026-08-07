@@ -609,7 +609,17 @@ for (const roster of rosters) {
   requireSkipTarget(html, file);
   requireThat(!/(?:undefined|NaN|\[object Object\])/.test(html), `${file} contains an unrenderable JavaScript value`);
   requireThat(!/Not built yet/i.test(html), `${file} still carries the retired deferred-section copy`);
-  requireThat(/class="wprov"/.test(html), `${file} has no provenance block`);
+  /* The provenance MOVED, it did not die (director, 2026-08-07: "we don't need
+     'the game generated this' everywhere"). It used to be a block under the
+     lede on every roster page; it is now one quiet colophon line in the footer,
+     which is where a sentence about where numbers come from belongs. The guard
+     follows it there: still exactly one honest line per page, still naming the
+     build it was read at, just no longer shouting it at a reader who came to
+     look up a weapon. */
+  const colophon = html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)?.[1] || '';
+  requireThat(/came straight out of the game/.test(colophon), `${file} has no provenance colophon in its footer`);
+  requireThat(/game@[0-9a-f]{7,40}/.test(colophon), `${file} colophon does not name the build it was read at`);
+  requireThat(!/class="wprov"/.test(html), `${file} still carries the retired in-body provenance block`);
   requireThat(/aria-live="polite"/.test(html), `${file} has no live result count`);
   requireThat(/role="combobox"/.test(html), `${file} search is not an accessible combobox`);
   requireThat(/aria-current="page"/.test(html), `${file} navigation does not identify the current page`);
