@@ -1,0 +1,6 @@
+bin/landing.mjs
+bin/generate.mjs
+tests/landing.test.mjs
+tests/generatedSite.test.mjs
+docs/claims/site-kit.claims
+docs/lane-reports/site-kit.md

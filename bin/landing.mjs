@@ -379,6 +379,160 @@ export function runShape(gameData) {
   };
 }
 
+/* --------------------------------------------------------------- what you carry */
+
+/**
+ * THE SLOT COUNTS LIVE IN THE GAME'S CODE, NOT IN ITS DATA LAYER.
+ *
+ * data/game-data.json carries every registry the game plays on, so the size of
+ * every roster is already derived. The size of a BUILD is not in it: how many
+ * weapons and tomes you may hold at once, and how many upgrades a level up puts
+ * in front of you, are constants in src/sim/progression.ts and appear in no
+ * domain. The site reads them the same way it reads the play buttons out of
+ * src/core/releaseChannel.ts, because the alternative is typing "four" into a
+ * sentence and finding out it moved when a player counts the slots.
+ *
+ * LOUD ON MISSING, so a renamed constant stops the build instead of quietly
+ * publishing the last number anybody typed.
+ */
+export function parseBuildSlots(source) {
+  const text = String(source);
+  const read = (name) => {
+    const found = new RegExp(`export const ${name}\\s*=\\s*(\\d+)`).exec(text);
+    if (!found) {
+      throw new Error(`whomp/src/sim/progression.ts did not yield ${name}. The kit section states how big a build is and will not hand-type a slot count.`);
+    }
+    const value = Number(found[1]);
+    if (!Number.isInteger(value) || value <= 0) {
+      throw new Error(`${name} read as ${found[1]}, which is not a build. The kit section refuses to publish an invented slot count.`);
+    }
+    return value;
+  };
+  return { weapons: read('WEAPON_SLOTS'), tomes: read('PASSIVE_SLOTS'), offer: read('OFFER_SIZE') };
+}
+
+/**
+ * WHAT A PLAYER ACTUALLY WALKS IN HOLDING.
+ *
+ * Five things, and the page says so as five cards. Every number in them comes
+ * from here: the roster sizes off the domain counts, the slot sizes off
+ * parseBuildSlots, the WHOMP's cooldown off the ultimate registry. Nothing in
+ * the authored copy above it may type a figure of its own.
+ *
+ * THREE REFUSALS, and each one is a sentence the page would otherwise get
+ * wrong. A second ultimate means "the button the game is named after" is no
+ * longer one button, and a card that names one is a lie the moment the registry
+ * grows. A character with no innate or no signature means "each one cheats
+ * differently" is describing somebody else's roster. A cooldown that is not a
+ * positive number means the page has nothing to say about when the WHOMP comes
+ * back, and saying it anyway is the failure this whole module exists to stop.
+ */
+export function kitShape(gameData, slots) {
+  const count = (domain) => {
+    const value = gameData?.domains?.[domain]?.count;
+    if (!Number.isInteger(value) || value <= 0) {
+      throw new Error(`data/game-data.json has no positive count for domain "${domain}". The kit section will not print a roster size it did not read.`);
+    }
+    return value;
+  };
+
+  const ultimates = gameData?.domains?.ultimates;
+  const held = Object.values(ultimates?.entries || {});
+  if (held.length !== 1) {
+    throw new Error(`data/game-data.json holds ${held.length} ultimates. The kit card calls the WHOMP the one button the game is named after, and that sentence is only true while there is exactly one. Rewrite the card before the roster grows.`);
+  }
+  const [whomp] = held;
+  if (typeof whomp.cooldownMs !== 'number' || !(whomp.cooldownMs > 0)) {
+    throw new Error('The held ultimate has no positive cooldown. The kit card says how often the WHOMP comes back and refuses to guess at it.');
+  }
+  const slot = ultimates?.runtime?.slot;
+  if (!slot) {
+    throw new Error('The ultimate registry names no input slot. The kit card tells a reader which key the WHOMP is on and will not invent one.');
+  }
+  const availability = ultimates?.runtime?.availability || {};
+
+  const characters = Object.values(gameData?.domains?.characters?.entries || {});
+  const bare = characters.filter((c) => !c.innateId || !c.signatureId).map((c) => c.id);
+  if (bare.length) {
+    throw new Error(`These characters carry no innate or no signature: ${bare.join(', ')}. The kit card says every one of them cheats differently, so it stops rather than overstating the roster.`);
+  }
+
+  return {
+    cores: count('coreWeapons'),
+    weapons: count('weapons'),
+    weaponSlots: slots.weapons,
+    tomes: count('passives'),
+    tomeSlots: slots.tomes,
+    evolutions: count('evolutions'),
+    characters: count('characters'),
+    offer: slots.offer,
+    whomp: {
+      slot,
+      seconds: Math.round(whomp.cooldownMs / 1000),
+      armedFromStart: availability.fromRunStart === true && availability.requiresBossKill !== true,
+    },
+  };
+}
+
+/**
+ * THE FIVE CARDS, IN THE GAME'S OWN OFFER LANGUAGE.
+ *
+ * src/ui/offerCard.ts is the one card anatomy every in-run offer rides: a meta
+ * row of two small labels, a title, the line under it, and a footer that says
+ * what changes. A reader who has played the game has read that card a hundred
+ * times, so the landing page hands them the same shape rather than a fourth
+ * kind of box invented here.
+ *
+ * The numbers are `kit`. The words are authored against docs/VOICE.md, and the
+ * only reason they are authored at all is the reason PIPELINE_TEASERS is: a
+ * generated sentence about a roster reads like a field name, and this section
+ * is the first thing a stranger learns about what they would be holding.
+ */
+export function kitCards(kit) {
+  return [
+    {
+      id: 'core',
+      count: `1 of ${kit.cores}`,
+      kind: 'Aimed',
+      title: 'THE CORE',
+      line: 'The one you aim.',
+      body: 'You pick a core at the door, and it holds a slot of its own that the draft cannot reach. It is the one weapon in the run that waits for you to point it.',
+    },
+    {
+      id: 'arsenal',
+      count: `${kit.weaponSlots} slots`,
+      kind: 'Automatic',
+      title: 'THE ARSENAL',
+      line: `${kit.weaponSlots} that fire themselves.`,
+      body: `Room for ${kit.weaponSlots}, drawn from ${kit.weapons} weapons that keep their own time and never ask you for permission. ${kit.evolutions} of them have an end form, and it only arrives if you max the weapon, carry its paired tome, and open a boss chest.`,
+    },
+    {
+      id: 'tomes',
+      count: `${kit.tomeSlots} slots`,
+      kind: 'Passive',
+      title: 'THE TOMES',
+      line: `${kit.tomeSlots} that bend the math.`,
+      body: `${kit.tomeSlots} more slots, filled out of ${kit.tomes} tomes. Not one of them fires at anything. They sit there quietly deciding what the rest of your build is worth.`,
+    },
+    {
+      id: 'whomp',
+      count: kit.whomp.slot,
+      kind: 'Ability',
+      title: 'THE WHOMP',
+      line: 'The button the game is named after.',
+      body: `You come down on ${kit.whomp.slot} and the ground does the arguing. ${kit.whomp.armedFromStart ? `It is yours from the first second of the run rather than unlocked off a boss, and it comes back every ${kit.whomp.seconds} seconds` : `It comes back every ${kit.whomp.seconds} seconds`}, sooner once your gear starts cutting into that.`,
+    },
+    {
+      id: 'character',
+      count: `${kit.characters} of them`,
+      kind: 'Picked first',
+      title: 'YOUR CHARACTER',
+      line: 'Each one cheats differently.',
+      body: `${kit.characters} to choose between, all of them open on a fresh save. Every one carries a rule that is always on and a signature move nobody else gets.`,
+    },
+  ];
+}
+
 /* ----------------------------------------------------------- the release tracks */
 
 /** Both play buttons point at URLs the GAME owns. src/core/releaseChannel.ts
