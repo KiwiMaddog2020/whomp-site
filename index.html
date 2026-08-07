@@ -281,7 +281,10 @@ h2{font-size:1.65rem;margin:0 0 6px}
 }
 /* The chips inherit the hero's centring; under a left-aligned grid they have to
    take it back or the row reads as belonging to something else. */
-.tally{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;justify-content:flex-start}
+.tally{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;justify-content:flex-start}
+/* One line of framing over the tally, so the row of bare counts is introduced
+   rather than dumped. Footnote register, quieter than a lede. */
+.tallynote{margin:22px 0 0;color:var(--dim);font-size:.86rem}
 
 /* One line per release, date on the left, the release's own headline on the
    right. A row, not a card: five cards would be a second dev log on the page. */
@@ -356,31 +359,32 @@ h2{font-size:1.65rem;margin:0 0 6px}
 
 <section id="run">
   <div class="rule"></div>
-  <h2 class="chroma">What a run is</h2>
-  <p class="lede">20 minutes, one weapon you aim yourself, and a horde that treats the ground as a
-    surface to be thrown off. It opens in a browser tab.</p>
+  <h2 class="chroma">What a run does to you</h2>
+  <p class="lede">20 minutes, one weapon you aim yourself, and a horde that keeps finding out the ground
+    is optional. It opens in a browser tab, which is the least alarming thing about it.</p>
   <div class="facts">
 
     <div class="fact">
-      <h3>20 minutes, and the last two are the point</h3>
-      <p>The final horde arrives at 18:00 and does not thin out. Hold it for 2 minutes, bank at 20:00, and then either finish or keep going into endless.</p>
+      <h3>20 minutes, and the last 2 are the bill</h3>
+      <p>The final horde turns up at 18:00 and does not thin out, because thinning out is not what it does. Hold it for 2 minutes, bank at 20:00, and then walk away clean, or stay in and find out how much worse it gets.</p>
     </div>
 
     <div class="fact">
-      <h3>One weapon is yours to aim</h3>
-      <p>The core is the one you point. The other 33 weapons fire themselves, and deciding which of them you carry is the rest of it.</p>
+      <h3>One weapon trusts you. The rest do not.</h3>
+      <p>The core is the one you point. The other 33 weapons fire on their own schedule and have never once asked your opinion. Choosing which of them ride along is the rest of the job.</p>
     </div>
 
     <div class="fact">
-      <h3>Every level is a draft</h3>
-      <p>Three upgrades arrive, you take one, and the other two are gone. 33 weapons and 17 tomes are in that pool, and the run is over long before you see them all.</p>
+      <h3>Every level up is a small regret</h3>
+      <p>Three upgrades turn up, you take one, and the other two are gone for good. There are 33 weapons and 17 tomes in that pool and a run ends long before you have met most of them. Commitment is a stat.</p>
     </div>
 
     <div class="fact">
-      <h3>A tab, and nothing else</h3>
-      <p>No download, no launcher, and no account to make. The link is the game.</p>
+      <h3>The link is the game</h3>
+      <p>Nothing to download, nothing to install, and nobody here wants your email address. Click it and you are already being chased.</p>
     </div>
   </div>
+  <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
   <div class="chips tally">
     <span class="chip"><b>12</b> worlds</span>
     <span class="chip"><b>58</b> enemies</span>
@@ -393,8 +397,8 @@ h2{font-size:1.65rem;margin:0 0 6px}
 <section id="shipped">
   <div class="rule"></div>
   <h2 class="chroma">What just shipped</h2>
-  <p class="lede">The newest 5 releases, in the words they were written in for players.
-    The dev log has the rest of them, and the raw engineering log underneath.</p>
+  <p class="lede">The last 5 things that changed, in the words they were written in on the day.
+    The dev log has the rest, including the days that went badly.</p>
   <div class="loglines">
     <a class="logline" href="log.html#release-0-7-0">
       <span class="logline-when">2026-08-07 &middot; v0.7.0</span>
@@ -422,7 +426,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 <section id="next">
   <div class="rule"></div>
   <h2 class="chroma">What we are building</h2>
-  <p class="lede">The arcs the work is actually organised into, read out of the campaign the trains run on.</p>
+  <p class="lede">The big pieces, in the order we are actually building them rather than the order we promised.</p>
   <div class="arcs">
     <div class="arc" id="flight-quality-bar">
       <div class="id">A1 &middot; live</div>
@@ -510,7 +514,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Generated 2026-08-07 08:15 UTC from <code>game@1f6fd8b8</code>.
+  Every number on this page came straight out of the game, read at <code>game@6ce1b921</code> on 2026-08-07 09:00 UTC.
   Preview is serving <code>0.6.8</code> and Stable is serving <code>0.6.7</code>.
 </footer>
 

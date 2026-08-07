@@ -1924,7 +1924,10 @@ h2{font-size:1.65rem;margin:0 0 6px}
 }
 /* The chips inherit the hero's centring; under a left-aligned grid they have to
    take it back or the row reads as belonging to something else. */
-.tally{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;justify-content:flex-start}
+.tally{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;justify-content:flex-start}
+/* One line of framing over the tally, so the row of bare counts is introduced
+   rather than dumped. Footnote register, quieter than a lede. */
+.tallynote{margin:22px 0 0;color:var(--dim);font-size:.86rem}
 
 /* One line per release, date on the left, the release's own headline on the
    right. A row, not a card: five cards would be a second dev log on the page. */
@@ -1968,19 +1971,20 @@ ${landingTopBar('index.html')}
 
 <section id="run">
   <div class="rule"></div>
-  <h2 class="chroma">What a run is</h2>
-  <p class="lede">${run.minutes} minutes, one weapon you aim yourself, and a horde that treats the ground as a
-    surface to be thrown off. It opens in a browser tab.</p>
+  <h2 class="chroma">What a run does to you</h2>
+  <p class="lede">${run.minutes} minutes, one weapon you aim yourself, and a horde that keeps finding out the ground
+    is optional. It opens in a browser tab, which is the least alarming thing about it.</p>
   <div class="facts">
-    ${runCard(`${run.minutes} minutes, and the last two are the point`,
-      `The final horde arrives at ${run.finalHorde} and does not thin out. Hold it for ${run.holdMinutes} minutes, bank at ${run.bank}, and then ${run.endless ? 'either finish or keep going into endless' : 'the run is over'}.`)}
-    ${runCard('One weapon is yours to aim',
-      `The core is the one you point. The other ${run.weapons} weapons fire themselves, and deciding which of them you carry is the rest of it.`)}
-    ${runCard('Every level is a draft',
-      `Three upgrades arrive, you take one, and the other two are gone. ${run.weapons} weapons and ${run.tomes} tomes are in that pool, and the run is over long before you see them all.`)}
-    ${runCard('A tab, and nothing else',
-      'No download, no launcher, and no account to make. The link is the game.')}
+    ${runCard(`${run.minutes} minutes, and the last ${run.holdMinutes} are the bill`,
+      `The final horde turns up at ${run.finalHorde} and does not thin out, because thinning out is not what it does. Hold it for ${run.holdMinutes} minutes, bank at ${run.bank}, and then ${run.endless ? 'walk away clean, or stay in and find out how much worse it gets' : 'the run is over'}.`)}
+    ${runCard('One weapon trusts you. The rest do not.',
+      `The core is the one you point. The other ${run.weapons} weapons fire on their own schedule and have never once asked your opinion. Choosing which of them ride along is the rest of the job.`)}
+    ${runCard('Every level up is a small regret',
+      `Three upgrades turn up, you take one, and the other two are gone for good. There are ${run.weapons} weapons and ${run.tomes} tomes in that pool and a run ends long before you have met most of them. Commitment is a stat.`)}
+    ${runCard('The link is the game',
+      'Nothing to download, nothing to install, and nobody here wants your email address. Click it and you are already being chased.')}
   </div>
+  <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
   <div class="chips tally">
     <span class="chip"><b>${run.worlds}</b> worlds</span>
     <span class="chip"><b>${run.enemies}</b> enemies</span>
@@ -1993,8 +1997,8 @@ ${landingTopBar('index.html')}
 <section id="shipped">
   <div class="rule"></div>
   <h2 class="chroma">What just shipped</h2>
-  <p class="lede">The newest ${LANDING_LOG_ENTRIES} releases, in the words they were written in for players.
-    The dev log has the rest of them, and the raw engineering log underneath.</p>
+  <p class="lede">The last ${LANDING_LOG_ENTRIES} things that changed, in the words they were written in on the day.
+    The dev log has the rest, including the days that went badly.</p>
   <div class="loglines">${landingLog}</div>
   <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
 </section>
@@ -2002,7 +2006,7 @@ ${landingTopBar('index.html')}
 <section id="next">
   <div class="rule"></div>
   <h2 class="chroma">What we are building</h2>
-  <p class="lede">The arcs the work is actually organised into, read out of the campaign the trains run on.</p>
+  <p class="lede">The big pieces, in the order we are actually building them rather than the order we promised.</p>
   <div class="arcs">${arcCards(arcs)}</div>
 </section>
 ${pipelineCards.length ? `
@@ -2015,7 +2019,7 @@ ${pipelineCards.length ? `
 </section>` : ''}
 
 <footer>
-  Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
+  Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
   ${tracks.every((t) => t.live)
     ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
     : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}
@@ -2382,10 +2386,9 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
   <section id="shipped">
     <div class="rule"></div>
     <h2 class="chroma">Shipped</h2>
-    <p class="lede">Two ways to read it. Concise is one entry per release, in the words the release
-      notes were written in for players, with Kevin's own note in its place on any day he wrote one.
-      Full is the raw engineering log, generated straight from git, unedited, so a curious player can
-      see everything.</p>
+    <p class="lede">Two ways to read it. Concise is one entry per release, in the words it was written
+      in for players, with Kevin's own note in its place on any day he wrote one. Full is every commit,
+      unedited, including the ones nobody would put in a release note.</p>
 
     <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
          lands ON the Concise / Full choice rather than above it. -->
@@ -2430,7 +2433,7 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
   <section id="flight">
     <div class="rule"></div>
     <h2 class="chroma">In flight</h2>
-    <p class="lede">What is actively being built, live from the campaign that drives the work.</p>
+    <p class="lede">What is on somebody's desk right now, as opposed to what is on the wish list.</p>
     <div class="arcs">${arcCards(arcs)}${backlogTeasers.map(flightCard).join('')}</div>
   </section>
 
@@ -2439,7 +2442,7 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
+  Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
   ${/* Same retirement as the hero chip on index.html, for the same reason: this
         line compared the live Stable sha against the sha the site was generated
         from and called the difference a pending deploy. The two are supposed to
@@ -2679,12 +2682,12 @@ ${pitchSections.map((section) => `
 <div class="pitchtail">
   <p>The dev log on this site is not written for it. It is built out of the same releases and the same
     changes the work actually produced, so it says what happened rather than what somebody remembered.</p>
-  <p><a href="log.html#story">Read what landed, day by day.</a> Or skip all of it and
-    <a href="index.html">play the thing</a>.</p>
+  <p><a href="log.html#story">Read what landed, day by day.</a> Or look up what is waiting for you in the
+    <a href="wiki.html">wiki</a>. Or skip all of it and <a href="index.html">play the thing</a>.</p>
 </div>
 
 <footer>
-  Generated ${esc(buildStamp)} from <code>game@${esc(headSha)}</code>.
+  Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
   ${tracks.every((t) => t.live)
     ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
     : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}

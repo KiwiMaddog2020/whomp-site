@@ -397,15 +397,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">680 player-visible changes landed in the last 7 days, across 7 of them. 9 releases were cut across 4 of those days, and that is the part a player can already play.
+    <p class="lede">681 player-visible changes landed in the last 7 days, across 7 of them. 9 releases were cut across 4 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-07">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 13</span><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 13</span><span class="storyday-kind" style="background:var(--pink)">Fixed 6</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span></span>
       </div>
-      <p class="storyday-shape">20 changes landed: 13 new, 5 fixed, 2 polish.</p>
+      <p class="storyday-shape">21 changes landed: 13 new, 6 fixed, 2 polish.</p>
       <a class="storyday-release" href="#release-0-7-0">
         <b>v0.7.0</b><span>Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
       </a>
@@ -486,10 +486,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="shipped">
     <div class="rule"></div>
     <h2 class="chroma">Shipped</h2>
-    <p class="lede">Two ways to read it. Concise is one entry per release, in the words the release
-      notes were written in for players, with Kevin's own note in its place on any day he wrote one.
-      Full is the raw engineering log, generated straight from git, unedited, so a curious player can
-      see everything.</p>
+    <p class="lede">Two ways to read it. Concise is one entry per release, in the words it was written
+      in for players, with Kevin's own note in its place on any day he wrote one. Full is every commit,
+      unedited, including the ones nobody would put in a release note.</p>
 
     <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
          lands ON the Concise / Full choice rather than above it. -->
@@ -826,6 +825,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-07</h4>
 
+    <div class="row" data-kind="fix" id="chg-9cabb228">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">element words survive concision, the stable key stops leaking into the gate, and the menu glow gets room to breathe <span class="scope">(gate)</span></span>
+      <span class="sha">9cabb228</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-b33b16b3">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the hole census gets the clock its rendered hub costs, and the doc index learns the Sol brief <span class="scope">(gate)</span></span>
@@ -920,12 +924,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the stamp can carry what the gate cost <span class="scope">(gate)</span></span>
       <span class="sha">8f538d62</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-84463848">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a portable green stamp travels on the anchor the ruling names <span class="scope">(gate)</span></span>
-      <span class="sha">84463848</span>
-    </div>
+    </div><div class="row more">+ 1 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-06</h4>
@@ -1576,7 +1575,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="flight">
     <div class="rule"></div>
     <h2 class="chroma">In flight</h2>
-    <p class="lede">What is actively being built, live from the campaign that drives the work.</p>
+    <p class="lede">What is on somebody's desk right now, as opposed to what is on the wish list.</p>
     <div class="arcs">
     <div class="arc" id="flight-quality-bar">
       <div class="id">A1 &middot; live</div>
@@ -1648,12 +1647,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-07 08:15 UTC from <code>game@1f6fd8b8</code>.
+  Every number on this page came straight out of the game, read at <code>game@6ce1b921</code> on 2026-08-07 09:00 UTC.
 
   Preview is serving <code>0.6.8</code> and Stable is serving <code>0.6.7</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">680 player-visible changes in the last 7 days, across 7 active days, 1479 internal-only commits filtered out</div>
+  <div class="stat">681 player-visible changes in the last 7 days, across 7 active days, 1480 internal-only commits filtered out</div>
 </footer>
 
 
