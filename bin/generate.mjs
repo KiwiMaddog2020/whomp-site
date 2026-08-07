@@ -1764,8 +1764,8 @@ const teaserCards = pipelineCards.map((t) => `
 const NAV_DESTINATIONS = [
   { href: 'index.html#run', label: 'The run', on: 'index.html' },
   { href: 'index.html#shipped', label: 'What shipped', on: 'index.html' },
-  { href: 'index.html#next', label: 'What is next', on: 'index.html' },
-  { href: 'built-in-the-open.html', label: 'How it is made' },
+  { href: 'index.html#next', label: "What's next", on: 'index.html' },
+  { href: 'built-in-the-open.html', label: "How it's made" },
 ];
 /* On its own page an in-page section link stays a bare fragment, so the browser
  * scrolls instead of reloading; from anywhere else it needs the filename. */
@@ -2355,7 +2355,7 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
     <a href="#flight">In flight</a>
     <span class="wside-h" style="padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase">Wiki</span>
     <a href="wiki.html">All rosters</a>
-    <a href="built-in-the-open.html">How it is made</a>
+    <a href="built-in-the-open.html">How it's made</a>
     <a href="index.html">&larr; Back to WHOMP</a>
   </nav>
 
