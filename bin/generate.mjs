@@ -1806,7 +1806,7 @@ const LANDING_CHROME_CSS = `
 .brandmark b{color:var(--cream);font-size:1.02rem;font-weight:900;letter-spacing:.04em}
 .brandmark:hover b{color:#fff}
 .brandmark:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:10px}
-.navlinks{display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow-x:auto;
+.navlinks{display:flex;align-items:center;justify-content:center;gap:4px;flex:1;min-width:0;overflow-x:auto;
   -webkit-overflow-scrolling:touch;scrollbar-width:none}
 .navlinks::-webkit-scrollbar{display:none}
 .navlinks a{color:var(--dim);text-decoration:none;font-size:.78rem;font-weight:800;letter-spacing:.1em;
@@ -1963,9 +1963,6 @@ ${landingTopBar('index.html')}
     <a class="play quiet" href="wiki.html">WIKI</a>
     <a class="play quiet" href="log.html">DEV LOG</a>
   </div>
-  <p class="tracks"><b>Preview</b> is the newest build that went green, and it moves most days.
-    <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself:
-    <a href="${esc(tracks[1].url)}">play Stable${tracks[1].live ? ` v${esc(tracks[1].live.version)}` : ''}</a>.</p>
   <div class="chips">${liveChip()}</div>
 </header>
 
