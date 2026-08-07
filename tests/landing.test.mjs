@@ -372,7 +372,7 @@ test('not one number in the kit copy is typed, and moving the game moves the pag
     characters: 97,
     whomp: { slot: 'Z', seconds: 98, armedFromStart: true },
   });
-  const text = moved.map((c) => `${c.count} ${c.line} ${c.body}`).join(' ');
+  const text = moved.map((c) => `${c.count} ${c.kind} ${c.line} ${c.body}`).join(' ');
   for (const stale of ['8', '33', '17', '11', '50']) {
     assert.equal(new RegExp(`\\b${stale}\\b`).test(text), false, `the copy still carries ${stale} by hand`);
   }

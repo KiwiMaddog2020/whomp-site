@@ -2010,7 +2010,7 @@ ${landingTopBar('index.html')}
   <div class="rule"></div>
   <h2 class="chroma">What a run does to you</h2>
   <p class="lede">${run.minutes} minutes, one weapon you aim yourself, and a horde that keeps finding out the ground
-    is optional. The last horde turns up at ${run.finalHorde} and does not thin out, because thinning out is not what
+    is optional. The final horde turns up at ${run.finalHorde} and does not thin out, because thinning out is not what
     it does. Hold it for ${run.holdMinutes} minutes, bank at ${run.bank}, and then
     ${run.endless ? 'walk away clean, or stay in and find out how much worse it gets' : 'the run is over'}.</p>
   <p class="lede">Nothing to download, nothing to install, and nobody here wants your email address. Click it and you
@@ -2028,8 +2028,8 @@ ${landingTopBar('index.html')}
 <section id="kit">
   <div class="rule"></div>
   <h2 class="chroma">Your kit</h2>
-  <p class="lede">Five things go into a run with you. Every level up offers ${kit.offer} more, you keep one, and the
-    rest of the job is deciding what you can live without.</p>
+  <p class="lede">Five things go in with you, and you aim exactly one of them. Every level up offers ${kit.offer} more,
+    you keep one, and the other ${kit.offer - 1} are gone for good.</p>
   <div class="kits">${kitCards(kit).map(kitCard).join('')}</div>
 </section>
 

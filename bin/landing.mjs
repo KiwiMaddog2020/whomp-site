@@ -492,7 +492,7 @@ export function kitCards(kit) {
   return [
     {
       id: 'core',
-      count: `1 of ${kit.cores}`,
+      count: `One of ${kit.cores}`,
       kind: 'Aimed',
       title: 'THE CORE',
       line: 'The one you aim.',
@@ -512,23 +512,23 @@ export function kitCards(kit) {
       kind: 'Passive',
       title: 'THE TOMES',
       line: `${kit.tomeSlots} that bend the math.`,
-      body: `${kit.tomeSlots} more slots, filled out of ${kit.tomes} tomes. Not one of them fires at anything. They sit there quietly deciding what the rest of your build is worth.`,
+      body: `${kit.tomeSlots} more slots, filled out of ${kit.tomes} tomes. None of them fires at anything, and every one of them changes what the rest of your build is worth.`,
     },
     {
       id: 'whomp',
-      count: kit.whomp.slot,
-      kind: 'Ability',
+      count: `Every ${kit.whomp.seconds} seconds`,
+      kind: `On ${kit.whomp.slot}`,
       title: 'THE WHOMP',
       line: 'The button the game is named after.',
-      body: `You come down on ${kit.whomp.slot} and the ground does the arguing. ${kit.whomp.armedFromStart ? `It is yours from the first second of the run rather than unlocked off a boss, and it comes back every ${kit.whomp.seconds} seconds` : `It comes back every ${kit.whomp.seconds} seconds`}, sooner once your gear starts cutting into that.`,
+      body: `You come down on ${kit.whomp.slot} and the ground does the arguing. ${kit.whomp.armedFromStart ? 'It is yours from the first second of the run, and it comes back' : 'It comes back'} every ${kit.whomp.seconds} seconds before anything you are carrying cuts into that.`,
     },
     {
       id: 'character',
-      count: `${kit.characters} of them`,
+      count: `One of ${kit.characters}`,
       kind: 'Picked first',
       title: 'YOUR CHARACTER',
       line: 'Each one cheats differently.',
-      body: `${kit.characters} to choose between, all of them open on a fresh save. Every one carries a rule that is always on and a signature move nobody else gets.`,
+      body: `${kit.characters} to choose from, all of them open on a fresh save. Every one carries a rule that is always on and a signature move nobody else gets.`,
     },
   ];
 }
