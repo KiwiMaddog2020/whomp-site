@@ -341,23 +341,22 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
   <p class="tag" id="hero-tagline">It's a hammer.</p>
   <script>document.getElementById('hero-tagline').textContent=(["It's a hammer.","The horde is a physics object.","The ghosts started it.","Cardio, with consequences.","Politely violent.","The ghosts are unionizing. Whomp faster.","The crowd is never satisfied. Try anyway.","Whomp first. Ask questions never."])[Math.min(8-1,Math.max(0,Math.floor(Math.random()*8)))];</script>
-  <p class="spec">A 3D horde-survivor where one weapon is yours to aim.</p>
   <div class="cta">
     <a class="play loud" href="https://whomp-preview.pages.dev/">
-      PLAY THE PREVIEW
+      PLAY THE PREVIEW <em>v0.6.8</em>
     </a>
-    <a class="play quiet" href="https://kiwimaddog2020.github.io/whomp-play/">
-      PLAY STABLE
-    </a>
+    <a class="play quiet" href="wiki.html">WIKI</a>
+    <a class="play quiet" href="log.html">DEV LOG</a>
   </div>
   <p class="tracks"><b>Preview</b> is the newest build that went green, and it moves most days.
-    <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself.</p>
+    <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself:
+    <a href="https://kiwimaddog2020.github.io/whomp-play/">play Stable v0.6.7</a>.</p>
   <div class="chips"><span class="chip">
-    <span class="dot unknown" aria-hidden="true"></span>
-    Preview <b>unverified</b> · did not answer</span>
+    <span class="dot" aria-hidden="true"></span>
+    Preview <b>0.6.8</b> · <code>4a32b5ed</code></span>
   <span class="chip">
-    <span class="dot unknown" aria-hidden="true"></span>
-    Stable <b>unverified</b> · did not answer</span></div>
+    <span class="dot" aria-hidden="true"></span>
+    Stable <b>0.6.7</b> · <code>c6ef999e</code></span></div>
 </header>
 
 <section id="run">
@@ -402,6 +401,18 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <p class="lede">The newest 5 releases, in the words they were written in for players.
     The dev log has the rest of them, and the raw engineering log underneath.</p>
   <div class="loglines">
+    <a class="logline" href="log.html#release-0-7-0">
+      <span class="logline-when">2026-08-07 &middot; v0.7.0</span>
+      <span class="logline-what">Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
+    </a>
+    <a class="logline" href="log.html#release-0-6-8">
+      <span class="logline-when">2026-08-06 &middot; v0.6.8</span>
+      <span class="logline-what">Every upgrade card reads in full, airborne shots leave the barrel, and the desktop app just downloads.</span>
+    </a>
+    <a class="logline" href="log.html#release-0-6-7">
+      <span class="logline-when">2026-08-06 &middot; v0.6.7</span>
+      <span class="logline-what">Installing WHOMP makes sense in every browser, and installed windows keep their clean frames.</span>
+    </a>
     <a class="logline" href="log.html#release-0-6-6">
       <span class="logline-when">2026-08-06 &middot; v0.6.6</span>
       <span class="logline-what">The island's end zone is complete: the Sundermarch opens beside the Cinderfell, and the title screen loses an uninvited scrollbar.</span>
@@ -409,18 +420,6 @@ h2{font-size:1.65rem;margin:0 0 6px}
     <a class="logline" href="log.html#release-0-6-5">
       <span class="logline-when">2026-08-06 &middot; v0.6.5</span>
       <span class="logline-what">A new region burns at the end of the island, the hub finds its voice, bosses announce themselves, and a gamepad works.</span>
-    </a>
-    <a class="logline" href="log.html#release-0-6-4">
-      <span class="logline-when">2026-08-06 &middot; v0.6.4</span>
-      <span class="logline-what">Co-op stops ignoring the second player, the hidden area stops flickering, every duel hit wears its true colours, and the birds finally land.</span>
-    </a>
-    <a class="logline" href="log.html#release-0-6-3">
-      <span class="logline-when">2026-08-06 &middot; v0.6.3</span>
-      <span class="logline-what">You can fish now. Also aboard: a minimap that reads the fight, a daily level everyone shares, a jump that belongs to your character, and something with a crest is stalking the Hollow Crown.</span>
-    </a>
-    <a class="logline" href="log.html#note-2026-08-05">
-      <span class="logline-when">2026-08-05 &middot; v0.6.2</span>
-      <span class="logline-what">A week of releases, caught up in one entry</span>
     </a></div>
   <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
 </section>
@@ -453,7 +452,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
     <div class="arc" id="flight-controller">
       <div class="id">A5</div>
       <h4>CONTROLLER</h4>
-      <p>S1 Thu, S2 Fri/weekend, Deck later.</p>
+      <p>Wave 1 in a cloud lane (fired 2026-08-06), wave 2 follows it, Deck later.</p>
     </div>
     <div class="arc" id="flight-character-progression">
       <div class="id">A6</div>
@@ -516,8 +515,8 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Generated 2026-08-06 18:05 UTC from <code>game@7c74385c</code>.
-  One of the two tracks could not be reached at generation time, so this page names no version for it.
+  Generated 2026-08-07 07:57 UTC from <code>game@1f6fd8b8</code>.
+  Preview is serving <code>0.6.8</code> and Stable is serving <code>0.6.7</code>.
 </footer>
 
 </div>

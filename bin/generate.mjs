@@ -1954,13 +1954,14 @@ ${landingTopBar('index.html')}
   <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
   <p class="tag" id="hero-tagline">${esc(gameTaglines[0])}</p>
   <script>document.getElementById('hero-tagline').textContent=(${JSON.stringify(gameTaglines)})[Math.min(${gameTaglines.length}-1,Math.max(0,Math.floor(Math.random()*${gameTaglines.length})))];</script>
-  <p class="spec">${esc(TAGLINE)}</p>
   <div class="cta">
     ${trackButton(tracks[0], 'loud')}
-    ${trackButton(tracks[1], 'quiet')}
+    <a class="play quiet" href="wiki.html">WIKI</a>
+    <a class="play quiet" href="log.html">DEV LOG</a>
   </div>
   <p class="tracks"><b>Preview</b> is the newest build that went green, and it moves most days.
-    <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself.</p>
+    <b>Stable</b> is the weekly one, promoted from a Preview build that already proved itself:
+    <a href="${esc(tracks[1].url)}">play Stable${tracks[1].live ? ` v${esc(tracks[1].live.version)}` : ''}</a>.</p>
   <div class="chips">${liveChip()}</div>
 </header>
 

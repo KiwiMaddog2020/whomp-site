@@ -352,11 +352,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </span>
     </a>
     <div class="chips"><span class="chip">
-    <span class="dot unknown" aria-hidden="true"></span>
-    Preview <b>unverified</b> · did not answer</span>
+    <span class="dot" aria-hidden="true"></span>
+    Preview <b>0.6.8</b> · <code>4a32b5ed</code></span>
   <span class="chip">
-    <span class="dot unknown" aria-hidden="true"></span>
-    Stable <b>unverified</b> · did not answer</span></div>
+    <span class="dot" aria-hidden="true"></span>
+    Stable <b>0.6.7</b> · <code>c6ef999e</code></span></div>
   </div>
 </div>
 
@@ -397,16 +397,31 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">720 player-visible changes landed in the last 7 days, across 7 of them. 7 releases were cut across 4 of those days, and that is the part a player can already play.
+    <p class="lede">680 player-visible changes landed in the last 7 days, across 7 of them. 9 releases were cut across 4 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-07">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-07</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 13</span><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span></span>
+      </div>
+      <p class="storyday-shape">20 changes landed: 13 new, 5 fixed, 2 polish.</p>
+      <a class="storyday-release" href="#release-0-7-0">
+        <b>v0.7.0</b><span>Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-08-06">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-06</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 59</span><span class="storyday-kind" style="background:var(--pink)">Fixed 37</span><span class="storyday-kind" style="background:var(--gold)">Performance 4</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 72</span><span class="storyday-kind" style="background:var(--pink)">Fixed 57</span><span class="storyday-kind" style="background:var(--gold)">Performance 5</span></span>
       </div>
-      <p class="storyday-shape">100 changes landed: 59 new, 37 fixed, 4 performance.</p>
-      <a class="storyday-release" href="#release-0-6-6">
+      <p class="storyday-shape">134 changes landed: 72 new, 57 fixed, 5 performance.</p>
+      <a class="storyday-release" href="#release-0-6-8">
+        <b>v0.6.8</b><span>Every upgrade card reads in full, airborne shots leave the barrel, and the desktop app just downloads.</span>
+      </a><a class="storyday-release" href="#release-0-6-7">
+        <b>v0.6.7</b><span>Installing WHOMP makes sense in every browser, and installed windows keep their clean frames.</span>
+      </a><a class="storyday-release" href="#release-0-6-6">
         <b>v0.6.6</b><span>The island's end zone is complete: the Sundermarch opens beside the Cinderfell, and the title screen loses an uninvited scrollbar.</span>
       </a><a class="storyday-release" href="#release-0-6-5">
         <b>v0.6.5</b><span>A new region burns at the end of the island, the hub finds its voice, bosses announce themselves, and a gamepad works.</span>
@@ -465,17 +480,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">171 changes landed: 80 fixed, 75 new, 13 performance, 2 polish, 1 balance.</p>
 
 
-    </article>
-    <article class="storyday" id="day-2026-07-31">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-07-31</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 46</span><span class="storyday-kind" style="background:var(--pink)">Fixed 45</span><span class="storyday-kind" style="background:var(--violet)">Balance 3</span></span>
-      </div>
-      <p class="storyday-shape">94 changes landed: 46 new, 45 fixed, 3 balance.</p>
-      <a class="storyday-release" href="#release-0-6-0">
-        <b>v0.6.0</b><span>Duels stop dragging, the snow tier opens behind the Frost Gate, and two long-standing sustain leaks are finally closed.</span>
-      </a>
-
     </article></div>
   </section>
 
@@ -496,6 +500,66 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-0">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-07</span>
+      <span class="notecard-version">v0.7.0</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Core upgrade cards now read as a different kind of thing at one glance: their own plated frame in the upgrade's element hue, a bolted rivet rail, and no rarity chrome, because core upgrades were never rolled on a rarity ladder.</li><li>All 212 core upgrade descriptions were rewritten to be concise. Every one now fits at full text size, most in two or three lines, with every number and condition preserved exactly.</li><li>Bug reports get real markup tools: freehand, circle, and arrow above the screenshot. Drag to place, and UNDO pops your most recent mark of any kind, again and again.</li><li>The settings panel content sits in one clean column again inside the wide window: title, tabs, rows and CLOSE all share one left edge and one comfortable measure.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>One hub draw attribution defect found by the kennel render audit, fixed in the ledger without touching any budget number.</li><li>A stray em dash removed from a composed core option label.</li></ul>
+    </div>
+  </div>
+  </article>
+  <article class="notecard" id="release-0-6-8">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-06</span>
+      <span class="notecard-version">v0.6.8</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Every upgrade card reads in full, airborne shots leave the barrel, and the desktop app just downloads.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Core weapon upgrade cards no longer cut their text off with three dots. Every one of the 212 upgrade descriptions was over the old two line limit, so the card layout won real room, the text fits itself to the space, and all cards in a row stay the same height.</li><li>Jumping while firing looks right now. Shots, tracers and muzzle flashes leave the barrel wherever it actually is, mid jump included, instead of firing from the ground you left. This was one shared fix, so it covers core weapons and regular weapons alike.</li><li>The desktop app buttons download the app. Pick APPLE SILICON, INTEL MAC or WINDOWS and the installer starts arriving immediately. No code hosting page, ever, and yes: this is the first Windows build.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Offer card descriptions ending in three dots instead of words.</li><li>Airborne shots visibly firing from ground level.</li><li>The desktop card claiming a Windows build existed back when one did not.</li></ul>
+    </div>
+  </div>
+  </article>
+  <article class="notecard" id="release-0-6-7">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-06</span>
+      <span class="notecard-version">v0.6.7</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Installing WHOMP makes sense in every browser, and installed windows keep their clean frames.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Every browser now gets honest install guidance in place: Chrome and Edge keep the one-click install, Safari on Mac is told File then Add to Dock, iPhone and iPad get Share then Add to Home Screen, and Firefox and Opera get the truth in one line. Nobody is sent to a code hosting page.</li><li>Switching build tracks from inside an installed app now opens the other track in the browser instead of dragging your app window across origins. That drag was what pinned the URL bar to Preview installs.</li><li>The desktop app link became an explained dialog: what it is, who it is for, and why installing from the browser is usually better.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>The persistent bar across the top of installed Preview windows. One note: an install made before this fix may keep its bar until you uninstall and reinstall once.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-6-6">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-06</span>
@@ -507,12 +571,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The Sundermarch opens: the void half of the end zone. Eleven stations and two arch piers marching into the dark, sharing a perfectly seamed face with the Cinderfell. The end-zone split the expansion planned is now whole.</li><li>The title screen buttons no longer grow a small horizontal scrollbar. The highlighted button's grow effect was being counted as scrollable content; it now has exactly the room it needs.</li></ul>
+      <ul><li>The Sundermarch opens: the void half of the end zone. Eleven stations and two arch piers marching into the dark, sharing a perfectly seamed face with the Cinderfell. The end-zone split the expansion planned is now whole.</li><li>The title screen buttons no longer grow a small horizontal scrollbar. The highlighted button's grow effect was being counted as scrollable content; it now has exactly the room it needs.</li><li>The Cinderfell actually burns now. Its six molten fissures had never been drawn: every fissure triangle faced downward and was culled. Both new regions also gained their worn paths, and the heat ramp that was being computed and thrown away now glows.</li></ul>
     </div>
 
     <div class="bucket">
       <h4 style="color:var(--pink)">Fixed</h4>
-      <ul><li>The title screen scrollbar, reported by the director and measured to the pixel: the active button's 5 percent scale stuck 8 pixels past each edge of the list.</li></ul>
+      <ul><li>The title screen scrollbar, reported by the director and measured to the pixel: the active button's 5 percent scale stuck 8 pixels past each edge of the list.</li><li>From the director's own hub walk: the windmill's see-through course gaps are closed, the flickering forge window sits one honest step proud, and the vista bench squares its back to the rim.</li><li>The screenshot markup screen is four and a half times bigger, as requested from inside the markup screen.</li><li>The Underway Grotto's crystal seams now light the stone they grow from, and the rift's walk follows its own causeway instead of diving underground between steps.</li></ul><p class="bucket-more">2 more fixes shipped in this release. The full log has all of them.</p>
     </div>
   </div>
   </article>
@@ -760,108 +824,212 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-07</h4>
+
+    <div class="row" data-kind="fix" id="chg-b33b16b3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the hole census gets the clock its rendered hub costs, and the doc index learns the Sol brief <span class="scope">(gate)</span></span>
+      <span class="sha">b33b16b3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f7b0e38d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the core upgrade offer card variant, and it prints no rarity <span class="scope">(ui)</span></span>
+      <span class="sha">f7b0e38d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-bfd85138">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">core upgrade art stands on its own socket plate, with no rarity rim <span class="scope">(ui)</span></span>
+      <span class="sha">bfd85138</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5817d2d8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">condense all 212 core upgrade descriptions to one card size <span class="scope">(core)</span></span>
+      <span class="sha">5817d2d8</span>
+    </div>
+    <div class="row" data-kind="style" id="chg-ae664753">
+      <span class="kind" style="background:var(--gold)">Polish</span>
+      <span class="what">the two sticky bands fade where their content is not <span class="scope">(settings)</span></span>
+      <span class="sha">ae664753</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-17af4526">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no em dash in the composed core-weapon option label <span class="scope">(settings)</span></span>
+      <span class="sha">17af4526</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f4998dd6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the section is one column again, at one content measure <span class="scope">(settings)</span></span>
+      <span class="sha">f4998dd6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-061b95a3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the kennel answers to a name, so the ledger can bill it <span class="scope">(hub)</span></span>
+      <span class="sha">061b95a3</span>
+    </div>
+    <div class="row" data-kind="style" id="chg-dbbf0349">
+      <span class="kind" style="background:var(--gold)">Polish</span>
+      <span class="what">dark halo under every markup mark <span class="scope">(feedback)</span></span>
+      <span class="sha">dbbf0349</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e1fe86f9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">circle and arrow markup tools <span class="scope">(feedback)</span></span>
+      <span class="sha">e1fe86f9</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e7daa39b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the desktop card downloads the build instead of opening GitHub <span class="scope">(menu)</span></span>
+      <span class="sha">e7daa39b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-76f51d3c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the verdict names where the build went, and the run reports its own clock <span class="scope">(ship)</span></span>
+      <span class="sha">76f51d3c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1d56525a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the shared deploy wires can see a ship <span class="scope">(hooks)</span></span>
+      <span class="sha">1d56525a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d6c85aaa">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a thin front door that hands off to cloud-gate.sh unmodified <span class="scope">(gate)</span></span>
+      <span class="sha">d6c85aaa</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-57346ee8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">decide skip or run from a trusted stamp, before the suite runs <span class="scope">(gate)</span></span>
+      <span class="sha">57346ee8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-352e491a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">shard planner, shard runner and composer for a wide gate <span class="scope">(gate)</span></span>
+      <span class="sha">352e491a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9319fcbb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">orchestrate the whole ship ritual with a real exit check at every joint <span class="scope">(ship)</span></span>
+      <span class="sha">9319fcbb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-df27714d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">accept a green stamp minted by a cloud gate <span class="scope">(deploy)</span></span>
+      <span class="sha">df27714d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8f538d62">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the stamp can carry what the gate cost <span class="scope">(gate)</span></span>
+      <span class="sha">8f538d62</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-84463848">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a portable green stamp travels on the anchor the ruling names <span class="scope">(gate)</span></span>
+      <span class="sha">84463848</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-06</h4>
 
-    <div class="row" data-kind="fix" id="chg-9bcd4725">
+    <div class="row" data-kind="feat" id="chg-bf1d0442">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a red shard names its failures, because a count is a verdict nobody can act on <span class="scope">(gate)</span></span>
+      <span class="sha">bf1d0442</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6c72888e">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the button list stops growing a horizontal scrollbar <span class="scope">(title)</span></span>
-      <span class="sha">9bcd4725</span>
+      <span class="what">stamp and shard refs move to the branch namespace the containers can actually push <span class="scope">(gate)</span></span>
+      <span class="sha">6c72888e</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-5112d219">
+    <div class="row" data-kind="feat" id="chg-4b6b06fc">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">glow-up pass, rubble that reads and a lamp that carries <span class="scope">(hub)</span></span>
-      <span class="sha">5112d219</span>
+      <span class="what">the sharded verdict can mint the stamp the deploy trusts, over the ruling's own anchor <span class="scope">(gate)</span></span>
+      <span class="sha">4b6b06fc</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-773a3fe6">
+    <div class="row" data-kind="feat" id="chg-8c1ad29a">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a second shard rank for parallax, and four-course columns <span class="scope">(hub)</span></span>
-      <span class="sha">773a3fe6</span>
+      <span class="what">the desktop card offers WINDOWS, now that a Windows build exists to offer <span class="scope">(menu)</span></span>
+      <span class="sha">8c1ad29a</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-1aada270">
+    <div class="row" data-kind="feat" id="chg-4f423754">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Sundermarch, the void half of the end-zone split <span class="scope">(hub)</span></span>
-      <span class="sha">1aada270</span>
+      <span class="what">the muzzle flash holds the barrel, then lets go <span class="scope">(fx)</span></span>
+      <span class="sha">4f423754</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-a65f324b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the draw ruling, both numbers at once <span class="scope">(hub)</span></span>
-      <span class="sha">a65f324b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-33b7b0af">
+    <div class="row" data-kind="fix" id="chg-fcb89a12">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the material name takes the lane's own pinned convention <span class="scope">(water)</span></span>
-      <span class="sha">33b7b0af</span>
+      <span class="what">the core emitter rig and the co-op muzzle flash ride the body <span class="scope">(fx)</span></span>
+      <span class="sha">fcb89a12</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-a241b815">
+    <div class="row" data-kind="fix" id="chg-45f56efd">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">five integration seams from the morning's merges <span class="scope">(seams)</span></span>
-      <span class="sha">a241b815</span>
+      <span class="what">stop the offer card truncating its description <span class="scope">(ui)</span></span>
+      <span class="sha">45f56efd</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-0a15679f">
+    <div class="row" data-kind="feat" id="chg-74376e6a">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a pad can take an upgrade, on the draft's own keys <span class="scope">(ui)</span></span>
-      <span class="sha">0a15679f</span>
+      <span class="what">budget and fit the offer card's description <span class="scope">(ui)</span></span>
+      <span class="sha">74376e6a</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-4a5a98f6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the pad verb table, merged inside sample()'s edge-latch cycle <span class="scope">(input)</span></span>
-      <span class="sha">4a5a98f6</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-4422c659">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">record the measured hub frame baseline <span class="scope">(hub)</span></span>
-      <span class="sha">4422c659</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9a80f852">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">show how far along a started challenge is <span class="scope">(bulletin)</span></span>
-      <span class="sha">9a80f852</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-42a3f7c1">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the per-frame flavor read stops allocating <span class="scope">(audio)</span></span>
-      <span class="sha">42a3f7c1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-11a4e71f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">live writers for duelWin, whompLandings and discoverEvent <span class="scope">(bulletin)</span></span>
-      <span class="sha">11a4e71f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a343261b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">cross-run challenge counts, the accumulator the pass was missing <span class="scope">(bulletin)</span></span>
-      <span class="sha">a343261b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-991241cf">
+    <div class="row" data-kind="fix" id="chg-be3f6cf7">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the grove fade had a step in it, and the step was 0.36 <span class="scope">(audio)</span></span>
-      <span class="sha">991241cf</span>
+      <span class="what">an airborne shot leaves the barrel instead of the ground plane <span class="scope">(projectiles)</span></span>
+      <span class="sha">be3f6cf7</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-eeb6c572">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">press E at the gate and you are in the fight <span class="scope">(pvp)</span></span>
-      <span class="sha">eeb6c572</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-97264b5a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a match can tell its caller it was decided <span class="scope">(pvp)</span></span>
-      <span class="sha">97264b5a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a9e8dffe">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Duel Gate tells a lobby from a challenge <span class="scope">(hub)</span></span>
-      <span class="sha">a9e8dffe</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f14c0d4b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the unlock duel gets the scene handoff it was missing <span class="scope">(pvp)</span></span>
-      <span class="sha">f14c0d4b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-352d0922">
+    <div class="row" data-kind="fix" id="chg-ae924743">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the arrival runs on world time, not wall time <span class="scope">(fx)</span></span>
-      <span class="sha">352d0922</span>
-    </div><div class="row more">+ 80 more that day, not shown</div>
+      <span class="what">the desktop explainer takes the house overlay, not the title column <span class="scope">(install)</span></span>
+      <span class="sha">ae924743</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-86e970a9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">browser-aware install guidance and an explained desktop card <span class="scope">(install)</span></span>
+      <span class="sha">86e970a9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3b375b30">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the plates' bands reach the drawn cap, and a 2026-07-29 rejection retires <span class="scope">(hub)</span></span>
+      <span class="sha">3b375b30</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-021238ce">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the winding case actually builds the reversed winding <span class="scope">(test)</span></span>
+      <span class="sha">021238ce</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ffd7ad35">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the Frost arm's band reaches the drawn cap, not the formula <span class="scope">(hub)</span></span>
+      <span class="sha">ffd7ad35</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-20a277df">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one seam stitcher, and the Frost arm adopts the junction law <span class="scope">(hub)</span></span>
+      <span class="sha">20a277df</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e2941da5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the planet vista turns its back on the rim it was sitting beside <span class="scope">(hub)</span></span>
+      <span class="sha">e2941da5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-06226382">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the forge shop's windows stand a rung off the wall they sit in <span class="scope">(hub)</span></span>
+      <span class="sha">06226382</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4e85c14b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">drop the import the grove re-point orphaned (main's tsc was red) <span class="scope">(tests)</span></span>
+      <span class="sha">4e85c14b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0f42a5d9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">cloud by default, as mechanism <span class="scope">(train)</span></span>
+      <span class="sha">0f42a5d9</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b3515cb9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">markup canvas grows to near-viewport size while drawing <span class="scope">(feedback)</span></span>
+      <span class="sha">b3515cb9</span>
+    </div><div class="row more">+ 114 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-05</h4>
@@ -1383,110 +1551,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">efc2c52e</span>
     </div><div class="row more">+ 151 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-07-31</h4>
-
-    <div class="row" data-kind="feat" id="chg-653c5282">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the night session console, 22 decisions, self-contained <span class="scope">(decisions)</span></span>
-      <span class="sha">653c5282</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7e4f050e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the ledger caught me, and a pin that went red on a correct change <span class="scope">(gate)</span></span>
-      <span class="sha">7e4f050e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-902117ce">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the camera law reaches co-op, and the update toast stops interrupting it <span class="scope">(coop)</span></span>
-      <span class="sha">902117ce</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c15cb401">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a living seat can open a menu, change settings, and leave <span class="scope">(coop)</span></span>
-      <span class="sha">c15cb401</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d474374a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">mount the run's pause menu on the co-op path <span class="scope">(coop)</span></span>
-      <span class="sha">d474374a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-66b1479c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the seat-menu rules, neutral input, the Escape gate, a real run sheet <span class="scope">(coop)</span></span>
-      <span class="sha">66b1479c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8202e309">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">three optional deps so one menu can serve a surface that cannot pause <span class="scope">(pause)</span></span>
-      <span class="sha">8202e309</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7f6641ce">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the park and the lock become one contract <span class="scope">(input)</span></span>
-      <span class="sha">7f6641ce</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-bd2b337e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the park and the lock become one contract <span class="scope">(input)</span></span>
-      <span class="sha">bd2b337e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9abf6073">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the glaive's committed wedge and the arc caster's lock, on the ground <span class="scope">(render)</span></span>
-      <span class="sha">9abf6073</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-353bebab">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the telegraph pool grows a wedge and two caller-driven slots <span class="scope">(render)</span></span>
-      <span class="sha">353bebab</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e5928031">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the training yard's backstop follows the parked reticle too <span class="scope">(hub)</span></span>
-      <span class="sha">e5928031</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-09dd35e5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the park is a screen row, not a world point <span class="scope">(aim)</span></span>
-      <span class="sha">09dd35e5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9c38c849">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the far-bound backstop gates on &quot;pinned to the screen&quot;, not on RMB <span class="scope">(aim)</span></span>
-      <span class="sha">9c38c849</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-77e4f3a3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Mouse Look park is a screen row, not a world point <span class="scope">(aim)</span></span>
-      <span class="sha">77e4f3a3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2eaf928b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the core card reaches the training yard, fed by the yard's sim <span class="scope">(hub)</span></span>
-      <span class="sha">2eaf928b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c4efd502">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">crossing the training yard fence stopped killing the camera <span class="scope">(input)</span></span>
-      <span class="sha">c4efd502</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-89c8f030">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">mirror the core card's anticipation spine to both edges <span class="scope">(hud)</span></span>
-      <span class="sha">89c8f030</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4e9d3108">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Mouse Look kept dying at the training yard fence <span class="scope">(input)</span></span>
-      <span class="sha">4e9d3108</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-625692fd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the menu and loadout states tell input they own the pointer <span class="scope">(input)</span></span>
-      <span class="sha">625692fd</span>
-    </div><div class="row more">+ 74 more that day, not shown</div>
-  </div>
 
     </div>
   </section>
@@ -1537,7 +1601,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="arc" id="flight-controller">
       <div class="id">A5</div>
       <h4>CONTROLLER</h4>
-      <p>S1 Thu, S2 Fri/weekend, Deck later.</p>
+      <p>Wave 1 in a cloud lane (fired 2026-08-06), wave 2 follows it, Deck later.</p>
     </div>
     <div class="arc" id="flight-character-progression">
       <div class="id">A6</div>
@@ -1584,12 +1648,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Generated 2026-08-06 18:05 UTC from <code>game@7c74385c</code>.
+  Generated 2026-08-07 07:57 UTC from <code>game@1f6fd8b8</code>.
 
-  One of the two tracks could not be reached at generation time, so this page names no version for it.
+  Preview is serving <code>0.6.8</code> and Stable is serving <code>0.6.7</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">720 player-visible changes in the last 7 days, across 7 active days, 1487 internal-only commits filtered out</div>
+  <div class="stat">680 player-visible changes in the last 7 days, across 7 active days, 1479 internal-only commits filtered out</div>
 </footer>
 
 
