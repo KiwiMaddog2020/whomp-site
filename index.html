@@ -267,17 +267,24 @@ section{margin-top:78px}
 h2{font-size:1.65rem;margin:0 0 6px}
 .lede{color:var(--dim);margin:0 0 22px;font-size:.95rem;max-width:64ch}
 
-/* min() rather than a bare minimum, so the four cards land 2x2 on a wide screen
-   instead of 3-and-a-lonely-one, and still collapse to a single column on a
-   phone without the track needing a media query of its own. */
-.facts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr))}
-.fact{border:var(--edge);border-radius:14px;padding:18px 20px;background:rgba(255,243,207,.025)}
-.fact h3{margin:0 0 7px;color:var(--cream);font-size:1.02rem}
-.fact p{margin:0;color:var(--dim);font-size:.9rem}
-.fact:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+/* THE KIT GRID. min() rather than a bare minimum, so five cards land three and
+   two on a wide screen and still collapse to a single column on a phone without
+   the track needing a media query of its own. The card itself is the game's
+   offer card at rest: meta row, title, the line under it, then what changes. */
+.kits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.kit{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;padding:16px 18px 18px;
+  background:rgba(255,243,207,.025)}
+.kit-meta{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;
+  font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.kit-meta span:first-child{color:var(--gold)}
+.kit-meta span:last-child{color:var(--dim)}
+.kit h3{margin:0 0 4px;color:var(--cream);font-size:1.05rem;font-weight:900;letter-spacing:-.01em}
+.kit .kit-line{margin:0 0 9px;color:var(--body);font-size:.92rem}
+.kit p{margin:0;color:var(--dim);font-size:.87rem}
+.kit:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
 @media (prefers-reduced-motion:no-preference){
-  .fact{transition:border-color .14s ease,background .14s ease,transform .14s ease}
-  .fact:hover{transform:translateY(-1px)}
+  .kit{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .kit:hover{transform:translateY(-1px)}
 }
 /* The chips inherit the hero's centring; under a left-aligned grid they have to
    take it back or the row reads as belonging to something else. */
@@ -361,29 +368,11 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <div class="rule"></div>
   <h2 class="chroma">What a run does to you</h2>
   <p class="lede">20 minutes, one weapon you aim yourself, and a horde that keeps finding out the ground
-    is optional. It opens in a browser tab, which is the least alarming thing about it.</p>
-  <div class="facts">
-
-    <div class="fact">
-      <h3>20 minutes, and the last 2 are the bill</h3>
-      <p>The final horde turns up at 18:00 and does not thin out, because thinning out is not what it does. Hold it for 2 minutes, bank at 20:00, and then walk away clean, or stay in and find out how much worse it gets.</p>
-    </div>
-
-    <div class="fact">
-      <h3>One weapon trusts you. The rest do not.</h3>
-      <p>The core is the one you point. The other 33 weapons fire on their own schedule and have never once asked your opinion. Choosing which of them ride along is the rest of the job.</p>
-    </div>
-
-    <div class="fact">
-      <h3>Every level up is a small regret</h3>
-      <p>Three upgrades turn up, you take one, and the other two are gone for good. There are 33 weapons and 17 tomes in that pool and a run ends long before you have met most of them. Commitment is a stat.</p>
-    </div>
-
-    <div class="fact">
-      <h3>The link is the game</h3>
-      <p>Nothing to download, nothing to install, and nobody here wants your email address. Click it and you are already being chased.</p>
-    </div>
-  </div>
+    is optional. The final horde turns up at 18:00 and does not thin out, because thinning out is not what
+    it does. Hold it for 2 minutes, bank at 20:00, and then
+    walk away clean, or stay in and find out how much worse it gets.</p>
+  <p class="lede">Nothing to download, nothing to install, and nobody here wants your email address. Click it and you
+    are already being chased.</p>
   <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
   <div class="chips tally">
     <span class="chip"><b>12</b> worlds</span>
@@ -394,12 +383,54 @@ h2{font-size:1.65rem;margin:0 0 6px}
   </div>
 </section>
 
+<section id="kit">
+  <div class="rule"></div>
+  <h2 class="chroma">Your kit</h2>
+  <p class="lede">Five things go in with you, and you aim exactly one of them. Every level up offers 3 more,
+    you keep one, and the other 2 are gone for good.</p>
+  <div class="kits">
+    <div class="kit" id="kit-core">
+      <div class="kit-meta"><span>One of 8</span><span>Aimed</span></div>
+      <h3>THE CORE</h3>
+      <p class="kit-line">The one you aim.</p>
+      <p>You pick a core at the door, and it holds a slot of its own that the draft cannot reach. It is the one weapon in the run that waits for you to point it.</p>
+    </div>
+    <div class="kit" id="kit-arsenal">
+      <div class="kit-meta"><span>4 slots</span><span>Automatic</span></div>
+      <h3>THE ARSENAL</h3>
+      <p class="kit-line">4 that fire themselves.</p>
+      <p>Room for 4, drawn from 33 weapons that keep their own time and never ask you for permission. 8 of them have an end form, and it only arrives if you max the weapon, carry its paired tome, and open a boss chest.</p>
+    </div>
+    <div class="kit" id="kit-tomes">
+      <div class="kit-meta"><span>4 slots</span><span>Passive</span></div>
+      <h3>THE TOMES</h3>
+      <p class="kit-line">4 that bend the math.</p>
+      <p>4 more slots, filled out of 17 tomes. None of them fires at anything, and every one of them changes what the rest of your build is worth.</p>
+    </div>
+    <div class="kit" id="kit-whomp">
+      <div class="kit-meta"><span>Every 50 seconds</span><span>On Q</span></div>
+      <h3>THE WHOMP</h3>
+      <p class="kit-line">The button the game is named after.</p>
+      <p>You come down on Q and the ground does the arguing. It is yours from the first second of the run, and it comes back every 50 seconds before anything you are carrying cuts into that.</p>
+    </div>
+    <div class="kit" id="kit-character">
+      <div class="kit-meta"><span>One of 11</span><span>Picked first</span></div>
+      <h3>YOUR CHARACTER</h3>
+      <p class="kit-line">Each one cheats differently.</p>
+      <p>11 to choose from, all of them open on a fresh save. Every one carries a rule that is always on and a signature move nobody else gets.</p>
+    </div></div>
+</section>
+
 <section id="shipped">
   <div class="rule"></div>
   <h2 class="chroma">What just shipped</h2>
   <p class="lede">The last 5 things that changed, in the words they were written in on the day.
     The dev log has the rest, including the days that went badly.</p>
   <div class="loglines">
+    <a class="logline" href="log.html#release-0-7-1">
+      <span class="logline-when">2026-08-07 &middot; v0.7.1</span>
+      <span class="logline-what">The reliability train: the whole test gate now runs anywhere, and new witnesses stand guard over the corners a full game audit flagged.</span>
+    </a>
     <a class="logline" href="log.html#release-0-7-0">
       <span class="logline-when">2026-08-07 &middot; v0.7.0</span>
       <span class="logline-what">Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
@@ -415,10 +446,6 @@ h2{font-size:1.65rem;margin:0 0 6px}
     <a class="logline" href="log.html#release-0-6-6">
       <span class="logline-when">2026-08-06 &middot; v0.6.6</span>
       <span class="logline-what">The island's end zone is complete: the Sundermarch opens beside the Cinderfell, and the title screen loses an uninvited scrollbar.</span>
-    </a>
-    <a class="logline" href="log.html#release-0-6-5">
-      <span class="logline-when">2026-08-06 &middot; v0.6.5</span>
-      <span class="logline-what">A new region burns at the end of the island, the hub finds its voice, bosses announce themselves, and a gamepad works.</span>
     </a></div>
   <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
 </section>
@@ -514,7 +541,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@76519a20</code> on 2026-08-07 15:37 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9c0d5772</code> on 2026-08-07 21:01 UTC.
   Preview is serving <code>0.7.0</code> and Stable is serving <code>0.7.0</code>.
 </footer>
 

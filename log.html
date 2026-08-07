@@ -397,16 +397,18 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">685 player-visible changes landed in the last 7 days, across 7 of them. 9 releases were cut across 4 of those days, and that is the part a player can already play.
+    <p class="lede">708 player-visible changes landed in the last 7 days, across 7 of them. 10 releases were cut across 4 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-07">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 16</span><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 26</span><span class="storyday-kind" style="background:var(--pink)">Fixed 19</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">25 changes landed: 16 new, 7 fixed, 2 polish.</p>
-      <a class="storyday-release" href="#release-0-7-0">
+      <p class="storyday-shape">48 changes landed: 26 new, 19 fixed, 2 polish, 1 performance.</p>
+      <a class="storyday-release" href="#release-0-7-1">
+        <b>v0.7.1</b><span>The reliability train: the whole test gate now runs anywhere, and new witnesses stand guard over the corners a full game audit flagged.</span>
+      </a><a class="storyday-release" href="#release-0-7-0">
         <b>v0.7.0</b><span>Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
       </a>
 
@@ -499,6 +501,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-1">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-07</span>
+      <span class="notecard-version">v0.7.1</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The reliability train: the whole test gate now runs anywhere, and new witnesses stand guard over the corners a full game audit flagged.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Dozens of moments that used to happen silently now carry their sound twin, worst gaps first down the ranked census, each sized to its moment.</li><li>Online peers now face a hard byte and message rate boundary on your machine, so a misbehaving peer cannot flood your client through the reliable channel.</li><li>Behind the scenes, the entire test gate now runs identically on cloud hardware and the studio machine, so every future update ships through a faster and stricter door.</li><li>Twelve new witness tests watch the exact corners a 36 finding audit named, from cloud save adoption to boss encounter wiring, so defects get caught before you ever meet them.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>A screenshot that finished preparing after you closed the feedback panel, or after you attached a newer one, could replace or resurrect the wrong attachment. Stale preparations are now discarded.</li><li>Very long freehand markup strokes no longer grow without bound; drawing stays smooth for as long as you scribble.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-0">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-07</span>
@@ -825,106 +847,106 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-07</h4>
 
-    <div class="row" data-kind="fix" id="chg-53ab1728">
+    <div class="row" data-kind="feat" id="chg-a023fa36">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">sound twins down the ranked gap list (A4 campaign execution) <span class="scope">(audio)</span></span>
+      <span class="sha">a023fa36</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-706411c7">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the aimed-core smoke switch reaches DuelSim, still defaulting off <span class="scope">(duel)</span></span>
-      <span class="sha">53ab1728</span>
+      <span class="what">S4 inbound RTC bounds, C2 attachment ordering, P2 markup bounds (reviewed: APPROVE-WITH-NOTES; S4 ping lane residual open) <span class="scope">(net,ui)</span></span>
+      <span class="sha">706411c7</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-3542e6ac">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the portal door offers the core only, the starting weapon comes from the no-pick default <span class="scope">(loadout)</span></span>
-      <span class="sha">3542e6ac</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fa060709">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the online entry picker offers the core weapon only, weapons and tomes derive from the seat <span class="scope">(arenas)</span></span>
-      <span class="sha">fa060709</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4e754531">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">derive a seat's weapons and tomes from (matchSeed, seat), and carry the picked core on the kit <span class="scope">(arenas)</span></span>
-      <span class="sha">4e754531</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9cabb228">
+    <div class="row" data-kind="fix" id="chg-442c1484">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">element words survive concision, the stable key stops leaking into the gate, and the menu glow gets room to breathe <span class="scope">(gate)</span></span>
-      <span class="sha">9cabb228</span>
+      <span class="what">the glow-up pass moves the lobby mode cue past its no-op guard <span class="scope">(audio)</span></span>
+      <span class="sha">442c1484</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-b33b16b3">
+    <div class="row" data-kind="fix" id="chg-d535ec5b">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the hole census gets the clock its rendered hub costs, and the doc index learns the Sol brief <span class="scope">(gate)</span></span>
-      <span class="sha">b33b16b3</span>
+      <span class="what">claimsAreLive reads local and remote lane refs (fix the lookup, not the assertion) <span class="scope">(tests)</span></span>
+      <span class="sha">d535ec5b</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-f7b0e38d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the core upgrade offer card variant, and it prints no rarity <span class="scope">(ui)</span></span>
-      <span class="sha">f7b0e38d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-bfd85138">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">core upgrade art stands on its own socket plate, with no rarity rim <span class="scope">(ui)</span></span>
-      <span class="sha">bfd85138</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-5817d2d8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">condense all 212 core upgrade descriptions to one card size <span class="scope">(core)</span></span>
-      <span class="sha">5817d2d8</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-ae664753">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">the two sticky bands fade where their content is not <span class="scope">(settings)</span></span>
-      <span class="sha">ae664753</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-17af4526">
+    <div class="row" data-kind="fix" id="chg-410bebdc">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">no em dash in the composed core-weapon option label <span class="scope">(settings)</span></span>
-      <span class="sha">17af4526</span>
+      <span class="what">portable date parsing in devlog freshness check (BSD first, GNU fallback) <span class="scope">(deploy)</span></span>
+      <span class="sha">410bebdc</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-f4998dd6">
+    <div class="row" data-kind="fix" id="chg-1f51eedd">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the section is one column again, at one content measure <span class="scope">(settings)</span></span>
-      <span class="sha">f4998dd6</span>
+      <span class="what">T5 witness precondition is fixture-written, not borrowed from live claim state <span class="scope">(tests)</span></span>
+      <span class="sha">1f51eedd</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-061b95a3">
+    <div class="row" data-kind="fix" id="chg-aae6b179">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the kennel answers to a name, so the ledger can bill it <span class="scope">(hub)</span></span>
-      <span class="sha">061b95a3</span>
+      <span class="what">measured timeout ceilings for the two class C suites (never a platform delta) <span class="scope">(tests)</span></span>
+      <span class="sha">aae6b179</span>
     </div>
-    <div class="row" data-kind="style" id="chg-dbbf0349">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">dark halo under every markup mark <span class="scope">(feedback)</span></span>
-      <span class="sha">dbbf0349</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e1fe86f9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">circle and arrow markup tools <span class="scope">(feedback)</span></span>
-      <span class="sha">e1fe86f9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e7daa39b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the desktop card downloads the build instead of opening GitHub <span class="scope">(menu)</span></span>
-      <span class="sha">e7daa39b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-76f51d3c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the verdict names where the build went, and the run reports its own clock <span class="scope">(ship)</span></span>
-      <span class="sha">76f51d3c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1d56525a">
+    <div class="row" data-kind="fix" id="chg-e275e8fc">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the shared deploy wires can see a ship <span class="scope">(hooks)</span></span>
-      <span class="sha">1d56525a</span>
+      <span class="what">gate zsh execution cases on zsh presence (parity class A) <span class="scope">(tests)</span></span>
+      <span class="sha">e275e8fc</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-d6c85aaa">
+    <div class="row" data-kind="feat" id="chg-941e44d2">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a thin front door that hands off to cloud-gate.sh unmodified <span class="scope">(gate)</span></span>
-      <span class="sha">d6c85aaa</span>
+      <span class="what">the in-run surfaces answer their presses, after the doubling check the census deferred <span class="scope">(audio)</span></span>
+      <span class="sha">941e44d2</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-57346ee8">
+    <div class="row" data-kind="fix" id="chg-eabf0c19">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">remove unused imports flagged by tsc -b <span class="scope">(blindspot-c)</span></span>
+      <span class="sha">eabf0c19</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b012ba8c">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">decide skip or run from a trusted stamp, before the suite runs <span class="scope">(gate)</span></span>
-      <span class="sha">57346ee8</span>
-    </div><div class="row more">+ 5 more that day, not shown</div>
+      <span class="what">the single-handler surfaces answer, each at its own size <span class="scope">(audio)</span></span>
+      <span class="sha">b012ba8c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fed0256b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">T10 avoid path.dirname/resolve, absent from node-shims.d.ts <span class="scope">(test)</span></span>
+      <span class="sha">fed0256b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e40f8bdf">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the shared reroll charge answers on every surface that spends it <span class="scope">(audio)</span></span>
+      <span class="sha">e40f8bdf</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-eef2de9e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">size the two Class C measurement budgets to their real work <span class="scope">(tests)</span></span>
+      <span class="sha">eef2de9e</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-8b514fb9">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">bound freehand markup cost and paint the drag over a committed layer <span class="scope">(feedback)</span></span>
+      <span class="sha">8b514fb9</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a7a3717a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the victory checkpoint answers, and the fallen star stays voiced at its seam <span class="scope">(audio)</span></span>
+      <span class="sha">a7a3717a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c4badb4c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">only the current screenshot preparation may commit an attachment <span class="scope">(feedback)</span></span>
+      <span class="sha">c4badb4c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7e6c9d3f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the arena door asks the loadout question in the voice the other two doors use <span class="scope">(audio)</span></span>
+      <span class="sha">7e6c9d3f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b9319197">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">bound inbound reliable frames by type, bytes and rate, and evict a repeat offender <span class="scope">(rtc)</span></span>
+      <span class="sha">b9319197</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d494cf0b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the battle lobby answers every press, sized to what the press costs <span class="scope">(audio)</span></span>
+      <span class="sha">d494cf0b</span>
+    </div><div class="row more">+ 28 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-06</h4>
@@ -1647,12 +1669,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@76519a20</code> on 2026-08-07 15:37 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9c0d5772</code> on 2026-08-07 21:01 UTC.
 
   Preview is serving <code>0.7.0</code> and Stable is serving <code>0.7.0</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">685 player-visible changes in the last 7 days, across 7 active days, 1495 internal-only commits filtered out</div>
+  <div class="stat">708 player-visible changes in the last 7 days, across 7 active days, 1575 internal-only commits filtered out</div>
 </footer>
 
 

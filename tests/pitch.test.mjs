@@ -71,10 +71,18 @@ test('the pins are matched across line breaks, not line by line', needsGame, () 
   // them missing, which is the same defect that ended two campaign arcs on a
   // comma. This is the regression guard for the fold.
   const rules = readGame('docs/CLOUD_LANE_RULES.md');
-  const wrapped = /a law without a mechanism is a note/i;
-  assert.equal(rules.split('\n').some((line) => wrapped.test(line)), false,
-    'the quotation stopped straddling a line break, so this guard proves nothing now');
-  assert.equal(wrapped.test(rules.replace(/\s+/g, ' ')), true);
+  const wrapped = /a law without a mechanism is a note/gi;
+  // 2026-08-07: the game repo's ROUTING section now also quotes the aphorism on a
+  // single line, so "no line contains it" stopped being true without the straddling
+  // occurrence going anywhere. The property this guard needs is narrower: at least
+  // one occurrence must straddle a break, which is exactly when a folded match
+  // finds MORE occurrences than a per-line match does.
+  const foldedCount = (rules.replace(/\s+/g, ' ').match(wrapped) ?? []).length;
+  const perLineCount = rules.split('\n')
+    .reduce((n, line) => n + ((line.match(wrapped) ?? []).length), 0);
+  assert.ok(foldedCount >= 1, 'the quotation vanished from the source doc entirely');
+  assert.ok(foldedCount > perLineCount,
+    'no occurrence straddles a line break anymore, so this guard proves nothing now');
 });
 
 /* ------------------------------------------------------- the guard, fired hard */
