@@ -1713,8 +1713,11 @@ const wiki = buildWiki({
  * the arcs out of CAMPAIGN.md, the teasers out of the wishlist, the play URLs
  * out of releaseChannel.ts and the versions off the two live endpoints. The
  * authored half is the framing sentences, and they state no magnitude. */
+/* No version badge on the button: the director cut it 2026-08-07 ("remove the
+ * version numbering from the play the preview button"). The number still lives
+ * in the tracks line's Stable link, where a tester looking for it looks. */
 const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(track.url)}">
-      ${track.channel === 'preview' ? 'PLAY THE PREVIEW' : 'PLAY STABLE'}${track.live ? ` <em>v${esc(track.live.version)}</em>` : ''}
+      ${track.channel === 'preview' ? 'PLAY THE PREVIEW' : 'PLAY STABLE'}
     </a>`;
 
 const runCard = (title, body) => `
@@ -1755,13 +1758,14 @@ const teaserCards = pipelineCards.map((t) => `
  * top bar does. Nothing here draws a second W: bin/wiki-check.mjs pins the wiki
  * side of that law and tests/generatedSite.test.mjs pins this side, on every page
  * that carries this bar. */
+/* Wiki and Dev log left this bar 2026-08-07: the hero carries them as buttons
+ * again ("remove the wiki and dev log from the nav menu now that we have
+ * separate buttons for them"), and one destination should have one home. */
 const NAV_DESTINATIONS = [
   { href: 'index.html#run', label: 'The run', on: 'index.html' },
   { href: 'index.html#shipped', label: 'What shipped', on: 'index.html' },
   { href: 'index.html#next', label: 'What is next', on: 'index.html' },
   { href: 'built-in-the-open.html', label: 'How it is made' },
-  { href: 'wiki.html', label: 'Wiki' },
-  { href: 'log.html', label: 'Dev log' },
 ];
 /* On its own page an in-page section link stays a bare fragment, so the browser
  * scrolls instead of reloading; from anywhere else it needs the filename. */
