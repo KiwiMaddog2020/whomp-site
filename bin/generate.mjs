@@ -58,7 +58,8 @@ import { fileURLToPath } from 'node:url';
 import { buildStory, readableNights, windowDates } from './devlog.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import {
-  buildPipelineTeasers, localDay, parseArcs, parseReleaseChannelUrls, renderableArcs, runShape,
+  buildPipelineTeasers, kitCards, kitShape, localDay, parseArcs, parseBuildSlots,
+  parseReleaseChannelUrls, renderableArcs, runShape,
 } from './landing.mjs';
 import { pinWarning, trainScale, verifyPins } from './pitch.mjs';
 import { fetchLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
@@ -550,6 +551,18 @@ for (const stale of arcRender.expiredBody) {
  * docs/GAME_SPEC.md, which still describes a run eight minutes longer than the
  * one the game actually plays. */
 const run = runShape(gameData);
+
+// ---------------------------------------------------------------- derive: what you carry
+/* THE FIVE THINGS A PLAYER HOLDS, and the one place the site has to read the
+ * game's CODE rather than its data layer to say so. Roster sizes are domain
+ * counts like every other number on this page; how many of each you may hold at
+ * once is a constant in src/sim/progression.ts and appears in no artifact. See
+ * parseBuildSlots and kitShape in bin/landing.mjs. */
+const PROGRESSION_PATH = join(REPO, 'src/sim/progression.ts');
+if (!existsSync(PROGRESSION_PATH)) {
+  throw new Error(`No ${PROGRESSION_PATH}. The kit section states how many weapons and tomes a build holds, read from the game's own constants, and will not hand-type them.`);
+}
+const kit = kitShape(gameData, parseBuildSlots(readFileSync(PROGRESSION_PATH, 'utf8')));
 
 // ---------------------------------------------------------------- derive: what is coming
 /* The game's own queue, read as rows, said as sentences. buildPipelineTeasers
@@ -1700,13 +1713,21 @@ const wiki = buildWiki({
  * the log, but "mark, tagline, chip, button, arcs" was not enough of a page: a
  * stranger could read all of it and still not know that a run is twenty minutes,
  * that one weapon is aimed, that it opens in a tab, or that a Preview track
- * exists at all. Four sections now, each of them derived:
+ * exists at all. Five sections now, each of them derived:
  *
  *   the hero      two play buttons, one per release track, each carrying the
  *                 version that track is actually serving right now
  *   the run       what twenty minutes of this game is, off the mode registry
+ *   your kit      the five things you take in, as five offer cards
  *   what shipped  the newest concise log entries, the same source log.html uses
  *   what is next  the campaign arcs, plus the game's own queue as teasers
+ *
+ * THE RUN SECTION IS AN INTRO NOW, not four cards (director, 2026-08-07). It
+ * had been carrying the whole pitch on its own: the clock, the aimed weapon,
+ * the draft and the no-install promise, four cards deep, before a reader had
+ * been told what they would actually be holding. The clock and the promise stay
+ * as two short paragraphs, and the cards that were describing a kit are
+ * replaced by the kit.
  *
  * NOTHING ON IT IS TYPED TWICE. The clock comes out of runModes, the roster
  * sizes out of the domain counts, the shipped lines out of the release notes,
@@ -1720,10 +1741,19 @@ const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(track.
       ${track.channel === 'preview' ? 'PLAY THE PREVIEW' : 'PLAY STABLE'}
     </a>`;
 
-const runCard = (title, body) => `
-    <div class="fact">
-      <h3>${esc(title)}</h3>
-      <p>${esc(body)}</p>
+/* THE KIT CARD IS THE GAME'S OFFER CARD, in HTML and at rest. Every in-run
+ * offer the player has ever taken rides one anatomy (whomp/src/ui/offerCard.ts):
+ * a meta row of two small labels, a title, the line under it, and a footer that
+ * says what changes. So the five cards that tell a stranger what they would be
+ * holding wear that anatomy instead of a fourth kind of box invented here. The
+ * words and the numbers both come from kitCards in bin/landing.mjs; nothing on
+ * this side of the file may type a figure. */
+const kitCard = (card) => `
+    <div class="kit" id="kit-${esc(card.id)}">
+      <div class="kit-meta"><span>${esc(card.count)}</span><span>${esc(card.kind)}</span></div>
+      <h3>${esc(card.title)}</h3>
+      <p class="kit-line">${esc(card.line)}</p>
+      <p>${esc(card.body)}</p>
     </div>`;
 
 /* The dev log, on the landing page, one line each. Same entries log.html renders
@@ -1910,17 +1940,24 @@ section{margin-top:78px}
 h2{font-size:1.65rem;margin:0 0 6px}
 .lede{color:var(--dim);margin:0 0 22px;font-size:.95rem;max-width:64ch}
 
-/* min() rather than a bare minimum, so the four cards land 2x2 on a wide screen
-   instead of 3-and-a-lonely-one, and still collapse to a single column on a
-   phone without the track needing a media query of its own. */
-.facts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr))}
-.fact{border:var(--edge);border-radius:14px;padding:18px 20px;background:rgba(255,243,207,.025)}
-.fact h3{margin:0 0 7px;color:var(--cream);font-size:1.02rem}
-.fact p{margin:0;color:var(--dim);font-size:.9rem}
-.fact:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+/* THE KIT GRID. min() rather than a bare minimum, so five cards land three and
+   two on a wide screen and still collapse to a single column on a phone without
+   the track needing a media query of its own. The card itself is the game's
+   offer card at rest: meta row, title, the line under it, then what changes. */
+.kits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.kit{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;padding:16px 18px 18px;
+  background:rgba(255,243,207,.025)}
+.kit-meta{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;
+  font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.kit-meta span:first-child{color:var(--gold)}
+.kit-meta span:last-child{color:var(--dim)}
+.kit h3{margin:0 0 4px;color:var(--cream);font-size:1.05rem;font-weight:900;letter-spacing:-.01em}
+.kit .kit-line{margin:0 0 9px;color:var(--body);font-size:.92rem}
+.kit p{margin:0;color:var(--dim);font-size:.87rem}
+.kit:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
 @media (prefers-reduced-motion:no-preference){
-  .fact{transition:border-color .14s ease,background .14s ease,transform .14s ease}
-  .fact:hover{transform:translateY(-1px)}
+  .kit{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .kit:hover{transform:translateY(-1px)}
 }
 /* The chips inherit the hero's centring; under a left-aligned grid they have to
    take it back or the row reads as belonging to something else. */
@@ -1973,17 +2010,11 @@ ${landingTopBar('index.html')}
   <div class="rule"></div>
   <h2 class="chroma">What a run does to you</h2>
   <p class="lede">${run.minutes} minutes, one weapon you aim yourself, and a horde that keeps finding out the ground
-    is optional. It opens in a browser tab, which is the least alarming thing about it.</p>
-  <div class="facts">
-    ${runCard(`${run.minutes} minutes, and the last ${run.holdMinutes} are the bill`,
-      `The final horde turns up at ${run.finalHorde} and does not thin out, because thinning out is not what it does. Hold it for ${run.holdMinutes} minutes, bank at ${run.bank}, and then ${run.endless ? 'walk away clean, or stay in and find out how much worse it gets' : 'the run is over'}.`)}
-    ${runCard('One weapon trusts you. The rest do not.',
-      `The core is the one you point. The other ${run.weapons} weapons fire on their own schedule and have never once asked your opinion. Choosing which of them ride along is the rest of the job.`)}
-    ${runCard('Every level up is a small regret',
-      `Three upgrades turn up, you take one, and the other two are gone for good. There are ${run.weapons} weapons and ${run.tomes} tomes in that pool and a run ends long before you have met most of them. Commitment is a stat.`)}
-    ${runCard('The link is the game',
-      'Nothing to download, nothing to install, and nobody here wants your email address. Click it and you are already being chased.')}
-  </div>
+    is optional. The final horde turns up at ${run.finalHorde} and does not thin out, because thinning out is not what
+    it does. Hold it for ${run.holdMinutes} minutes, bank at ${run.bank}, and then
+    ${run.endless ? 'walk away clean, or stay in and find out how much worse it gets' : 'the run is over'}.</p>
+  <p class="lede">Nothing to download, nothing to install, and nobody here wants your email address. Click it and you
+    are already being chased.</p>
   <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
   <div class="chips tally">
     <span class="chip"><b>${run.worlds}</b> worlds</span>
@@ -1992,6 +2023,14 @@ ${landingTopBar('index.html')}
     <span class="chip"><b>${run.cores}</b> aimed cores</span>
     <span class="chip"><b>${run.weapons}</b> weapons</span>
   </div>
+</section>
+
+<section id="kit">
+  <div class="rule"></div>
+  <h2 class="chroma">Your kit</h2>
+  <p class="lede">Five things go in with you, and you aim exactly one of them. Every level up offers ${kit.offer} more,
+    you keep one, and the other ${kit.offer - 1} are gone for good.</p>
+  <div class="kits">${kitCards(kit).map(kitCard).join('')}</div>
 </section>
 
 <section id="shipped">
@@ -2967,6 +3006,7 @@ console.log(`  game@${headSha}  live=${live ? live.sha : 'unreachable'}`);
 console.log(`  ${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days since ${windowStart}, across ${allDays.length} active days (${filtered} noise commits filtered)`);
 console.log(`  ${arcs.length} arcs, ${backlogTeasers.length} backlog teasers, ${openBugs.length} open bugs`);
 console.log(`  landing: a run is ${run.minutes} minutes (final horde ${run.finalHorde}, ${run.holdMinutes} minute hold, bank ${run.bank}), ${LANDING_LOG_ENTRIES} log lines, ${pipelineCards.length} of ${pipeline.queued} queued wants teased${pipeline.unwritten.length ? `, ${pipeline.unwritten.length} with no teaser line yet` : ''}`);
+console.log(`  kit: 1 of ${kit.cores} cores aimed, ${kit.weaponSlots} of ${kit.weapons} weapons and ${kit.tomeSlots} of ${kit.tomes} tomes held, the WHOMP on ${kit.whomp.slot} every ${kit.whomp.seconds}s, ${kit.characters} characters`);
 for (const track of tracks) {
   console.log(`  track ${track.label}: ${track.live ? `${track.live.version} at ${track.live.sha}` : 'unverified'}  ${track.url}`);
 }

@@ -16,10 +16,13 @@ import test from 'node:test';
 import {
   buildPipelineTeasers,
   isExpiredSchedule,
+  kitCards,
+  kitShape,
   liveSchedule,
   localDay,
   openingCapital,
   parseArcs,
+  parseBuildSlots,
   parseReleaseChannelUrls,
   parseWishlistWants,
   renderableArcs,
@@ -232,10 +235,19 @@ const gameData = (over = {}) => ({
     },
     weapons: { count: 33 },
     coreWeapons: { count: 8 },
-    characters: { count: 11 },
+    characters: {
+      count: 11,
+      entries: { bonkrat: { id: 'bonkrat', innateId: 'boosterSchool', signatureId: 'megaDash' } },
+    },
     enemies: { count: 58 },
     levels: { count: 12 },
     passives: { count: 17 },
+    evolutions: { count: 8 },
+    ultimates: {
+      count: 1,
+      entries: { whomp: { id: 'whomp', name: 'The Whomp', cooldownMs: 50000 } },
+      runtime: { slot: 'Q', availability: { fromRunStart: true, requiresBossKill: false } },
+    },
   },
 });
 
@@ -263,6 +275,121 @@ test('a moved or missing field stops the page rather than inventing a run length
 
 test('a run clock whose parts do not add up refuses to describe itself', () => {
   assert.throws(() => runShape(gameData({ clearHoldPaceSec: 20 })), /does not close/);
+});
+
+/* --------------------------------------------------------------- what you carry */
+
+/** The shape of whomp/src/sim/progression.ts on 2026-08-07, comment and all,
+ *  because the comment beside WEAPON_SLOTS is exactly the kind of thing a naive
+ *  match swallows. */
+const PROGRESSION = `
+export const WEAPON_SLOTS = 4;   // GAME_SPEC doesn't fix a number; locked to BOO's shape per brief
+export const PASSIVE_SLOTS = 4;
+export const OFFER_SIZE = 3;
+export const DRAFT_MAX_CARDS = 4;
+`;
+
+const SLOTS = { weapons: 4, tomes: 4, offer: 3 };
+
+test('the size of a build is read out of the game, not typed into a sentence', () => {
+  assert.deepEqual(parseBuildSlots(PROGRESSION), SLOTS);
+});
+
+test('a renamed or emptied slot constant stops the page rather than guessing', () => {
+  assert.throws(() => parseBuildSlots('export const BUILD_SLOTS = 4;'), /WEAPON_SLOTS/);
+  assert.throws(() => parseBuildSlots('export const WEAPON_SLOTS = 4;\nexport const OFFER_SIZE = 3;'), /PASSIVE_SLOTS/);
+  assert.throws(() => parseBuildSlots('export const WEAPON_SLOTS = 0;'), /not a build/);
+});
+
+test('the kit is five things, counted off the registries the game plays on', () => {
+  const kit = kitShape(gameData(), SLOTS);
+  assert.equal(kit.cores, 8);
+  assert.equal(kit.weapons, 33);
+  assert.equal(kit.weaponSlots, 4);
+  assert.equal(kit.tomes, 17);
+  assert.equal(kit.tomeSlots, 4);
+  assert.equal(kit.evolutions, 8);
+  assert.equal(kit.characters, 11);
+  assert.equal(kit.offer, 3);
+  assert.deepEqual(kit.whomp, { slot: 'Q', seconds: 50, armedFromStart: true });
+});
+
+test('a second ultimate retires the sentence rather than quietly joining it', () => {
+  // "The button the game is named after" is true while there is one button.
+  const two = gameData();
+  two.domains.ultimates.entries.encore = { id: 'encore', cooldownMs: 30000 };
+  assert.throws(() => kitShape(two, SLOTS), /exactly one/);
+});
+
+test('a character with no innate or no signature stops the claim that every one cheats', () => {
+  const plain = gameData();
+  plain.domains.characters.entries.drifter = { id: 'drifter', innateId: 'quickFeet' };
+  assert.throws(() => kitShape(plain, SLOTS), /drifter/);
+});
+
+test('a WHOMP with no cooldown and a WHOMP with no key both refuse to be described', () => {
+  const noCooldown = gameData();
+  noCooldown.domains.ultimates.entries.whomp.cooldownMs = 0;
+  assert.throws(() => kitShape(noCooldown, SLOTS), /positive cooldown/);
+  const noSlot = gameData();
+  delete noSlot.domains.ultimates.runtime.slot;
+  assert.throws(() => kitShape(noSlot, SLOTS), /input slot/);
+});
+
+test('the five cards are the five things, in the order a run hands them to you', () => {
+  const cards = kitCards(kitShape(gameData(), SLOTS));
+  assert.deepEqual(cards.map((c) => c.id), ['core', 'arsenal', 'tomes', 'whomp', 'character']);
+  assert.deepEqual(cards.map((c) => c.title),
+    ['THE CORE', 'THE ARSENAL', 'THE TOMES', 'THE WHOMP', 'YOUR CHARACTER']);
+});
+
+test('every card is finished sentences in the house voice, and no card shouts', () => {
+  for (const card of kitCards(kitShape(gameData(), SLOTS))) {
+    assert.equal(trailsOff(card.line), false, `${card.id} has a line that trails off`);
+    assert.equal(trailsOff(card.body), false, `${card.id} has a body that trails off`);
+    const all = `${card.count} ${card.kind} ${card.title} ${card.line} ${card.body}`;
+    assert.equal(/[—–!]/.test(all), false, `${card.id} breaks house law`);
+    // Rule 12: the machinery has its own words and they are not these.
+    assert.equal(/\b(registry|artifact|schema|field|contract|domain)\b/i.test(all), false,
+      `${card.id} names the machinery`);
+  }
+});
+
+test('not one number in the kit copy is typed, and moving the game moves the page', () => {
+  /* THE PIN THAT MATTERS. Every figure in these five cards has to arrive from
+   * the game, so the page cannot be right today and wrong the morning somebody
+   * adds a weapon. A doctored kit is the cheapest proof there is: if a number
+   * below survives it, it was typed into prose. */
+  const kit = kitShape(gameData(), SLOTS);
+  const moved = kitCards({
+    ...kit,
+    cores: 91,
+    weapons: 92,
+    weaponSlots: 93,
+    tomes: 94,
+    tomeSlots: 95,
+    evolutions: 96,
+    characters: 97,
+    whomp: { slot: 'Z', seconds: 98, armedFromStart: true },
+  });
+  const text = moved.map((c) => `${c.count} ${c.kind} ${c.line} ${c.body}`).join(' ');
+  for (const stale of ['8', '33', '17', '11', '50']) {
+    assert.equal(new RegExp(`\\b${stale}\\b`).test(text), false, `the copy still carries ${stale} by hand`);
+  }
+  for (const fresh of ['91', '92', '93', '94', '95', '96', '97', '98']) {
+    assert.match(text, new RegExp(`\\b${fresh}\\b`), `the copy never prints ${fresh}`);
+  }
+  assert.match(text, /\bZ\b/, 'the WHOMP card hand-types its own key');
+});
+
+test('a WHOMP nobody has to earn says so, and one that must be earned does not', () => {
+  const kit = kitShape(gameData(), SLOTS);
+  const armed = kitCards(kit).find((c) => c.id === 'whomp');
+  assert.match(armed.body, /first second of the run/);
+  const earned = kitCards({ ...kit, whomp: { ...kit.whomp, armedFromStart: false } })
+    .find((c) => c.id === 'whomp');
+  assert.equal(/first second of the run/.test(earned.body), false);
+  assert.match(earned.body, /50 seconds/);
 });
 
 /* ----------------------------------------------------------- the release tracks */

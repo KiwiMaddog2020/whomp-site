@@ -54,11 +54,20 @@ const visibleText = (html) => html
   .replace(/<[^>]+>/g, ' ')
   .replace(/\s+/g, ' ');
 
-/** Every paragraph inside a card, on any of the three card shapes the landing
- *  page uses. These are the sentences that trail off when a source doc wraps. */
+/** Every paragraph inside a card, on every card track the landing page lays
+ *  out: the arcs, the queued teasers and the kit. These are the sentences that
+ *  trail off when a source doc wraps.
+ *
+ *  IT READS THE TRACK, NOT THE CARD, and that is a fix rather than a style
+ *  choice. The old form matched a card div and stopped at the first `</div>`
+ *  inside it, so an arc card (whose first child is its own `<div class="id">`)
+ *  contributed nothing and only the flat fact cards were ever checked. The
+ *  fact cards left with the run rework on 2026-08-07, which would have quietly
+ *  emptied this pin altogether. Matching the container and taking every
+ *  paragraph in it cannot be defeated by a card growing an element. */
 const cardSentences = (html) => [
-  ...html.matchAll(/<div class="(?:arc|fact)"[^>]*>([\s\S]*?)<\/div>/g),
-].flatMap((block) => [...block[1].matchAll(/<p>([\s\S]*?)<\/p>/g)].map((m) => m[1].trim()));
+  ...html.matchAll(/<div class="(?:arcs|kits)">([\s\S]*?)<\/section>/g),
+].flatMap((track) => [...track[1].matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map((m) => m[1].trim()));
 
 const scheduleChips = (html) => [...html.matchAll(/<div class="id">([\s\S]*?)<\/div>/g)]
   .map((m) => m[1].replace(/&middot;/g, ',').replace(/<[^>]+>/g, '').trim());
