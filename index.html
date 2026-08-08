@@ -266,6 +266,15 @@ header{padding:64px 0 8px;text-align:center}
 section{margin-top:78px}
 h2{font-size:1.65rem;margin:0 0 6px}
 .lede{color:var(--dim);margin:0 0 22px;font-size:.95rem;max-width:64ch}
+/* THE RUN INTRO READS CENTRED (director, 2026-08-07 23:20: the section was
+   "shifted over to the left but nothing else on the page is like that").
+   Since the card rework it is prose plus chips with no full-width element
+   to balance the wrap, so it takes the hero's own centring. Sections with
+   grids keep the left-set heading over full-width cards. */
+#run{text-align:center}
+#run .rule,#run .lede{margin-left:auto;margin-right:auto}
+#run .tally{justify-content:center}
+#run .tallynote{margin-left:auto;margin-right:auto;max-width:64ch}
 
 /* THE KIT GRID. min() rather than a bare minimum, so five cards land three and
    two on a wide screen and still collapse to a single column on a phone without
@@ -358,7 +367,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
   </div>
   <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.0</b> · <code>7dfb590a</code></span></div>
+    Live <b>0.7.0</b> · <code>77ea2ca4</code></span></div>
 </header>
 
 <section id="run">
@@ -538,7 +547,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@e7e560d8</code> on 2026-08-08 04:10 UTC.
+  Every number on this page came straight out of the game, read at <code>game@57ef55a6</code> on 2026-08-08 06:19 UTC.
   The game is serving <code>0.7.0</code>.
 </footer>
 

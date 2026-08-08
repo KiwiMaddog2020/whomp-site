@@ -1970,6 +1970,15 @@ header{padding:64px 0 8px;text-align:center}
 section{margin-top:78px}
 h2{font-size:1.65rem;margin:0 0 6px}
 .lede{color:var(--dim);margin:0 0 22px;font-size:.95rem;max-width:64ch}
+/* THE RUN INTRO READS CENTRED (director, 2026-08-07 23:20: the section was
+   "shifted over to the left but nothing else on the page is like that").
+   Since the card rework it is prose plus chips with no full-width element
+   to balance the wrap, so it takes the hero's own centring. Sections with
+   grids keep the left-set heading over full-width cards. */
+#run{text-align:center}
+#run .rule,#run .lede{margin-left:auto;margin-right:auto}
+#run .tally{justify-content:center}
+#run .tallynote{margin-left:auto;margin-right:auto;max-width:64ch}
 
 /* THE KIT GRID. min() rather than a bare minimum, so five cards land three and
    two on a wide screen and still collapse to a single column on a phone without
@@ -2704,6 +2713,11 @@ ${LANDING_CHROME_CSS}
    the title. The padding here is the whole of the space above it. */
 header{padding:44px 0 8px}
 header h1{margin:0}
+/* Every section on this page is prose; inside the full 940px wrap the whole
+   column hugged left (director, 2026-08-07 23:22: "kinda like that as
+   well"). A prose page wants a prose measure, so the wrap narrows and the
+   column centres itself; nothing inside it changes alignment. */
+.wrap{max-width:760px}
 .pitchlede{margin:18px 0 0;max-width:60ch;color:var(--body);font-size:clamp(1rem,2vw,1.12rem)}
 .chips{margin-top:24px}
 section{margin-top:64px}

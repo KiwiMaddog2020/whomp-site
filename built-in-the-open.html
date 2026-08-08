@@ -201,6 +201,11 @@ html,body{max-width:100%;overflow-x:clip}
    the title. The padding here is the whole of the space above it. */
 header{padding:44px 0 8px}
 header h1{margin:0}
+/* Every section on this page is prose; inside the full 940px wrap the whole
+   column hugged left (director, 2026-08-07 23:22: "kinda like that as
+   well"). A prose page wants a prose measure, so the wrap narrows and the
+   column centres itself; nothing inside it changes alignment. */
+.wrap{max-width:760px}
 .pitchlede{margin:18px 0 0;max-width:60ch;color:var(--body);font-size:clamp(1rem,2vw,1.12rem)}
 .chips{margin-top:24px}
 section{margin-top:64px}
@@ -256,7 +261,7 @@ h2{font-size:1.5rem;margin:6px 0 14px;max-width:48ch}
   <p class="pitchlede">How WHOMP gets made: one lane at a time, through gates that can fail, onto two tracks, with the dev log public the whole way.</p>
   <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.0</b> · <code>7dfb590a</code></span></div>
+    Live <b>0.7.0</b> · <code>77ea2ca4</code></span></div>
 </header>
 
 
@@ -264,7 +269,7 @@ h2{font-size:1.5rem;margin:6px 0 14px;max-width:48ch}
   <div class="rule"></div>
   <span class="eyebrow">The short version</span>
   <h2 class="chroma">One person, and a crew that does not get tired</h2>
-  <div class="pitchbody"><p>WHOMP is made by one person directing a crew of AI agents. The crew does the typing.</p><p>Work goes out in lanes. 395 of them have landed since the first commit, on 2026-07-11.</p></div>
+  <div class="pitchbody"><p>WHOMP is made by one person directing a crew of AI agents. The crew does the typing.</p><p>Work goes out in lanes. 406 of them have landed since the first commit, on 2026-07-11.</p></div>
 </section>
 <section id="lane">
   <div class="rule"></div>
@@ -305,7 +310,7 @@ h2{font-size:1.5rem;margin:6px 0 14px;max-width:48ch}
 </div>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@e7e560d8</code> on 2026-08-08 04:10 UTC.
+  Every number on this page came straight out of the game, read at <code>game@57ef55a6</code> on 2026-08-08 06:19 UTC.
   The game is serving <code>0.7.0</code>.
 </footer>
 
