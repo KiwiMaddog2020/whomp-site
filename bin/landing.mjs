@@ -550,3 +550,16 @@ export function parseReleaseChannelUrls(source) {
   }
   return { stable: urls.stable, preview: urls.preview };
 }
+
+/** The channel MODE is the game's own flag (whomp/src/core/channelMode.ts,
+ *  director 2026-08-07 15:57: one deploy for a while, feature off, not
+ *  removed). The site reads the flag from the same tree the play URLs come
+ *  from, for the same reason: a second copy of a studio posture is a second
+ *  thing to forget to flip. */
+export function parseChannelMode(source) {
+  const m = String(source).match(/CHANNEL_MODE:\s*ChannelMode\s*=\s*'(\w+)'/);
+  if (!m || (m[1] !== 'single' && m[1] !== 'dual')) {
+    throw new Error('whomp/src/core/channelMode.ts did not yield a channel mode. The site reads the game\'s own flag and will not assume one.');
+  }
+  return m[1];
+}

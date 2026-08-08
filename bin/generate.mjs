@@ -59,7 +59,7 @@ import { buildStory, readableNights, windowDates } from './devlog.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import {
   buildPipelineTeasers, kitCards, kitShape, localDay, parseArcs, parseBuildSlots,
-  parseReleaseChannelUrls, renderableArcs, runShape,
+  parseChannelMode, parseReleaseChannelUrls, renderableArcs, runShape,
 } from './landing.mjs';
 import { pinWarning, trainScale, verifyPins } from './pitch.mjs';
 import { fetchLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
@@ -359,6 +359,17 @@ if (!existsSync(RELEASE_CHANNEL_PATH)) {
 }
 const TRACK_URL = parseReleaseChannelUrls(readFileSync(RELEASE_CHANNEL_PATH, 'utf8'));
 
+/* THE CHANNEL MODE IS THE GAME'S FLAG, read from the same tree the buttons are
+ * (director, 2026-08-07 15:57: one deploy for a while, feature off, not
+ * removed). In single mode this page shows one play button and one live chip,
+ * and names no track, because the game itself names none
+ * (releaseChannelLabelForPlayer returns null everywhere in single mode). A
+ * tree without the flag predates it, and that tree IS the dual era. */
+const CHANNEL_MODE_PATH = join(REPO, 'src/core/channelMode.ts');
+const channelMode = existsSync(CHANNEL_MODE_PATH)
+  ? parseChannelMode(readFileSync(CHANNEL_MODE_PATH, 'utf8'))
+  : 'dual';
+
 // ---------------------------------------------------------------- derive: what is actually live
 /* The live sha is the ONLY proof of live (deploy-verification law), so the site
  * reports it as measured, and says so plainly when it could not measure it.
@@ -376,14 +387,19 @@ const TRACK_URL = parseReleaseChannelUrls(readFileSync(RELEASE_CHANNEL_PATH, 'ut
 let live = null;
 if (SHA_ARG) {
   live = normalizeSuppliedLiveVersion(SHA_ARG, VERSION_ARG || pkg.version);
-} else if (!OFFLINE) {
+} else if (!OFFLINE && channelMode === 'dual') {
   live = await fetchLiveVersion(`${TRACK_URL.stable}version.json`, 'stable');
 }
 const previewLive = OFFLINE ? null : await fetchLiveVersion(`${TRACK_URL.preview}version.json`, 'preview');
-const tracks = [
-  { channel: 'preview', label: 'Preview', url: TRACK_URL.preview, live: previewLive },
-  { channel: 'stable', label: 'Stable', url: TRACK_URL.stable, live },
-];
+/* Single mode: one track, and its label is not a channel name, because the
+ * player never meets a second channel to distinguish it from. The measured
+ * endpoint wins over a supplied --sha, same preference as before. */
+const tracks = channelMode === 'single'
+  ? [{ channel: 'preview', label: 'Live', url: TRACK_URL.preview, live: previewLive ?? live }]
+  : [
+    { channel: 'preview', label: 'Preview', url: TRACK_URL.preview, live: previewLive },
+    { channel: 'stable', label: 'Stable', url: TRACK_URL.stable, live },
+  ];
 for (const track of tracks) {
   if (!track.live && !OFFLINE) note(`${track.label} did not answer at ${track.url}version.json, so the page says its build is unverified rather than naming one.`);
 }
@@ -434,8 +450,12 @@ for (const track of tracks) {
  * trailing window drops what ages past it, and the sentence says trailing. */
 const FEED_WINDOW_DAYS = 7;
 /* LOCAL date, not `toISOString()`, and the first run of this code proved why:
- * `git log --date=short` prints dates in LOCAL time, so a UTC boundary is a
- * different day for most of the evening in this timezone. It generated
+ * a UTC boundary is a different day for most of the evening in this timezone.
+ * `--date=short-local` (2026-08-07): plain `--date=short` prints each commit
+ * in its own RECORDED offset, not the viewer's clock, and the cloud lanes
+ * commit in UTC, so an evening's merged lane work self-dated tomorrow and
+ * fell outside a window drawn in local days. The -local suffix is the one
+ * clock both halves are reckoned in. The first run generated
  * "751 changes in the last 7 days ... across 6 active days" — a seven-day window
  * that had quietly become six, off by exactly the UTC offset. The window and the
  * dates it is compared against have to be reckoned in the same clock.
@@ -451,7 +471,7 @@ const REFERENCE_DAY = localDay();
 const STORY_DATES = windowDates(REFERENCE_DAY, FEED_WINDOW_DAYS);
 const windowStart = STORY_DATES[STORY_DATES.length - 1];
 const RAW = git(
-  'log', 'main', '--date=short', '--pretty=%h\x1f%ad\x1f%s',
+  'log', 'main', '--date=short-local', '--pretty=%h\x1f%ad\x1f%s',
   `--since=${windowStart} 00:00:00`,
 ).split('\n');
 const PLAYER_VISIBLE = /^(feat|fix|balance|perf|style)(\(|:)/;
@@ -971,7 +991,7 @@ const landedLanes = existsSync(retiredClaimsDir)
   : 0;
 const rootCommits = git('rev-list', '--max-parents=0', 'HEAD').split('\n').filter(Boolean);
 const firstDay = rootCommits
-  .map((sha) => git('log', '-1', '--date=short', '--pretty=%ad', sha))
+  .map((sha) => git('log', '-1', '--date=short-local', '--pretty=%ad', sha))
   .sort()[0] || '';
 const scale = trainScale({ landedLanes, firstDay });
 if (!scale.ok) warn(`The page about how this game is built cannot state its scale: ${scale.reason}. Look at ${REPO}/docs/claims/retired before publishing a pitch with a hole where its one number goes.`);
@@ -1052,6 +1072,16 @@ const trackChip = (track) => `<span class="chip">
       ? `<b>${esc(track.live.version)}</b> · <code>${esc(track.live.sha)}</code>`
       : '<b>unverified</b> · did not answer'}</span>`;
 const liveChip = () => tracks.map(trackChip).join('\n  ');
+
+/* One colophon sentence, shared by every page that carries it. Single mode
+ * names no track, because the game itself names none. */
+const servingLine = () => (tracks.every((t) => t.live)
+  ? channelMode === 'single'
+    ? `The game is serving <code>${esc(tracks[0].live.version)}</code>.`
+    : `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
+  : channelMode === 'single'
+    ? 'The game could not be reached at generation time, so this page names no live version.'
+    : 'One of the two tracks could not be reached at generation time, so this page names no version for it.');
 
 const arcCards = (list) => list.map((a) => `
     <div class="arc" id="flight-${slug(a.name)}">
@@ -1738,7 +1768,8 @@ const wiki = buildWiki({
  * version numbering from the play the preview button"). The number still lives
  * in the tracks line's Stable link, where a tester looking for it looks. */
 const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(track.url)}">
-      ${track.channel === 'preview' ? 'PLAY THE PREVIEW' : 'PLAY STABLE'}
+      ${channelMode === 'single' ? 'PLAY WHOMP'
+    : track.channel === 'preview' ? 'PLAY THE PREVIEW' : 'PLAY STABLE'}
     </a>`;
 
 /* THE KIT CARD IS THE GAME'S OFFER CARD, in HTML and at rest. Every in-run
@@ -1916,9 +1947,9 @@ header{padding:64px 0 8px;text-align:center}
 .spec{margin:14px auto 0;max-width:56ch;color:var(--body);font-size:clamp(.95rem,1.9vw,1.06rem);text-wrap:balance}
 
 /* THE BUTTON, in the shape the game's own START row uses when it is the active
-   item: the sweep as fill, dark ink, no border, a flat plinth under it. Preview
-   is the loud one because Preview is the newest build that went green and is
-   what a visitor arriving today should press. Stable keeps a real button rather
+   item: the sweep as fill, dark ink, no border, a flat plinth under it. The
+   loud one is the newest build that went green, which is what a visitor
+   arriving today should press; in dual mode Stable keeps a real button rather
    than a text link, because it is a real choice and not a footnote. */
 .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
 .play{display:inline-flex;align-items:center;gap:12px;padding:17px 34px;border-radius:14px;border:0;
@@ -2059,9 +2090,7 @@ ${pipelineCards.length ? `
 
 <footer>
   Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
-  ${tracks.every((t) => t.live)
-    ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
-    : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}
+  ${servingLine()}
 </footer>
 
 </div>
@@ -2487,9 +2516,7 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
         from and called the difference a pending deploy. The two are supposed to
         differ. What each track is serving is a fact; the gap between them was
         never a status. See the comment on trackChip. */ ''}
-  ${tracks.every((t) => t.live)
-    ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
-    : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}
+  ${servingLine()}
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
   <div class="stat">${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days, across ${allDays.length} active days, ${filtered} internal-only commits filtered out</div>
@@ -2727,9 +2754,7 @@ ${pitchSections.map((section) => `
 
 <footer>
   Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
-  ${tracks.every((t) => t.live)
-    ? `${tracks.map((t) => `${t.label} is serving <code>${esc(t.live.version)}</code>`).join(' and ')}.`
-    : 'One of the two tracks could not be reached at generation time, so this page names no version for it.'}
+  ${servingLine()}
 </footer>
 
 </div>

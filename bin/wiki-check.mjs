@@ -572,8 +572,13 @@ requireSkipTarget(hub, 'wiki.html');
  * tracks: each is named in words, and each states in words either the version it
  * is serving or that it could not be verified. The dot repeats the text, never
  * replaces it. */
-requireThat(/Preview <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/.test(hub)
-  && /Stable <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/.test(hub)
+/* 2026-08-07 single-channel ruling: in single mode the one chip is labelled
+ * Live, because the game names no track (src/core/channelMode.ts). The
+ * guarantee is unchanged either way: the state is words, the dot only
+ * repeats them. */
+requireThat((/Live <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/.test(hub)
+  || (/Preview <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/.test(hub)
+    && /Stable <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/.test(hub)))
   && /'<b>unverified<\/b> · did not answer'/.test(generatorSource),
 'wiki live-build state is conveyed only by color');
 const entryCountLabel = (count) => `${count} ${count === 1 ? 'entry' : 'entries'}`;

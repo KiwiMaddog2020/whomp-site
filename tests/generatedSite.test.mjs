@@ -117,40 +117,40 @@ test('house law holds in the visible copy: no dashes, no exclamations', options,
  * on main ever since. What it guards is unchanged: exactly one loud button, it
  * is Preview, it points at the Preview origin, and Stable is still reachable
  * from the hero by its own real link. */
-test('the hero leads with Preview, and Stable is still one click away', options, () => {
+/* SINGLE CHANNEL (director, 2026-08-07 15:57: "we can just use one deploy for
+ * a while... turn the feature off and not remove it entirely"). The game's
+ * flag is src/core/channelMode.ts, the site reads it at generation, and in
+ * single mode no page names a track: one loud PLAY WHOMP button, one Live
+ * chip, one colophon sentence. The dual rendering is parked in
+ * bin/generate.mjs behind the same flag; flipping the game's constant and
+ * regenerating restores it, and these assertions get re-pointed then. */
+test('the hero leads with the one play button, and no page names a track', options, () => {
   const buttons = [...index.matchAll(/<a class="play (loud|quiet)" href="([^"]+)">\s*([^<\n]+)/g)]
     .map((m) => ({ kind: m[1], href: m[2], label: m[3].trim() }));
   assert.equal(buttons.length, 3, 'the hero does not carry exactly three buttons');
   assert.equal(buttons.filter((b) => b.kind === 'loud').length, 1, 'the hero has more than one loud button');
   assert.equal(buttons[0].kind, 'loud');
-  assert.match(buttons[0].label, /PLAY THE PREVIEW/);
+  assert.match(buttons[0].label, /PLAY WHOMP/);
   assert.match(buttons[0].href, /^https:\/\/whomp-preview\.pages\.dev\//);
   assert.deepEqual(buttons.slice(1).map((b) => b.label), ['WIKI', 'DEV LOG']);
   assert.deepEqual(buttons.slice(1).map((b) => b.href), ['wiki.html', 'log.html']);
-  /* The tracks line died 2026-08-07 01:07 by the director's own hand ("we
-   * don't need this disclaimer as the app has both options anyways"), so the
-   * hero no longer links Stable at all: the in-game BUILD TRACK switch is
-   * Stable's home now. What the hero still owes is honesty about both tracks
-   * existing, and the live chips carry that. */
   const chips = /<div class="chips">([\s\S]*?)<\/div>/.exec(index);
   assert.ok(chips, 'the hero has no live chips row');
-  assert.match(chips[1], /Preview/, 'the chips no longer name Preview');
-  assert.match(chips[1], /Stable/, 'the chips no longer name Stable');
+  assert.match(chips[1], /Live/, 'the chip no longer says Live');
+  assert.doesNotMatch(chips[1], /Preview|Stable/, 'the chips still name a track');
 });
 
-test('one line explains what the two tracks are serving', options, () => {
-  /* The old explainer paragraph is gone by ruling; the colophon's serving
-   * line is the one sentence about tracks the page still owes a stranger. */
-  assert.match(visibleText(index), /Preview is serving/);
-  assert.match(visibleText(index), /Stable is serving/);
+test('one line says what the game is serving, and it names no track', options, () => {
+  assert.match(visibleText(index), /The game is serving/);
+  assert.doesNotMatch(visibleText(index), /Preview is serving|Stable is serving/);
 });
 
-test('each track states in words what it is serving, on every surface', options, () => {
+test('the live chip states in words what is serving, on every surface', options, () => {
   for (const [file, html] of publicPages()) {
-    for (const label of ['Preview', 'Stable']) {
-      assert.match(html, new RegExp(`${label} <b>(?:unverified|\\d+\\.\\d+\\.\\d+)</b>`),
-        `${file} does not say what ${label} is serving`);
-    }
+    assert.match(html, /Live <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/,
+      `${file} does not say what the game is serving`);
+    assert.doesNotMatch(html, /(?:Preview|Stable) <b>(?:unverified|\d+\.\d+\.\d+)<\/b>/,
+      `${file} still labels a chip with a track name`);
   }
 });
 

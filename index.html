@@ -243,9 +243,9 @@ header{padding:64px 0 8px;text-align:center}
 .spec{margin:14px auto 0;max-width:56ch;color:var(--body);font-size:clamp(.95rem,1.9vw,1.06rem);text-wrap:balance}
 
 /* THE BUTTON, in the shape the game's own START row uses when it is the active
-   item: the sweep as fill, dark ink, no border, a flat plinth under it. Preview
-   is the loud one because Preview is the newest build that went green and is
-   what a visitor arriving today should press. Stable keeps a real button rather
+   item: the sweep as fill, dark ink, no border, a flat plinth under it. The
+   loud one is the newest build that went green, which is what a visitor
+   arriving today should press; in dual mode Stable keeps a real button rather
    than a text link, because it is a real choice and not a footnote. */
 .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
 .play{display:inline-flex;align-items:center;gap:12px;padding:17px 34px;border-radius:14px;border:0;
@@ -351,17 +351,14 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <script>document.getElementById('hero-tagline').textContent=(["It's a hammer.","The horde is a physics object.","The ghosts started it.","Cardio, with consequences.","Politely violent.","The ghosts are unionizing. Whomp faster.","The crowd is never satisfied. Try anyway.","Whomp first. Ask questions never."])[Math.min(8-1,Math.max(0,Math.floor(Math.random()*8)))];</script>
   <div class="cta">
     <a class="play loud" href="https://whomp-preview.pages.dev/">
-      PLAY THE PREVIEW
+      PLAY WHOMP
     </a>
     <a class="play quiet" href="wiki.html">WIKI</a>
     <a class="play quiet" href="log.html">DEV LOG</a>
   </div>
   <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Preview <b>0.7.0</b> · <code>76519a20</code></span>
-  <span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Stable <b>0.7.0</b> · <code>76519a20</code></span></div>
+    Live <b>0.7.0</b> · <code>7dfb590a</code></span></div>
 </header>
 
 <section id="run">
@@ -375,7 +372,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
     are already being chased.</p>
   <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
   <div class="chips tally">
-    <span class="chip"><b>12</b> worlds</span>
+    <span class="chip"><b>13</b> worlds</span>
     <span class="chip"><b>58</b> enemies</span>
     <span class="chip"><b>11</b> characters</span>
     <span class="chip"><b>8</b> aimed cores</span>
@@ -427,10 +424,6 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <p class="lede">The last 5 things that changed, in the words they were written in on the day.
     The dev log has the rest, including the days that went badly.</p>
   <div class="loglines">
-    <a class="logline" href="log.html#release-0-7-1">
-      <span class="logline-when">2026-08-07 &middot; v0.7.1</span>
-      <span class="logline-what">The reliability train: the whole test gate now runs anywhere, and new witnesses stand guard over the corners a full game audit flagged.</span>
-    </a>
     <a class="logline" href="log.html#release-0-7-0">
       <span class="logline-when">2026-08-07 &middot; v0.7.0</span>
       <span class="logline-what">Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
@@ -446,6 +439,10 @@ h2{font-size:1.65rem;margin:0 0 6px}
     <a class="logline" href="log.html#release-0-6-6">
       <span class="logline-when">2026-08-06 &middot; v0.6.6</span>
       <span class="logline-what">The island's end zone is complete: the Sundermarch opens beside the Cinderfell, and the title screen loses an uninvited scrollbar.</span>
+    </a>
+    <a class="logline" href="log.html#release-0-6-5">
+      <span class="logline-when">2026-08-06 &middot; v0.6.5</span>
+      <span class="logline-what">A new region burns at the end of the island, the hub finds its voice, bosses announce themselves, and a gamepad works.</span>
     </a></div>
   <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
 </section>
@@ -541,8 +538,8 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@9c0d5772</code> on 2026-08-07 21:03 UTC.
-  Preview is serving <code>0.7.0</code> and Stable is serving <code>0.7.0</code>.
+  Every number on this page came straight out of the game, read at <code>game@e7e560d8</code> on 2026-08-08 04:09 UTC.
+  The game is serving <code>0.7.0</code>.
 </footer>
 
 </div>
