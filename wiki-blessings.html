@@ -491,8 +491,8 @@ footer a{color:var(--cyan);text-decoration:none}
       </span>
     </span>
     <div class="chips"><span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.0</b> · <code>77ea2ca4</code></span></div>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Live <b>unverified</b> · did not answer</span></div>
   </div>
 </div>
 
@@ -575,13 +575,13 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>
-    <div class="stat">20 entries</div>
+    <div class="stat">19 entries</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-buildcraft">Buildcraft</a><span aria-hidden="true">/</span><span aria-current="page">Shrine blessings</span></nav>
     <h2 class="chroma">Shrine blessings</h2>
-    <p class="lede">A shrine you activate offers three, drawn from these 20. That trio is only part of what a shrine can do, because a legendary replacement can turn up ahead of the blessing menu and a way to move can follow it, so this page is not the complete set of shrine outcomes.</p>
+    <p class="lede">A shrine you activate offers three, drawn from these 19. That trio is only part of what a shrine can do, because a legendary replacement can turn up ahead of the blessing menu and a way to move can follow it, so this page is not the complete set of shrine outcomes.</p>
 
 
 
@@ -589,7 +589,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <section class="wfeature" aria-labelledby="blessing-shrine-runtime">
       <div><span class="eyebrow">What lighting one up actually does</span><h3 id="blessing-shrine-runtime">Blessings first, then a legendary or a way to move</h3></div>
       <p>A normal world shrine that lights up has <b>1</b> movement slot to fill, and it only fills if no legendary replacement arrived first. Directive and merchant offers do not carry that slot at all.</p>
-      <p>A non-legendary activated world shrine rolls its blessing trio, then fills the eligible movement slot from this complete registry.</p><p>Directive and merchant blessing offers do not include the movement slot, and a legendary replacement returns before the movement draw.</p><p>Offerings at their maxStacks ceiling leave the eligible pool; Extra Jump is uncapped, so the pool cannot become empty.</p><p>JUMP_AUGMENTS is a legacy card/progression alias surface for Spring Step and Extra Jump, not the complete shrine movement pool.</p>
+      <p>Every activated world shrine rolls its blessing trio, then fills the eligible movement slot from this complete registry.</p><p>Directive and merchant blessing offers do not include the movement slot. Nothing else can pre-empt it: director ruling 26 (2026-08-08) cut the legendary roll that used to replace the whole menu, so a world activation always reaches the movement draw.</p><p>Offerings at their maxStacks ceiling leave the eligible pool; Extra Jump is uncapped, so the pool cannot become empty.</p><p>JUMP_AUGMENTS is a legacy card/progression alias surface for Spring Step and Extra Jump, not the complete shrine movement pool.</p>
       <details class="wraw"><summary>Shrine runtime provenance <span>5</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/shrineMovement.ts#SHRINE_MOVEMENT_OFFERINGS</dd></div><div><dt><code>order</code></dt><dd>src/data/shrineMovement.ts#SHRINE_MOVEMENT_IDS</dd></div><div><dt><code>activation</code></dt><dd>src/sim/shrines.ts#ShrineSystem.openBlessingOffer</dd></div><div><dt><code>eligibility</code></dt><dd>src/sim/shrines.ts#ShrineSystem.rollMovementOffering</dd></div><div><dt><code>grant</code></dt><dd>src/sim/shrines.ts#ShrineSystem.grantMovement</dd></div></dl></details>
     </section>
 
@@ -598,7 +598,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-blessings-stat">Stat</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-blessings-stat" data-facet="stat" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="armor" aria-pressed="false" aria-controls="wiki-groups">Armor <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="attackSpeedBonus" aria-pressed="false" aria-controls="wiki-groups">Attack speed bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="bonusProjectiles" aria-pressed="false" aria-controls="wiki-groups">Bonus projectiles <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="critChance" aria-pressed="false" aria-controls="wiki-groups">Crit chance <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="critMultiplier" aria-pressed="false" aria-controls="wiki-groups">Crit multiplier <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="damageBonus" aria-pressed="false" aria-controls="wiki-groups">Damage bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="durationBonus" aria-pressed="false" aria-controls="wiki-groups">Duration bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="goldBonus" aria-pressed="false" aria-controls="wiki-groups">Gold bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="lifesteal" aria-pressed="false" aria-controls="wiki-groups">Lifesteal <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="luck" aria-pressed="false" aria-controls="wiki-groups">Luck <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="maxHpBonus" aria-pressed="false" aria-controls="wiki-groups">Max hp bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="mightBonus" aria-pressed="false" aria-controls="wiki-groups">Might bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="pickupBonus" aria-pressed="false" aria-controls="wiki-groups">Pickup bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="projSpeedBonus" aria-pressed="false" aria-controls="wiki-groups">Proj speed bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="regenBonus" aria-pressed="false" aria-controls="wiki-groups">Regen bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="shieldBonus" aria-pressed="false" aria-controls="wiki-groups">Shield bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="sizeBonus" aria-pressed="false" aria-controls="wiki-groups">Size bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="speedBonus" aria-pressed="false" aria-controls="wiki-groups">Speed bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="thornsBonus" aria-pressed="false" aria-controls="wiki-groups">Thorns bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="xpBonus" aria-pressed="false" aria-controls="wiki-groups">Xp bonus <span style="opacity:.5">1</span></button>
+          <button class="wf" type="button" data-value="armor" aria-pressed="false" aria-controls="wiki-groups">Armor <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="attackSpeedBonus" aria-pressed="false" aria-controls="wiki-groups">Attack speed bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="bonusProjectiles" aria-pressed="false" aria-controls="wiki-groups">Bonus projectiles <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="critChance" aria-pressed="false" aria-controls="wiki-groups">Crit chance <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="critMultiplier" aria-pressed="false" aria-controls="wiki-groups">Crit multiplier <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="damageBonus" aria-pressed="false" aria-controls="wiki-groups">Damage bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="durationBonus" aria-pressed="false" aria-controls="wiki-groups">Duration bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="goldBonus" aria-pressed="false" aria-controls="wiki-groups">Gold bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="lifesteal" aria-pressed="false" aria-controls="wiki-groups">Lifesteal <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="luck" aria-pressed="false" aria-controls="wiki-groups">Luck <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="maxHpBonus" aria-pressed="false" aria-controls="wiki-groups">Max hp bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="pickupBonus" aria-pressed="false" aria-controls="wiki-groups">Pickup bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="projSpeedBonus" aria-pressed="false" aria-controls="wiki-groups">Proj speed bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="regenBonus" aria-pressed="false" aria-controls="wiki-groups">Regen bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="shieldBonus" aria-pressed="false" aria-controls="wiki-groups">Shield bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="sizeBonus" aria-pressed="false" aria-controls="wiki-groups">Size bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="speedBonus" aria-pressed="false" aria-controls="wiki-groups">Speed bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="thornsBonus" aria-pressed="false" aria-controls="wiki-groups">Thorns bonus <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="xpBonus" aria-pressed="false" aria-controls="wiki-groups">Xp bonus <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -615,7 +615,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div id="wiki-groups">
     <section class="wgroup" data-group="all" id="g-all">
-      <div class="wgroup-h"><h3>Blessing registry</h3><span class="wgroup-n">20</span></div>
+      <div class="wgroup-h"><h3>Blessing registry</h3><span class="wgroup-n">19</span></div>
       <p class="wgroup-note">Every option the trio can be drawn from. The movement offering that can follow it has its own page.</p>
       <div class="wgrid">
       <article class="wcard" id="e-damage" tabindex="-1" data-stat="damageBonus" data-s-roster="0" data-s-name="power" data-s-value="0.08">
@@ -906,23 +906,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wfacts"><div class="wfact"><span class="wfact-k">Source value</span><span class="wfact-v"><b>4</b> applied to <code>shieldBonus</code></span></div><div class="wfact"><span class="wfact-k">Glyph</span><span class="wfact-v"><b>⛨</b></span></div></div>
 
       </article>
-      <article class="wcard" id="e-might" tabindex="-1" data-stat="mightBonus" data-s-roster="18" data-s-name="ferocity" data-s-value="0.05">
-        <div class="wcard-h">
-
-          <h4>Ferocity</h4>
-          <span class="wcard-accent" style="background:#ff5252"></span>
-        </div>
-        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:might" data-visual-use="entry">
-    <img src="wiki-assets/shrine-blessings/might.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Ferocity." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
-  </figure>
-
-      <div class="wtags"><span class="wtag ink-cyan">Might bonus</span></div>
-      <p class="wdesc">+5% Might</p>
-      <div class="wfacts"><div class="wfact"><span class="wfact-k">Source value</span><span class="wfact-v"><b>0.05</b> applied to <code>mightBonus</code></span></div><div class="wfact"><span class="wfact-k">Glyph</span><span class="wfact-v"><b>❂</b></span></div></div>
-
-      </article>
-      <article class="wcard" id="e-projectiles" tabindex="-1" data-stat="bonusProjectiles" data-s-roster="19" data-s-name="barrage" data-s-value="1">
+      <article class="wcard" id="e-projectiles" tabindex="-1" data-stat="bonusProjectiles" data-s-roster="18" data-s-name="barrage" data-s-value="1">
         <div class="wcard-h">
 
           <h4>Barrage</h4>
@@ -943,7 +927,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@57ef55a6</code> on 2026-08-08 06:20 UTC
+  Every number on this page came straight out of the game, read at <code>game@a8db70b6</code> on 2026-08-09 22:26 UTC
   from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
