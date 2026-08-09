@@ -2621,7 +2621,9 @@ export const DISPLAY_ROOT_FIELD_PATHS = Object.freeze([
   'domains.shrineMovement.runtime.offerSlot',
   'domains.shrineMovement.runtime.normalWorldShrineMovementSlots',
   'domains.shrineMovement.runtime.gate.requiresWorldShrine',
-  'domains.shrineMovement.runtime.gate.requiresNoLegendaryReplacement',
+  // requiresNoLegendaryReplacement retired with the shrine legendary roll
+  // (game ruling 26, 2026-08-08): shrines can no longer be replaced by a
+  // legendary, so the gate stopped carrying the field.
   'domains.shrineMovement.runtime.semantics',
   'domains.shrineMovement.runtime.provenance',
   'domains.runModes.openingEnemyHpBonus.field',
@@ -3812,7 +3814,8 @@ export function buildWiki(ctx) {
   if (shrineMovement?.count !== 5 || shrineMovement?.runtime?.owner !== 'world-shrine'
     || shrineMovement?.runtime?.offerSlot !== 'movement' || shrineMovement?.runtime?.normalWorldShrineMovementSlots !== 1
     || shrineMovement?.runtime?.gate?.requiresWorldShrine !== true
-    || shrineMovement?.runtime?.gate?.requiresNoLegendaryReplacement !== true
+    // requiresNoLegendaryReplacement retired with ruling 26 (2026-08-08); the
+    // remaining gate is the world-shrine requirement alone.
     || !/blessing trio/.test(shrineText) || !/legendary/.test(shrineText)
     || !/directive/.test(shrineText) || !/merchant/.test(shrineText)
     || !/extra jump/.test(shrineText) || !/legacy/.test(shrineText)
