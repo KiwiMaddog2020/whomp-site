@@ -596,7 +596,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wsub">Survival is the metric a run cares about and it is NOT reachable per weapon: src/dev/headlessSim.ts has no per-weapon damage attribution (damageByWeapon is keyed by source phase), no starting-weapon override, and its draft puts four weapons in the run within minutes. Locking the others out does not isolate either, because partitionLockedOut falls back to the held ids when a pool empties. Reported as a correct negative rather than faked.</p>
       <p class="wsub">Worker count changes wall-clock execution only. The CLI disables V8 Maglev before simulation, fixture workers inherit that process policy, and seeded tasks return in canonical order; numeric evidence and fingerprint are worker-count invariant. Workers used: 4 of cap 4; execution-only, not measurement evidence.</p>
       <details class="wraw"><summary>Evidence and limits <span>10 named limits</span></summary>
-        <dl><div><dt>Fixture fingerprint</dt><dd><code>9c8b2bb01f681a2c3d1ee386794b3003</code></dd></div><div><dt>Source-contract digest</dt><dd><code>6478d1dfb2402113fc24547be6b5c5a403fb4bc6204e13cf3bb69f9972d978e6</code></dd></div></dl>
+        <dl><div><dt>Fixture fingerprint</dt><dd><code>5e4a94f68e7ce367b0ad6f469ef69a4c</code></dd></div><div><dt>Source-contract digest</dt><dd><code>4e3c8f9217aa7a0708a611387893b2e59d4c5a5c94fdfc6cf367f47215f60da6</code></dd></div></dl>
         <ul><li>This ranks bare automatic WeaponSystem weapons, not aimed core weapons and not full-run builds. A weapon that scales with stats is measured without those stats.</li><li>The rig is WeaponSystem + Projectiles + GroundPatches. No director, elites, boss attacks/phases, player damage, survival, XP or draft economy.</li><li>The trash fixture respawns on death, so kills/min measures throughput and is not capped by a finite population.</li><li>The boss-class fixture is stationary and stands 5.1-7.9m from the orbiting player. It does not execute authored boss movement, attacks, or phases; this is target-damage evidence, not boss-fight performance.</li><li>A weapon whose reach is shorter than the controlled target distance measures ZERO there, and that zero is a fact about this fixture as much as about the weapon.</li><li>Echo's wake does not intersect the stationary boss-class fixture. Those bossDamage rows are explicitly UNMEASURED and receive no tier or rank.</li><li>Order statistics are discrete, never interpolated: quantiles use the nearest zero-based sample index round((n - 1) * q), and even-sized medians use the upper middle sample.</li><li>Measured controlled-sim builds are greedy four-weapon chains, not exhaustive optima or live-play recommendations.</li><li>Greedy build selection and reported build performance use the same deterministic seed cohort; there is no holdout cohort, so selection bias is possible.</li><li>Multi-weapon rows use a fixed lexicographic insertion order. Other acquisition orders are not measured and can change cast interleave.</li></ul>
       </details>
     </section>
@@ -620,7 +620,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-tiers-crowd">Controlled trash tier</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-tiers-crowd" data-facet="crowd" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="B" aria-pressed="false" aria-controls="wiki-groups">B <span style="opacity:.5">53</span></button><button class="wf" type="button" data-value="C" aria-pressed="false" aria-controls="wiki-groups">C <span style="opacity:.5">27</span></button><button class="wf" type="button" data-value="A" aria-pressed="false" aria-controls="wiki-groups">A <span style="opacity:.5">16</span></button><button class="wf" type="button" data-value="D" aria-pressed="false" aria-controls="wiki-groups">D <span style="opacity:.5">2</span></button>
+          <button class="wf" type="button" data-value="B" aria-pressed="false" aria-controls="wiki-groups">B <span style="opacity:.5">52</span></button><button class="wf" type="button" data-value="C" aria-pressed="false" aria-controls="wiki-groups">C <span style="opacity:.5">28</span></button><button class="wf" type="button" data-value="A" aria-pressed="false" aria-controls="wiki-groups">A <span style="opacity:.5">17</span></button><button class="wf" type="button" data-value="D" aria-pressed="false" aria-controls="wiki-groups">D <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -634,7 +634,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-tiers-confidence">Evidence status</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-tiers-confidence" data-facet="confidence" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="tier-consistent in fixture" aria-pressed="false" aria-controls="wiki-groups">Tier-consistent in fixture <span style="opacity:.5">76</span></button><button class="wf" type="button" data-value="sample-sensitive tier" aria-pressed="false" aria-controls="wiki-groups">Sample-sensitive tier <span style="opacity:.5">19</span></button><button class="wf" type="button" data-value="contains UNMEASURED axis" aria-pressed="false" aria-controls="wiki-groups">Contains unmeasured axis <span style="opacity:.5">3</span></button>
+          <button class="wf" type="button" data-value="tier-consistent in fixture" aria-pressed="false" aria-controls="wiki-groups">Tier-consistent in fixture <span style="opacity:.5">75</span></button><button class="wf" type="button" data-value="sample-sensitive tier" aria-pressed="false" aria-controls="wiki-groups">Sample-sensitive tier <span style="opacity:.5">20</span></button><button class="wf" type="button" data-value="contains UNMEASURED axis" aria-pressed="false" aria-controls="wiki-groups">Contains unmeasured axis <span style="opacity:.5">3</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -750,7 +750,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-beam-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="15" data-s-name="beam · level 1" data-s-crowd="185.5" data-s-boss="3228.5">
+      <article class="wcard" id="e-beam-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="15" data-s-name="beam · level 1" data-s-crowd="176" data-s-boss="3228.5">
         <div class="wcard-h">
 
           <h4>Beam · level 1</h4>
@@ -761,9 +761,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-gold">Stationary target S</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>185.5</b>, P10 to P90 <b>152.5 to 212</b>; competition rank <b>15 of 30</b>, cohort percentile <b>51.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 152.5, median 185.5, P90 212 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:55.5%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 152.5</span><span>median 185.5</span><span>P90 212 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>176</b>, P10 to P90 <b>153.5 to 209.5</b>; competition rank <b>15 of 30</b>, cohort percentile <b>51.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 153.5, median 176, P90 209.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:40.2%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 153.5</span><span>median 176</span><span>P90 209.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>S</b>, stable across P10 to P90; median <b>3228.5</b>, P10 to P90 <b>3228.5 to 3228.5</b>; competition rank <b>1 of 29</b>, cohort percentile <b>100%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 3228.5, median 3228.5, P90 3228.5 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -822,7 +822,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-iceShard-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="D" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="29" data-s-name="ice shards · level 1" data-s-crowd="21.5" data-s-boss="1101.1">
+      <article class="wcard" id="e-iceShard-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="C" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="29" data-s-name="ice shards · level 1" data-s-crowd="21.5" data-s-boss="1101.1">
         <div class="wcard-h">
 
           <h4>Ice Shards · level 1</h4>
@@ -830,10 +830,10 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Ice Shards · level 1 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:iceShard" data-visual-use="reference"><img src="wiki-assets/weapons/ice-shard.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ice Shards." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim D</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim C</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-iceShard">Ice Shards</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>D to C</b> across P10 to P90, median tier <b>D</b>; median <b>21.5</b>, P10 to P90 <b>20.5 to 23</b>; competition rank <b>29 of 30</b>, cohort percentile <b>3.4%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 20.5, median 21.5, P90 23 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>D to C</b> across P10 to P90, median tier <b>C</b>; median <b>21.5</b>, P10 to P90 <b>20.5 to 23</b>; competition rank <b>29 of 30</b>, cohort percentile <b>3.4%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 20.5, median 21.5, P90 23 kills/min; n=40. Local row scale; fixture limitations are listed above.">
       <span class="wrange-track" style="--median:40%"><i class="wrange-mid"></i></span>
       <span class="wrange-values"><span>P10 20.5</span><span>median 21.5</span><span>P90 23 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
@@ -966,7 +966,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-ricochetDisc-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="18" data-s-name="ricochet disc · level 1" data-s-crowd="65" data-s-boss="571.9">
+      <article class="wcard" id="e-ricochetDisc-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="18" data-s-name="ricochet disc · level 1" data-s-crowd="65" data-s-boss="571.9">
         <div class="wcard-h">
 
           <h4>Ricochet Disc · level 1</h4>
@@ -974,10 +974,10 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Ricochet Disc · level 1 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:ricochetDisc" data-visual-use="reference"><img src="wiki-assets/weapons/ricochet-disc.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ricochet Disc." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-ricochetDisc">Ricochet Disc</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>C to B</b> across P10 to P90, median tier <b>B</b>; median <b>65</b>, P10 to P90 <b>63.5 to 66.5</b>; competition rank <b>18 of 30</b>, cohort percentile <b>41.4%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 63.5, median 65, P90 66.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>65</b>, P10 to P90 <b>63.5 to 66.5</b>; competition rank <b>18 of 30</b>, cohort percentile <b>41.4%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 63.5, median 65, P90 66.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
       <span class="wrange-track" style="--median:50%"><i class="wrange-mid"></i></span>
       <span class="wrange-values"><span>P10 63.5</span><span>median 65</span><span>P90 66.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
@@ -990,7 +990,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-gravityWell-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="5" data-s-name="gravity well · level 1" data-s-crowd="492.5" data-s-boss="645">
+      <article class="wcard" id="e-gravityWell-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="5" data-s-name="gravity well · level 1" data-s-crowd="494.5" data-s-boss="645">
         <div class="wcard-h">
 
           <h4>Gravity Well · level 1</h4>
@@ -1001,9 +1001,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-gravityWell">Gravity Well</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>492.5</b>, P10 to P90 <b>487.5 to 496.5</b>; competition rank <b>5 of 30</b>, cohort percentile <b>86.2%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 487.5, median 492.5, P90 496.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:55.6%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 487.5</span><span>median 492.5</span><span>P90 496.5 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>494.5</b>, P10 to P90 <b>487 to 499.5</b>; competition rank <b>5 of 30</b>, cohort percentile <b>86.2%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 487, median 494.5, P90 499.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:60%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 487</span><span>median 494.5</span><span>P90 499.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>645</b>, P10 to P90 <b>645 to 645</b>; competition rank <b>18 of 29</b>, cohort percentile <b>39.3%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 645, median 645, P90 645 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -1014,7 +1014,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-starField-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="2" data-s-name="star field · level 1" data-s-crowd="545.5" data-s-boss="731.4">
+      <article class="wcard" id="e-starField-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="2" data-s-name="star field · level 1" data-s-crowd="545.5" data-s-boss="731.4">
         <div class="wcard-h">
 
           <h4>Star Field · level 1</h4>
@@ -1022,10 +1022,10 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Star Field · level 1 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:starField" data-visual-use="reference"><img src="wiki-assets/weapons/star-field.png" width="128" height="128" alt="Canonical in-game weapon glyph for Star Field." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-starField">Star Field</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>B to A</b> across P10 to P90, median tier <b>A</b>; median <b>545.5</b>, P10 to P90 <b>519 to 565.5</b>; competition rank <b>2 of 30</b>, cohort percentile <b>96.6%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 519, median 545.5, P90 565.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>545.5</b>, P10 to P90 <b>519 to 565.5</b>; competition rank <b>2 of 30</b>, cohort percentile <b>96.6%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 519, median 545.5, P90 565.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
       <span class="wrange-track" style="--median:57%"><i class="wrange-mid"></i></span>
       <span class="wrange-values"><span>P10 519</span><span>median 545.5</span><span>P90 565.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
@@ -1086,7 +1086,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-pulseMine-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="4" data-s-name="pulse mine · level 1" data-s-crowd="509" data-s-boss="375">
+      <article class="wcard" id="e-pulseMine-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="C" data-confidence="sample-sensitive tier" data-s-roster="4" data-s-name="pulse mine · level 1" data-s-crowd="508" data-s-boss="375">
         <div class="wcard-h">
 
           <h4>Pulse Mine · level 1</h4>
@@ -1094,12 +1094,12 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Pulse Mine · level 1 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:pulseMine" data-visual-use="reference"><img src="wiki-assets/weapons/pulse-mine.png" width="128" height="128" alt="Canonical in-game weapon glyph for Pulse Mine." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag">Tier-consistent where measured</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>509</b>, P10 to P90 <b>505.5 to 511.5</b>; competition rank <b>4 of 30</b>, cohort percentile <b>89.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 505.5, median 509, P90 511.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:58.3%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 505.5</span><span>median 509</span><span>P90 511.5 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>B to A</b> across P10 to P90, median tier <b>B</b>; median <b>508</b>, P10 to P90 <b>504 to 509.5</b>; competition rank <b>4 of 30</b>, cohort percentile <b>89.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 504, median 508, P90 509.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:72.7%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 504</span><span>median 508</span><span>P90 509.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>C</b>, stable across P10 to P90; median <b>375</b>, P10 to P90 <b>375 to 375</b>; competition rank <b>23 of 29</b>, cohort percentile <b>21.4%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 375, median 375, P90 375 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -1274,7 +1274,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-menhir-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="3" data-s-name="menhir · level 1" data-s-crowd="518" data-s-boss="325">
+      <article class="wcard" id="e-menhir-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="3" data-s-name="menhir · level 1" data-s-crowd="518" data-s-boss="325">
         <div class="wcard-h">
 
           <h4>Menhir · level 1</h4>
@@ -1282,10 +1282,10 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Menhir · level 1 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:menhir" data-visual-use="reference"><img src="wiki-assets/weapons/menhir.png" width="128" height="128" alt="Canonical in-game weapon glyph for Menhir." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag">Tier-consistent where measured</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-menhir">Menhir</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>518</b>, P10 to P90 <b>513 to 525</b>; competition rank <b>3 of 30</b>, cohort percentile <b>93.1%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 513, median 518, P90 525 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>518</b>, P10 to P90 <b>513 to 525</b>; competition rank <b>3 of 30</b>, cohort percentile <b>93.1%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 513, median 518, P90 525 kills/min; n=40. Local row scale; fixture limitations are listed above.">
       <span class="wrange-track" style="--median:41.7%"><i class="wrange-mid"></i></span>
       <span class="wrange-values"><span>P10 513</span><span>median 518</span><span>P90 525 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
@@ -1322,7 +1322,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-calving-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="14" data-s-name="calving · level 1" data-s-crowd="206.5" data-s-boss="871">
+      <article class="wcard" id="e-calving-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="14" data-s-name="calving · level 1" data-s-crowd="213.5" data-s-boss="871">
         <div class="wcard-h">
 
           <h4>Calving · level 1</h4>
@@ -1333,9 +1333,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-calving">Calving</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>206.5</b>, P10 to P90 <b>180.5 to 228</b>; competition rank <b>14 of 30</b>, cohort percentile <b>55.2%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 180.5, median 206.5, P90 228 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:54.7%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 180.5</span><span>median 206.5</span><span>P90 228 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>213.5</b>, P10 to P90 <b>184 to 236.5</b>; competition rank <b>14 of 30</b>, cohort percentile <b>55.2%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 184, median 213.5, P90 236.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:56.2%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 184</span><span>median 213.5</span><span>P90 236.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>871</b>, P10 to P90 <b>871 to 871</b>; competition rank <b>12 of 29</b>, cohort percentile <b>60.7%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 871, median 871, P90 871 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -1346,7 +1346,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-frostbite-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="C" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="19" data-s-name="frostbite · level 1" data-s-crowd="62" data-s-boss="441">
+      <article class="wcard" id="e-frostbite-base-l1" tabindex="-1" data-form="base" data-level="1" data-crowd="B" data-boss="C" data-confidence="sample-sensitive tier" data-s-roster="19" data-s-name="frostbite · level 1" data-s-crowd="62" data-s-boss="441">
         <div class="wcard-h">
 
           <h4>Frostbite · level 1</h4>
@@ -1354,10 +1354,10 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Frostbite · level 1 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:frostbite" data-visual-use="reference"><img src="wiki-assets/weapons/frostbite.png" width="128" height="128" alt="Canonical in-game weapon glyph for Frostbite." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim C</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag">Tier-consistent where measured</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-frostbite">Frostbite</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>C</b>, stable across P10 to P90; median <b>62</b>, P10 to P90 <b>60 to 64</b>; competition rank <b>19 of 30</b>, cohort percentile <b>37.9%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 60, median 62, P90 64 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>C to B</b> across P10 to P90, median tier <b>B</b>; median <b>62</b>, P10 to P90 <b>60 to 64</b>; competition rank <b>19 of 30</b>, cohort percentile <b>37.9%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 60, median 62, P90 64 kills/min; n=40. Local row scale; fixture limitations are listed above.">
       <span class="wrange-track" style="--median:50%"><i class="wrange-mid"></i></span>
       <span class="wrange-values"><span>P10 60</span><span>median 62</span><span>P90 64 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
@@ -1471,7 +1471,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-beam-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="4" data-s-name="beam · level 4" data-s-crowd="744.5" data-s-boss="5745.9">
+      <article class="wcard" id="e-beam-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="4" data-s-name="beam · level 4" data-s-crowd="751.5" data-s-boss="5745.9">
         <div class="wcard-h">
 
           <h4>Beam · level 4</h4>
@@ -1482,9 +1482,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-gold">Stationary target S</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>744.5</b>, P10 to P90 <b>735 to 755</b>; competition rank <b>4 of 30</b>, cohort percentile <b>89.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 735, median 744.5, P90 755 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:47.5%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 735</span><span>median 744.5</span><span>P90 755 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>751.5</b>, P10 to P90 <b>742 to 758</b>; competition rank <b>4 of 30</b>, cohort percentile <b>89.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 742, median 751.5, P90 758 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:59.4%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 742</span><span>median 751.5</span><span>P90 758 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>S</b>, stable across P10 to P90; median <b>5745.9</b>, P10 to P90 <b>5745.9 to 5745.9</b>; competition rank <b>1 of 29</b>, cohort percentile <b>100%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 5745.9, median 5745.9, P90 5745.9 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -1711,7 +1711,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-gravityWell-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="5" data-s-name="gravity well · level 4" data-s-crowd="690.5" data-s-boss="929.8">
+      <article class="wcard" id="e-gravityWell-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="B" data-confidence="sample-sensitive tier" data-s-roster="5" data-s-name="gravity well · level 4" data-s-crowd="691" data-s-boss="929.8">
         <div class="wcard-h">
 
           <h4>Gravity Well · level 4</h4>
@@ -1719,12 +1719,12 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Gravity Well · level 4 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:gravityWell" data-visual-use="reference"><img src="wiki-assets/weapons/gravity-well.png" width="128" height="128" alt="Canonical in-game weapon glyph for Gravity Well." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag">Tier-consistent where measured</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-gravityWell">Gravity Well</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>690.5</b>, P10 to P90 <b>684.5 to 695</b>; competition rank <b>5 of 30</b>, cohort percentile <b>86.2%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 684.5, median 690.5, P90 695 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:57.1%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 684.5</span><span>median 690.5</span><span>P90 695 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>B to A</b> across P10 to P90, median tier <b>A</b>; median <b>691</b>, P10 to P90 <b>686 to 696.5</b>; competition rank <b>5 of 30</b>, cohort percentile <b>86.2%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 686, median 691, P90 696.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:47.6%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 686</span><span>median 691</span><span>P90 696.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>929.8</b>, P10 to P90 <b>929.8 to 929.8</b>; competition rank <b>18 of 29</b>, cohort percentile <b>39.3%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 929.8, median 929.8, P90 929.8 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -1783,7 +1783,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-spiritOrbs-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="A" data-confidence="sample-sensitive tier" data-s-roster="21" data-s-name="ghost orbs · level 4" data-s-crowd="107.5" data-s-boss="2347.3">
+      <article class="wcard" id="e-spiritOrbs-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="C" data-boss="A" data-confidence="sample-sensitive tier" data-s-roster="21" data-s-name="ghost orbs · level 4" data-s-crowd="107.5" data-s-boss="2347.3">
         <div class="wcard-h">
 
           <h4>Ghost Orbs · level 4</h4>
@@ -1791,10 +1791,10 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <div class="wvisual-strip" aria-label="Ghost Orbs · level 4 canonical visual components"><span class="wvisual-compact" data-visual-key="weapons:spiritOrbs" data-visual-use="reference"><img src="wiki-assets/weapons/spirit-orbs.png" width="128" height="128" alt="Canonical in-game weapon glyph for Ghost Orbs." loading="lazy" decoding="async" data-pixelated="false"></span></div>
 
-      <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target A</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Trash sim C</span><span class="wtag ink-pink">Stationary target A</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-spiritOrbs">Ghost Orbs</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>C to B</b> across P10 to P90, median tier <b>B</b>; median <b>107.5</b>, P10 to P90 <b>106.5 to 108.5</b>; competition rank <b>21 of 30</b>, cohort percentile <b>31%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 106.5, median 107.5, P90 108.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>C to B</b> across P10 to P90, median tier <b>C</b>; median <b>107.5</b>, P10 to P90 <b>106.5 to 108.5</b>; competition rank <b>21 of 30</b>, cohort percentile <b>31%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 106.5, median 107.5, P90 108.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
       <span class="wrange-track" style="--median:50%"><i class="wrange-mid"></i></span>
       <span class="wrange-values"><span>P10 106.5</span><span>median 107.5</span><span>P90 108.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
@@ -1807,7 +1807,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-pulseMine-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="3" data-s-name="pulse mine · level 4" data-s-crowd="790" data-s-boss="570.9">
+      <article class="wcard" id="e-pulseMine-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="3" data-s-name="pulse mine · level 4" data-s-crowd="789" data-s-boss="570.9">
         <div class="wcard-h">
 
           <h4>Pulse Mine · level 4</h4>
@@ -1818,9 +1818,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>790</b>, P10 to P90 <b>784 to 794.5</b>; competition rank <b>3 of 30</b>, cohort percentile <b>93.1%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 784, median 790, P90 794.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:57.1%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 784</span><span>median 790</span><span>P90 794.5 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>789</b>, P10 to P90 <b>786.5 to 795.5</b>; competition rank <b>3 of 30</b>, cohort percentile <b>93.1%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 786.5, median 789, P90 795.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:27.8%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 786.5</span><span>median 789</span><span>P90 795.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>C</b>, stable across P10 to P90; median <b>570.9</b>, P10 to P90 <b>570.9 to 570.9</b>; competition rank <b>25 of 29</b>, cohort percentile <b>14.3%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 570.9, median 570.9, P90 570.9 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -2043,7 +2043,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-calving-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="15" data-s-name="calving · level 4" data-s-crowd="270.5" data-s-boss="1083.8">
+      <article class="wcard" id="e-calving-base-l4" tabindex="-1" data-form="base" data-level="4" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="15" data-s-name="calving · level 4" data-s-crowd="272" data-s-boss="1083.8">
         <div class="wcard-h">
 
           <h4>Calving · level 4</h4>
@@ -2054,9 +2054,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-calving">Calving</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>270.5</b>, P10 to P90 <b>236.5 to 287.5</b>; competition rank <b>15 of 30</b>, cohort percentile <b>51.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 236.5, median 270.5, P90 287.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:66.7%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 236.5</span><span>median 270.5</span><span>P90 287.5 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>272</b>, P10 to P90 <b>242.5 to 291.5</b>; competition rank <b>15 of 30</b>, cohort percentile <b>51.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 242.5, median 272, P90 291.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:60.2%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 242.5</span><span>median 272</span><span>P90 291.5 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>1083.8</b>, P10 to P90 <b>1083.8 to 1083.8</b>; competition rank <b>15 of 29</b>, cohort percentile <b>50%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 1083.8, median 1083.8, P90 1083.8 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -2192,7 +2192,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-beam-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="2" data-s-name="beam · level 8" data-s-crowd="1277" data-s-boss="8252.1">
+      <article class="wcard" id="e-beam-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="S" data-confidence="tier-consistent in fixture" data-s-roster="2" data-s-name="beam · level 8" data-s-crowd="1277.5" data-s-boss="8252.1">
         <div class="wcard-h">
 
           <h4>Beam · level 8</h4>
@@ -2203,9 +2203,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-gold">Stationary target S</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-beam">Beam</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>1277</b>, P10 to P90 <b>1262.5 to 1292.5</b>; competition rank <b>2 of 30</b>, cohort percentile <b>96.6%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 1262.5, median 1277, P90 1292.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:48.3%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 1262.5</span><span>median 1277</span><span>P90 1292.5 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>1277.5</b>, P10 to P90 <b>1253.5 to 1292</b>; competition rank <b>2 of 30</b>, cohort percentile <b>96.6%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 1253.5, median 1277.5, P90 1292 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:62.3%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 1253.5</span><span>median 1277.5</span><span>P90 1292 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>S</b>, stable across P10 to P90; median <b>8252.1</b>, P10 to P90 <b>8252.1 to 8252.1</b>; competition rank <b>1 of 29</b>, cohort percentile <b>100%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 8252.1, median 8252.1, P90 8252.1 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -2528,7 +2528,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-pulseMine-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="6" data-s-name="pulse mine · level 8" data-s-crowd="906" data-s-boss="858.4">
+      <article class="wcard" id="e-pulseMine-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="A" data-boss="C" data-confidence="tier-consistent in fixture" data-s-roster="6" data-s-name="pulse mine · level 8" data-s-crowd="906.5" data-s-boss="858.4">
         <div class="wcard-h">
 
           <h4>Pulse Mine · level 8</h4>
@@ -2539,9 +2539,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target C</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>906</b>, P10 to P90 <b>900.5 to 909.5</b>; competition rank <b>6 of 30</b>, cohort percentile <b>82.8%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 900.5, median 906, P90 909.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:61.1%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 900.5</span><span>median 906</span><span>P90 909.5 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>906.5</b>, P10 to P90 <b>901 to 911</b>; competition rank <b>6 of 30</b>, cohort percentile <b>82.8%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 901, median 906.5, P90 911 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:55%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 901</span><span>median 906.5</span><span>P90 911 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>C</b>, stable across P10 to P90; median <b>858.4</b>, P10 to P90 <b>858.4 to 858.4</b>; competition rank <b>26 of 29</b>, cohort percentile <b>10.7%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 858.4, median 858.4, P90 858.4 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -2764,7 +2764,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-calving-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="11" data-s-name="calving · level 8" data-s-crowd="672.5" data-s-boss="1466">
+      <article class="wcard" id="e-calving-base-l8" tabindex="-1" data-form="base" data-level="8" data-crowd="B" data-boss="B" data-confidence="tier-consistent in fixture" data-s-roster="11" data-s-name="calving · level 8" data-s-crowd="667.5" data-s-boss="1466">
         <div class="wcard-h">
 
           <h4>Calving · level 8</h4>
@@ -2775,9 +2775,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim B</span><span class="wtag ink-pink">Stationary target B</span><span class="wtag">Tier-consistent where measured</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-calving">Calving</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>672.5</b>, P10 to P90 <b>655 to 690.5</b>; competition rank <b>11 of 30</b>, cohort percentile <b>65.5%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 655, median 672.5, P90 690.5 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:49.3%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 655</span><span>median 672.5</span><span>P90 690.5 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>667.5</b>, P10 to P90 <b>650 to 688</b>; competition rank <b>11 of 30</b>, cohort percentile <b>65.5%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 650, median 667.5, P90 688 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:46.1%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 650</span><span>median 667.5</span><span>P90 688 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>B</b>, stable across P10 to P90; median <b>1466</b>, P10 to P90 <b>1466 to 1466</b>; competition rank <b>18 of 29</b>, cohort percentile <b>39.3%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 1466, median 1466, P90 1466 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -2961,7 +2961,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
 
       </article>
-      <article class="wcard" id="e-deathray-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="A" data-boss="A" data-confidence="sample-sensitive tier" data-s-roster="2" data-s-name="deathray · evolved" data-s-crowd="1585" data-s-boss="10727.7">
+      <article class="wcard" id="e-deathray-evolved-l1" tabindex="-1" data-form="evolved" data-level="1" data-crowd="A" data-boss="A" data-confidence="sample-sensitive tier" data-s-roster="2" data-s-name="deathray · evolved" data-s-crowd="1583" data-s-boss="10727.7">
         <div class="wcard-h">
 
           <h4>Deathray · evolved</h4>
@@ -2972,9 +2972,9 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">Trash sim A</span><span class="wtag ink-pink">Stationary target A</span><span class="wtag ink-violet">Sample-sensitive tier</span></div>
       <div class="wfacts">
         <div class="wfact"><span class="wfact-k">Weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-deathray">Deathray</a></span></div>
-        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>B to A</b> across P10 to P90, median tier <b>A</b>; median <b>1585</b>, P10 to P90 <b>1569.5 to 1599</b>; competition rank <b>2 of 8</b>, cohort percentile <b>85.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 1569.5, median 1585, P90 1599 kills/min; n=40. Local row scale; fixture limitations are listed above.">
-      <span class="wrange-track" style="--median:52.5%"><i class="wrange-mid"></i></span>
-      <span class="wrange-values"><span>P10 1569.5</span><span>median 1585</span><span>P90 1599 kills/min</span></span>
+        <div class="wfact"><span class="wfact-k">Controlled trash sim</span><span class="wfact-v"><b>B to A</b> across P10 to P90, median tier <b>A</b>; median <b>1583</b>, P10 to P90 <b>1571 to 1602</b>; competition rank <b>2 of 8</b>, cohort percentile <b>85.7%</b>; n=40<div class="wrange" role="img" aria-label="Controlled trash sim: P10 1571, median 1583, P90 1602 kills/min; n=40. Local row scale; fixture limitations are listed above.">
+      <span class="wrange-track" style="--median:38.7%"><i class="wrange-mid"></i></span>
+      <span class="wrange-values"><span>P10 1571</span><span>median 1583</span><span>P90 1602 kills/min</span></span>
       <span class="wrange-limit">n=40 · local row scale; compare printed values, not bar length · controlled-fixture limits above</span>
     </div></span></div>
         <div class="wfact"><span class="wfact-k">Stationary-target sim</span><span class="wfact-v">tier <b>A</b>, stable across P10 to P90; median <b>10727.7</b>, P10 to P90 <b>10727.7 to 10727.7</b>; competition rank <b>1 of 8</b>, cohort percentile <b>100%</b>; n=40<div class="wrange" role="img" aria-label="Stationary-target sim: P10 10727.7, median 10727.7, P90 10727.7 damage/min; n=40. Local row scale; fixture limitations are listed above.">
@@ -3014,8 +3014,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@acbd8e4a</code> on 2026-08-09 23:37 UTC
-  from <code>data/tier-rankings.json · fingerprint 9c8b2bb01f681a2c3d1ee386794b3003 · source 6478d1dfb2402113fc24547be6b5c5a403fb4bc6204e13cf3bb69f9972d978e6</code> and <code>data/wiki-visuals.json</code>.
+  Every number on this page came straight out of the game, read at <code>game@167adfbd</code> on 2026-08-10 12:20 UTC
+  from <code>data/tier-rankings.json · fingerprint 5e4a94f68e7ce367b0ad6f469ef69a4c · source 4e3c8f9217aa7a0708a611387893b2e59d4c5a5c94fdfc6cf367f47215f60da6</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

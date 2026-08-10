@@ -394,15 +394,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">690 player-visible changes landed in the last 7 days, across 7 of them. 11 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">647 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-10">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-10</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--cyan)">New 4</span></span>
+      </div>
+      <p class="storyday-shape">11 changes landed: 7 fixed, 4 new.</p>
+      <a class="storyday-release" href="#release-0-7-3">
+        <b>v0.7.3</b><span>Every level pays out, core weapons branch at 40, and the vending machines finally turn to meet you.</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-08-09">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-09</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 15</span><span class="storyday-kind" style="background:var(--cyan)">New 12</span><span class="storyday-kind" style="background:var(--violet)">Balance 4</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--cyan)">New 15</span><span class="storyday-kind" style="background:var(--violet)">Balance 4</span></span>
       </div>
-      <p class="storyday-shape">31 changes landed: 15 fixed, 12 new, 4 balance.</p>
+      <p class="storyday-shape">43 changes landed: 24 fixed, 15 new, 4 balance.</p>
       <a class="storyday-release" href="#release-0-7-2">
         <b>v0.7.2</b><span>The mountain climbs, every ability hits every enemy, bosses cannot be shoved, and a giant sealed door stands on the void plaza.</span>
       </a>
@@ -472,15 +483,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <b>v0.6.1</b><span>The Whomp Lab becomes a private director workspace, and new Stable and Preview tracks make it safer to try the latest green build.</span>
       </a>
 
-    </article>
-    <article class="storyday" id="day-2026-08-03">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-03</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 45</span><span class="storyday-kind" style="background:var(--cyan)">New 21</span></span>
-      </div>
-      <p class="storyday-shape">66 changes landed: 45 fixed, 21 new.</p>
-
-
     </article></div>
   </section>
 
@@ -500,6 +502,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-3">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-10</span>
+      <span class="notecard-version">v0.7.3</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Every level pays out, core weapons branch at 40, and the vending machines finally turn to meet you.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Starting at level 2, every level now opens exactly one upgrade offer. Core-weapon runs use every fifth level for the core ladder; ordinary runs never lose that pick.</li><li>The signature core fork now lands at level 40 with exactly three live choices, and every branch keeps three distinct repeatable upgrades available for the rest of the run.</li><li>Six once-dark fork fantasies now play for real: Breach Charge rings, Lightstep echoes, Icebreaker armour shedding, Glacier rime ridges, Soul Anchor wells, and Twin Line cords.</li><li>Relic vending machines stand on layered circular turntables, smoothly face the live player, keep their whole silhouette together through the legendary dissolve, and carry a repaired joined aerial.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Large XP jumps bank every crossed offer in order instead of coalescing, skipping, or opening two offers at one level.</li><li>Core trigger effects now reach solo, co-op, and faithful headless runs; closing a co-op seat clears its transient ridges, rain, wells, and cords instead of freezing them.</li><li>Standalone enemies no longer consume shared critical-hit rolls when no target is actually hit. The repaired stream was re-ratified across the full forty-seed arena cohort.</li><li>Armour-break exposure now applies exactly once across direct hits, burns, procs, reflection, patches, and delayed blasts, with one restrained ice-shed cue per real extension.</li></ul><p class="bucket-more">1 more fix shipped in this release. The full log has all of them.</p>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-2">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-09</span>
@@ -864,8 +886,127 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-10</h4>
+
+    <div class="row" data-kind="fix" id="chg-8346b585">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">tighten premium offer copy <span class="scope">(core)</span></span>
+      <span class="sha">8346b585</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-56d8ee46">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">qualify tail copy destinations <span class="scope">(core)</span></span>
+      <span class="sha">56d8ee46</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-59a89c44">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">shorten premium tail card copy <span class="scope">(core)</span></span>
+      <span class="sha">59a89c44</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0cf4721b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">deliver exact-three level offers <span class="scope">(core)</span></span>
+      <span class="sha">0cf4721b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d71f7286">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">show target-local armor shedding <span class="scope">(core)</span></span>
+      <span class="sha">d71f7286</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a560c3d7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">apply armor exposure to all player damage <span class="scope">(combat)</span></span>
+      <span class="sha">a560c3d7</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-dd4b4873">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">render twin cross-pull cuts <span class="scope">(core)</span></span>
+      <span class="sha">dd4b4873</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3f7aa9d0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">advance soul wells during suppression <span class="scope">(core)</span></span>
+      <span class="sha">3f7aa9d0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5f0d52ed">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire reserved core offers across campaign modes <span class="scope">(run)</span></span>
+      <span class="sha">5f0d52ed</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0ec5c1bb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">coordinate core and ordinary level offers <span class="scope">(draft)</span></span>
+      <span class="sha">0ec5c1bb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c850068f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">unstrand fork mechanics and repeatable tails <span class="scope">(core)</span></span>
+      <span class="sha">c850068f</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-09</h4>
 
+    <div class="row" data-kind="feat" id="chg-2eb3236c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">move fork to 40 with three-card tails <span class="scope">(core)</span></span>
+      <span class="sha">2eb3236c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5f2d1cec">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">reject mastery ids at roster boundaries <span class="scope">(progression)</span></span>
+      <span class="sha">5f2d1cec</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-bae6c84d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">guarantee exact level offer cadence <span class="scope">(progression)</span></span>
+      <span class="sha">bae6c84d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-26c8d913">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">preserve glacier shatter arithmetic order <span class="scope">(sim)</span></span>
+      <span class="sha">26c8d913</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-50fc9667">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">defer standalone crit rolls until hit <span class="scope">(sim)</span></span>
+      <span class="sha">50fc9667</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2fc34bca">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">harden facing and mesh lifecycle <span class="scope">(vending)</span></span>
+      <span class="sha">2fc34bca</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6ab163c5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">reserve live-facing clearance <span class="scope">(vending)</span></span>
+      <span class="sha">6ab163c5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9ed14e2c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">polish relic vendor turntables <span class="scope">(render)</span></span>
+      <span class="sha">9ed14e2c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-67d4c5ef">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">strip exactly one lane prefix <span class="scope">(orchestration)</span></span>
+      <span class="sha">67d4c5ef</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8c5e78f7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">retire model-neutral lane claims <span class="scope">(orchestration)</span></span>
+      <span class="sha">8c5e78f7</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cd64f232">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">narrow Codex lane census <span class="scope">(orchestration)</span></span>
+      <span class="sha">cd64f232</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9e997479">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">count canonical Codex lanes <span class="scope">(orchestration)</span></span>
+      <span class="sha">9e997479</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-acbd8e4a">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the corner row appends last, and the anchor ban states its subject <span class="scope">(menu)</span></span>
@@ -905,67 +1046,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the Void Gate, a giant sealed door on the Starwatch portal wall <span class="scope">(hub)</span></span>
       <span class="sha">edbe2732</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-725c4deb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the void doors spread entrance and deep across the Sundermarch <span class="scope">(hub)</span></span>
-      <span class="sha">725c4deb</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-763b8d4f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">deploy-14 review remedies across five lanes, and the sacred re-pin ritual</span>
-      <span class="sha">763b8d4f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7cd9ac74">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the Frost arm's flank skirt reaches the rock, not the plate's 2.4 m <span class="scope">(hub)</span></span>
-      <span class="sha">7cd9ac74</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-9b0e1d4a">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">chests stop healing, CHEST_HEAL_FRACTION 0.30 -&gt; 0 <span class="scope">(combat)</span></span>
-      <span class="sha">9b0e1d4a</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-31e843eb">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">soften the late gold price factor 1.5 -&gt; 1.35 <span class="scope">(chests)</span></span>
-      <span class="sha">31e843eb</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-323091b2">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">late gem second wind, additive after 8:00 <span class="scope">(xp)</span></span>
-      <span class="sha">323091b2</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-79230c00">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">taper level cost growth to 1.15 after level 8 <span class="scope">(progression)</span></span>
-      <span class="sha">79230c00</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8f66a940">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">remove the unexplained red pressure ring <span class="scope">(minimap)</span></span>
-      <span class="sha">8f66a940</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ea1b3885">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">condense overflowing notification copy, wrap instead of truncate <span class="scope">(ui)</span></span>
-      <span class="sha">ea1b3885</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8a578b84">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">unlock ceremony gates on the boss nameplate and sits higher <span class="scope">(ui)</span></span>
-      <span class="sha">8a578b84</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f53e765b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">hold the chest half of the breathing-room law, and regenerate <span class="scope">(sim)</span></span>
-      <span class="sha">f53e765b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f7f6efe1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ruling 42 lands, the ceiling pays for the summit, the fog keeps its shape <span class="scope">(hub)</span></span>
-      <span class="sha">f7f6efe1</span>
-    </div><div class="row more">+ 11 more that day, not shown</div>
+    </div><div class="row more">+ 23 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-08</h4>
@@ -1500,96 +1581,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">keep preview cloud saves local <span class="scope">(release)</span></span>
       <span class="sha">93598213</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-f395cf9c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">establish channel identity authority <span class="scope">(release)</span></span>
-      <span class="sha">f395cf9c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c98f48c5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">pin deterministic optimizer policy <span class="scope">(tiers)</span></span>
-      <span class="sha">c98f48c5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b070db9a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reject Unicode rooted paths <span class="scope">(labs)</span></span>
-      <span class="sha">b070db9a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fc0bb5f2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close board boundary audit gaps <span class="scope">(labs)</span></span>
-      <span class="sha">fc0bb5f2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-663390bb">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reject contradictory ready topology <span class="scope">(labs)</span></span>
-      <span class="sha">663390bb</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e7dfb79d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close Board trust and modal contracts <span class="scope">(labs)</span></span>
-      <span class="sha">e7dfb79d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-61e21551">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">harden Studio Board collection boundary <span class="scope">(labs)</span></span>
-      <span class="sha">61e21551</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5ee32762">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">preflight exact executable <span class="scope">(codex)</span></span>
-      <span class="sha">5ee32762</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-36df5186">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">refine bounded wrapper parsing <span class="scope">(agents)</span></span>
-      <span class="sha">36df5186</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1cfb00bf">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">inspect bounded merge wrappers <span class="scope">(agents)</span></span>
-      <span class="sha">1cfb00bf</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8c61fbb9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">require complete lane classification <span class="scope">(status)</span></span>
-      <span class="sha">8c61fbb9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5eb64795">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close merge guard indirection gaps <span class="scope">(agents)</span></span>
-      <span class="sha">5eb64795</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-675b6a73">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">keep pending modal focus available <span class="scope">(accounts)</span></span>
-      <span class="sha">675b6a73</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-df900615">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">fail closed on malformed lane evidence <span class="scope">(status)</span></span>
-      <span class="sha">df900615</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cd5ff762">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">harden merge guard indirection <span class="scope">(agent)</span></span>
-      <span class="sha">cd5ff762</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b0f64667">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reject control names in handoff queue <span class="scope">(agent)</span></span>
-      <span class="sha">b0f64667</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-54c7f06c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">harden unattended lane filesystem grants <span class="scope">(agent)</span></span>
-      <span class="sha">54c7f06c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d71c5550">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">confine queue paths to canonical checkout <span class="scope">(agent)</span></span>
-      <span class="sha">d71c5550</span>
-    </div><div class="row more">+ 46 more that day, not shown</div>
   </div>
 
     </div>
@@ -1688,12 +1679,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@acbd8e4a</code> on 2026-08-09 23:37 UTC.
+  Every number on this page came straight out of the game, read at <code>game@167adfbd</code> on 2026-08-10 12:20 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">690 player-visible changes in the last 7 days, across 7 active days, 1650 internal-only commits filtered out</div>
+  <div class="stat">649 player-visible changes in the last 7 days, across 8 active days, 1691 internal-only commits filtered out</div>
 </footer>
 
 
