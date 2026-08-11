@@ -394,17 +394,17 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">587 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
+    <p class="lede">608 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-11">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-11</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 8</span><span class="storyday-kind" style="background:var(--cyan)">New 5</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 20</span><span class="storyday-kind" style="background:var(--pink)">Fixed 13</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">14 changes landed: 8 fixed, 5 new, 1 performance.</p>
+      <p class="storyday-shape">35 changes landed: 20 new, 13 fixed, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-4">
-        <b>v0.7.4</b><span>The final Void Gate trades its arch for a dragon-crowned fortress.</span>
+        <b>v0.7.4</b><span>WHOMP learns to run on a toaster, co-op stops asking about weapons, and dragons crown the final gate.</span>
       </a>
 
     </article>
@@ -508,17 +508,17 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="notecard-version">v0.7.4</span>
       <span class="notecard-source">from the release notes</span>
     </div>
-    <h3 class="chroma" style="font-size:1.4rem">The final Void Gate trades its arch for a dragon-crowned fortress.</h3>
+    <h3 class="chroma" style="font-size:1.4rem">WHOMP learns to run on a toaster, co-op stops asking about weapons, and dragons crown the final gate.</h3>
     <div class="buckets">
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The sealed final-boss portal is now a broad masonry fortress crowned by two complete reclining stone dragons.</li><li>Blue signal fires burn from connected outer towers, while layered doors, locks, courses, and wing relief make the approach read as the end of the campaign.</li><li>The nearby Void observatory garden moved west, leaving the ceremonial path to the gate open from the plaza.</li></ul>
+      <ul><li>Graphics now come in three flavors: TOASTER for machines held together by hope, MEDIUM, and HIGH. First launch quietly picks the right one for your hardware, and your own choice in Settings is final.</li><li>The co-op lobby no longer asks you to pick a weapon the game was going to ignore. Pick your character and core, and the draft now pulls from ten weapons instead of one.</li><li>The run-end recap finally names the core you actually aimed all run, and new Video settings add an FPS meter, a resolution scale slider, and a 30 fps cap.</li><li>The sealed final-boss portal is now a broad masonry fortress crowned by two complete reclining stone dragons, with blue signal fires on its outer towers.</li></ul>
     </div>
 
     <div class="bucket">
       <h4 style="color:var(--pink)">Fixed</h4>
-      <ul><li>The distant gate keeps the dragons, folded wings, hanging limbs, tails, and blue fires instead of growing them only when you approach.</li><li>The wider facade, outer towers, relocated garden, and new paving all carry matching collision and spacing instead of hiding walk-through trim or overlapping scenery.</li><li>The gate remains sealed and dormant: its door, threshold, dragons, and eyes stay dark while only the external warning fires glow.</li></ul>
+      <ul><li>A returning player who chose LOW graphics lands on MEDIUM and is never silently moved off their choice.</li><li>The first-run coach line at the level door says PICK YOUR CORE instead of promising a weapon pick that no longer exists.</li><li>The feedback panel and tester panel now load only when opened instead of riding along with every boot.</li><li>The distant gate keeps the dragons, folded wings, hanging limbs, tails, and blue fires instead of growing them only when you approach.</li></ul><p class="bucket-more">1 more fix shipped in this release. The full log has all of them.</p>
     </div>
   </div>
   </article>
@@ -908,76 +908,106 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-11</h4>
 
-    <div class="row" data-kind="perf" id="chg-ba46baa4">
+    <div class="row" data-kind="feat" id="chg-345585be">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">apply resolution scale/fps cap/fps overlay, feed feedback perf context <span class="scope">(engine)</span></span>
+      <span class="sha">345585be</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b3724f2b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire the three new perf hooks through the title-boot seam <span class="scope">(boot)</span></span>
+      <span class="sha">b3724f2b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8cb015c0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">FPS meter, resolution scale, 30fps cap rows in VIDEO (perf-extras 4/4) <span class="scope">(settings)</span></span>
+      <span class="sha">8cb015c0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-954f11d8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">perf snapshot in the report payload (perf-extras 3/4) <span class="scope">(feedback)</span></span>
+      <span class="sha">954f11d8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-91e8a68f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">FPS overlay reusing DebugOverlay's frame-time accumulation (perf-extras 2/4) <span class="scope">(ui)</span></span>
+      <span class="sha">91e8a68f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0565a5e3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">render-cadence cap, sim tick math untouched (perf-extras 1/4) <span class="scope">(loop)</span></span>
+      <span class="sha">0565a5e3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-15e29986">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the duel core power dial goes per archetype, every entry at identity <span class="scope">(battle)</span></span>
+      <span class="sha">15e29986</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-73dc2df8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">collector purges stale results, scopes refs to N, and gains a sweep <span class="scope">(gate)</span></span>
+      <span class="sha">73dc2df8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0a2f8b0d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">shard containers complete their clone and hand back cloud-unrunnable suites <span class="scope">(gate)</span></span>
+      <span class="sha">0a2f8b0d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3e57663b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">wall-clock backstop resolves a rAF-starved detection sampler <span class="scope">(perf)</span></span>
+      <span class="sha">3e57663b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ef4a53f3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire first-run graphics auto-detect on the title branch <span class="scope">(boot)</span></span>
+      <span class="sha">ef4a53f3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bf491fec">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ask liveness after settling, retry once with the pump <span class="scope">(perf)</span></span>
+      <span class="sha">bf491fec</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-840d1159">
       <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">remeasure final gate camera path <span class="scope">(hub)</span></span>
-      <span class="sha">ba46baa4</span>
+      <span class="what">lazy-load FeedbackPanel and TesterPanel <span class="scope">(engine)</span></span>
+      <span class="sha">840d1159</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-a6d0c2fc">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">separate Void Gate values <span class="scope">(hub)</span></span>
-      <span class="sha">a6d0c2fc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7bec1bba">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">seat raised Void Gate braziers <span class="scope">(hub)</span></span>
-      <span class="sha">7bec1bba</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e465a6f8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reveal Void Gate signal fires <span class="scope">(hub)</span></span>
-      <span class="sha">e465a6f8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-54e07055">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">fold Void Gate wing fans <span class="scope">(hub)</span></span>
-      <span class="sha">54e07055</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cda8e5a0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">layer Void Gate silhouette <span class="scope">(hub)</span></span>
-      <span class="sha">cda8e5a0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a0a14fdd">
+    <div class="row" data-kind="feat" id="chg-58b356ce">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">deepen Void Gate facade and fires <span class="scope">(hub)</span></span>
-      <span class="sha">a0a14fdd</span>
+      <span class="what">record load average per scene, at both ends of the recording <span class="scope">(perf)</span></span>
+      <span class="sha">58b356ce</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-e96e9a63">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">bring Void Gate dragons into relief <span class="scope">(hub)</span></span>
-      <span class="sha">e96e9a63</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ed555248">
+    <div class="row" data-kind="fix" id="chg-17742c5f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">tile Void village paving seam <span class="scope">(hub)</span></span>
-      <span class="sha">ed555248</span>
+      <span class="what">the lobby roster row names the core, not an ungranted weapon <span class="scope">(coop)</span></span>
+      <span class="sha">17742c5f</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-4a880953">
+    <div class="row" data-kind="feat" id="chg-a579c72c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the pre-run weapon pick is gone in every mode <span class="scope">(ui)</span></span>
+      <span class="sha">a579c72c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2f3b564d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bin/perf-bench.mjs, a frame-time bench over four real scenes <span class="scope">(perf)</span></span>
+      <span class="sha">2f3b564d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-563e305a">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">separate Void Gate relief planes <span class="scope">(hub)</span></span>
-      <span class="sha">4a880953</span>
+      <span class="what">the weapon draft pool is no longer the single pre-run pick <span class="scope">(coop)</span></span>
+      <span class="sha">563e305a</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-2b25dddb">
+    <div class="row" data-kind="feat" id="chg-c514687d">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">sculpt Void Gate blue flames <span class="scope">(hub)</span></span>
-      <span class="sha">2b25dddb</span>
+      <span class="what">wire TOASTER / MEDIUM / HIGH through the renderer and the panel <span class="scope">(quality)</span></span>
+      <span class="sha">c514687d</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-91c6b521">
+    <div class="row" data-kind="feat" id="chg-39d8ba1e">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">rebuild Void Gate fortress dragons <span class="scope">(hub)</span></span>
-      <span class="sha">91c6b521</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-16b7c050">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cover Void Gate tower collision <span class="scope">(hub)</span></span>
-      <span class="sha">16b7c050</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-14b2fa89">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">widen Void Gate fortress footprint <span class="scope">(hub)</span></span>
-      <span class="sha">14b2fa89</span>
-    </div>
+      <span class="what">pure GPU/perf tier auto-detection module <span class="scope">(perf)</span></span>
+      <span class="sha">39d8ba1e</span>
+    </div><div class="row more">+ 15 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-10</h4>
@@ -1700,12 +1730,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@acc76022</code> on 2026-08-11 10:12 UTC.
+  Every number on this page came straight out of the game, read at <code>game@99468618</code> on 2026-08-11 21:52 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">587 player-visible changes in the last 7 days, across 7 active days, 1582 internal-only commits filtered out</div>
+  <div class="stat">608 player-visible changes in the last 7 days, across 7 active days, 1626 internal-only commits filtered out</div>
 </footer>
 
 
