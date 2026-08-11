@@ -394,15 +394,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">663 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
+    <p class="lede">587 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-11">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-11</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 8</span><span class="storyday-kind" style="background:var(--cyan)">New 5</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+      </div>
+      <p class="storyday-shape">14 changes landed: 8 fixed, 5 new, 1 performance.</p>
+      <a class="storyday-release" href="#release-0-7-4">
+        <b>v0.7.4</b><span>The final Void Gate trades its arch for a dragon-crowned fortress.</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-08-10">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-10</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 17</span><span class="storyday-kind" style="background:var(--cyan)">New 9</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 18</span><span class="storyday-kind" style="background:var(--cyan)">New 10</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">27 changes landed: 17 fixed, 9 new, 1 performance.</p>
+      <p class="storyday-shape">29 changes landed: 18 fixed, 10 new, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-3">
         <b>v0.7.3</b><span>Every level pays out, core weapons branch at 40, and the vending machines finally turn to meet you.</span>
       </a>
@@ -472,17 +483,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <b>v0.6.2</b><span>A week of releases, caught up in one entry</span>
       </a>
 
-    </article>
-    <article class="storyday" id="day-2026-08-04">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-04</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 48</span><span class="storyday-kind" style="background:var(--cyan)">New 44</span></span>
-      </div>
-      <p class="storyday-shape">92 changes landed: 48 fixed, 44 new.</p>
-      <a class="storyday-release" href="#release-0-6-1">
-        <b>v0.6.1</b><span>The Whomp Lab becomes a private director workspace, and new Stable and Preview tracks make it safer to try the latest green build.</span>
-      </a>
-
     </article></div>
   </section>
 
@@ -502,6 +502,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-4">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-11</span>
+      <span class="notecard-version">v0.7.4</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The final Void Gate trades its arch for a dragon-crowned fortress.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>The sealed final-boss portal is now a broad masonry fortress crowned by two complete reclining stone dragons.</li><li>Blue signal fires burn from connected outer towers, while layered doors, locks, courses, and wing relief make the approach read as the end of the campaign.</li><li>The nearby Void observatory garden moved west, leaving the ceremonial path to the gate open from the plaza.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>The distant gate keeps the dragons, folded wings, hanging limbs, tails, and blue fires instead of growing them only when you approach.</li><li>The wider facade, outer towers, relocated garden, and new paving all carry matching collision and spacing instead of hiding walk-through trim or overlapping scenery.</li><li>The gate remains sealed and dormant: its door, threshold, dragons, and eyes stay dark while only the external warning fires glow.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-3">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-10</span>
@@ -886,8 +906,92 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-11</h4>
+
+    <div class="row" data-kind="perf" id="chg-ba46baa4">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">remeasure final gate camera path <span class="scope">(hub)</span></span>
+      <span class="sha">ba46baa4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a6d0c2fc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">separate Void Gate values <span class="scope">(hub)</span></span>
+      <span class="sha">a6d0c2fc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7bec1bba">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">seat raised Void Gate braziers <span class="scope">(hub)</span></span>
+      <span class="sha">7bec1bba</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e465a6f8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">reveal Void Gate signal fires <span class="scope">(hub)</span></span>
+      <span class="sha">e465a6f8</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-54e07055">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">fold Void Gate wing fans <span class="scope">(hub)</span></span>
+      <span class="sha">54e07055</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cda8e5a0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">layer Void Gate silhouette <span class="scope">(hub)</span></span>
+      <span class="sha">cda8e5a0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a0a14fdd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">deepen Void Gate facade and fires <span class="scope">(hub)</span></span>
+      <span class="sha">a0a14fdd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e96e9a63">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bring Void Gate dragons into relief <span class="scope">(hub)</span></span>
+      <span class="sha">e96e9a63</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ed555248">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">tile Void village paving seam <span class="scope">(hub)</span></span>
+      <span class="sha">ed555248</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4a880953">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">separate Void Gate relief planes <span class="scope">(hub)</span></span>
+      <span class="sha">4a880953</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2b25dddb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">sculpt Void Gate blue flames <span class="scope">(hub)</span></span>
+      <span class="sha">2b25dddb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-91c6b521">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rebuild Void Gate fortress dragons <span class="scope">(hub)</span></span>
+      <span class="sha">91c6b521</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-16b7c050">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cover Void Gate tower collision <span class="scope">(hub)</span></span>
+      <span class="sha">16b7c050</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-14b2fa89">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">widen Void Gate fortress footprint <span class="scope">(hub)</span></span>
+      <span class="sha">14b2fa89</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-10</h4>
 
+    <div class="row" data-kind="fix" id="chg-12999e46">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">preserve dragon limbs across gate LOD <span class="scope">(hub)</span></span>
+      <span class="sha">12999e46</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f86e2c1c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">crown Void Gate with twin stone dragons <span class="scope">(hub)</span></span>
+      <span class="sha">f86e2c1c</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-5d23ab4e">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">show live affordability overhead <span class="scope">(world-tags)</span></span>
@@ -977,17 +1081,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">qualify tail copy destinations <span class="scope">(core)</span></span>
       <span class="sha">56d8ee46</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-59a89c44">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">shorten premium tail card copy <span class="scope">(core)</span></span>
-      <span class="sha">59a89c44</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0cf4721b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">deliver exact-three level offers <span class="scope">(core)</span></span>
-      <span class="sha">0cf4721b</span>
-    </div><div class="row more">+ 7 more that day, not shown</div>
+    </div><div class="row more">+ 9 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-09</h4>
@@ -1509,124 +1603,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">5aea71d6</span>
     </div><div class="row more">+ 148 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-08-04</h4>
-
-    <div class="row" data-kind="feat" id="chg-5ba5a869">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">flag shared-type changes and global census pins <span class="scope">(verify)</span></span>
-      <span class="sha">5ba5a869</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a92f0581">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the composer dropped a field two lanes disagreed about <span class="scope">(core)</span></span>
-      <span class="sha">a92f0581</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c5548740">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the labs roster census gains the DEV CONSOLE row <span class="scope">(seat)</span></span>
-      <span class="sha">c5548740</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0068a01f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Bug and Feedback Triage view <span class="scope">(labs)</span></span>
-      <span class="sha">0068a01f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b03c110b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">loopback-only dev-server endpoint for the triage view <span class="scope">(feedback)</span></span>
-      <span class="sha">b03c110b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d6b1f7a4">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">read-only corpus loader + self-correcting BUG_INVENTORY.md parser <span class="scope">(feedback)</span></span>
-      <span class="sha">d6b1f7a4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1ab11b71">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">inspect through the waiter instead of refusing it blind <span class="scope">(guard)</span></span>
-      <span class="sha">1ab11b71</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-91f1de36">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stat -f is BSD syntax, not GNU <span class="scope">(live-lanes)</span></span>
-      <span class="sha">91f1de36</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-088eb23d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">publish the nine trigger edges from the aimed-core FSM <span class="scope">(sim)</span></span>
-      <span class="sha">088eb23d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4118fd09">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a merge is not a gate launch, and its message is not an invocation <span class="scope">(gate)</span></span>
-      <span class="sha">4118fd09</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1011b9d3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">standalone Decision Console panel, unwired <span class="scope">(ui)</span></span>
-      <span class="sha">1011b9d3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a5043180">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">local read-only Decision Console data endpoint <span class="scope">(devserver)</span></span>
-      <span class="sha">a5043180</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c8ea5240">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">every merge refusal names the command that fixes it <span class="scope">(guard)</span></span>
-      <span class="sha">c8ea5240</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3e5cad1b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">present the core-weapon ladder in the level-up flow <span class="scope">(engine)</span></span>
-      <span class="sha">3e5cad1b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c7145486">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">verify-lane retries origin/&lt;base&gt; when the local ref shares no history <span class="scope">(bin)</span></span>
-      <span class="sha">c7145486</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7a6a8801">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the nine FSM trigger edges as an edge-split effect bag <span class="scope">(core)</span></span>
-      <span class="sha">7a6a8801</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-91e48d56">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire the burst and ground spawn verbs <span class="scope">(core)</span></span>
-      <span class="sha">91e48d56</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-06456912">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a DEV CONSOLE shell whose views register by file placement <span class="scope">(labs)</span></span>
-      <span class="sha">06456912</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e81147be">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">verify-lane produces a pre-gate reviewer brief from git artifacts <span class="scope">(bin)</span></span>
-      <span class="sha">e81147be</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-62497625">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a live-filtered offer seam and a run-scoped core offer queue <span class="scope">(core)</span></span>
-      <span class="sha">62497625</span>
-    </div><div class="row more">+ 72 more that day, not shown</div>
-  </div>
-  <div class="day">
-    <h4>2026-08-03</h4>
-
-    <div class="row" data-kind="feat" id="chg-3a9c9ce8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">keep preview scores local <span class="scope">(release)</span></span>
-      <span class="sha">3a9c9ce8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-93598213">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">keep preview cloud saves local <span class="scope">(release)</span></span>
-      <span class="sha">93598213</span>
-    </div>
-  </div>
 
     </div>
   </section>
@@ -1724,12 +1700,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@fb51b01b</code> on 2026-08-11 01:41 UTC.
+  Every number on this page came straight out of the game, read at <code>game@acc76022</code> on 2026-08-11 10:12 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">665 player-visible changes in the last 7 days, across 8 active days, 1729 internal-only commits filtered out</div>
+  <div class="stat">587 player-visible changes in the last 7 days, across 7 active days, 1582 internal-only commits filtered out</div>
 </footer>
 
 
