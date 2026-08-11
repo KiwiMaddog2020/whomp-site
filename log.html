@@ -394,15 +394,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">608 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
+    <p class="lede">610 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-11">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-11</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 20</span><span class="storyday-kind" style="background:var(--pink)">Fixed 13</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 21</span><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">35 changes landed: 20 new, 13 fixed, 2 performance.</p>
+      <p class="storyday-shape">37 changes landed: 21 new, 14 fixed, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-4">
         <b>v0.7.4</b><span>WHOMP learns to run on a toaster, co-op stops asking about weapons, and dragons crown the final gate.</span>
       </a>
@@ -908,6 +908,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-11</h4>
 
+    <div class="row" data-kind="fix" id="chg-588efd7d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a stale title tab auto-reloads once when the engine import 404s <span class="scope">(boot)</span></span>
+      <span class="sha">588efd7d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8bd182ff">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a gated duel TTK distribution instrument, asserting nothing <span class="scope">(probe)</span></span>
+      <span class="sha">8bd182ff</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-345585be">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">apply resolution scale/fps cap/fps overlay, feed feedback perf context <span class="scope">(engine)</span></span>
@@ -997,17 +1007,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the weapon draft pool is no longer the single pre-run pick <span class="scope">(coop)</span></span>
       <span class="sha">563e305a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c514687d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire TOASTER / MEDIUM / HIGH through the renderer and the panel <span class="scope">(quality)</span></span>
-      <span class="sha">c514687d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-39d8ba1e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">pure GPU/perf tier auto-detection module <span class="scope">(perf)</span></span>
-      <span class="sha">39d8ba1e</span>
-    </div><div class="row more">+ 15 more that day, not shown</div>
+    </div><div class="row more">+ 17 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-10</h4>
@@ -1730,12 +1730,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@99468618</code> on 2026-08-11 21:52 UTC.
+  Every number on this page came straight out of the game, read at <code>game@db9242e6</code> on 2026-08-11 23:30 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">608 player-visible changes in the last 7 days, across 7 active days, 1626 internal-only commits filtered out</div>
+  <div class="stat">610 player-visible changes in the last 7 days, across 7 active days, 1633 internal-only commits filtered out</div>
 </footer>
 
 
