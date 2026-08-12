@@ -394,15 +394,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">610 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
+    <p class="lede">497 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-12">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-12</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 2</span></span>
+      </div>
+      <p class="storyday-shape">2 changes landed, all of them fixes.</p>
+      <a class="storyday-release" href="#release-0-7-5">
+        <b>v0.7.5</b><span>The armory arrives: thirty-six weapons, twelve cores, a right-click swing, and a fight that finally breathes.</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-08-11">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-11</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 21</span><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 60</span><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--violet)">Balance 4</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">37 changes landed: 21 new, 14 fixed, 2 performance.</p>
+      <p class="storyday-shape">90 changes landed: 60 new, 24 fixed, 4 balance, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-4">
         <b>v0.7.4</b><span>WHOMP learns to run on a toaster, co-op stops asking about weapons, and dragons crown the final gate.</span>
       </a>
@@ -472,17 +483,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <b>v0.6.3</b><span>You can fish now. Also aboard: a minimap that reads the fight, a daily level everyone shares, a jump that belongs to your character, and something with a crest is stalking the Hollow Crown.</span>
       </a>
 
-    </article>
-    <article class="storyday" id="day-2026-08-05">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-05</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 105</span><span class="storyday-kind" style="background:var(--pink)">Fixed 59</span><span class="storyday-kind" style="background:var(--gold)">Performance 4</span></span>
-      </div>
-      <p class="storyday-shape">168 changes landed: 105 new, 59 fixed, 4 performance.</p>
-      <a class="storyday-release" href="#note-2026-08-05">
-        <b>v0.6.2</b><span>A week of releases, caught up in one entry</span>
-      </a>
-
     </article></div>
   </section>
 
@@ -502,6 +502,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-5">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-12</span>
+      <span class="notecard-version">v0.7.5</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The armory arrives: thirty-six weapons, twelve cores, a right-click swing, and a fight that finally breathes.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>The arsenal grows to thirty-six weapons, and every one of them is yours from the start. Ten brand new: Buried Fist, Cryo Prism, Ember Wake, Fireball, Heat Wave, Beacon, Thunderhead, Overload, Wrecking Ball, and the Frostlings, a waddling squad of ice helpers that can actually be hurt and actually come back.</li><li>Three new core weapons bring the count to twelve: the Groundbreaker charges a crack that erupts a stone pillar, the Ice Wall raises ramparts where you point, and the Static Lash rewards a precise tip hit with a growing storm. Every core also reaches five yards further.</li><li>Right-click now swings a melee attack, with its own animation per character. Bigger characters swing slower and hit harder, and everything nearby gets shoved.</li><li>You deal and take twelve percent less damage across the board. Fights last longer on both sides, and each exchange has more room to think.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>The Labs test bot finally owns the controls while you watch: your mouse and keyboard stop fighting it, the camera is yours to orbit, and holding SPACE hands control back with instructions on screen.</li><li>A save that remembers a retired weapon (Flame Thrower, Shotgun, or the old earth stones) quietly lands on its replacement instead of losing your pick.</li><li>The stale-tab crash on START reloads once automatically instead of showing an engine error.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-4">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-11</span>
@@ -906,108 +926,122 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-12</h4>
+
+    <div class="row" data-kind="fix" id="chg-9623c3dd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">thunderclap names its lightning again <span class="scope">(cards)</span></span>
+      <span class="sha">9623c3dd</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-61eb6093">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">remediation round 2 - the wall's unspendable True Whomp, nine missing fork glyphs, eight over-cap card descs <span class="scope">(gate)</span></span>
+      <span class="sha">61eb6093</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-11</h4>
 
-    <div class="row" data-kind="fix" id="chg-588efd7d">
+    <div class="row" data-kind="fix" id="chg-efccb6d8">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a stale title tab auto-reloads once when the engine import 404s <span class="scope">(boot)</span></span>
-      <span class="sha">588efd7d</span>
+      <span class="what">0.7.5 armory gate remediation - 123 triage fixes plus four source defects <span class="scope">(gate)</span></span>
+      <span class="sha">efccb6d8</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-8bd182ff">
+    <div class="row" data-kind="feat" id="chg-a5e9df50">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a gated duel TTK distribution instrument, asserting nothing <span class="scope">(probe)</span></span>
-      <span class="sha">8bd182ff</span>
+      <span class="what">Labs bot selector, live driver, and the suite <span class="scope">(smart-bot)</span></span>
+      <span class="sha">a5e9df50</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-345585be">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">apply resolution scale/fps cap/fps overlay, feed feedback perf context <span class="scope">(engine)</span></span>
-      <span class="sha">345585be</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b3724f2b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire the three new perf hooks through the title-boot seam <span class="scope">(boot)</span></span>
-      <span class="sha">b3724f2b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8cb015c0">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">FPS meter, resolution scale, 30fps cap rows in VIDEO (perf-extras 4/4) <span class="scope">(settings)</span></span>
-      <span class="sha">8cb015c0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-954f11d8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">perf snapshot in the report payload (perf-extras 3/4) <span class="scope">(feedback)</span></span>
-      <span class="sha">954f11d8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-91e8a68f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">FPS overlay reusing DebugOverlay's frame-time accumulation (perf-extras 2/4) <span class="scope">(ui)</span></span>
-      <span class="sha">91e8a68f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0565a5e3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">render-cadence cap, sim tick math untouched (perf-extras 1/4) <span class="scope">(loop)</span></span>
-      <span class="sha">0565a5e3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-15e29986">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the duel core power dial goes per archetype, every entry at identity <span class="scope">(battle)</span></span>
-      <span class="sha">15e29986</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-73dc2df8">
+    <div class="row" data-kind="fix" id="chg-d12750f1">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">collector purges stale results, scopes refs to N, and gains a sweep <span class="scope">(gate)</span></span>
-      <span class="sha">73dc2df8</span>
+      <span class="what">put every damage the three new cores deliver on the PvP dial <span class="scope">(cores)</span></span>
+      <span class="sha">d12750f1</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-0a2f8b0d">
+    <div class="row" data-kind="feat" id="chg-829c1763">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">shard containers complete their clone and hand back cloud-unrunnable suites <span class="scope">(gate)</span></span>
-      <span class="sha">0a2f8b0d</span>
+      <span class="what">a deterministic utility-AI bot beside the kiting bot <span class="scope">(smart-bot)</span></span>
+      <span class="sha">829c1763</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-3e57663b">
+    <div class="row" data-kind="fix" id="chg-59bb3d30">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">wall-clock backstop resolves a rAF-starved detection sampler <span class="scope">(perf)</span></span>
-      <span class="sha">3e57663b</span>
+      <span class="what">honour the roster contracts the three new cores publish <span class="scope">(cores)</span></span>
+      <span class="sha">59bb3d30</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-ef4a53f3">
+    <div class="row" data-kind="balance" id="chg-cb011a53">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">the global 12 percent, one dial per direction <span class="scope">(pace)</span></span>
+      <span class="sha">cb011a53</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ce4c4dcf">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire first-run graphics auto-detect on the title branch <span class="scope">(boot)</span></span>
-      <span class="sha">ef4a53f3</span>
+      <span class="what">GROUNDBREAKER, ICE WALL and STATIC LASH at the core bar <span class="scope">(cores)</span></span>
+      <span class="sha">ce4c4dcf</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-bf491fec">
+    <div class="row" data-kind="feat" id="chg-96ced7f7">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one owner drives the character, hold SPACE to trade <span class="scope">(bot-spectate)</span></span>
+      <span class="sha">96ced7f7</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-4429807f">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">the soak found 37% of family boss output; the two axes it owns absorb it <span class="scope">(beacon)</span></span>
+      <span class="sha">4429807f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-96b6b47b">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ask liveness after settling, retry once with the pump <span class="scope">(perf)</span></span>
-      <span class="sha">bf491fec</span>
+      <span class="what">a bonus-projectile offer is not relevant to Frostlings <span class="scope">(offers)</span></span>
+      <span class="sha">96b6b47b</span>
     </div>
-    <div class="row" data-kind="perf" id="chg-840d1159">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">lazy-load FeedbackPanel and TesterPanel <span class="scope">(engine)</span></span>
-      <span class="sha">840d1159</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-58b356ce">
+    <div class="row" data-kind="feat" id="chg-c6f8b7d5">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">record load average per scene, at both ends of the recording <span class="scope">(perf)</span></span>
-      <span class="sha">58b356ce</span>
+      <span class="what">duels and arenas swing behind MELEE_IN_PVP, which ships false <span class="scope">(melee)</span></span>
+      <span class="sha">c6f8b7d5</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-17742c5f">
+    <div class="row" data-kind="feat" id="chg-ed53838c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the per-character swing animation, the RIGHT CLICK copy, and the run wiring <span class="scope">(melee)</span></span>
+      <span class="sha">ed53838c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8d8727f3">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the lobby roster row names the core, not an ungranted weapon <span class="scope">(coop)</span></span>
-      <span class="sha">17742c5f</span>
+      <span class="what">keep the Frostlings def module a leaf, regenerate the data artifact <span class="scope">(weapons)</span></span>
+      <span class="sha">8d8727f3</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-a579c72c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the pre-run weapon pick is gone in every mode <span class="scope">(ui)</span></span>
-      <span class="sha">a579c72c</span>
+    <div class="row" data-kind="balance" id="chg-fd878c4f">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">trim the per-stack burn to land mid-pack, glow-up pass <span class="scope">(heatWave)</span></span>
+      <span class="sha">fd878c4f</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-2f3b564d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">bin/perf-bench.mjs, a frame-time bench over four real scenes <span class="scope">(perf)</span></span>
-      <span class="sha">2f3b564d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-563e305a">
+    <div class="row" data-kind="fix" id="chg-6b01faf2">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the weapon draft pool is no longer the single pre-run pick <span class="scope">(coop)</span></span>
-      <span class="sha">563e305a</span>
-    </div><div class="row more">+ 17 more that day, not shown</div>
+      <span class="what">the leash was eating the footprint the weapon promises <span class="scope">(thunderhead)</span></span>
+      <span class="sha">6b01faf2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-69ee7737">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">classify fireball's impact family and offer consumers <span class="scope">(weapons)</span></span>
+      <span class="sha">69ee7737</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b4d967ab">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the iron and the chain, drawn as real links <span class="scope">(weapons)</span></span>
+      <span class="sha">b4d967ab</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-52092a47">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">apply the +5 default-range ruling to all nine cores <span class="scope">(cores)</span></span>
+      <span class="sha">52092a47</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c185eee3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the per-character swing table, the four-phase frame-exact runtime, and RIGHT CLICK <span class="scope">(melee)</span></span>
+      <span class="sha">c185eee3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fd11deba">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">repoint every Echo surface at Frostlings, with a starter-choice alias <span class="scope">(weapons)</span></span>
+      <span class="sha">fd11deba</span>
+    </div><div class="row more">+ 70 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-10</h4>
@@ -1547,91 +1581,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the Sundermarch, the void half of the end-zone split <span class="scope">(hub)</span></span>
       <span class="sha">1aada270</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-16af7ce1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">eyeball-sweep's entrypoint guard resolves symlinks on both sides <span class="scope">(bin)</span></span>
-      <span class="sha">16af7ce1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-628503a9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">glow-up pass, a flow front with depth and fissures that wander <span class="scope">(hub)</span></span>
-      <span class="sha">628503a9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-dc6a2fa6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">two more arena-parity gaps in the campaign claim and stall surfacing <span class="scope">(coop)</span></span>
-      <span class="sha">dc6a2fa6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d6f1ec52">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the boundary trim becomes a two-rung ladder <span class="scope">(render)</span></span>
-      <span class="sha">d6f1ec52</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6d7f5d4c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">each accent cluster gets its own ladder, not the same one twice <span class="scope">(render)</span></span>
-      <span class="sha">6d7f5d4c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e05007a1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the roof deck stops sharing the plank plane <span class="scope">(render)</span></span>
-      <span class="sha">e05007a1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a56dd4d7">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the horde hunts every seat, not the lowest one <span class="scope">(coop)</span></span>
-      <span class="sha">a56dd4d7</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0208b6a7">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">give the campaign entry the re-attempt edge the arena path always had <span class="scope">(coop)</span></span>
-      <span class="sha">0208b6a7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2dbd9a8e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a connect-phase trace that names the failing leg <span class="scope">(coop)</span></span>
-      <span class="sha">2dbd9a8e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8e989e24">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Cinderfell, the lava half of the end-zone split <span class="scope">(hub)</span></span>
-      <span class="sha">8e989e24</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1b987399">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">bind the coin cue to goldCredited, not goldGained (Q7) <span class="scope">(audio)</span></span>
-      <span class="sha">1b987399</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-db03d761">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the unlock duel - the fight, the stakes and the meta unlock path <span class="scope">(battle)</span></span>
-      <span class="sha">db03d761</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-794ffa25">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stop freezing the beginner tutorial's camera line <span class="scope">(tutorial)</span></span>
-      <span class="sha">794ffa25</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7ee015a9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">teach the shipped camera default in the first-run banner <span class="scope">(hub)</span></span>
-      <span class="sha">7ee015a9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-da56ba8c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">threat, target hysteresis and leash as an isolated v0 module <span class="scope">(dungeon)</span></span>
-      <span class="sha">da56ba8c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4b735bd8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">tie four sweep bounds to the geometry they audit, re-pin the rest <span class="scope">(hub-audits)</span></span>
-      <span class="sha">4b735bd8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5aea71d6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the payoff-tier guard's event payloads match GameEvents <span class="scope">(tests)</span></span>
-      <span class="sha">5aea71d6</span>
-    </div><div class="row more">+ 148 more that day, not shown</div>
   </div>
 
     </div>
@@ -1730,12 +1679,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@db9242e6</code> on 2026-08-11 23:30 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9623c3dd</code> on 2026-08-12 09:59 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">610 player-visible changes in the last 7 days, across 7 active days, 1633 internal-only commits filtered out</div>
+  <div class="stat">500 player-visible changes in the last 7 days, across 8 active days, 1287 internal-only commits filtered out</div>
 </footer>
 
 
