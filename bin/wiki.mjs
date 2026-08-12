@@ -3417,7 +3417,14 @@ function tierEvidenceViolations(D, T) {
 
   const loadout = T.loadoutContract;
   const weaponDomain = D.domains.weapons;
-  const expectedEligible = (weaponDomain.order || []).filter((id) => !weaponDomain.refs?.[id]?.evolvesFrom).sort();
+  // DISABLED DONORS ARE NOT ELIGIBLE (0.7.5 armory): shotgun and flameThrower
+  // survive as defs only to feed their cores, out of every draft pool, and the
+  // tier engine excludes them from its measured roster. Read off ENTRIES, the
+  // same place the game repo's own siteWikiContract mirror reads the flag; the
+  // refs do not carry it yet (filed upstream: refs also still claim inOfferPool
+  // for the two, which is the same staleness).
+  const expectedEligible = (weaponDomain.order || []).filter((id) =>
+    !weaponDomain.refs?.[id]?.evolvesFrom && weaponDomain.entries?.[id]?.disabled !== true).sort();
   if (!Number.isInteger(loadout?.weaponSlots) || loadout.weaponSlots <= 0
     || !Array.isArray(loadout?.eligibleIds) || new Set(loadout.eligibleIds).size !== loadout.eligibleIds.length
     || JSON.stringify([...loadout.eligibleIds].sort()) !== JSON.stringify(expectedEligible)
