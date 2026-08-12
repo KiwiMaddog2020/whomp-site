@@ -352,8 +352,8 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </span>
     </a>
     <div class="chips"><span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.5</b> · <code>9623c3dd</code></span></div>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Live <b>unverified</b> · did not answer</span></div>
   </div>
 </div>
 
@@ -394,15 +394,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">497 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
+    <p class="lede">509 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-12">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-12</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
       </div>
-      <p class="storyday-shape">2 changes landed, all of them fixes.</p>
+      <p class="storyday-shape">5 changes landed: 4 fixed, 1 new.</p>
       <a class="storyday-release" href="#release-0-7-5">
         <b>v0.7.5</b><span>The armory arrives: thirty-six weapons, twelve cores, a right-click swing, and a fight that finally breathes.</span>
       </a>
@@ -411,9 +411,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-08-11">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-11</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 60</span><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--violet)">Balance 4</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 67</span><span class="storyday-kind" style="background:var(--pink)">Fixed 25</span><span class="storyday-kind" style="background:var(--violet)">Balance 5</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">90 changes landed: 60 new, 24 fixed, 4 balance, 2 performance.</p>
+      <p class="storyday-shape">99 changes landed: 67 new, 25 fixed, 5 balance, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-4">
         <b>v0.7.4</b><span>WHOMP learns to run on a toaster, co-op stops asking about weapons, and dragons crown the final gate.</span>
       </a>
@@ -928,6 +928,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-12</h4>
 
+    <div class="row" data-kind="fix" id="chg-3ab62f26">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">refs carry disabled and stop claiming inOfferPool for retired donors <span class="scope">(data)</span></span>
+      <span class="sha">3ab62f26</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fd75e0e7">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">arc radius 20.5 to 23.61, pedestal 12 unblocked <span class="scope">(hub)</span></span>
+      <span class="sha">fd75e0e7</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-9623c3dd">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">thunderclap names its lightning again <span class="scope">(cards)</span></span>
@@ -938,14 +948,64 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">remediation round 2 - the wall's unspendable True Whomp, nine missing fork glyphs, eight over-cap card descs <span class="scope">(gate)</span></span>
       <span class="sha">61eb6093</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-1dfc8fd3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the shed appends after the splash rings so their indices keep their meaning <span class="scope">(fx)</span></span>
+      <span class="sha">1dfc8fd3</span>
+    </div>
   </div>
   <div class="day">
     <h4>2026-08-11</h4>
 
+    <div class="row" data-kind="balance" id="chg-bb40337e">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">retune baseDamage 14.5 -&gt; 23 to seat inside the lightning column <span class="scope">(thunderhead)</span></span>
+      <span class="sha">bb40337e</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-efccb6d8">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">0.7.5 armory gate remediation - 123 triage fixes plus four source defects <span class="scope">(gate)</span></span>
       <span class="sha">efccb6d8</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7c37c79e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the thrown core shot aims where the reticle does <span class="scope">(cores)</span></span>
+      <span class="sha">7c37c79e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ba0ed959">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Death Ray's hot window sheds collars that outlive its own punch <span class="scope">(fx)</span></span>
+      <span class="sha">ba0ed959</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e03e7bfe">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">flicker the Void Gate's four fires at zero draws, and pin it <span class="scope">(hub)</span></span>
+      <span class="sha">e03e7bfe</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a7e3e22d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">every core draws an aim spur on the frames no form speaks <span class="scope">(fx)</span></span>
+      <span class="sha">a7e3e22d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a477f1c4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">projectileTravelLift gains its aimed branch, and the pool reads the lane <span class="scope">(sim)</span></span>
+      <span class="sha">a477f1c4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4b29dbe0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ProjectileSpawn gains an aimPitch lane, its sentinel and its predicate <span class="scope">(sim)</span></span>
+      <span class="sha">4b29dbe0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5ddccdec">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the flamethrower's tongues sit tight in the base cone and open with upgrades <span class="scope">(fx)</span></span>
+      <span class="sha">5ddccdec</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c61328f4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rebuild the Void Gate dragons, four basins, cornice and door iron <span class="scope">(hub)</span></span>
+      <span class="sha">c61328f4</span>
     </div>
     <div class="row" data-kind="feat" id="chg-a5e9df50">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -996,52 +1056,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">duels and arenas swing behind MELEE_IN_PVP, which ships false <span class="scope">(melee)</span></span>
       <span class="sha">c6f8b7d5</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ed53838c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the per-character swing animation, the RIGHT CLICK copy, and the run wiring <span class="scope">(melee)</span></span>
-      <span class="sha">ed53838c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8d8727f3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">keep the Frostlings def module a leaf, regenerate the data artifact <span class="scope">(weapons)</span></span>
-      <span class="sha">8d8727f3</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-fd878c4f">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">trim the per-stack burn to land mid-pack, glow-up pass <span class="scope">(heatWave)</span></span>
-      <span class="sha">fd878c4f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6b01faf2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the leash was eating the footprint the weapon promises <span class="scope">(thunderhead)</span></span>
-      <span class="sha">6b01faf2</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-69ee7737">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">classify fireball's impact family and offer consumers <span class="scope">(weapons)</span></span>
-      <span class="sha">69ee7737</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b4d967ab">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the iron and the chain, drawn as real links <span class="scope">(weapons)</span></span>
-      <span class="sha">b4d967ab</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-52092a47">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">apply the +5 default-range ruling to all nine cores <span class="scope">(cores)</span></span>
-      <span class="sha">52092a47</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c185eee3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the per-character swing table, the four-phase frame-exact runtime, and RIGHT CLICK <span class="scope">(melee)</span></span>
-      <span class="sha">c185eee3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fd11deba">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">repoint every Echo surface at Frostlings, with a starter-choice alias <span class="scope">(weapons)</span></span>
-      <span class="sha">fd11deba</span>
-    </div><div class="row more">+ 70 more that day, not shown</div>
+    </div><div class="row more">+ 79 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-10</h4>
@@ -1632,7 +1647,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="arc" id="flight-controller">
       <div class="id">A5</div>
       <h4>CONTROLLER</h4>
-      <p>Wave 1 in a cloud lane (fired 2026-08-06), wave 2 follows it, Deck later.</p>
+      <p>Wave 1 landed; wave 2 and Deck are unscheduled backlog (see task ledger; scoping rides the controller-support task).</p>
     </div>
     <div class="arc" id="flight-character-progression">
       <div class="id">A6</div>
@@ -1679,12 +1694,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@9623c3dd</code> on 2026-08-12 10:04 UTC.
+  Every number on this page came straight out of the game, read at <code>game@1718add0</code> on 2026-08-12 12:26 UTC.
 
-  The game is serving <code>0.7.5</code>.
+  The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">500 player-visible changes in the last 7 days, across 8 active days, 1287 internal-only commits filtered out</div>
+  <div class="stat">512 player-visible changes in the last 7 days, across 8 active days, 1332 internal-only commits filtered out</div>
 </footer>
 
 
