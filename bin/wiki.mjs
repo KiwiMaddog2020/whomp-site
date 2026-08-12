@@ -3460,7 +3460,18 @@ function tierEvidenceViolations(D, T) {
   }
 
   const rows = Array.isArray(T.weapons) ? T.weapons : [];
-  if (T.coverage?.weaponDefs !== weaponDomain.count || T.coverage?.measured !== weaponDomain.count
+  // The 0.7.5 armory made "measured everything" a two-part claim: disabled
+  // donor defs are unmeasurable BY DESIGN (no acquisition path, out of every
+  // pool) and the tier engine publishes them under coverage.unmeasured rather
+  // than silently shrinking the census. So the contract is now: measured plus
+  // unmeasured accounts for every def, and the unmeasured set is EXACTLY the
+  // defs the data layer marks disabled, no more and no fewer.
+  const disabledIds = Object.entries(weaponDomain.entries || {})
+    .filter(([, e]) => e?.disabled === true).map(([id]) => id).sort();
+  const unmeasured = Array.isArray(T.coverage?.unmeasured) ? [...T.coverage.unmeasured].sort() : [];
+  if (T.coverage?.weaponDefs !== weaponDomain.count
+    || T.coverage?.measured !== weaponDomain.count - disabledIds.length
+    || JSON.stringify(unmeasured) !== JSON.stringify(disabledIds)
     || T.coverage?.rows !== rows.length) violations.push('tier coverage does not cover the complete automatic-weapon roster and evidence rows');
   const rowIds = new Set();
   const ranks = new Map();
