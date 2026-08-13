@@ -394,15 +394,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">592 player-visible changes landed in the last 7 days, across 7 of them. 12 releases were cut across 7 of those days, and that is the part a player can already play.
+    <p class="lede">517 player-visible changes landed in the last 7 days, across 6 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday is-quiet" id="day-2026-08-13">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-13</span>
+        <span class="storyday-kinds"></span>
+      </div>
+      <p class="storyday-shape">Nothing player-visible landed.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-08-12">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-12</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 42</span><span class="storyday-kind" style="background:var(--pink)">Fixed 34</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 61</span><span class="storyday-kind" style="background:var(--pink)">Fixed 37</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span></span>
       </div>
-      <p class="storyday-shape">78 changes landed: 42 new, 34 fixed, 2 balance.</p>
+      <p class="storyday-shape">100 changes landed: 61 new, 37 fixed, 2 balance.</p>
       <a class="storyday-release" href="#release-0-7-5">
         <b>v0.7.5</b><span>The armory arrives: thirty-six weapons, twelve cores, a right-click swing, and a fight that finally breathes.</span>
       </a>
@@ -460,27 +469,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">157 changes landed: 77 new, 73 fixed, 3 performance, 2 balance, 2 polish.</p>
       <a class="storyday-release" href="#release-0-7-0">
         <b>v0.7.0</b><span>Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-08-06">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-06</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 53</span><span class="storyday-kind" style="background:var(--pink)">Fixed 39</span><span class="storyday-kind" style="background:var(--gold)">Performance 4</span><span class="storyday-kind" style="background:var(--gold)">Polish 1</span></span>
-      </div>
-      <p class="storyday-shape">97 changes landed: 53 new, 39 fixed, 4 performance, 1 polish.</p>
-      <a class="storyday-release" href="#release-0-6-8">
-        <b>v0.6.8</b><span>Every upgrade card reads in full, airborne shots leave the barrel, and the desktop app just downloads.</span>
-      </a><a class="storyday-release" href="#release-0-6-7">
-        <b>v0.6.7</b><span>Installing WHOMP makes sense in every browser, and installed windows keep their clean frames.</span>
-      </a><a class="storyday-release" href="#release-0-6-6">
-        <b>v0.6.6</b><span>The island's end zone is complete: the Sundermarch opens beside the Cinderfell, and the title screen loses an uninvited scrollbar.</span>
-      </a><a class="storyday-release" href="#release-0-6-5">
-        <b>v0.6.5</b><span>A new region burns at the end of the island, the hub finds its voice, bosses announce themselves, and a gamepad works.</span>
-      </a><a class="storyday-release" href="#release-0-6-4">
-        <b>v0.6.4</b><span>Co-op stops ignoring the second player, the hidden area stops flickering, every duel hit wears its true colours, and the birds finally land.</span>
-      </a><a class="storyday-release" href="#release-0-6-3">
-        <b>v0.6.3</b><span>You can fish now. Also aboard: a minimap that reads the fight, a daily level everyone shares, a jump that belongs to your character, and something with a crest is stalking the Hollow Crown.</span>
       </a>
 
     </article></div>
@@ -928,6 +916,46 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-12</h4>
 
+    <div class="row" data-kind="feat" id="chg-a7183e8b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">echo trail replay, storm cell rename, low crackling silhouette <span class="scope">(storm-cell)</span></span>
+      <span class="sha">a7183e8b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7445800f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">sky shots get their own ~75 degree ceiling, ground cap unmoved <span class="scope">(aim)</span></span>
+      <span class="sha">7445800f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ad49ae59">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the breech stub retires whole - report 315 closes <span class="scope">(fx)</span></span>
+      <span class="sha">ad49ae59</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9d9bdaa1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">stage 4 can spend a gate that already ran <span class="scope">(ship)</span></span>
+      <span class="sha">9d9bdaa1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ef974fcb">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the three suites the brief did not name, found by grepping <span class="scope">(stun)</span></span>
+      <span class="sha">ef974fcb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b9c1bee0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the stun doctrine, who can be stunned, by what, for how long <span class="scope">(stun)</span></span>
+      <span class="sha">b9c1bee0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-062f844b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the groundbreaker's impact becomes the show <span class="scope">(render)</span></span>
+      <span class="sha">062f844b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-60c3c326">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the static lash's lightning becomes the show, and the ground drops to a whisper <span class="scope">(coreanim)</span></span>
+      <span class="sha">60c3c326</span>
+    </div>
     <div class="row" data-kind="balance" id="chg-314f8358">
       <span class="kind" style="background:var(--violet)">Balance</span>
       <span class="what">the third tune - player 0.61, enemy 0.64, director-signed <span class="scope">(pace)</span></span>
@@ -937,6 +965,36 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">slippers attach on activate, out of the dormant avatar graph <span class="scope">(render)</span></span>
       <span class="sha">234860ce</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ecd2fe94">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the shards become the event, and the throw shatters <span class="scope">(coreanim-frostLance)</span></span>
+      <span class="sha">ecd2fe94</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-100f8745">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the ice wall rises - crack-line, crystal eruption, frost mist <span class="scope">(render)</span></span>
+      <span class="sha">100f8745</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2f46e619">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the frost glints carry no vertex colours, so the material must not ask for them <span class="scope">(fx)</span></span>
+      <span class="sha">2f46e619</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1d6e67e3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">frostbite stops impersonating chain lightning <span class="scope">(fx)</span></span>
+      <span class="sha">1d6e67e3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-93135e63">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the chain stays in the hand - one rendered-player anchor, every consumer <span class="scope">(render)</span></span>
+      <span class="sha">93135e63</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e0d16d90">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">FIRST LIGHT gets a face, his own sword, and eight materials <span class="scope">(sprites)</span></span>
+      <span class="sha">e0d16d90</span>
     </div>
     <div class="row" data-kind="feat" id="chg-ef1e1462">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -953,81 +1011,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the shield-station clearance comment tells the truth <span class="scope">(engine)</span></span>
       <span class="sha">1c1a6abb</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-6fd53754">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-seat aerialFrostArm past the prow, outside the raised curtain <span class="scope">(shot)</span></span>
-      <span class="sha">6fd53754</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1433adcf">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">high aerial photo cams attenuate the fog that blanked them <span class="scope">(hub)</span></span>
-      <span class="sha">1433adcf</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c0af4103">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close the review's F1, F4 and F6, decay, drift, double-pay, swallowed chest <span class="scope">(voidRift)</span></span>
-      <span class="sha">c0af4103</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d914a040">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">two stragglers from today's rulings meet the sky-aim merge <span class="scope">(tests)</span></span>
-      <span class="sha">d914a040</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d27d76b9">
+    <div class="row" data-kind="feat" id="chg-95d10565">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Ctrl+W guard goes game-wide, title menu excepted <span class="scope">(feel)</span></span>
-      <span class="sha">d27d76b9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4a43b06c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">boomerang spins a touch faster, and Ctrl+W stops eating runs <span class="scope">(feel)</span></span>
-      <span class="sha">4a43b06c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ffa30e6b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the director's pick - the Gravekeeper ships clean-shaven <span class="scope">(sprites)</span></span>
-      <span class="sha">ffa30e6b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-436620d9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the cycling breech swell retires; the armed payoff tell stays <span class="scope">(fx)</span></span>
-      <span class="sha">436620d9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fc3b645f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">WHOMPUS SLIPPERS - the identity pickup, a speed boost <span class="scope">(pickups)</span></span>
-      <span class="sha">fc3b645f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-001ca267">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the shotgun's fire beat becomes a full-body event <span class="scope">(weaponfx)</span></span>
-      <span class="sha">001ca267</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-5f466684">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">the second tune - player 0.76, enemy 0.8, ruled round <span class="scope">(pace)</span></span>
-      <span class="sha">5f466684</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ad402e5e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">resolve the sky ray beside the pick, not after the backstop <span class="scope">(aim)</span></span>
-      <span class="sha">ad402e5e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3914e0c8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the title screen can no longer pass for a run <span class="scope">(shot)</span></span>
-      <span class="sha">3914e0c8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b7632bd8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">hide the title menu on the direct ?level= boot <span class="scope">(boot)</span></span>
-      <span class="sha">b7632bd8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9c0c36fd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Gravekeeper's facial hair becomes sculpture, and his eyes get an iris <span class="scope">(sprites)</span></span>
-      <span class="sha">9c0c36fd</span>
-    </div><div class="row more">+ 58 more that day, not shown</div>
+      <span class="what">WHITEOUT comes to the v2d bar, a face, a coat and handwear <span class="scope">(sprites)</span></span>
+      <span class="sha">95d10565</span>
+    </div><div class="row more">+ 80 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-11</h4>
@@ -1549,129 +1537,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">86936514</span>
     </div><div class="row more">+ 137 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-08-06</h4>
-
-    <div class="row" data-kind="feat" id="chg-bf1d0442">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a red shard names its failures, because a count is a verdict nobody can act on <span class="scope">(gate)</span></span>
-      <span class="sha">bf1d0442</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6c72888e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stamp and shard refs move to the branch namespace the containers can actually push <span class="scope">(gate)</span></span>
-      <span class="sha">6c72888e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-061b95a3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the kennel answers to a name, so the ledger can bill it <span class="scope">(hub)</span></span>
-      <span class="sha">061b95a3</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-dbbf0349">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">dark halo under every markup mark <span class="scope">(feedback)</span></span>
-      <span class="sha">dbbf0349</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e1fe86f9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">circle and arrow markup tools <span class="scope">(feedback)</span></span>
-      <span class="sha">e1fe86f9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f19419fa">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">give the model-routing law a checker and a hook <span class="scope">(routing)</span></span>
-      <span class="sha">f19419fa</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4b6b06fc">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the sharded verdict can mint the stamp the deploy trusts, over the ruling's own anchor <span class="scope">(gate)</span></span>
-      <span class="sha">4b6b06fc</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8c1ad29a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the desktop card offers WINDOWS, now that a Windows build exists to offer <span class="scope">(menu)</span></span>
-      <span class="sha">8c1ad29a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e7daa39b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the desktop card downloads the build instead of opening GitHub <span class="scope">(menu)</span></span>
-      <span class="sha">e7daa39b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-76f51d3c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the verdict names where the build went, and the run reports its own clock <span class="scope">(ship)</span></span>
-      <span class="sha">76f51d3c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1d56525a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the shared deploy wires can see a ship <span class="scope">(hooks)</span></span>
-      <span class="sha">1d56525a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d6c85aaa">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a thin front door that hands off to cloud-gate.sh unmodified <span class="scope">(gate)</span></span>
-      <span class="sha">d6c85aaa</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-57346ee8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">decide skip or run from a trusted stamp, before the suite runs <span class="scope">(gate)</span></span>
-      <span class="sha">57346ee8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-352e491a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">shard planner, shard runner and composer for a wide gate <span class="scope">(gate)</span></span>
-      <span class="sha">352e491a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9319fcbb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">orchestrate the whole ship ritual with a real exit check at every joint <span class="scope">(ship)</span></span>
-      <span class="sha">9319fcbb</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-df27714d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">accept a green stamp minted by a cloud gate <span class="scope">(deploy)</span></span>
-      <span class="sha">df27714d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8f538d62">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the stamp can carry what the gate cost <span class="scope">(gate)</span></span>
-      <span class="sha">8f538d62</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-84463848">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a portable green stamp travels on the anchor the ruling names <span class="scope">(gate)</span></span>
-      <span class="sha">84463848</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4f423754">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the muzzle flash holds the barrel, then lets go <span class="scope">(fx)</span></span>
-      <span class="sha">4f423754</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fcb89a12">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the core emitter rig and the co-op muzzle flash ride the body <span class="scope">(fx)</span></span>
-      <span class="sha">fcb89a12</span>
-    </div><div class="row more">+ 77 more that day, not shown</div>
-  </div>
-  <div class="day">
-    <h4>2026-08-05</h4>
-
-    <div class="row" data-kind="feat" id="chg-5112d219">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">glow-up pass, rubble that reads and a lamp that carries <span class="scope">(hub)</span></span>
-      <span class="sha">5112d219</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-773a3fe6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a second shard rank for parallax, and four-course columns <span class="scope">(hub)</span></span>
-      <span class="sha">773a3fe6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1aada270">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Sundermarch, the void half of the end-zone split <span class="scope">(hub)</span></span>
-      <span class="sha">1aada270</span>
-    </div>
-  </div>
 
     </div>
   </section>
@@ -1769,12 +1634,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@cfcb1f0a</code> on 2026-08-13 05:08 UTC.
+  Every number on this page came straight out of the game, read at <code>game@2302ab0f</code> on 2026-08-13 10:18 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">595 player-visible changes in the last 7 days, across 8 active days, 1498 internal-only commits filtered out</div>
+  <div class="stat">517 player-visible changes in the last 7 days, across 6 active days, 1305 internal-only commits filtered out</div>
 </footer>
 
 
