@@ -394,15 +394,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">517 player-visible changes landed in the last 7 days, across 6 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">536 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday is-quiet" id="day-2026-08-13">
+    <article class="storyday" id="day-2026-08-13">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-13</span>
-        <span class="storyday-kinds"></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 10</span><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span></span>
       </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
+      <p class="storyday-shape">17 changes landed: 10 new, 7 fixed.</p>
 
 
     </article>
@@ -420,9 +420,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-08-11">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-11</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 71</span><span class="storyday-kind" style="background:var(--pink)">Fixed 27</span><span class="storyday-kind" style="background:var(--violet)">Balance 5</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 71</span><span class="storyday-kind" style="background:var(--pink)">Fixed 28</span><span class="storyday-kind" style="background:var(--violet)">Balance 5</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
       </div>
-      <p class="storyday-shape">105 changes landed: 71 new, 27 fixed, 5 balance, 2 performance.</p>
+      <p class="storyday-shape">107 changes landed: 71 new, 28 fixed, 5 balance, 3 performance.</p>
       <a class="storyday-release" href="#release-0-7-4">
         <b>v0.7.4</b><span>WHOMP learns to run on a toaster, co-op stops asking about weapons, and dragons crown the final gate.</span>
       </a>
@@ -914,6 +914,95 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-13</h4>
+
+    <div class="row" data-kind="fix" id="chg-711c7095">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep every districtFog pin green under the wrapped bank <span class="scope">(hub)</span></span>
+      <span class="sha">711c7095</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-af64aec8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">wrap the undiscovered-area cloud around each arm instead of fencing its mouth <span class="scope">(hub)</span></span>
+      <span class="sha">af64aec8</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d9fdffc0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the three ratchets this lane's own delta moved <span class="scope">(tests)</span></span>
+      <span class="sha">d9fdffc0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-24ceeb9e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the chip lever reads the seat's resolved core power, not just the flag <span class="scope">(pvp)</span></span>
+      <span class="sha">24ceeb9e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bab7a49b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the tether review's remedies, re-expressed against leash-as-object <span class="scope">(render)</span></span>
+      <span class="sha">bab7a49b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b1e9ecc3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">autos become chip once the core is live, the core becomes the damage <span class="scope">(pvp)</span></span>
+      <span class="sha">b1e9ecc3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1c4e5bdf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the rime collar moves to the neck, after rasterising what it actually added to the silhouette <span class="scope">(render)</span></span>
+      <span class="sha">1c4e5bdf</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1c0032b4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the glow-up pass - a sub stays in the middle where nobody can point at it <span class="scope">(audio)</span></span>
+      <span class="sha">1c0032b4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e8e6f20d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the first room defers while the greeter card is still up <span class="scope">(hub)</span></span>
+      <span class="sha">e8e6f20d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b00e162d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the snow tier wears its own rime collar, not the popper's detonator crown <span class="scope">(render)</span></span>
+      <span class="sha">b00e162d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-80c8f8b0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">keep GET MOVING and point the greeter's arrow row at the yard <span class="scope">(hub)</span></span>
+      <span class="sha">80c8f8b0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0d495150">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the pan law - world cues get a direction and a distance <span class="scope">(audio)</span></span>
+      <span class="sha">0d495150</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b2b50bb8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire the recoil signatures through solo, co-op and the yard <span class="scope">(reticle)</span></span>
+      <span class="sha">b2b50bb8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f3f7803a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">re-land the first room on today's main (plan, beats, art, collision) <span class="scope">(hub)</span></span>
+      <span class="sha">f3f7803a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c2d6130e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">per-archetype recoil signatures for all twelve cores <span class="scope">(reticle)</span></span>
+      <span class="sha">c2d6130e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ac8b8e91">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the engine can place a voice in the stereo field <span class="scope">(audio)</span></span>
+      <span class="sha">ac8b8e91</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7a19ae2e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">tag core hits apart from their donor weapon at the damage source <span class="scope">(pvp)</span></span>
+      <span class="sha">7a19ae2e</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-12</h4>
 
     <div class="row" data-kind="feat" id="chg-a7183e8b">
@@ -1119,7 +1208,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">duels and arenas swing behind MELEE_IN_PVP, which ships false <span class="scope">(melee)</span></span>
       <span class="sha">c6f8b7d5</span>
-    </div><div class="row more">+ 85 more that day, not shown</div>
+    </div><div class="row more">+ 87 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-10</h4>
@@ -1634,12 +1723,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@2302ab0f</code> on 2026-08-13 10:18 UTC.
+  Every number on this page came straight out of the game, read at <code>game@94a8da6d</code> on 2026-08-13 12:46 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">517 player-visible changes in the last 7 days, across 6 active days, 1305 internal-only commits filtered out</div>
+  <div class="stat">536 player-visible changes in the last 7 days, across 7 active days, 1366 internal-only commits filtered out</div>
 </footer>
 
 
