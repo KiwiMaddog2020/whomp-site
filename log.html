@@ -394,15 +394,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">576 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">426 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-14">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-14</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span><span class="storyday-kind" style="background:var(--cyan)">New 2</span></span>
+      </div>
+      <p class="storyday-shape">7 changes landed: 5 fixed, 2 new.</p>
+      <a class="storyday-release" href="#release-0-7-6">
+        <b>v0.7.6</b><span>Cleaner combat silhouettes, one shared action plane, and a softer hub soundtrack.</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-08-13">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-13</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 37</span><span class="storyday-kind" style="background:var(--cyan)">New 19</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 38</span><span class="storyday-kind" style="background:var(--cyan)">New 19</span></span>
       </div>
-      <p class="storyday-shape">56 changes landed: 37 fixed, 19 new.</p>
+      <p class="storyday-shape">57 changes landed: 38 fixed, 19 new.</p>
 
 
     </article>
@@ -460,17 +471,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <b>v0.7.1</b><span>The lava country earns its heat, the invisible walls are gone from the hub, and the endgame eases off the wall by a tenth.</span>
       </a>
 
-    </article>
-    <article class="storyday" id="day-2026-08-07">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 78</span><span class="storyday-kind" style="background:var(--pink)">Fixed 73</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span></span>
-      </div>
-      <p class="storyday-shape">158 changes landed: 78 new, 73 fixed, 3 performance, 2 balance, 2 polish.</p>
-      <a class="storyday-release" href="#release-0-7-0">
-        <b>v0.7.0</b><span>Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</span>
-      </a>
-
     </article></div>
   </section>
 
@@ -490,6 +490,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-6">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-14</span>
+      <span class="notecard-version">v0.7.6</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Cleaner combat silhouettes, one shared action plane, and a softer hub soundtrack.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Character-linked rings now meet at one consistent height based on one-third of the roster-average character, so landing, Star Field, Hourglass, and other action cues stop drifting high or low between heroes.</li><li>Portal signs now show only the destination name. The little slogans are gone, leaving a cleaner map read from across the hub.</li><li>The hub soundtrack keeps the same muffled tone you hear when the in-game menu is open, while title, run, duel, sound effects, and voices keep their existing mix.</li><li>The Shotgun core drops its toy-like physical gun, and Photon Sword now presents one large photon blade instead of stacking a floor wedge, scythe, sheet, trail, and muzzle flash on the same swing.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Hourglass freeze pulses and the live Redline buff now use the same character action plane as the rest of the player-linked ring family.</li><li>Photon Sword no longer wakes the donor Void Scythe presentation or the generic muzzle flash. A real Void Scythe remains unchanged alone and in a mixed build.</li><li>Reused combat presentation events now clear their core identity between emissions, preventing one core weapon from borrowing another weapon's effects.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-5">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-12</span>
@@ -914,8 +934,52 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-14</h4>
+
+    <div class="row" data-kind="fix" id="chg-3806397c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">isolate donor presentation <span class="scope">(core-weapons)</span></span>
+      <span class="sha">3806397c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-66575110">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep one cohesive blade rig <span class="scope">(photon-sword)</span></span>
+      <span class="sha">66575110</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5f7ec9b9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">retire solid weapon hardware <span class="scope">(scattergun)</span></span>
+      <span class="sha">5f7ec9b9</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-716e0a74">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">carry aimed-core presentation provenance <span class="scope">(core-weapons)</span></span>
+      <span class="sha">716e0a74</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-09d6ca98">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">keep hub music menu-muffled <span class="scope">(audio)</span></span>
+      <span class="sha">09d6ca98</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-21756f04">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">classify Redline ring ownership <span class="scope">(render)</span></span>
+      <span class="sha">21756f04</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2c2b6142">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">lift Hourglass pulse to shared player plane <span class="scope">(render)</span></span>
+      <span class="sha">2c2b6142</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-13</h4>
 
+    <div class="row" data-kind="fix" id="chg-c42d3926">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">normalize player rings and simplify portal signs <span class="scope">(render)</span></span>
+      <span class="sha">c42d3926</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-0ff18f8c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">refresh aimed-core registry witness <span class="scope">(coop)</span></span>
@@ -1010,12 +1074,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">re-measure the four shared tables her rebuilt geometry moved <span class="scope">(medic)</span></span>
       <span class="sha">a3b1a273</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b2d7ba54">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">rebuild the rig to her signed sheet - egg body, dome face, mitten limbs <span class="scope">(medic)</span></span>
-      <span class="sha">b2d7ba54</span>
-    </div><div class="row more">+ 36 more that day, not shown</div>
+    </div><div class="row more">+ 37 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-12</h4>
@@ -1537,110 +1596,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">19bb7bc1</span>
     </div><div class="row more">+ 63 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-08-07</h4>
-
-    <div class="row" data-kind="fix" id="chg-75189d61">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">actually remove the blink clause that could not be made to fail, and typecheck the suite <span class="scope">(sim)</span></span>
-      <span class="sha">75189d61</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9d76c6e5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">report 273's blend, mask the ember sandstone to the throat face <span class="scope">(hub)</span></span>
-      <span class="sha">9d76c6e5</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-14ea70cd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the reach's rim is a wall you can see, not a wall you find <span class="scope">(westerwick)</span></span>
-      <span class="sha">14ea70cd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9604faa2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the blink's third clause could not be made to fail, so it is a test instead <span class="scope">(sim)</span></span>
-      <span class="sha">9604faa2</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-39c8b996">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the parapet skirt ceiling, stated once, and the witness that ratchets report 284 <span class="scope">(hub)</span></span>
-      <span class="sha">39c8b996</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b4d5a346">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">report 273, the grove shoulder runs the desert east face whole <span class="scope">(hub)</span></span>
-      <span class="sha">b4d5a346</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1173db6f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cats stand on the ground Hearthwick draws, not on the height field <span class="scope">(hub)</span></span>
-      <span class="sha">1173db6f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-98edcdaa">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">THE GAZE BEAM, the Borealisk's swept and warned signature <span class="scope">(sim)</span></span>
-      <span class="sha">98edcdaa</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c1d4c879">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the gaze-beam tunables, and the two facts the animal owes the beam <span class="scope">(sim,data)</span></span>
-      <span class="sha">c1d4c879</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-145c36b7">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the duel legendary pool, its draft, and the opt-in gate <span class="scope">(legendary-pvp)</span></span>
-      <span class="sha">145c36b7</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-26cd3940">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">remedies R1 and R3 at the wave-1 merge <span class="scope">(offers)</span></span>
-      <span class="sha">26cd3940</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-c9ac3048">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">the late-curve ease from 10:00 onward, and the leprechaun's opening third <span class="scope">(sim)</span></span>
-      <span class="sha">c9ac3048</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-98f0ef79">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire the three machines into the run conductor <span class="scope">(vending)</span></span>
-      <span class="sha">98f0ef79</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-12dbeced">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the fleeting stall, a cart that does not wait <span class="scope">(relic-offer-wave1)</span></span>
-      <span class="sha">12dbeced</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d12308f0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the four review remedies, applied at merge <span class="scope">(vending)</span></span>
-      <span class="sha">d12308f0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b9e4f76a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the two lava doors move onto the Cinderfell, and the deck row re-spaces <span class="scope">(hub)</span></span>
-      <span class="sha">b9e4f76a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a94338b9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the set completer, one vending slot that reads your build <span class="scope">(relic-offer-wave1)</span></span>
-      <span class="sha">a94338b9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8bc55760">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">L4, PRIOR ART resolved against the derived index <span class="scope">(a13)</span></span>
-      <span class="sha">8bc55760</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2eeeee7e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Cinderfell's cracks light the rock they lie in, and the spire burns <span class="scope">(hub)</span></span>
-      <span class="sha">2eeeee7e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-86936514">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the sealed wager, a chest that pays out sight unseen <span class="scope">(relic-offer-wave1)</span></span>
-      <span class="sha">86936514</span>
-    </div><div class="row more">+ 138 more that day, not shown</div>
-  </div>
 
     </div>
   </section>
@@ -1738,12 +1693,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@e8c43269</code> on 2026-08-14 06:14 UTC.
+  Every number on this page came straight out of the game, read at <code>game@10790878</code> on 2026-08-14 11:10 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">576 player-visible changes in the last 7 days, across 7 active days, 1497 internal-only commits filtered out</div>
+  <div class="stat">426 player-visible changes in the last 7 days, across 7 active days, 1129 internal-only commits filtered out</div>
 </footer>
 
 
