@@ -394,15 +394,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">426 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">442 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-14">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-14</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span><span class="storyday-kind" style="background:var(--cyan)">New 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span><span class="storyday-kind" style="background:var(--cyan)">New 8</span></span>
       </div>
-      <p class="storyday-shape">7 changes landed: 5 fixed, 2 new.</p>
+      <p class="storyday-shape">22 changes landed: 14 fixed, 8 new.</p>
       <a class="storyday-release" href="#release-0-7-6">
         <b>v0.7.6</b><span>Cleaner combat silhouettes, one shared action plane, and a softer hub soundtrack.</span>
       </a>
@@ -411,9 +411,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-08-13">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-13</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 38</span><span class="storyday-kind" style="background:var(--cyan)">New 19</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 38</span><span class="storyday-kind" style="background:var(--cyan)">New 20</span></span>
       </div>
-      <p class="storyday-shape">57 changes landed: 38 fixed, 19 new.</p>
+      <p class="storyday-shape">58 changes landed: 38 fixed, 20 new.</p>
 
 
     </article>
@@ -936,6 +936,81 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-14</h4>
 
+    <div class="row" data-kind="fix" id="chg-c1fea011">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Tier-2 duel-gate remedies at merge - devOnly achievement rows hide from production surfaces, stale ledger comment repointed, superset gated non-empty; arc1 claim retired <span class="scope">(remedies)</span></span>
+      <span class="sha">c1fea011</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bb9fc2ec">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">authenticate channel mode with ast <span class="scope">(release)</span></span>
+      <span class="sha">bb9fc2ec</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c69f76c6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">reject inert channel declarations <span class="scope">(release)</span></span>
+      <span class="sha">c69f76c6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a1c362cf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">contain dormant Stable authority <span class="scope">(release)</span></span>
+      <span class="sha">a1c362cf</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-dc06c48d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the desert grows east into bay B6, the gate seam closes, and the Forge Way lands <span class="scope">(hub)</span></span>
+      <span class="sha">dc06c48d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e16a99c1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">fold the duel ledger into the achievement id (R-LEDGER) <span class="scope">(duel)</span></span>
+      <span class="sha">e16a99c1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e7cd0128">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">show the duel lock everywhere (R-STATUE) <span class="scope">(hub,ui)</span></span>
+      <span class="sha">e7cd0128</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3ba092f6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the unlock duel gets the Arenas entry picker - core and F, chosen not inherited <span class="scope">(duel)</span></span>
+      <span class="sha">3ba092f6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3e7f60c3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">walking out of a duel mid-fight is a loss, pays the fee <span class="scope">(duel)</span></span>
+      <span class="sha">3e7f60c3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3d3de196">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">use worktree-safe Vitest loader <span class="scope">(hooks)</span></span>
+      <span class="sha">3d3de196</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5047ed0b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">merge guard no longer reads bare [ as a computed command <span class="scope">(deploy-tooling)</span></span>
+      <span class="sha">5047ed0b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a726fc03">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">per-interactable E prompt override, Duel Gate reads Challenge <span class="scope">(hub)</span></span>
+      <span class="sha">a726fc03</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f1fa001a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">scope claim closure to main landings <span class="scope">(protocol)</span></span>
+      <span class="sha">f1fa001a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-10614d27">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close landing lifecycle gaps <span class="scope">(protocol)</span></span>
+      <span class="sha">10614d27</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-697c4559">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the reticle kick gains a director volume dial - 1.5x unlocked, tapering to 1x at full centre-lock (ruling 2026-08-14 1:18 pm) <span class="scope">(ui)</span></span>
+      <span class="sha">697c4559</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-3806397c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">isolate donor presentation <span class="scope">(core-weapons)</span></span>
@@ -960,21 +1035,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">keep hub music menu-muffled <span class="scope">(audio)</span></span>
       <span class="sha">09d6ca98</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-21756f04">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">classify Redline ring ownership <span class="scope">(render)</span></span>
-      <span class="sha">21756f04</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2c2b6142">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">lift Hourglass pulse to shared player plane <span class="scope">(render)</span></span>
-      <span class="sha">2c2b6142</span>
-    </div>
+    </div><div class="row more">+ 2 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-13</h4>
 
+    <div class="row" data-kind="feat" id="chg-f544a0f5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a provenance refresh refuses reviewed changes that can repaint an entry <span class="scope">(wiki)</span></span>
+      <span class="sha">f544a0f5</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-c42d3926">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">normalize player rings and simplify portal signs <span class="scope">(render)</span></span>
@@ -1069,12 +1139,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">bind desktop publish to exact candidate <span class="scope">(release)</span></span>
       <span class="sha">b6792253</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a3b1a273">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-measure the four shared tables her rebuilt geometry moved <span class="scope">(medic)</span></span>
-      <span class="sha">a3b1a273</span>
-    </div><div class="row more">+ 37 more that day, not shown</div>
+    </div><div class="row more">+ 38 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-12</h4>
@@ -1693,12 +1758,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@10790878</code> on 2026-08-14 11:10 UTC.
+  Every number on this page came straight out of the game, read at <code>game@34d253c7</code> on 2026-08-15 02:08 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">426 player-visible changes in the last 7 days, across 7 active days, 1129 internal-only commits filtered out</div>
+  <div class="stat">442 player-visible changes in the last 7 days, across 7 active days, 1175 internal-only commits filtered out</div>
 </footer>
 
 
