@@ -394,17 +394,17 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">442 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">460 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-14">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-14</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span><span class="storyday-kind" style="background:var(--cyan)">New 8</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 22</span><span class="storyday-kind" style="background:var(--cyan)">New 18</span></span>
       </div>
-      <p class="storyday-shape">22 changes landed: 14 fixed, 8 new.</p>
+      <p class="storyday-shape">40 changes landed: 22 fixed, 18 new.</p>
       <a class="storyday-release" href="#release-0-7-6">
-        <b>v0.7.6</b><span>Cleaner combat silhouettes, one shared action plane, and a softer hub soundtrack.</span>
+        <b>v0.7.6</b><span>YOUR SAVE HAS BEEN RESET: one clean slate to fix two mountain maps that wore each other's names. Plus cleaner combat silhouettes and a softer hub soundtrack.</span>
       </a>
 
     </article>
@@ -496,12 +496,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="notecard-version">v0.7.6</span>
       <span class="notecard-source">from the release notes</span>
     </div>
-    <h3 class="chroma" style="font-size:1.4rem">Cleaner combat silhouettes, one shared action plane, and a softer hub soundtrack.</h3>
+    <h3 class="chroma" style="font-size:1.4rem">YOUR SAVE HAS BEEN RESET: one clean slate to fix two mountain maps that wore each other's names. Plus cleaner combat silhouettes and a softer hub soundtrack.</h3>
     <div class="buckets">
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>Character-linked rings now meet at one consistent height based on one-third of the roster-average character, so landing, Star Field, Hourglass, and other action cues stop drifting high or low between heroes.</li><li>Portal signs now show only the destination name. The little slogans are gone, leaving a cleaner map read from across the hub.</li><li>The hub soundtrack keeps the same muffled tone you hear when the in-game menu is open, while title, run, duel, sound effects, and voices keep their existing mix.</li><li>The Shotgun core drops its toy-like physical gun, and Photon Sword now presents one large photon blade instead of stacking a floor wedge, scythe, sheet, trail, and muzzle flash on the same swing.</li></ul>
+      <ul><li>SAVE RESET: this update clears every profile once. Gold, shop ranks, unlocks, quests, keepsakes, loadouts, and clear records all start over. This is deliberate and it happens one time only. We are doing it now, while the tester group is small, rather than later when it would cost more people more progress. Your settings and key bindings are NOT affected.</li><li>Why: two snow maps had names that pointed at the wrong map internally. The middle map was filed under &quot;shiverpeakSummit&quot; while the map actually called Shiverpeak Summit was filed under something else, so a saved clear could not be read back without guessing which mountain you had actually finished. Rather than guess and hand you credit for a map you never beat, we reset once and fixed the names for good. The Ascent is now filed as The Ascent, and Shiverpeak Summit as Shiverpeak Summit.</li><li>Character-linked rings now meet at one consistent height based on one-third of the roster-average character, so landing, Star Field, Hourglass, and other action cues stop drifting high or low between heroes.</li><li>The hub soundtrack keeps the same muffled tone you hear when the in-game menu is open, while title, run, duel, sound effects, and voices keep their existing mix.</li></ul>
     </div>
 
     <div class="bucket">
@@ -936,6 +936,96 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-14</h4>
 
+    <div class="row" data-kind="fix" id="chg-a6456089">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">seven-class adjudication - migration fixtures cross the v4 reset boundary, the em dash leaves the patch headline, the pre-reset backup key is allowlisted, boardData mirrors deployPreview, queue fixtures satisfy the 0700 precheck <span class="scope">(gate-10)</span></span>
+      <span class="sha">a6456089</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7f71b446">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">META_SCHEMA_V twin bumped to 4 with the world-id reset; sync fixtures repointed to the reset boundary (gate 8 adjudication, 76/76) <span class="scope">(sync)</span></span>
+      <span class="sha">7f71b446</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6acbfd25">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">mirror sol-status's deployPreview readiness semantics - the truth-cleanup/landing-protocol semantic merge composed (121/121) <span class="scope">(board)</span></span>
+      <span class="sha">6acbfd25</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-becf7c1b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore falsified commit-history prose and rename the snow capstone suite to match its id <span class="scope">(world-id-reset)</span></span>
+      <span class="sha">becf7c1b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-70206493">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the grin stops short of the cheeks and the lip line stops frowning <span class="scope">(whompus)</span></span>
+      <span class="sha">70206493</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a69bed16">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">callout 4's segment counts, and two pins re-pointed as measured deltas <span class="scope">(firstLight)</span></span>
+      <span class="sha">a69bed16</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0a338b36">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">SCHEMA_V 3 -&gt; 4, the one global save reset the world-id rename requires (ruling 3) <span class="scope">(save)</span></span>
+      <span class="sha">0a338b36</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-21e82c59">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">sheet callout 3 - the tape wraps the body, and it breaks <span class="scope">(groundwork)</span></span>
+      <span class="sha">21e82c59</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a0d7905f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the turquoise goes back on the coat, and the live hat is untouched <span class="scope">(mirage)</span></span>
+      <span class="sha">a0d7905f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-67902afe">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">repoint cameraRig.test.ts's stray 1.4 pivot literals; shots+source for reports 295/296 <span class="scope">(camera)</span></span>
+      <span class="sha">67902afe</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-dd2418ad">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">light the face and move the lit majority off black, per the signed sheet <span class="scope">(miasma)</span></span>
+      <span class="sha">dd2418ad</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4a40a0c6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">sheet callout 1 - the slab boards go, the width stays <span class="scope">(groundwork)</span></span>
+      <span class="sha">4a40a0c6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-39026e34">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the front of the hall stands where the front is drawn <span class="scope">(hub)</span></span>
+      <span class="sha">39026e34</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a1807a97">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">build the rig to the signed sheet - the brows stop scowling, the teeth become slabs, the shag becomes lobes <span class="scope">(whompus)</span></span>
+      <span class="sha">a1807a97</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e2d2c0a5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">report deploy lag against the live Preview channel <span class="scope">(sol-status)</span></span>
+      <span class="sha">e2d2c0a5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cc86f650">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the three countable shapes, and the draw ledger does not move <span class="scope">(gravekeeper)</span></span>
+      <span class="sha">cc86f650</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a40e2478">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">row 9 no longer counted open after director closure <span class="scope">(sol-status)</span></span>
+      <span class="sha">a40e2478</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2abe2e87">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">retire queued revisions durably <span class="scope">(dispatch)</span></span>
+      <span class="sha">2abe2e87</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-c1fea011">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">Tier-2 duel-gate remedies at merge - devOnly achievement rows hide from production surfaces, stale ledger comment repointed, superset gated non-empty; arc1 claim retired <span class="scope">(remedies)</span></span>
@@ -945,97 +1035,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">authenticate channel mode with ast <span class="scope">(release)</span></span>
       <span class="sha">bb9fc2ec</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c69f76c6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reject inert channel declarations <span class="scope">(release)</span></span>
-      <span class="sha">c69f76c6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a1c362cf">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">contain dormant Stable authority <span class="scope">(release)</span></span>
-      <span class="sha">a1c362cf</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-dc06c48d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the desert grows east into bay B6, the gate seam closes, and the Forge Way lands <span class="scope">(hub)</span></span>
-      <span class="sha">dc06c48d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e16a99c1">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">fold the duel ledger into the achievement id (R-LEDGER) <span class="scope">(duel)</span></span>
-      <span class="sha">e16a99c1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e7cd0128">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">show the duel lock everywhere (R-STATUE) <span class="scope">(hub,ui)</span></span>
-      <span class="sha">e7cd0128</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3ba092f6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the unlock duel gets the Arenas entry picker - core and F, chosen not inherited <span class="scope">(duel)</span></span>
-      <span class="sha">3ba092f6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3e7f60c3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">walking out of a duel mid-fight is a loss, pays the fee <span class="scope">(duel)</span></span>
-      <span class="sha">3e7f60c3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3d3de196">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">use worktree-safe Vitest loader <span class="scope">(hooks)</span></span>
-      <span class="sha">3d3de196</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5047ed0b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">merge guard no longer reads bare [ as a computed command <span class="scope">(deploy-tooling)</span></span>
-      <span class="sha">5047ed0b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a726fc03">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">per-interactable E prompt override, Duel Gate reads Challenge <span class="scope">(hub)</span></span>
-      <span class="sha">a726fc03</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f1fa001a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">scope claim closure to main landings <span class="scope">(protocol)</span></span>
-      <span class="sha">f1fa001a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-10614d27">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close landing lifecycle gaps <span class="scope">(protocol)</span></span>
-      <span class="sha">10614d27</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-697c4559">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the reticle kick gains a director volume dial - 1.5x unlocked, tapering to 1x at full centre-lock (ruling 2026-08-14 1:18 pm) <span class="scope">(ui)</span></span>
-      <span class="sha">697c4559</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3806397c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">isolate donor presentation <span class="scope">(core-weapons)</span></span>
-      <span class="sha">3806397c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-66575110">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">keep one cohesive blade rig <span class="scope">(photon-sword)</span></span>
-      <span class="sha">66575110</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5f7ec9b9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">retire solid weapon hardware <span class="scope">(scattergun)</span></span>
-      <span class="sha">5f7ec9b9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-716e0a74">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">carry aimed-core presentation provenance <span class="scope">(core-weapons)</span></span>
-      <span class="sha">716e0a74</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-09d6ca98">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">keep hub music menu-muffled <span class="scope">(audio)</span></span>
-      <span class="sha">09d6ca98</span>
-    </div><div class="row more">+ 2 more that day, not shown</div>
+    </div><div class="row more">+ 20 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-13</h4>
@@ -1758,12 +1758,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@34d253c7</code> on 2026-08-15 02:08 UTC.
+  Every number on this page came straight out of the game, read at <code>game@8a93a794</code> on 2026-08-15 04:43 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">442 player-visible changes in the last 7 days, across 7 active days, 1175 internal-only commits filtered out</div>
+  <div class="stat">460 player-visible changes in the last 7 days, across 7 active days, 1241 internal-only commits filtered out</div>
 </footer>
 
 
