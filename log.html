@@ -394,15 +394,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">461 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">456 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-16">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-16</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 10</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span><span class="storyday-kind" style="background:var(--violet)">Balance 3</span></span>
+      </div>
+      <p class="storyday-shape">19 changes landed: 10 fixed, 6 new, 3 balance.</p>
+      <a class="storyday-release" href="#release-0-7-8">
+        <b>v0.7.8</b><span>The big quality build: the four-way rebuilt as one scene, a flat glassy lake, a 30-weapon arsenal with an even elemental spread, and the forge now teaches evolutions.</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-08-15">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-15</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 24</span><span class="storyday-kind" style="background:var(--pink)">Fixed 22</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 35</span><span class="storyday-kind" style="background:var(--pink)">Fixed 30</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">47 changes landed: 24 new, 22 fixed, 1 performance.</p>
+      <p class="storyday-shape">66 changes landed: 35 new, 30 fixed, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-7">
         <b>v0.7.7</b><span>The lake arrives: a real body of water in the hub's north-west, with a feeding river, a ford, and a deck route across it. Six heroes debut their new looks on the statue plaza.</span>
       </a>
@@ -460,17 +471,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <b>v0.7.3</b><span>Every level pays out, core weapons branch at 40, and the vending machines finally turn to meet you.</span>
       </a>
 
-    </article>
-    <article class="storyday" id="day-2026-08-09">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-09</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--cyan)">New 15</span><span class="storyday-kind" style="background:var(--violet)">Balance 4</span></span>
-      </div>
-      <p class="storyday-shape">43 changes landed: 24 fixed, 15 new, 4 balance.</p>
-      <a class="storyday-release" href="#release-0-7-2">
-        <b>v0.7.2</b><span>The mountain climbs, every ability hits every enemy, bosses cannot be shoved, and a giant sealed door stands on the void plaza.</span>
-      </a>
-
     </article></div>
   </section>
 
@@ -490,6 +490,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-8">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-16</span>
+      <span class="notecard-version">v0.7.8</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The big quality build: the four-way rebuilt as one scene, a flat glassy lake, a 30-weapon arsenal with an even elemental spread, and the forge now teaches evolutions.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>THE FOUR-WAY, REBUILT: the intersection of hub, desert, mountain and void is one composed scene now. The river runs along the director's drawn line, the steep span of the ramp actually crosses the water, the black hole and shimmer artifacts are gone, and the flicker at the crossing is cured.</li><li>THE LAKE, POLISHED: the water is one flat continuous sheet (no more bumps in the surface), the river enters through a natural mouth instead of stepped terraces, and the shoreline curves everywhere.</li><li>THE ARSENAL AT 30: Tectonic Step, Heat Wave, Overload and Frostbite retire; Ghost Pup becomes a void weapon. The pool lands at exactly 30 with void and holy at five each and every other element at four. Old saves land on the nearest sibling automatically.</li><li>THE FORGE TEACHES EVOLUTIONS: a new Evolved tab in the Arsenal Forge shows every evolved weapon and exactly how to earn it: which base weapon at max level plus which tome, with your own progress shown.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Frostlings can be picked again: choosing them no longer errors out. This was broken since they joined the roster.</li><li>The clouds no longer flicker where they overlap.</li><li>The villager with her bandana over her eyes can see again (the band sits on her forehead now, on every hat variant).</li><li>The wrecking ball rides directly over you instead of trailing behind, its strange light cone is gone, and the chain now actually attaches to the hook on the ball.</li></ul><p class="bucket-more">1 more fix shipped in this release. The full log has all of them.</p>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-7">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-15</span>
@@ -954,108 +974,207 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-16</h4>
+
+    <div class="row" data-kind="feat" id="chg-0208ee44f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the anti-stall law, watchdog and heartbeat land <span class="scope">(train)</span></span>
+      <span class="sha">0208ee44f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d95211e29">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">live wire starts on storm cell, the from-start lightning <span class="scope">(roster)</span></span>
+      <span class="sha">d95211e29</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d5f12436e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the 0.7.8 cure wave, 158 reds attributed and cured in three lanes <span class="scope">(gate)</span></span>
+      <span class="sha">d5f12436e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5a6dd8354">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cap-lift-guard remedies, unused import + honest attributions <span class="scope">(tests)</span></span>
+      <span class="sha">5a6dd8354</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-911a36bc3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">retire four by ruling, pool lands at exactly 30 <span class="scope">(weapons)</span></span>
+      <span class="sha">911a36bc3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0641318b4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore the x = 48 river knot, and re-measure on the new main <span class="scope">(hub)</span></span>
+      <span class="sha">0641318b4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8150aed17">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">fourway r2, frost cairns cured, deck domain honest <span class="scope">(hub)</span></span>
+      <span class="sha">8150aed17</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e5f0bc41b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cure the two reds the kit sweep found beyond the review's <span class="scope">(hub)</span></span>
+      <span class="sha">e5f0bc41b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d4095cac2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the deck-contains predicate says what it means, and the flush tiles stay inside their kerbs <span class="scope">(hub)</span></span>
+      <span class="sha">d4095cac2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-db12a2144">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">stand the river's north waterline where the Frost arm can take it <span class="scope">(hub)</span></span>
+      <span class="sha">db12a2144</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-37328c7e6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">evolved weapons tab with recipes <span class="scope">(forge)</span></span>
+      <span class="sha">37328c7e6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-76ce1798b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">derive evolved recipes and add the Evolved shelf <span class="scope">(forge)</span></span>
+      <span class="sha">76ce1798b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d26d35004">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">frostling shell merge, normalise parts to non-indexed <span class="scope">(render)</span></span>
+      <span class="sha">d26d35004</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-04fc02099">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">whompus r4 toward the cute reference <span class="scope">(roster)</span></span>
+      <span class="sha">04fc02099</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d4d1354cf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">name-sweep remedies, quote-line exemption, scope extension <span class="scope">(style)</span></span>
+      <span class="sha">d4d1354cf</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-689ab9924">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">ghost pup re-elements physical to void <span class="scope">(weapons)</span></span>
+      <span class="sha">689ab9924</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-df5b9122b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">whompus r4 pear silhouette, scallop coat, reference face <span class="scope">(roster)</span></span>
+      <span class="sha">df5b9122b</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-cfad09784">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">early-map spawn and cap taper 85/92/100 <span class="scope">(spawns)</span></span>
+      <span class="sha">cfad09784</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-5e17479e8">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">hp -10% incl 6/12/18 bosses, excl minibosses/elites/leprechauns <span class="scope">(enemies)</span></span>
+      <span class="sha">5e17479e8</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-15</h4>
 
+    <div class="row" data-kind="feat" id="chg-9a0fc859e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">fourway scene, the river on the director's line, the span over the water, the ramp base solid <span class="scope">(hub)</span></span>
+      <span class="sha">9a0fc859e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b340aa892">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">re-route the river onto the foot of the eastern embankment (#346) <span class="scope">(hub)</span></span>
+      <span class="sha">b340aa892</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-db2c4cc23">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">live wire face candidates a/b/c <span class="scope">(roster)</span></span>
+      <span class="sha">db2c4cc23</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9a19c33ad">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">groundwork proportion candidates a/b/c <span class="scope">(roster)</span></span>
+      <span class="sha">9a19c33ad</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ae31980d9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">groundwork proportion variants as a build parameter <span class="scope">(roster)</span></span>
+      <span class="sha">ae31980d9</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3f690ffbd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">live wire face landmark table, three head candidates behind faceVariant <span class="scope">(roster)</span></span>
+      <span class="sha">3f690ffbd</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fdfb8a7f5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">law 14c seam patch tint <span class="scope">(hub)</span></span>
+      <span class="sha">fdfb8a7f5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-729205ddf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">raise the goggles off the eyes, pin the headwear law <span class="scope">(hub)</span></span>
+      <span class="sha">729205ddf</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fb3fd6886">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cloud intersection flicker <span class="scope">(hub)</span></span>
+      <span class="sha">fb3fd6886</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e810f2677">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">wrecking ball anchor, cone, chain hook <span class="scope">(weapons)</span></span>
+      <span class="sha">e810f2677</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9684a16c5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">lake scene, planar water, a level river mouth, and the box named <span class="scope">(hub)</span></span>
+      <span class="sha">9684a16c5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a838b1816">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">villager bandana over eyes <span class="scope">(hub)</span></span>
+      <span class="sha">a838b1816</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0dff6f457">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">lake water is one plane and the river mouth arrives level <span class="scope">(hub)</span></span>
+      <span class="sha">0dff6f457</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d555151c2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">re-point the three pins the yield moved, each measured on this tree <span class="scope">(hub)</span></span>
+      <span class="sha">d555151c2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fed31ef88">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">widen the #330 crossing 3.39 m -&gt; the ruled 5 m <span class="scope">(ramp)</span></span>
+      <span class="sha">fed31ef88</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e6110c97f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">all-corners plate mask, canyon lip, and the lane's suite <span class="scope">(desert)</span></span>
+      <span class="sha">e6110c97f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a8fdb8423">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the pass-approach cap blends outward instead of stepping at its own window edge <span class="scope">(waterways)</span></span>
+      <span class="sha">a8fdb8423</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9cfa58f59">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">give the desert's east growth a dressing owner (#329 job 2) <span class="scope">(desert)</span></span>
+      <span class="sha">9cfa58f59</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9ad9390a7">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">author the land-vs-channel discriminator at the corridor's cross-section <span class="scope">(waterways)</span></span>
+      <span class="sha">9ad9390a7</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-0a51b9889">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the concave wedge's flipped winding at the villageEmber corner (report 327, the wall-triangle lane's deck hunk landed alone) <span class="scope">(hub)</span></span>
       <span class="sha">0a51b9889</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8348b6740">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the walls pair - FLUSH forgiveness and the shell cap raise as ONE decision <span class="scope">(walls)</span></span>
-      <span class="sha">8348b6740</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-26596fbe5">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">island-work ceiling 402k -&gt; 410k (director 12:05 pm) - the coverage plates ride; walls pair sequenced to deploy 5 <span class="scope">(budgets)</span></span>
-      <span class="sha">26596fbe5</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b9c6254b7">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Overwatch ratchet - crown depth, pauldron lames, cloth spectrum, charismatic face <span class="scope">(groundwork-r3b)</span></span>
-      <span class="sha">b9c6254b7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b09fad6d2">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">stylize and densify for c5 - bigger eyes, deeper shag, 41 rings, and the ruled lash-rim fix <span class="scope">(whompus)</span></span>
-      <span class="sha">b09fad6d2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7d9f336bf">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">restore the temper band to a width that reads, and remove the probe <span class="scope">(striker)</span></span>
-      <span class="sha">7d9f336bf</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1d74c924a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">r3 belt buckle plate stops being a brick on the hero view <span class="scope">(livewire)</span></span>
-      <span class="sha">1d74c924a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-90527e617">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the one-arm defect - the lesser arm was buried in the ball and rotated further in <span class="scope">(whompus)</span></span>
-      <span class="sha">90527e617</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b17409f27">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">HUB_LIVE_TRIANGLE_CEILING 1.25M -&gt; 1.40M (director ruling 10:51 am) - the build-out allowance on his own 3070 measurement; draw bands stay tight <span class="scope">(budgets)</span></span>
-      <span class="sha">b17409f27</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ab63e1898">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">r3 torso, boot and density pass <span class="scope">(livewire)</span></span>
-      <span class="sha">ab63e1898</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-aa32d7485">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">derive the Forge Way's departure knot; report the measured budget delta <span class="scope">(hub)</span></span>
-      <span class="sha">aa32d7485</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f8dac0e18">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">r3 gauntlet - the knuckle plate stops being a brick <span class="scope">(livewire)</span></span>
-      <span class="sha">f8dac0e18</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-77aff0fe9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-express the landmass shape law with a waterways corridor carve-out <span class="scope">(hub)</span></span>
-      <span class="sha">77aff0fe9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0445de014">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">build the waterways corridor's floor plate <span class="scope">(hub)</span></span>
-      <span class="sha">0445de014</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9a5715c7d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">r3 limb remodel - joint reads, taper, curvature <span class="scope">(livewire)</span></span>
-      <span class="sha">9a5715c7d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f6f5952a2">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">scope the wave-2 cap raise to the flush-plug law's own NOT_FLUSH class <span class="scope">(shell)</span></span>
-      <span class="sha">f6f5952a2</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-628a5a6d1">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">identity fast path for the plate neighbour tone <span class="scope">(hub)</span></span>
-      <span class="sha">628a5a6d1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-df9c4918d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">spend no rise before the river, so the W1 flatness law stays green <span class="scope">(ramp-final)</span></span>
-      <span class="sha">df9c4918d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-712d18b5f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">add the re-pinned hubGroundAllocator suite to wheelbarrows.claims <span class="scope">(claims)</span></span>
-      <span class="sha">712d18b5f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ec9bdb5d4">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">raise mark 2's stair ford into a small deck bridge over the river</span>
-      <span class="sha">ec9bdb5d4</span>
-    </div><div class="row more">+ 27 more that day, not shown</div>
+    </div><div class="row more">+ 46 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-14</h4>
@@ -1577,110 +1696,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">56d8ee460</span>
     </div><div class="row more">+ 9 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-08-09</h4>
-
-    <div class="row" data-kind="feat" id="chg-2eb3236c3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">move fork to 40 with three-card tails <span class="scope">(core)</span></span>
-      <span class="sha">2eb3236c3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5f2d1cec4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reject mastery ids at roster boundaries <span class="scope">(progression)</span></span>
-      <span class="sha">5f2d1cec4</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-bae6c84d4">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">guarantee exact level offer cadence <span class="scope">(progression)</span></span>
-      <span class="sha">bae6c84d4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-26c8d9139">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">preserve glacier shatter arithmetic order <span class="scope">(sim)</span></span>
-      <span class="sha">26c8d9139</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-50fc9667e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">defer standalone crit rolls until hit <span class="scope">(sim)</span></span>
-      <span class="sha">50fc9667e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2fc34bcab">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">harden facing and mesh lifecycle <span class="scope">(vending)</span></span>
-      <span class="sha">2fc34bcab</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6ab163c5a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reserve live-facing clearance <span class="scope">(vending)</span></span>
-      <span class="sha">6ab163c5a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9ed14e2c2">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">polish relic vendor turntables <span class="scope">(render)</span></span>
-      <span class="sha">9ed14e2c2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-67d4c5ef8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">strip exactly one lane prefix <span class="scope">(orchestration)</span></span>
-      <span class="sha">67d4c5ef8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8c5e78f71">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">retire model-neutral lane claims <span class="scope">(orchestration)</span></span>
-      <span class="sha">8c5e78f71</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cd64f232f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">narrow Codex lane census <span class="scope">(orchestration)</span></span>
-      <span class="sha">cd64f232f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9e997479f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">count canonical Codex lanes <span class="scope">(orchestration)</span></span>
-      <span class="sha">9e997479f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-acbd8e4aa">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the corner row appends last, and the anchor ban states its subject <span class="scope">(menu)</span></span>
-      <span class="sha">acbd8e4aa</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9a19ba51f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the corner row, dev log and wiki links, and a desktop-only quit <span class="scope">(menu)</span></span>
-      <span class="sha">9a19ba51f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b55fee3f9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">0.7.3, the codex combat pass rides, the site follows the game again <span class="scope">(release)</span></span>
-      <span class="sha">b55fee3f9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4785009ca">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the integrity brief lands, targeting totality, heavy-tier knockback immunity, vending polish <span class="scope">(combat)</span></span>
-      <span class="sha">4785009ca</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c1d085a97">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the gate's four reds cured, the chip-on-ribbon class dies, three pins re-derived <span class="scope">(hub)</span></span>
-      <span class="sha">c1d085a97</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c69a36ac5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ruling 46 amendment lands, the tenant changes, Hellmouth goes to the fell plane <span class="scope">(hub)</span></span>
-      <span class="sha">c69a36ac5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ec05fa1f1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the far proxy carries the Void Gate, so it cannot pop on promote <span class="scope">(hub)</span></span>
-      <span class="sha">ec05fa1f1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-edbe27322">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Void Gate, a giant sealed door on the Starwatch portal wall <span class="scope">(hub)</span></span>
-      <span class="sha">edbe27322</span>
-    </div><div class="row more">+ 23 more that day, not shown</div>
-  </div>
 
     </div>
   </section>
@@ -1778,12 +1793,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@462373570</code> on 2026-08-16 01:57 UTC.
+  Every number on this page came straight out of the game, read at <code>game@0208ee44f</code> on 2026-08-16 18:57 UTC.
 
   The game could not be reached at generation time, so this page names no live version.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">461 player-visible changes in the last 7 days, across 7 active days, 1148 internal-only commits filtered out</div>
+  <div class="stat">456 player-visible changes in the last 7 days, across 7 active days, 1095 internal-only commits filtered out</div>
 </footer>
 
 
