@@ -2049,10 +2049,9 @@ ${landingTopBar('index.html')}
 <section id="run">
   <div class="rule"></div>
   <h2 class="chroma">What a run does to you</h2>
-  <p class="lede">${run.minutes} minutes, one weapon you aim yourself, and a horde that keeps finding out the ground
-    is optional. The final horde turns up at ${run.finalHorde} and does not thin out, because thinning out is not what
-    it does. Hold it for ${run.holdMinutes} minutes, bank at ${run.bank}, and then
-    ${run.endless ? 'walk away clean, or stay in and find out how much worse it gets' : 'the run is over'}.</p>
+  <p class="lede">Twenty minutes, and every one of them wants you dead. The horde arrives from all sides at once,
+    gems spray everywhere, and your build snowballs from one shaky weapon into a rolling catastrophe with your name
+    on it. By the end the screen is mostly explosions. You are in there somewhere, allegedly in charge.</p>
   <p class="lede">Nothing to download, nothing to install, and nobody here wants your email address. Click it and you
     are already being chased.</p>
   <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
