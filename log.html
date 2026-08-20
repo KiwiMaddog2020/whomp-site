@@ -353,7 +353,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </a>
     <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.11</b> · <code>d0a1891b</code></span></div>
+    Live <b>0.7.11</b> · <code>59ff08a7</code></span></div>
   </div>
 </div>
 
@@ -394,15 +394,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">389 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">430 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-19">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-19</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 17</span><span class="storyday-kind" style="background:var(--pink)">Fixed 10</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 45</span><span class="storyday-kind" style="background:var(--pink)">Fixed 23</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span></span>
       </div>
-      <p class="storyday-shape">29 changes landed: 17 new, 10 fixed, 2 balance.</p>
+      <p class="storyday-shape">70 changes landed: 45 new, 23 fixed, 2 balance.</p>
       <a class="storyday-release" href="#release-0-7-11">
         <b>v0.7.11</b><span>The crossroads open: walk the 4-way, ford the river, and follow it home to the cave it is born in. The void rift shows its face and marks the map.</span>
       </a>
@@ -996,10 +996,85 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-19</h4>
 
+    <div class="row" data-kind="fix" id="chg-fe126459d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">rename the rim sweep's local 'south' - it shadowed the module's own south() and tripped the shadow ratchet at the pre-gate <span class="scope">(hub)</span></span>
+      <span class="sha">fe126459d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7e5bcaedc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">prune the chip-mult import the ruling-18 flip left unused - main typechecks again (both arena lanes reported it) <span class="scope">(tests)</span></span>
+      <span class="sha">7e5bcaedc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-db5d388de">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the walk is one ribbon on the plan's deck, and every census is re-derived <span class="scope">(mountain-path)</span></span>
+      <span class="sha">db5d388de</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf4e39b70">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report #380 - the wizard's yard is laid back into the lake instead of ending on a line <span class="scope">(hub)</span></span>
+      <span class="sha">cf4e39b70</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a4ed67b82">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report #393 - the narrows berm comes down before the rectangle, not at it <span class="scope">(hub)</span></span>
+      <span class="sha">a4ed67b82</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-27774145b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report #376 - the desert reach gets a bank instead of a lip <span class="scope">(hub)</span></span>
+      <span class="sha">27774145b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-adef4ad11">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the foot is the FOUR-WAY's frost ramp, not the pass crossing <span class="scope">(mountain-path)</span></span>
+      <span class="sha">adef4ad11</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-183c21b32">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">he was walking sideways, and the skirt swing was going through the ground <span class="scope">(wizard)</span></span>
+      <span class="sha">183c21b32</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f050dc3e3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the stride belongs in the skirt, and the staff was going through the hat <span class="scope">(wizard)</span></span>
+      <span class="sha">f050dc3e3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8ad4e07e3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ruling 22 - one pack at a time, and the bleed has nowhere to come from <span class="scope">(arena-packs)</span></span>
+      <span class="sha">8ad4e07e3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bbd5e3dff">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a gate that is open stops being a wall - director report #375's own condition, executed <span class="scope">(hub)</span></span>
+      <span class="sha">bbd5e3dff</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c4c86793f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the path becomes ground - one plan leaf, one composition step, paving laid on the deck <span class="scope">(mountain-path)</span></span>
+      <span class="sha">c4c86793f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3ae13f9bc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close the see-through hat brim, give Grumbo Fenwhistle a skeleton, a gait and a voice <span class="scope">(wizard)</span></span>
+      <span class="sha">3ae13f9bc</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-b485e186a">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the site badge follows the CDN poll's verdict - unconditional --offline skipped the badge probe the poll exists to protect, baking 'Live unverified' into every deploy <span class="scope">(deploy)</span></span>
       <span class="sha">b485e186a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d48b1a188">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the closure pass - a raised corner belongs to four cells, and the cap raise is a CORRECT NEGATIVE on this tree <span class="scope">(hub)</span></span>
+      <span class="sha">d48b1a188</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8f2ed8c49">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the cap raise stops counting corners and starts measuring the drop - director reports #390 #389 #388, the standing perimeter-only law <span class="scope">(hub)</span></span>
+      <span class="sha">8f2ed8c49</span>
     </div>
     <div class="row" data-kind="feat" id="chg-f22e39b02">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1016,86 +1091,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">ruling 14 executed - the canyon bank strip admitted by the rim's own lift predicate, ember claims it; every census re-pinned on the composed pair (phantoms 140 with canyon's 24 dissolved, holes identity 1882 exact, budgets +12 net composed - no ceiling lift needed) <span class="scope">(hub)</span></span>
       <span class="sha">a28cda707</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-376e339e3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the village region names the opened skirting's columns <span class="scope">(hub)</span></span>
-      <span class="sha">376e339e3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-377a1c5ec">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the toe is a bounded position, and the transfer stops where the ramp does <span class="scope">(hub)</span></span>
-      <span class="sha">377a1c5ec</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-4b516e29e">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">correct the baseline to 1500, and file the lane report draft <span class="scope">(whomp)</span></span>
-      <span class="sha">4b516e29e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e717a22ff">
+    <div class="row" data-kind="feat" id="chg-50e1aacd4">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the brow carries the frame, not the beard - split by measurement <span class="scope">(groundwork)</span></span>
-      <span class="sha">e717a22ff</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d51cf9f79">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the board, the frames, and a settle posture the pictures asked for <span class="scope">(kit4-inbound)</span></span>
-      <span class="sha">d51cf9f79</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-12abd70ba">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">the heavy-hitter baseline, 120 -&gt; 960 (PvE only) <span class="scope">(whomp)</span></span>
-      <span class="sha">12abd70ba</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c8b213910">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the three shoulder readings, every number read off a sweep <span class="scope">(groundwork)</span></span>
-      <span class="sha">c8b213910</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3216bb492">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the corridor sheet yields the opened skirting, and both draw-ledger baselines re-point <span class="scope">(hub)</span></span>
-      <span class="sha">3216bb492</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2e9dfd69b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-bed the two river-bank stones the recut channel undercut - south onto the bank they dress, measured at the lip (-2.0 m at z -44.1) <span class="scope">(hub)</span></span>
-      <span class="sha">2e9dfd69b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8c2537120">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the slam takes the build's damage multiplier (director ruling 9) <span class="scope">(whomp)</span></span>
-      <span class="sha">8c2537120</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0ea416d48">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the face variant switch, and every dial is a bible rule <span class="scope">(groundwork)</span></span>
-      <span class="sha">0ea416d48</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-699d3bd1b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">open the Westerwick skirting - the plan, the bank back to the yard, and sixteen derived spire colliders <span class="scope">(hub)</span></span>
-      <span class="sha">699d3bd1b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b5baac708">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">declare river-cave-mouth in waterways' solidFamilies - the cave build added the corridor's first legitimate solid <span class="scope">(hub)</span></span>
-      <span class="sha">b5baac708</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2b0a48aa7">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the rift comment said QUESTION inside the extra-marker feed - the B12 guard reads function source verbatim, comments included <span class="scope">(minimap)</span></span>
-      <span class="sha">2b0a48aa7</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d85690bfa">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reword ten banned-name sites with house terms (flagship polish, capsule-cute); the verbatim record stays in its exempt blockquote <span class="scope">(name-policy)</span></span>
-      <span class="sha">d85690bfa</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1c72f8804">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">three faces the finished bank built, each measured and cured <span class="scope">(hub)</span></span>
-      <span class="sha">1c72f8804</span>
-    </div><div class="row more">+ 9 more that day, not shown</div>
+      <span class="what">the tuning board's curves, measured through the real vending system <span class="scope">(probe)</span></span>
+      <span class="sha">50e1aacd4</span>
+    </div><div class="row more">+ 50 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-18</h4>
@@ -1818,12 +1818,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@7cb919d37</code> on 2026-08-19 22:32 UTC.
+  Every number on this page came straight out of the game, read at <code>game@59ff08a73</code> on 2026-08-20 03:17 UTC.
 
   The game is serving <code>0.7.11</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">389 player-visible changes in the last 7 days, across 7 active days, 1052 internal-only commits filtered out</div>
+  <div class="stat">430 player-visible changes in the last 7 days, across 7 active days, 1110 internal-only commits filtered out</div>
 </footer>
 
 
