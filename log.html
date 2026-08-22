@@ -353,7 +353,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </a>
     <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>4256113b</code></span></div>
+    Live <b>0.7.12</b> · <code>51d0b713</code></span></div>
   </div>
 </div>
 
@@ -394,15 +394,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">403 player-visible changes landed in the last 7 days, across 7 of them. 6 releases were cut across 6 of those days, and that is the part a player can already play.
+    <p class="lede">352 player-visible changes landed in the last 7 days, across 6 of them. 5 releases were cut across 5 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday is-quiet" id="day-2026-08-22">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-22</span>
+        <span class="storyday-kinds"></span>
+      </div>
+      <p class="storyday-shape">Nothing player-visible landed.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-08-21">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-21</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 11</span><span class="storyday-kind" style="background:var(--cyan)">New 5</span></span>
       </div>
-      <p class="storyday-shape">One change landed, and it was a fix.</p>
+      <p class="storyday-shape">16 changes landed: 11 fixed, 5 new.</p>
 
 
     </article>
@@ -458,17 +467,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">83 changes landed: 41 new, 38 fixed, 4 balance.</p>
       <a class="storyday-release" href="#release-0-7-8">
         <b>v0.7.8</b><span>The big quality build: the four-way rebuilt as one scene, a flat glassy lake, a 30-weapon arsenal with an even elemental spread, and the forge now teaches evolutions.</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-08-15">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-15</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 35</span><span class="storyday-kind" style="background:var(--pink)">Fixed 30</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
-      </div>
-      <p class="storyday-shape">66 changes landed: 35 new, 30 fixed, 1 performance.</p>
-      <a class="storyday-release" href="#release-0-7-7">
-        <b>v0.7.7</b><span>The lake arrives: a real body of water in the hub's north-west, with a feeding river, a ford, and a deck route across it. Six heroes debut their new looks on the statue plaza.</span>
       </a>
 
     </article></div>
@@ -996,10 +994,85 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-21</h4>
 
+    <div class="row" data-kind="fix" id="chg-75579107db">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a route does not own the void - the thick wall stops at the island's edge (#234, #414) <span class="scope">(grotto)</span></span>
+      <span class="sha">75579107db</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-751980554b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the edge apron reaches the drawn cap, not a constant (67.0,-42.1) <span class="scope">(steppe)</span></span>
+      <span class="sha">751980554b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7a351ed24d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">take the scythe snath to regular thickness, twig no more (#451) <span class="scope">(grimhex)</span></span>
+      <span class="sha">7a351ed24d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ea6cbe2357">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">handle WebGL context loss, and guarantee the sky comes back (#449) <span class="scope">(render)</span></span>
+      <span class="sha">ea6cbe2357</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b7a8e76b28">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">one gate at a time, newest tree wins - static concurrency group with cancel-in-progress; no paths-ignore on purpose (a docs-only commit still moves the tree digest and needs a stamp) <span class="scope">(gate)</span></span>
+      <span class="sha">b7a8e76b28</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fcfc0e3056">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">shards declare WHOMP_SHARD_REMOTE=1 - the first fan-out ran mode=local and graded the container-exclusion set inside containers; remote mode defers exactly that set to the laptop collect, as designed <span class="scope">(gate)</span></span>
+      <span class="sha">fcfc0e3056</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9c41a2dba4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the shave narrows the WATER, not the corridor - compensate bankS on the shaved bank <span class="scope">(hub)</span></span>
+      <span class="sha">9c41a2dba4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7d48342c14">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the sharded cloud gate rides CI - six-shard matrix over bin/gate-shard-run.sh, results published to origin shard refs; the integrator's laptop half (collect/compose/stamp, the container-exclusion set) unchanged; local full-suite.sh remains the fallback; r6 N4 residual accepted per debt row 17 <span class="scope">(gate)</span></span>
+      <span class="sha">7d48342c14</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-bfe26a8414">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">re-apply the #400/#401 left-bank shave, r2's remedies intact, onto current main <span class="scope">(hub)</span></span>
+      <span class="sha">bfe26a8414</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-4bfe1f55d1">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the train-2 batch's measurement re-derivations - miasma's authored plane re-derived (+6.2mm, ruling 63's uplifted stride), wispmother opts into excludeCarriedProps (the raised reaper scythe measured as her crown/back/waist; body anchors 0-3 hold unchanged, the honesty check) with scale/backGirth/waist re-verified on the landed rig, tester rotation regenerated by the eyeball sweep <span class="scope">(rig-contracts)</span></span>
       <span class="sha">4bfe1f55d1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cc841fda2d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report #414b - the camera is contained inside the Underway Grotto <span class="scope">(hub)</span></span>
+      <span class="sha">cc841fda2d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d7df4f80f1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close the grove's south-west re-entrant corner (director #431) <span class="scope">(hub)</span></span>
+      <span class="sha">d7df4f80f1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-abb0493c65">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">report #406 - delete the dust plume, and the measurement that chose deletion over performing it <span class="scope">(groundwork)</span></span>
+      <span class="sha">abb0493c65</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-412836786a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the cairn flight reads as struck, at zero triangle cost (director #416) <span class="scope">(westerwick)</span></span>
+      <span class="sha">412836786a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d3212620b5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report #414a - the Underway Grotto's walls get real thickness <span class="scope">(grotto)</span></span>
+      <span class="sha">d3212620b5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5081e1a5b6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">report #406 - the plume under his boots is a footfall, not a decal <span class="scope">(groundwork)</span></span>
+      <span class="sha">5081e1a5b6</span>
     </div>
   </div>
   <div class="day">
@@ -1535,96 +1608,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">re-route the river onto the foot of the eastern embankment (#346) <span class="scope">(hub)</span></span>
       <span class="sha">b340aa892e</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-db2c4cc231">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">live wire face candidates a/b/c <span class="scope">(roster)</span></span>
-      <span class="sha">db2c4cc231</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9a19c33ad9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">groundwork proportion candidates a/b/c <span class="scope">(roster)</span></span>
-      <span class="sha">9a19c33ad9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ae31980d94">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">groundwork proportion variants as a build parameter <span class="scope">(roster)</span></span>
-      <span class="sha">ae31980d94</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3f690ffbd6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">live wire face landmark table, three head candidates behind faceVariant <span class="scope">(roster)</span></span>
-      <span class="sha">3f690ffbd6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fdfb8a7f5a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">law 14c seam patch tint <span class="scope">(hub)</span></span>
-      <span class="sha">fdfb8a7f5a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-729205ddf3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">raise the goggles off the eyes, pin the headwear law <span class="scope">(hub)</span></span>
-      <span class="sha">729205ddf3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fb3fd68861">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cloud intersection flicker <span class="scope">(hub)</span></span>
-      <span class="sha">fb3fd68861</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e810f2677d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">wrecking ball anchor, cone, chain hook <span class="scope">(weapons)</span></span>
-      <span class="sha">e810f2677d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9684a16c52">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">lake scene, planar water, a level river mouth, and the box named <span class="scope">(hub)</span></span>
-      <span class="sha">9684a16c52</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a838b1816e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">villager bandana over eyes <span class="scope">(hub)</span></span>
-      <span class="sha">a838b1816e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0dff6f4577">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">lake water is one plane and the river mouth arrives level <span class="scope">(hub)</span></span>
-      <span class="sha">0dff6f4577</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d555151c25">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-point the three pins the yield moved, each measured on this tree <span class="scope">(hub)</span></span>
-      <span class="sha">d555151c25</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fed31ef88d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">widen the #330 crossing 3.39 m -&gt; the ruled 5 m <span class="scope">(ramp)</span></span>
-      <span class="sha">fed31ef88d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e6110c97fd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">all-corners plate mask, canyon lip, and the lane's suite <span class="scope">(desert)</span></span>
-      <span class="sha">e6110c97fd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a8fdb84236">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the pass-approach cap blends outward instead of stepping at its own window edge <span class="scope">(waterways)</span></span>
-      <span class="sha">a8fdb84236</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9cfa58f596">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">give the desert's east growth a dressing owner (#329 job 2) <span class="scope">(desert)</span></span>
-      <span class="sha">9cfa58f596</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9ad9390a76">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">author the land-vs-channel discriminator at the corridor's cross-section <span class="scope">(waterways)</span></span>
-      <span class="sha">9ad9390a76</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0a51b98893">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the concave wedge's flipped winding at the villageEmber corner (report 327, the wall-triangle lane's deck hunk landed alone) <span class="scope">(hub)</span></span>
-      <span class="sha">0a51b98893</span>
-    </div><div class="row more">+ 46 more that day, not shown</div>
   </div>
 
     </div>
@@ -1723,12 +1706,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@4256113b56</code> on 2026-08-22 01:09 UTC.
+  Every number on this page came straight out of the game, read at <code>game@51d0b7132e</code> on 2026-08-22 08:27 UTC.
 
   The game is serving <code>0.7.12</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">403 player-visible changes in the last 7 days, across 7 active days, 950 internal-only commits filtered out</div>
+  <div class="stat">354 player-visible changes in the last 7 days, across 7 active days, 838 internal-only commits filtered out</div>
 </footer>
 
 
