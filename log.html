@@ -353,7 +353,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </a>
     <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>fd9ee553</code></span></div>
+    Live <b>0.7.12</b> · <code>c8dcdd46</code></span></div>
   </div>
 </div>
 
@@ -394,15 +394,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">389 player-visible changes landed in the last 7 days, across 7 of them. 4 releases were cut across 4 of those days, and that is the part a player can already play.
+    <p class="lede">406 player-visible changes landed in the last 7 days, across 7 of them. 4 releases were cut across 4 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-23">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-23</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span><span class="storyday-kind" style="background:var(--cyan)">New 10</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 22</span><span class="storyday-kind" style="background:var(--pink)">Fixed 19</span></span>
       </div>
-      <p class="storyday-shape">24 changes landed: 14 fixed, 10 new.</p>
+      <p class="storyday-shape">41 changes landed: 22 new, 19 fixed.</p>
 
 
     </article>
@@ -992,6 +992,91 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-23</h4>
 
+    <div class="row" data-kind="fix" id="chg-ae9a38130">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the pause sheet's Utility (F) row joins the duel-kit-wins rule - it still read the dormant run's F, same class as the weapon rail fix one slot over <span class="scope">(duel-136)</span></span>
+      <span class="sha">ae9a38130</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-526bc7f7b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the whomp itself waits for the slam radius - ultPressed was unconditional every tick, which is the wasted round-start whomp the director reported; gated on the authored 12m damage radius, all tiers, with the paired policy test <span class="scope">(duel-137)</span></span>
+      <span class="sha">526bc7f7b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ce26c9a34">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the pause run sheet shows the duel kit, not the shell run <span class="scope">(duel-136)</span></span>
+      <span class="sha">ce26c9a34</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0c51a8ddb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">every seat starts a duel round with its cooldowns ready <span class="scope">(duel-136)</span></span>
+      <span class="sha">0c51a8ddb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-18b06df92">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">duel bots may only press R inside the move's real reach <span class="scope">(duel-137)</span></span>
+      <span class="sha">18b06df92</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-30f61764d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">unlock duel challengers drop from hard to medium <span class="scope">(duel-137)</span></span>
+      <span class="sha">30f61764d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0f6245342">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ruling 133 - the skirt is the CLEFT, and the bound costs nothing <span class="scope">(hub)</span></span>
+      <span class="sha">0f6245342</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d3395d155">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the three resolve to ONE - director confirmation 2026-08-23 <span class="scope">(duel-134)</span></span>
+      <span class="sha">d3395d155</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a9e4f31b0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ruling 133 - the surface belongs to the LIVE sampler, and the censuses re-derived <span class="scope">(hub)</span></span>
+      <span class="sha">a9e4f31b0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a7549f8d4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the twelve pose layers and the fourteen ground draws - all twenty kits at the standard <span class="scope">(kit-alignment-pass)</span></span>
+      <span class="sha">a7549f8d4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6d17254ba">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">every character duels except the three, and the player picks <span class="scope">(duel-134)</span></span>
+      <span class="sha">6d17254ba</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a174174a0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">level-8 kits and the challenger's element-floored random loadout <span class="scope">(duel-134)</span></span>
+      <span class="sha">a174174a0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d2c145d4b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">twelve typed fx narrowings - the residual that named its own closing move <span class="scope">(kit-alignment-pass)</span></span>
+      <span class="sha">d2c145d4b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-de860d06d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ruling 133 - the skirting is walkable, and the class inverts to admission <span class="scope">(hub)</span></span>
+      <span class="sha">de860d06d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e15d27e09">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the four wave-A poses reach the ruling-105 tremor floor <span class="scope">(kit-alignment-pass)</span></span>
+      <span class="sha">e15d27e09</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9c50df0c3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire the run's control seams - eight of nine rules now land in PvE <span class="scope">(kit-seam-wave)</span></span>
+      <span class="sha">9c50df0c3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-89e55d126">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ruling 135, the rift arrow gets bigger, neon pink outline <span class="scope">(compass)</span></span>
+      <span class="sha">89e55d126</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-1e8c5f903">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the objective arrow was being starved, plus frames and the gate row <span class="scope">(void-rift-130)</span></span>
@@ -1006,92 +1091,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">a vending machine granted a relic and told nobody (ruling 129a) <span class="scope">(relicVending)</span></span>
       <span class="sha">068d07fa1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-af0cdc90a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">RULING 130 render - ground out, tear glowed up, 6 draws to 4 <span class="scope">(void-rift)</span></span>
-      <span class="sha">af0cdc90a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-01a7b7936">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">RULING 130 sim - the rift becomes a damageable target <span class="scope">(void-rift)</span></span>
-      <span class="sha">01a7b7936</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9425c79e9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">card copy for all twenty kits, and the four wave-A poses wired <span class="scope">(rightclick)</span></span>
-      <span class="sha">9425c79e9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d95958a0f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">register all sixteen wave-2 kits and flip the campaign live (ruling 128) <span class="scope">(rightclick)</span></span>
-      <span class="sha">d95958a0f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3ec3a087c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the bank's east shoulder is drawn, and the deploy-5 five are paid <span class="scope">(hub-draw)</span></span>
-      <span class="sha">3ec3a087c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-62dab1dfc">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the frost arm's south-west brink falls, and four of the deploy-5 five are paid <span class="scope">(hub-terrain)</span></span>
-      <span class="sha">62dab1dfc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8826d3046">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the Wreckfall Steps get an owner, and the deploy-5 +5 gets its true one <span class="scope">(hub-regions)</span></span>
-      <span class="sha">8826d3046</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-56938bc1f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the W1-pending bridge - rulings 107/109's eleven F newcomers ship gold-purchasable OUTSIDE the frozen 62-item partition until W1 re-derives the grid (rulings 121/125, console t5 NOW); the list lives beside the table it is excused from, may only shrink, and the partition law still refuses any non-listed gated id <span class="scope">(unlocks)</span></span>
-      <span class="sha">56938bc1f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-95d6ec110">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the two gate reds are ruling 120 arriving in two harnesses that assumed a quiet rival - isolation restored, pins unmoved <span class="scope">(duel-fixtures)</span></span>
-      <span class="sha">95d6ec110</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c2938b6e6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the deploy-5 composition left the landing-object branch duplicated with the first copy empty, swallowing recallRune/chasm/bouncePad/zone reads before the real branch - unified with the call restored; 61/61 telegraph+fx green <span class="scope">(telegraphs)</span></span>
-      <span class="sha">c2938b6e6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-aa498e455">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">rulings 119 + 120 - Sentry Sting recolors to teal off Overcharge's orange, and bots are granted the E wack (distance-gated on the wack's own authored zone, one authoring site; the guard test re-points to pin the ruled behavior). MEASURED OUTCOME: all three sacred witnesses HELD their pins at the grant - the engage bands orbit outside the 3.0m wack ceiling, so the director-signed re-point was a no-op and the pins stand untouched <span class="scope">(rituals)</span></span>
-      <span class="sha">aa498e455</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cfb9b7cd9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close the epoch half-reset in the union merge <span class="scope">(unlock-campaign-w0)</span></span>
-      <span class="sha">cfb9b7cd9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-59bb30aa8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">review condition 3 - rebased onto f4ef3432d, SHAPE_HASH re-derived <span class="scope">(three-star-96)</span></span>
-      <span class="sha">59bb30aa8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fc338f778">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">save-sync review conditions 1, 2 and 4 <span class="scope">(three-star-96)</span></span>
-      <span class="sha">fc338f778</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-cf2c82320">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ruling 127 - the Sonic whites ship, and the signed 2.45 wall envelope <span class="scope">(whompus)</span></span>
-      <span class="sha">cf2c82320</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7f5dca0c4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">SwiftShader via ANGLE, CDP timeout, post-write watchdog <span class="scope">(shot-capture)</span></span>
-      <span class="sha">7f5dca0c4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5df3488f8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">scrub gate-control env from merge-check's nested spawns, dedup lane refs by commit not name <span class="scope">(gate)</span></span>
-      <span class="sha">5df3488f8</span>
-    </div><div class="row more">+ 4 more that day, not shown</div>
+    </div><div class="row more">+ 21 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-22</h4>
@@ -1814,12 +1814,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@fd9ee5534</code> on 2026-08-23 21:09 UTC.
+  Every number on this page came straight out of the game, read at <code>game@c8dcdd464</code> on 2026-08-24 04:28 UTC.
 
   The game is serving <code>0.7.12</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">389 player-visible changes in the last 7 days, across 7 active days, 934 internal-only commits filtered out</div>
+  <div class="stat">406 player-visible changes in the last 7 days, across 7 active days, 969 internal-only commits filtered out</div>
 </footer>
 
 
