@@ -353,7 +353,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </a>
     <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>f7235358</code></span></div>
+    Live <b>0.7.12</b> · <code>0abe267c</code></span></div>
   </div>
 </div>
 
@@ -394,15 +394,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">377 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 3 of those days, and that is the part a player can already play.
+    <p class="lede">360 player-visible changes landed in the last 7 days, across 7 of them. 2 releases were cut across 2 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-25">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-25</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 10</span><span class="storyday-kind" style="background:var(--pink)">Fixed 6</span></span>
+      </div>
+      <p class="storyday-shape">16 changes landed: 10 new, 6 fixed.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-08-24">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-24</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 8</span><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 9</span><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span></span>
       </div>
-      <p class="storyday-shape">11 changes landed: 8 new, 3 fixed.</p>
+      <p class="storyday-shape">12 changes landed: 9 new, 3 fixed.</p>
 
 
     </article>
@@ -452,17 +461,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">114 changes landed: 72 new, 40 fixed, 2 balance.</p>
       <a class="storyday-release" href="#release-0-7-11">
         <b>v0.7.11</b><span>The crossroads open: walk the 4-way, ford the river, and follow it home to the cave it is born in. The void rift shows its face and marks the map.</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-08-18">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-18</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 26</span><span class="storyday-kind" style="background:var(--pink)">Fixed 8</span></span>
-      </div>
-      <p class="storyday-shape">34 changes landed: 26 new, 8 fixed.</p>
-      <a class="storyday-release" href="#release-0-7-10">
-        <b>v0.7.10</b><span>The full-backlog day: Live Wire gets her face, the hub sheds its clutter, the ground under the Starwatch terrace finally seals, and the whole height field got faster without moving a single blade of grass.</span>
       </a>
 
     </article></div>
@@ -988,8 +986,97 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-25</h4>
+
+    <div class="row" data-kind="fix" id="chg-cdc7d7539">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ruling 145's unlocks.core payloads crashed the generator - a missing POOL threw where a missing ID would have reported a dangling ref; core joins the tables, the accumulator and the back-ref, and cast-walk re-measures off the two new rigs <span class="scope">(data-layer)</span></span>
+      <span class="sha">cdc7d7539</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a1cd782ae">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Evolved tab equips, and keeps teaching <span class="scope">(forge-151)</span></span>
+      <span class="sha">a1cd782ae</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ded5325d0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">right click reaches the training yard, animation and all <span class="scope">(yard-150)</span></span>
+      <span class="sha">ded5325d0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8dbe70c13">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the Striker's shoulder is one mass again - the notch filled, the arm one surface, the banding gone <span class="scope">(rig-153)</span></span>
+      <span class="sha">8dbe70c13</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6f45f2809">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the Gravekeeper's rest abduction had the wrong sign, so both arms hung inside his coat <span class="scope">(rig-154)</span></span>
+      <span class="sha">6f45f2809</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-375c73ddc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the yard's DPS chip names the core, not the weapon it borrowed <span class="scope">(dummy-147)</span></span>
+      <span class="sha">375c73ddc</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6ff935622">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">locked cores read locked on every surface <span class="scope">(core-145)</span></span>
+      <span class="sha">6ff935622</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4baf7e8f5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the yard's damage events carry the core tag and the ownership <span class="scope">(dummy-147)</span></span>
+      <span class="sha">4baf7e8f5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6bc75ec1a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">stamp impact FX above the battle branch, not inside the run half <span class="scope">(dummy-147)</span></span>
+      <span class="sha">6bc75ec1a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-63100cde8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the run points the player at a machine that moved <span class="scope">(vending-149)</span></span>
+      <span class="sha">63100cde8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7c7185991">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a spent multi-use machine relocates elsewhere with one use <span class="scope">(vending-149)</span></span>
+      <span class="sha">7c7185991</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-298dc1233">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the shop's core shelf <span class="scope">(core-145)</span></span>
+      <span class="sha">298dc1233</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c315ad46d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">flip PROGRESSION_ENABLED, and prove the blast radius <span class="scope">(core-145)</span></span>
+      <span class="sha">c315ad46d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf6a313e4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">cores are buyable - purchasedCores joins the meta save <span class="scope">(core-145)</span></span>
+      <span class="sha">cf6a313e4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f4a2c1975">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the play ladder - nine achievements now carry unlocks.core <span class="scope">(core-145)</span></span>
+      <span class="sha">f4a2c1975</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0084468ac">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">three starter cores, nine gated <span class="scope">(core-145)</span></span>
+      <span class="sha">0084468ac</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-08-24</h4>
 
+    <div class="row" data-kind="feat" id="chg-181668671">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">evolved forms leave the Weapons shelf, in the shared gate <span class="scope">(forge-146)</span></span>
+      <span class="sha">181668671</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-28739dfea">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the themed pairings become the live key, and the duplicate table retires <span class="scope">(duel-144)</span></span>
@@ -1566,110 +1653,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">e804c4f9f</span>
     </div><div class="row more">+ 94 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-08-18</h4>
-
-    <div class="row" data-kind="feat" id="chg-a319fc160">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">three dark-wizard candidates behind a variant switch, default unchanged <span class="scope">(graviton)</span></span>
-      <span class="sha">a319fc160</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-44a958160">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">glow-up candidates A/B/C behind a build-time switch, plus the keepview harness and boards <span class="scope">(gravekeeper)</span></span>
-      <span class="sha">44a958160</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-be30ea04c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Groundwork archaeology harness, and the three boards <span class="scope">(rollbackview)</span></span>
-      <span class="sha">be30ea04c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9f7ec7a41">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the void rift gets its R6 treatment - a tear, its tendrils, an opening beat and a compass mark <span class="scope">(render)</span></span>
-      <span class="sha">9f7ec7a41</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-60a2b9285">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the big rocks come out of the river, the banks are dressed, and the desert lip is held <span class="scope">(hub)</span></span>
-      <span class="sha">60a2b9285</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4b43796fb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the canyon north rim as a 1:3 partial fill that coexists with the ramp and the talus <span class="scope">(hub)</span></span>
-      <span class="sha">4b43796fb</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5c45eebd2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the four-way declares its own walking surface - report #375's invisible wall was inHubLandmass, not the ramp geometry <span class="scope">(hub)</span></span>
-      <span class="sha">5c45eebd2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8bd2f9c11">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">seat every world trophy on its pad, and comb the hub for the board <span class="scope">(hub)</span></span>
-      <span class="sha">8bd2f9c11</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1892157c5">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the river issues from the cave mouth, and the snow feeds it <span class="scope">(hub)</span></span>
-      <span class="sha">1892157c5</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0963d7546">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">adopt dragon-head candidate C - report #349's round closes on the director's pick <span class="scope">(hub)</span></span>
-      <span class="sha">0963d7546</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-965932eda">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Grumbo Fenwhistle's glow-up - 552 -&gt; 2,764 triangles, still ONE draw <span class="scope">(hub)</span></span>
-      <span class="sha">965932eda</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f6e111b39">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the #354 spire ridge, the barrier the merged lane authored and could not afford <span class="scope">(hub)</span></span>
-      <span class="sha">f6e111b39</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2b47fb5bd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a can't-afford line under the price, and a shrine that lands before it is clickable <span class="scope">(offers)</span></span>
-      <span class="sha">2b47fb5bd</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ae50ac502">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a relic vending machine trades ONE relic in, not two <span class="scope">(vending)</span></span>
-      <span class="sha">ae50ac502</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7df03ced0">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the cave mouth carries a collider, and both censuses take their rows <span class="scope">(hub)</span></span>
-      <span class="sha">7df03ced0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-657f8c3b0">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the river begins in a cracked-cliff fissure - concept B, and the pinch seals by construction <span class="scope">(hub)</span></span>
-      <span class="sha">657f8c3b0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f66c38c4f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">promote candidate B to the shipped rig - R12 executed <span class="scope">(groundwork)</span></span>
-      <span class="sha">f66c38c4f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4f64832a4">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">seat the full 2026-08-12 wave in the Court of Heroes - ten statues at their long-held stations <span class="scope">(hub)</span></span>
-      <span class="sha">4f64832a4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0cdc03281">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">delete the molten chord ring, which lied about the reach by 11.8% <span class="scope">(fissure)</span></span>
-      <span class="sha">0cdc03281</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f138b78c8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">raise PLUG_LEVEL_TOL_M 0.35 -&gt; 1.10 per director ruling R8 <span class="scope">(walk-plugs)</span></span>
-      <span class="sha">f138b78c8</span>
-    </div><div class="row more">+ 14 more that day, not shown</div>
-  </div>
 
     </div>
   </section>
@@ -1767,12 +1750,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@f72353589</code> on 2026-08-25 05:43 UTC.
+  Every number on this page came straight out of the game, read at <code>game@0abe267cf</code> on 2026-08-25 19:35 UTC.
 
   The game is serving <code>0.7.12</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">377 player-visible changes in the last 7 days, across 7 active days, 842 internal-only commits filtered out</div>
+  <div class="stat">360 player-visible changes in the last 7 days, across 7 active days, 732 internal-only commits filtered out</div>
 </footer>
 
 
