@@ -283,10 +283,22 @@ const WIKI_CSS = `
 :root{--band:103px}
 .skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
 .skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
+/* ONE IDENTITY ON ONE ROW (director, 2026-08-25: "the womp wiki is redundant on
+   the left and we only need one so we can fold the sign in into the same line").
+   .wtopbar-brandrow is gone and it took a whole row of the page with it. It had
+   carried the icon plus the words WHOMP / Wiki home at the left and the sign-in
+   button at the right, immediately above a row whose <h1> says WHOMP wiki and
+   whose right end already held the version chips. Two rows, two WHOMP names, two
+   right-aligned controls, and the content started a hundred pixels down.
+   Now: the icon keeps its wiki-home link (see wikiBrand in bin/generate.mjs) and
+   sits INSIDE .brand as the heading's own mark, and the chips and sign-in share
+   .wtopbar-aside at the right end of that same row. Nothing was deleted except
+   the second wordmark and the row it stood on. */
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
-.wtopbar-brandrow{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0 0}
-.wtopbar-brandrow .authbar{padding:0}
-.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 0 0}
+.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 0 0}
+.wtopbar-aside{display:flex;align-items:center;justify-content:flex-end;gap:12px 18px;flex-wrap:wrap}
+/* .authbar carries its own top padding for the row it used to own alone. */
+.wtopbar-aside .authbar{padding:0}
 
 /* SEARCH IN THE SAME PLACE ON EVERY PAGE, AND STILL THERE AT CARD 400.
    These pages are long (the bestiary runs past 50,000px on a phone), and a search
@@ -488,11 +500,10 @@ const WIKI_CSS = `
   /* A phone has no room for the page title, the tagline, two provenance chips and
      a search box before the content starts. The title and tagline stay; the chips
      shrink to one scannable row and give their vertical space back. */
-  .wtopbar-row{gap:10px;padding-top:16px}
+  .wtopbar-row{gap:10px;padding-top:14px}
   .brand h1{font-size:1.32rem}
   .chips{gap:7px}
   .chip{padding:5px 11px;font-size:.74rem}
-  .wtopbar-brandrow{padding-top:12px}
   .wiki-home-icon{width:38px;height:38px}
   .wbreadcrumb{flex-wrap:wrap;row-gap:2px}
   .wprov,.womit{padding:11px 13px}
@@ -2797,18 +2808,18 @@ function renderRosterPage(roster, ctx) {
 
   const body = `
 <div class="wtopbar">
-  <div class="wtopbar-brandrow">
-    ${chrome.wikiBrand}
-    ${chrome.AUTHBAR}
-  </div>
   <div class="wtopbar-row">
     <span class="brand">
+      ${chrome.wikiBrand}
       <span>
         <h1 class="chroma">${esc(qualifiedTitle)}</h1>
         <p class="subtag">${esc(roster.tagline)}</p>
       </span>
     </span>
-    <div class="chips">${chrome.liveChip()}</div>
+    <div class="wtopbar-aside">
+      <div class="chips">${chrome.liveChip()}</div>
+      ${chrome.AUTHBAR}
+    </div>
   </div>
 </div>
 
@@ -2958,18 +2969,18 @@ function renderHub(rosters, ctx) {
 
   const body = `
 <div class="wtopbar">
-  <div class="wtopbar-brandrow">
-    ${chrome.wikiBrand}
-    ${chrome.AUTHBAR}
-  </div>
   <div class="wtopbar-row">
     <span class="brand">
+      ${chrome.wikiBrand}
       <span>
         <h1 class="chroma">WHOMP wiki</h1>
         <p class="subtag">Everything that can kill you, and everything that can help.</p>
       </span>
     </span>
-    <div class="chips">${chrome.liveChip()}</div>
+    <div class="wtopbar-aside">
+      <div class="chips">${chrome.liveChip()}</div>
+      ${chrome.AUTHBAR}
+    </div>
   </div>
 </div>
 
@@ -3043,18 +3054,18 @@ function renderExplainer(rosters, ctx) {
 
   const body = `
 <div class="wtopbar">
-  <div class="wtopbar-brandrow">
-    ${chrome.wikiBrand}
-    ${chrome.AUTHBAR}
-  </div>
   <div class="wtopbar-row">
     <span class="brand">
+      ${chrome.wikiBrand}
       <span>
         <h1 class="chroma">${esc(EXPLAINER_TITLE)}</h1>
         <p class="subtag">Nobody typed them in.</p>
       </span>
     </span>
-    <div class="chips">${chrome.liveChip()}</div>
+    <div class="wtopbar-aside">
+      <div class="chips">${chrome.liveChip()}</div>
+      ${chrome.AUTHBAR}
+    </div>
   </div>
 </div>
 

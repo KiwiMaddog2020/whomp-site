@@ -1243,8 +1243,22 @@ const SEARCH_CSS = `
    printed on the label rather than left to be discovered. */
 .searchkey{border:var(--edge);border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;
   font-weight:700;letter-spacing:0;color:var(--dim);background:rgba(255,243,207,.05);text-transform:none;line-height:1.5}
+/* THE PROMPT SITS IN THE MIDDLE OF THE BOX (director, 2026-08-25: "search the
+   wiki and the dev log in the search bar should be centered"). The box is the
+   full width of the column, so a prompt pinned to the left edge reads as a stray
+   label rather than as the invitation it is.
+   CENTRED AT REST, LEFT ONCE IT IS IN USE, and that split is deliberate.
+   text-align cannot be set on ::placeholder in any engine that matters, so the
+   alignment has to live on the input itself, which would carry a reader's own
+   typing to the middle too: a query that grows out from its own centre while the
+   result panel below it is left-aligned, and a caret that will not hold still.
+   So the centring is the RESTING state only. Focus hands the box back to normal
+   text alignment before the first keystroke, and :not(:placeholder-shown) keeps
+   it there for a page restored with a query already in it (bfcache, back
+   button), where nothing was ever focused. */
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
-  color:var(--cream);font-family:var(--font);font-size:1rem}
+  color:var(--cream);font-family:var(--font);font-size:1rem;text-align:center}
+.searchbox:focus,.searchbox:not(:placeholder-shown){text-align:left}
 .searchbox::placeholder{color:var(--dim)}
 .searchbox:focus{outline:2px solid var(--cyan);outline-offset:2px}
 .sr-panel{position:absolute;left:24px;right:24px;top:calc(100% + 6px);background:var(--lift);border:var(--edge);
@@ -1591,12 +1605,10 @@ ${WIKI_CSS}
 .wside-all>summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wside-all-body{display:flex;flex-direction:column;gap:2px}
 
-.wiki-home{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
+/* .wiki-home-copy and its four rules left with the second wordmark it dressed;
+   the link is the icon now, and the heading beside it is the page's one name. */
+.wiki-home{display:flex;align-items:center;text-decoration:none;flex:none}
 .wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
-.wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
-.wiki-home-copy b{color:var(--cream);font-size:1.02rem;letter-spacing:.02em}
-.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:3px}
-.wiki-home:hover .wiki-home-copy b{color:#fff}
 .wiki-home:hover .wiki-home-icon{transform:translateY(-1px)}
 .wiki-home:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
 @media (prefers-reduced-motion:no-preference){.wiki-home-icon{transition:transform .12s ease}}
@@ -1649,18 +1661,27 @@ for (const roster of wikiRosterNav) {
 }
 const currentNavAttrs = (current) => current ? ' class="is-here" aria-current="page"' : '';
 
-/* THE MARK AND THE NAME, IN THE TOP BAR OF EVERY PAGE (director ask, 2026-08-05).
+/* THE MARK, IN THE TOP BAR OF EVERY PAGE (director ask, 2026-08-05).
  * MOVED here from the top of the sidebar rather than drawn a second time:
  * bin/wiki-check.mjs pins the canonical icon to EXACTLY ONE `wiki-home` link per
  * page, and it also forbids `<svg class="wm">` in page-header content, so a second
  * mark is not something this file is allowed to add even if it wanted to. Both
  * guards survive the move untouched, which is the point of moving instead of
  * adding: the icon a reader sees at the top is still the one canonical asset read
- * out of the game's public/icons/icon.svg at build time. */
+ * out of the game's public/icons/icon.svg at build time.
+ *
+ * THE WORDS UNDER THE MARK ARE GONE (director, 2026-08-25: "the womp wiki is
+ * redundant on the left and we only need one so we can fold the sign in into the
+ * same line"). It used to read WHOMP / Wiki home on its own row directly above an
+ * <h1> that said WHOMP wiki: two WHOMP identities stacked, the smaller one
+ * saying nothing the larger one did not. The LINK is not what was redundant, so
+ * the link is what stayed. It moved down onto the heading line and kept its
+ * icon, its href and its label, which is exactly what the wiki-check pin asks
+ * of it; what it dropped is the second wordmark. One identity, one row, and the
+ * row it now shares has room for the version chips and sign-in. */
 const wikiBrand = `
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
-      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
     </a>`;
 
 /* The section list is wrapped in one more disclosure, the SAME details/summary
@@ -2271,8 +2292,19 @@ const logHtml = `<!doctype html>
 ${socialTags({ title: 'WHOMP dev log', description: LOG_DESCRIPTION, path: 'log.html' })}
 <style>
 ${SHARED_CSS}
+/* ONE ROW, NOT TWO (director, 2026-08-25: "put our sign in here in the same bar
+   as the items on the row below it, i just think this will look better and not
+   waste so much space"). Sign-in used to have a row of its own above this one,
+   holding a single small button at the far right and roughly forty pixels of
+   nothing across the rest of the page, directly above a row that was already
+   right-aligning the version chips into the same corner. Both now share the
+   right end of the wordmark row: chips first, then sign-in, wrapping under each
+   other on a narrow screen rather than pushing the title around. */
 .topbar{max-width:1180px;margin:0 auto;padding:0 24px}
 .topbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 0 0}
+.topbar-aside{display:flex;align-items:center;justify-content:flex-end;gap:12px 18px;flex-wrap:wrap}
+/* .authbar's own top padding was the gap under the row it no longer has. */
+.topbar-aside .authbar{padding:0}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand .wm{margin:0}
 .brand h1{font-size:1.6rem;margin:0}
@@ -2412,7 +2444,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
 <body>
 
 <div class="topbar">
-  ${AUTHBAR}
   <div class="topbar-row">
     <a class="brand" href="index.html">
       ${wordmark(48, 'l')}
@@ -2421,7 +2452,10 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
       </span>
     </a>
-    <div class="chips">${liveChip()}</div>
+    <div class="topbar-aside">
+      <div class="chips">${liveChip()}</div>
+      ${AUTHBAR}
+    </div>
   </div>
 </div>
 
