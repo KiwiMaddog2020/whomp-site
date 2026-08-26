@@ -369,7 +369,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>b91a9e91</code></span></div>
+    Live <b>0.7.12</b> · <code>7e385211</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -421,15 +421,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">366 player-visible changes landed in the last 7 days, across 7 of them. 2 releases were cut across 2 of those days, and that is the part a player can already play.
+    <p class="lede">317 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-26">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-26</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 16</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span></span>
+      </div>
+      <p class="storyday-shape">22 changes landed: 16 fixed, 6 new.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-08-25">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-25</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 14</span><span class="storyday-kind" style="background:var(--pink)">Fixed 8</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 36</span><span class="storyday-kind" style="background:var(--pink)">Fixed 28</span><span class="storyday-kind" style="background:var(--gold)">Polish 1</span></span>
       </div>
-      <p class="storyday-shape">22 changes landed: 14 new, 8 fixed.</p>
+      <p class="storyday-shape">65 changes landed: 36 new, 28 fixed, 1 polish.</p>
 
 
     </article>
@@ -477,17 +486,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">67 changes landed: 42 fixed, 24 new, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-12">
         <b>v0.7.12</b><span>PvP finds its aim: cores are live in every duel, weapons climb to 20, and the void rift keeps its appointment on every single map.</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-08-19">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-19</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 72</span><span class="storyday-kind" style="background:var(--pink)">Fixed 40</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span></span>
-      </div>
-      <p class="storyday-shape">114 changes landed: 72 new, 40 fixed, 2 balance.</p>
-      <a class="storyday-release" href="#release-0-7-11">
-        <b>v0.7.11</b><span>The crossroads open: walk the 4-way, ford the river, and follow it home to the cave it is born in. The void rift shows its face and marks the map.</span>
       </a>
 
     </article></div>
@@ -1013,108 +1011,212 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-26</h4>
+
+    <div class="row" data-kind="fix" id="chg-44d13a813">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the wizard's eye anchor stops shadowing the EYE hex - the shadow ratchet's second catch tonight, same cure as the first <span class="scope">(westerwickFolk)</span></span>
+      <span class="sha">44d13a813</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-eb91b96d4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the spire shoulder keeps the walkable boundary legible, takes the apron its neighbour plates, and every pin it moves is a printline with a per-mesh attribution <span class="scope">(hubTerrain)</span></span>
+      <span class="sha">eb91b96d4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-30b1916cd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">26 of the placement law's 28 pairs cured by re-seating rock - two scree stones were wholly inside the spires they leaned on, and the last two pairs are a law conflict a stone cannot solve <span class="scope">(hub-seal)</span></span>
+      <span class="sha">30b1916cd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-08861e4db">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the render gate's own four findings - the collar came off his chin, the hat went back 0.16 rad so his face reads from the game's camera, the beard's ripple was inverted, and the face is solved onto the skull instead of typed <span class="scope">(westerwickFolk)</span></span>
+      <span class="sha">08861e4db</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7b3df5cbd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report #478's full glow up - the boxes die, the stock turns solid on a live source, and the pen takes the south strip <span class="scope">(paddock)</span></span>
+      <span class="sha">7b3df5cbd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-67d161a71">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ruling 177 takes Grumbo past the villagers - the cast's own skull and hair, smooth shading, cloth folds and a face that blinks and talks, at 26,558 triangles against their 23,144 ceiling <span class="scope">(westerwickFolk)</span></span>
+      <span class="sha">67d161a71</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-202f1c470">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore claude/livewire-face-r2's own report, which the previous commit clobbered, and move this lane's to livewire-r2.md <span class="scope">(lane-reports)</span></span>
+      <span class="sha">202f1c470</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e0551446d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ruling 176's real ask - the spire keep's rectangle left a 4.7 m mesa of grass in the cove's shore, and letting the lake finish its own bank removes both of its walls <span class="scope">(hubBankContours)</span></span>
+      <span class="sha">e0551446d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-251a69024">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ruling 176 removes ruling 157's rank from all three surfaces it reached, and the wade it shut re-opens at 689 cells with the 68-cell bank debt named rather than re-rocked <span class="scope">(lakeCoveBar)</span></span>
+      <span class="sha">251a69024</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-33ce546c8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the three recovered farm reports cured at the source - the roughs stop dressing the crop field, the hay comes out of the barn wall, and the field track squares the corner it was cutting <span class="scope">(hearthwick)</span></span>
+      <span class="sha">33ce546c8</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fcfae1bf4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the hat push is re-solved against four contracts at once, and the vice opens on the hat's own whip rather than on any static width <span class="scope">(graviton)</span></span>
+      <span class="sha">fcfae1bf4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e3e0db944">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the mouth had a hole in the middle, the nose was behind the brow, and the eyebrow was inside the goggle - all three named features rebuilt against what a camera actually gets <span class="scope">(liveWire)</span></span>
+      <span class="sha">e3e0db944</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a36de5ef4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a red confined to the artifact-freshness suites is a named gap, not a failure <span class="scope">(merge-check)</span></span>
+      <span class="sha">a36de5ef4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b6d82fb52">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the canonical wrapper waives the hot-worktree probe on its own merge, because its preflight has already read the lane's final report <span class="scope">(land-lane)</span></span>
+      <span class="sha">b6d82fb52</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-82de6bf48">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the test-file cap defaults to 0, because the cap never caught anything and the hang guard is the timeout <span class="scope">(merge-check)</span></span>
+      <span class="sha">82de6bf48</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d74632824">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">ruling 177's weird lean was a PIVOT - he turned about his sternum, so 359 of his 587 seconds had his hem inside the yard; leans move onto the spine he already had and the two rigid ones name their joint <span class="scope">(westerwickFolk)</span></span>
+      <span class="sha">d74632824</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b38c03ce6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">rulings 179-180 - the pink crystal leaves his hand, and both arms take the same pendulum <span class="scope">(grimHex)</span></span>
+      <span class="sha">b38c03ce6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9a11c1815">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the harness can answer 'can a player see this' - a face-occlusion probe, a min-distance probe, a top-vertex probe and per-mesh world boxes <span class="scope">(wizview)</span></span>
+      <span class="sha">9a11c1815</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9bd7e45be">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the respirator becomes a GAS MASK - a flat-fronted facepiece, a cheek yoke that seals it under the goggle frame, twin filter cartridges and harness webbing, in one merge and no new draw <span class="scope">(blackline)</span></span>
+      <span class="sha">9bd7e45be</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b662b4aa7">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the legs are redone in articulated plate and the helm takes its detail work - cuisse, poleyn lames, greave, sabaton, visor pivots, rolled edges and a breath row with depth <span class="scope">(firstLight)</span></span>
+      <span class="sha">b662b4aa7</span>
+    </div><div class="row more">+ 2 more that day, not shown</div>
+  </div>
+  <div class="day">
     <h4>2026-08-25</h4>
 
-    <div class="row" data-kind="feat" id="chg-fc21bafff">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ruling 157 closes the lake at the director's own line with rock, not a wall - his red stroke solved off his own recorded stand, and a rank of fourteen backed masses stands where it lands <span class="scope">(hub)</span></span>
-      <span class="sha">fc21bafff</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a233f5ae0">
+    <div class="row" data-kind="fix" id="chg-e037c478e">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">--level beside a match param does not error, it photographs the wrong arena - the handoff's &quot;no canvas&quot; premise is false and the real failure is silent <span class="scope">(shot)</span></span>
-      <span class="sha">a233f5ae0</span>
+      <span class="what">ruling 173's three cures - the goggles come out of her face, the brow is painted once, and the hairline takes its 34 mm <span class="scope">(liveWire)</span></span>
+      <span class="sha">e037c478e</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-6bed10139">
+    <div class="row" data-kind="feat" id="chg-b6e6fd3f5">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ruling 156 takes the banners off the gate - they covered the best-streak plaque, which is the record the monument is built to show <span class="scope">(duel-gate)</span></span>
-      <span class="sha">6bed10139</span>
+      <span class="what">ruling 173 ships candidate D - a real tapering cone over an uncrinkled brim, and the staff angled just past it <span class="scope">(eventhorizon)</span></span>
+      <span class="sha">b6e6fd3f5</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-9486e975b">
+    <div class="row" data-kind="feat" id="chg-f962a0651">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ruling 169's closed-helm knight ships - the face is DELETED and replaced by a visor, and the plate goes to steel with the violet kept where the light is not <span class="scope">(firstLight)</span></span>
+      <span class="sha">f962a0651</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ca47cb8a0">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ruling 155's two z-fights cured in geometry - a corner post dies into the head rail instead of ending on the wall top, and the boundary band stops at the pier instead of running behind its cap <span class="scope">(flicker)</span></span>
-      <span class="sha">9486e975b</span>
+      <span class="what">the grey statue's dark end was charcoal on screen - the ramp was measured in the wrong colour space <span class="scope">(hub)</span></span>
+      <span class="sha">ca47cb8a0</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-3f36f41be">
+    <div class="row" data-kind="feat" id="chg-da075151d">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the duel route was never slow - the fps arithmetic charged a 22s boot to the frame rate, and a mallet shorter than one frame needed a slower clock and a freeze <span class="scope">(shot)</span></span>
-      <span class="sha">3f36f41be</span>
+      <span class="what">the public roadmap becomes one authored file with a staleness fence - ten entries measured off tonight's tree, every one citing a branch, brief or ruling that moves when the work lands <span class="scope">(roadmap)</span></span>
+      <span class="sha">da075151d</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-a82e80032">
+    <div class="row" data-kind="feat" id="chg-142542f9a">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">debt 2 closes by director ruling - both tracks stand <span class="scope">(campaign-158)</span></span>
-      <span class="sha">a82e80032</span>
+      <span class="what">ruling 173's confirmed pick - the goggles come DOWN onto his eyes as an unlit gold mark in a soot frame, a respirator seals nose and mouth at the cheekbone, a chinstrap frames the face, and the coat panel stops being a plate <span class="scope">(blackline)</span></span>
+      <span class="sha">142542f9a</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-cdc7d7539">
+    <div class="row" data-kind="fix" id="chg-6f20118bd">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ruling 145's unlocks.core payloads crashed the generator - a missing POOL threw where a missing ID would have reported a dangling ref; core joins the tables, the accumulator and the back-ref, and cast-walk re-measures off the two new rigs <span class="scope">(data-layer)</span></span>
-      <span class="sha">cdc7d7539</span>
+      <span class="what">ruling 173 stats row - the per-frame fill carries guaranteedCritEvery and statusEcho <span class="scope">(hud)</span></span>
+      <span class="sha">6f20118bd</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-a1cd782ae">
+    <div class="row" data-kind="feat" id="chg-7a11941ba">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Evolved tab equips, and keeps teaching <span class="scope">(forge-151)</span></span>
-      <span class="sha">a1cd782ae</span>
+      <span class="what">ruling 173's three vending cures - the tell, the dedupe, and browsing without relics <span class="scope">(vending)</span></span>
+      <span class="sha">7a11941ba</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-ded5325d0">
+    <div class="row" data-kind="feat" id="chg-54de92bc0">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">right click reaches the training yard, animation and all <span class="scope">(yard-150)</span></span>
-      <span class="sha">ded5325d0</span>
+      <span class="what">ruling 173 flat-sources row - right click scales with might, and the stale scale is corrected <span class="scope">(melee)</span></span>
+      <span class="sha">54de92bc0</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-8dbe70c13">
+    <div class="row" data-kind="feat" id="chg-5f42a944e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">ruling 173 row W1 - 40 s in a run, 50 s in a duel, and the shrine capped at 2 <span class="scope">(whomp)</span></span>
+      <span class="sha">5f42a944e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b9130dcde">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the Striker's shoulder is one mass again - the notch filled, the arm one surface, the banding gone <span class="scope">(rig-153)</span></span>
-      <span class="sha">8dbe70c13</span>
+      <span class="what">ruling 173 row O3 - 13 damage with 0.10 per level, the early trim with the endgame restored <span class="scope">(stonePillar)</span></span>
+      <span class="sha">b9130dcde</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-6f45f2809">
+    <div class="row" data-kind="fix" id="chg-8a6f50dac">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the Gravekeeper's rest abduction had the wrong sign, so both arms hung inside his coat <span class="scope">(rig-154)</span></span>
-      <span class="sha">6f45f2809</span>
+      <span class="what">ruling 173 row L5 - a squad member every level, so the curve reaches its own cap <span class="scope">(frostlings)</span></span>
+      <span class="sha">8a6f50dac</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-375c73ddc">
+    <div class="row" data-kind="fix" id="chg-0bd26c341">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the yard's DPS chip names the core, not the weapon it borrowed <span class="scope">(dummy-147)</span></span>
-      <span class="sha">375c73ddc</span>
+      <span class="what">ruling 173 row O2 - 950 -&gt; 1150 ms, the opener reined in and the arc untouched <span class="scope">(voidScythe)</span></span>
+      <span class="sha">0bd26c341</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-6ff935622">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">locked cores read locked on every surface <span class="scope">(core-145)</span></span>
-      <span class="sha">6ff935622</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4baf7e8f5">
+    <div class="row" data-kind="fix" id="chg-a034d2fdb">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the yard's damage events carry the core tag and the ownership <span class="scope">(dummy-147)</span></span>
-      <span class="sha">4baf7e8f5</span>
+      <span class="what">ruling 173 row L4 - 2700 -&gt; 2100 ms, on the field the FSM actually reads <span class="scope">(voidRailgun)</span></span>
+      <span class="sha">a034d2fdb</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-6bc75ec1a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stamp impact FX above the battle branch, not inside the run half <span class="scope">(dummy-147)</span></span>
-      <span class="sha">6bc75ec1a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-63100cde8">
+    <div class="row" data-kind="feat" id="chg-1c001777f">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the run points the player at a machine that moved <span class="scope">(vending-149)</span></span>
-      <span class="sha">63100cde8</span>
+      <span class="what">ruling 173 row L2 - 1500 ms delay, a wider start, and both growth curves <span class="scope">(stormCell)</span></span>
+      <span class="sha">1c001777f</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-7c7185991">
+    <div class="row" data-kind="feat" id="chg-5a9119072">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a spent multi-use machine relocates elsewhere with one use <span class="scope">(vending-149)</span></span>
-      <span class="sha">7c7185991</span>
+      <span class="what">ruling 173 row L1 - the first victim's own chill unlocks half the hop budget <span class="scope">(cryoPrism)</span></span>
+      <span class="sha">5a9119072</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-298dc1233">
+    <div class="row" data-kind="feat" id="chg-6fa6ff7ab">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the shop's core shelf <span class="scope">(core-145)</span></span>
-      <span class="sha">298dc1233</span>
+      <span class="what">ruling 172 refined - Beam takes ONE metre and grows the rest, because the instrument says it is the roster's #1 <span class="scope">(weapons)</span></span>
+      <span class="sha">6fa6ff7ab</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-c315ad46d">
+    <div class="row" data-kind="feat" id="chg-c772a54e9">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">flip PROGRESSION_ENABLED, and prove the blast radius <span class="scope">(core-145)</span></span>
-      <span class="sha">c315ad46d</span>
+      <span class="what">?statuePlaceholder puts the other candidate on the render board <span class="scope">(dev)</span></span>
+      <span class="sha">c772a54e9</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-cf6a313e4">
+    <div class="row" data-kind="feat" id="chg-90409541b">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">cores are buyable - purchasedCores joins the meta save <span class="scope">(core-145)</span></span>
-      <span class="sha">cf6a313e4</span>
-    </div><div class="row more">+ 2 more that day, not shown</div>
+      <span class="what">ruling 170's statue state ladder - placeholder, grey stone, full colour, and the sheet retires <span class="scope">(hub)</span></span>
+      <span class="sha">90409541b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9dae65dcc">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">abilityId names the pressed thing, so one origin stops standing in for twenty-one abilities <span class="scope">(damage-truth-171)</span></span>
+      <span class="sha">9dae65dcc</span>
+    </div><div class="row more">+ 45 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-24</h4>
@@ -1596,110 +1698,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">41386e274</span>
     </div><div class="row more">+ 47 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-08-19</h4>
-
-    <div class="row" data-kind="feat" id="chg-c80f0387b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">THE LOOK (ruling 42), bigger, opens on the ground, tendrils rise <span class="scope">(rift)</span></span>
-      <span class="sha">c80f0387b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e2742eebf">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the arrival clock (ruling 41) + spawn announce/minimap (ruling 42, partial) <span class="scope">(rift)</span></span>
-      <span class="sha">e2742eebf</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3cf89a0ea">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cure the river-width-shave walkability regression (remedy 1/5) <span class="scope">(hub)</span></span>
-      <span class="sha">3cf89a0ea</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f52139ecb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">0.7.12 patch notes - the deploy-3 batch (aimed cores in PvP, weapon cap 20, rift-every-map, cast glow-up, red prices per ruling 27) <span class="scope">(release)</span></span>
-      <span class="sha">f52139ecb</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-414cbd128">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">landing-review remedies N2+N3 - Dead Air's corrosion declares signature ownership like its three siblings (chip-exempt by declaration, not adapter default), and the unfireable belt-and-braces guard is removed with the real mechanisms named <span class="scope">(rightclick)</span></span>
-      <span class="sha">414cbd128</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2f5ac76cb">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">B2 - the empty-scrub launch is the base line byte for byte, and SHARDED_GATE stops disagreeing with the code <span class="scope">(cloud-gate)</span></span>
-      <span class="sha">2f5ac76cb</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2dec5f6b2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">report #397 - the gravestone is gone, and the trailhead lamp is off the knob <span class="scope">(hub)</span></span>
-      <span class="sha">2dec5f6b2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5b276d28e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">B1 - the zsh probe bypasses shell functions, so it is the suite helper's exact condition <span class="scope">(gate-shard)</span></span>
-      <span class="sha">5b276d28e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c3a8f30a0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reports #399 and #395 - a pine out of the river, and the overlook ice flush with the deck <span class="scope">(hub)</span></span>
-      <span class="sha">c3a8f30a0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-95054d23e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">build the ruled final on candidate A - orbit retired, staff dish cut, hood that masks the face <span class="scope">(graviton)</span></span>
-      <span class="sha">95054d23e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-11d72ccda">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ruling 33 shape 1 - the whomp's damage circle reads the build's area while the trash freeze and boss stagger keep the authored 12m footprint; the slam payload carries both radii so every ring drawn is the circle that hit <span class="scope">(ultimate)</span></span>
-      <span class="sha">11d72ccda</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c477424b1">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">second measurement pass inside each rig's declared band <span class="scope">(cast-walk-board)</span></span>
-      <span class="sha">c477424b1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c68adf2aa">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ground-FX census, spring response, and the measured artifact <span class="scope">(cast-walk-board)</span></span>
-      <span class="sha">c68adf2aa</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-577239e53">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">report #394 - the marsh rocks were 20 loose triangles each <span class="scope">(hub)</span></span>
-      <span class="sha">577239e53</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-65fc24f2e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">shave 12.5% off the river's left bank, cave to the 4-way (#400/#401) <span class="scope">(hub)</span></span>
-      <span class="sha">65fc24f2e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c031cb870">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">stake the lane and land the cast walk probe <span class="scope">(cast-walk-board)</span></span>
-      <span class="sha">c031cb870</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1e35e71c7">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">compose the four kits onto the run conductor's right click <span class="scope">(rightclick)</span></span>
-      <span class="sha">1e35e71c7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3bd0c301c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ruling 23 - the vitality cure lands (1.35 -&gt; 1.20), relics shorten fights and all forty seeds resolve, per the measured ladder <span class="scope">(arena)</span></span>
-      <span class="sha">3bd0c301c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-af2f56df0">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">one campaign switch, four kit flags derived from it <span class="scope">(rightclick)</span></span>
-      <span class="sha">af2f56df0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e804c4f9f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ruling 32 - the Apprentice's cheek reading A promotes, one mark per cheek <span class="scope">(cast)</span></span>
-      <span class="sha">e804c4f9f</span>
-    </div><div class="row more">+ 94 more that day, not shown</div>
-  </div>
 
     </div>
   </section>
@@ -1797,12 +1795,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@b91a9e912</code> on 2026-08-26 05:44 UTC.
+  Every number on this page came straight out of the game, read at <code>game@7e385211f</code> on 2026-08-26 14:53 UTC.
 
   The game is serving <code>0.7.12</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">366 player-visible changes in the last 7 days, across 7 active days, 747 internal-only commits filtered out</div>
+  <div class="stat">317 player-visible changes in the last 7 days, across 7 active days, 664 internal-only commits filtered out</div>
 </footer>
 
 
