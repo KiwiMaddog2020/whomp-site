@@ -235,6 +235,7 @@ const gameData = (over = {}) => ({
     },
     weapons: { count: 33 },
     coreWeapons: { count: 8 },
+    relics: { count: 29 },
     characters: {
       count: 11,
       entries: { bonkrat: { id: 'bonkrat', innateId: 'boosterSchool', signatureId: 'megaDash' } },
@@ -301,10 +302,11 @@ test('a renamed or emptied slot constant stops the page rather than guessing', (
   assert.throws(() => parseBuildSlots('export const WEAPON_SLOTS = 0;'), /not a build/);
 });
 
-test('the kit is five things, counted off the registries the game plays on', () => {
+test('the kit is six things, counted off the registries the game plays on', () => {
   const kit = kitShape(gameData(), SLOTS);
   assert.equal(kit.cores, 8);
   assert.equal(kit.weapons, 33);
+  assert.equal(kit.relics, 29);
   assert.equal(kit.weaponSlots, 4);
   assert.equal(kit.tomes, 17);
   assert.equal(kit.tomeSlots, 4);
@@ -336,11 +338,33 @@ test('a WHOMP with no cooldown and a WHOMP with no key both refuse to be describ
   assert.throws(() => kitShape(noSlot, SLOTS), /input slot/);
 });
 
-test('the five cards are the five things, in the order a run hands them to you', () => {
+test('the six cards are the six things, in the order a run hands them to you', () => {
   const cards = kitCards(kitShape(gameData(), SLOTS));
-  assert.deepEqual(cards.map((c) => c.id), ['core', 'arsenal', 'tomes', 'whomp', 'character']);
+  assert.deepEqual(cards.map((c) => c.id), ['core', 'arsenal', 'tomes', 'whomp', 'character', 'relics']);
   assert.deepEqual(cards.map((c) => c.title),
-    ['THE CORE', 'THE ARSENAL', 'THE TOMES', 'THE WHOMP', 'YOUR CHARACTER']);
+    ['THE CORE', 'THE ARSENAL', 'THE TOMES', 'THE WHOMP', 'YOUR CHARACTER', 'THE RELICS']);
+  /* AN EVEN GRID IS THE ASK, so the count is pinned rather than left to whoever
+     writes the seventh card (director, 2026-08-25: "make it present as an even
+     6"). The track sizing lands three across at the landing page's width, so an
+     odd number of cards is a row with a hole in it. */
+  assert.equal(cards.length % 3, 0, 'the kit grid is three across and this many cards leaves a hole in the last row');
+});
+
+/* THE RELICS CARD IS THE ONE THAT IS NOT DRAFTED, and every clause of it that a
+   reader could check is checked here, because it is the only card making a claim
+   about where something comes FROM rather than what it does. */
+test('the relics card says found, not drafted, and never contradicts the draft', () => {
+  const card = kitCards(kitShape(gameData(), SLOTS)).find((c) => c.id === 'relics');
+  assert.equal(card.kind, 'Not drafted');
+  assert.match(card.body, /never|not one of/i);
+  assert.match(card.body, /chest/i);
+  assert.match(card.body, /level up/i);
+  // The tomes card already ends on what the rest of the build is worth. Two
+  // cards closing on one sentence is one card printed twice.
+  const tomes = kitCards(kitShape(gameData(), SLOTS)).find((c) => c.id === 'tomes');
+  assert.match(tomes.body, /worth/);
+  assert.equal(/what the rest of your build is worth/.test(card.body), false,
+    'the relics card repeats the tomes card word for word');
 });
 
 test('every card is finished sentences in the house voice, and no card shouts', () => {
@@ -363,6 +387,7 @@ test('not one number in the kit copy is typed, and moving the game moves the pag
   const kit = kitShape(gameData(), SLOTS);
   const moved = kitCards({
     ...kit,
+    relics: 90,
     cores: 91,
     weapons: 92,
     weaponSlots: 93,
@@ -373,10 +398,10 @@ test('not one number in the kit copy is typed, and moving the game moves the pag
     whomp: { slot: 'Z', seconds: 98, armedFromStart: true },
   });
   const text = moved.map((c) => `${c.count} ${c.kind} ${c.line} ${c.body}`).join(' ');
-  for (const stale of ['8', '33', '17', '11', '50']) {
+  for (const stale of ['8', '33', '17', '11', '50', '29']) {
     assert.equal(new RegExp(`\\b${stale}\\b`).test(text), false, `the copy still carries ${stale} by hand`);
   }
-  for (const fresh of ['91', '92', '93', '94', '95', '96', '97', '98']) {
+  for (const fresh of ['90', '91', '92', '93', '94', '95', '96', '97', '98']) {
     assert.match(text, new RegExp(`\\b${fresh}\\b`), `the copy never prints ${fresh}`);
   }
   assert.match(text, /\bZ\b/, 'the WHOMP card hand-types its own key');

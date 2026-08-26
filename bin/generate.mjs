@@ -1796,7 +1796,7 @@ const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(track.
 /* THE KIT CARD IS THE GAME'S OFFER CARD, in HTML and at rest. Every in-run
  * offer the player has ever taken rides one anatomy (whomp/src/ui/offerCard.ts):
  * a meta row of two small labels, a title, the line under it, and a footer that
- * says what changes. So the five cards that tell a stranger what they would be
+ * says what changes. So the six cards that tell a stranger what they would be
  * holding wear that anatomy instead of a fourth kind of box invented here. The
  * words and the numbers both come from kitCards in bin/landing.mjs; nothing on
  * this side of the file may type a figure. */
@@ -2001,10 +2001,16 @@ h2{font-size:1.65rem;margin:0 0 6px}
 #run .tally{justify-content:center}
 #run .tallynote{margin-left:auto;margin-right:auto;max-width:64ch}
 
-/* THE KIT GRID. min() rather than a bare minimum, so five cards land three and
-   two on a wide screen and still collapse to a single column on a phone without
-   the track needing a media query of its own. The card itself is the game's
-   offer card at rest: meta row, title, the line under it, then what changes. */
+/* THE KIT GRID. min() rather than a bare minimum, so the cards land three across
+   on a wide screen and still collapse to a single column on a phone without the
+   track needing a media query of its own. The card itself is the game's offer
+   card at rest: meta row, title, the line under it, then what changes.
+   THREE ACROSS IS WHY THE SIXTH CARD READS AS EVEN (director, 2026-08-25:
+   "another card here as well to make it present as an even 6"). Inside the 940px
+   wrap the column is 892px, which fits three 260px tracks and their two gaps and
+   cannot fit four, so six cards are two full rows and five were a row with a
+   hole in it. The evenness is a consequence of the track sizing rather than a
+   column count typed here, so it survives the wrap changing width. */
 .kits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
 .kit{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;padding:16px 18px 18px;
   background:rgba(255,243,207,.025)}
@@ -2089,7 +2095,7 @@ ${landingTopBar('index.html')}
   <div class="rule"></div>
   <h2 class="chroma">Your kit</h2>
   <p class="lede">Five things go in with you, and you aim exactly one of them. Every level up offers ${kit.offer} more,
-    you keep one, and the other ${kit.offer - 1} are gone for good.</p>
+    you keep one, and the other ${kit.offer - 1} are gone for good. The sixth is not yours until the run gives it to you.</p>
   <div class="kits">${kitCards(kit).map(kitCard).join('')}</div>
 </section>
 
