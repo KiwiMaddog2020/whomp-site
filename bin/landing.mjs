@@ -460,6 +460,7 @@ export function kitShape(gameData, slots) {
   return {
     cores: count('coreWeapons'),
     weapons: count('weapons'),
+    relics: count('relics'),
     weaponSlots: slots.weapons,
     tomes: count('passives'),
     tomeSlots: slots.tomes,
@@ -475,7 +476,7 @@ export function kitShape(gameData, slots) {
 }
 
 /**
- * THE FIVE CARDS, IN THE GAME'S OWN OFFER LANGUAGE.
+ * THE SIX CARDS, IN THE GAME'S OWN OFFER LANGUAGE.
  *
  * src/ui/offerCard.ts is the one card anatomy every in-run offer rides: a meta
  * row of two small labels, a title, the line under it, and a footer that says
@@ -487,7 +488,19 @@ export function kitShape(gameData, slots) {
  * only reason they are authored at all is the reason PIPELINE_TEASERS is: a
  * generated sentence about a roster reads like a field name, and this section
  * is the first thing a stranger learns about what they would be holding.
- */
+ *
+ * THE SIXTH CARD IS THE RELICS (director, 2026-08-25: "another card here as well
+ * to make it present as an even 6"). Five cards land three and two, and the hole
+ * in the second row was the visible half of a hole in the section: the five
+ * covered every build pillar the DRAFT hands you and left out the one the MAP
+ * does. A stranger read the whole of what they would be holding and was never
+ * told that a third of it is found rather than chosen.
+ *
+ * It goes last because that is when a run gives it to you, and it is the only
+ * card whose kicker says what it is NOT: everything above it arrives at the door
+ * or at a level up, and this one arrives out of a chest or a machine. Its body
+ * is deliberately not the tomes card's "changes what the rest of your build is
+ * worth" said twice; two cards that end on the same sentence are one card. */
 export function kitCards(kit) {
   return [
     {
@@ -529,6 +542,14 @@ export function kitCards(kit) {
       title: 'YOUR CHARACTER',
       line: 'Each one cheats differently.',
       body: `${kit.characters} to choose from, all of them open on a fresh save. Every one carries a rule that is always on and a signature move nobody else gets.`,
+    },
+    {
+      id: 'relics',
+      count: `${kit.relics} to find`,
+      kind: 'Not drafted',
+      title: 'THE RELICS',
+      line: 'The run hands these out. The draft never does.',
+      body: `Not one of the ${kit.relics} is ever on a level up card. They come out of the chests you open on the way through and the machines that eat one relic and vend a better one, so the ones you are still carrying at the end decide how far everything else got to go.`,
     },
   ];
 }

@@ -276,10 +276,16 @@ h2{font-size:1.65rem;margin:0 0 6px}
 #run .tally{justify-content:center}
 #run .tallynote{margin-left:auto;margin-right:auto;max-width:64ch}
 
-/* THE KIT GRID. min() rather than a bare minimum, so five cards land three and
-   two on a wide screen and still collapse to a single column on a phone without
-   the track needing a media query of its own. The card itself is the game's
-   offer card at rest: meta row, title, the line under it, then what changes. */
+/* THE KIT GRID. min() rather than a bare minimum, so the cards land three across
+   on a wide screen and still collapse to a single column on a phone without the
+   track needing a media query of its own. The card itself is the game's offer
+   card at rest: meta row, title, the line under it, then what changes.
+   THREE ACROSS IS WHY THE SIXTH CARD READS AS EVEN (director, 2026-08-25:
+   "another card here as well to make it present as an even 6"). Inside the 940px
+   wrap the column is 892px, which fits three 260px tracks and their two gaps and
+   cannot fit four, so six cards are two full rows and five were a row with a
+   hole in it. The evenness is a consequence of the track sizing rather than a
+   column count typed here, so it survives the wrap changing width. */
 .kits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
 .kit{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;padding:16px 18px 18px;
   background:rgba(255,243,207,.025)}
@@ -392,7 +398,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <div class="rule"></div>
   <h2 class="chroma">Your kit</h2>
   <p class="lede">Five things go in with you, and you aim exactly one of them. Every level up offers 3 more,
-    you keep one, and the other 2 are gone for good.</p>
+    you keep one, and the other 2 are gone for good. The sixth is not yours until the run gives it to you.</p>
   <div class="kits">
     <div class="kit" id="kit-core">
       <div class="kit-meta"><span>One of 12</span><span>Aimed</span></div>
@@ -423,6 +429,12 @@ h2{font-size:1.65rem;margin:0 0 6px}
       <h3>YOUR CHARACTER</h3>
       <p class="kit-line">Each one cheats differently.</p>
       <p>20 to choose from, all of them open on a fresh save. Every one carries a rule that is always on and a signature move nobody else gets.</p>
+    </div>
+    <div class="kit" id="kit-relics">
+      <div class="kit-meta"><span>34 to find</span><span>Not drafted</span></div>
+      <h3>THE RELICS</h3>
+      <p class="kit-line">The run hands these out. The draft never does.</p>
+      <p>Not one of the 34 is ever on a level up card. They come out of the chests you open on the way through and the machines that eat one relic and vend a better one, so the ones you are still carrying at the end decide how far everything else got to go.</p>
     </div></div>
 </section>
 
@@ -546,7 +558,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@b91a9e912</code> on 2026-08-26 02:20 UTC.
+  Every number on this page came straight out of the game, read at <code>game@b91a9e912</code> on 2026-08-26 05:44 UTC.
   The game is serving <code>0.7.12</code>.
 </footer>
 
