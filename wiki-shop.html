@@ -164,8 +164,22 @@ html,body{max-width:100%;overflow-x:clip}
    printed on the label rather than left to be discovered. */
 .searchkey{border:var(--edge);border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;
   font-weight:700;letter-spacing:0;color:var(--dim);background:rgba(255,243,207,.05);text-transform:none;line-height:1.5}
+/* THE PROMPT SITS IN THE MIDDLE OF THE BOX (director, 2026-08-25: "search the
+   wiki and the dev log in the search bar should be centered"). The box is the
+   full width of the column, so a prompt pinned to the left edge reads as a stray
+   label rather than as the invitation it is.
+   CENTRED AT REST, LEFT ONCE IT IS IN USE, and that split is deliberate.
+   text-align cannot be set on ::placeholder in any engine that matters, so the
+   alignment has to live on the input itself, which would carry a reader's own
+   typing to the middle too: a query that grows out from its own centre while the
+   result panel below it is left-aligned, and a caret that will not hold still.
+   So the centring is the RESTING state only. Focus hands the box back to normal
+   text alignment before the first keystroke, and :not(:placeholder-shown) keeps
+   it there for a page restored with a query already in it (bfcache, back
+   button), where nothing was ever focused. */
 .searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
-  color:var(--cream);font-family:var(--font);font-size:1rem}
+  color:var(--cream);font-family:var(--font);font-size:1rem;text-align:center}
+.searchbox:focus,.searchbox:not(:placeholder-shown){text-align:left}
 .searchbox::placeholder{color:var(--dim)}
 .searchbox:focus{outline:2px solid var(--cyan);outline-offset:2px}
 .sr-panel{position:absolute;left:24px;right:24px;top:calc(100% + 6px);background:var(--lift);border:var(--edge);
@@ -190,10 +204,22 @@ html,body{max-width:100%;overflow-x:clip}
 :root{--band:103px}
 .skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
 .skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
+/* ONE IDENTITY ON ONE ROW (director, 2026-08-25: "the womp wiki is redundant on
+   the left and we only need one so we can fold the sign in into the same line").
+   .wtopbar-brandrow is gone and it took a whole row of the page with it. It had
+   carried the icon plus the words WHOMP / Wiki home at the left and the sign-in
+   button at the right, immediately above a row whose <h1> says WHOMP wiki and
+   whose right end already held the version chips. Two rows, two WHOMP names, two
+   right-aligned controls, and the content started a hundred pixels down.
+   Now: the icon keeps its wiki-home link (see wikiBrand in bin/generate.mjs) and
+   sits INSIDE .brand as the heading's own mark, and the chips and sign-in share
+   .wtopbar-aside at the right end of that same row. Nothing was deleted except
+   the second wordmark and the row it stood on. */
 .wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
-.wtopbar-brandrow{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0 0}
-.wtopbar-brandrow .authbar{padding:0}
-.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:22px 0 0}
+.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 0 0}
+.wtopbar-aside{display:flex;align-items:center;justify-content:flex-end;gap:12px 18px;flex-wrap:wrap}
+/* .authbar carries its own top padding for the row it used to own alone. */
+.wtopbar-aside .authbar{padding:0}
 
 /* SEARCH IN THE SAME PLACE ON EVERY PAGE, AND STILL THERE AT CARD 400.
    These pages are long (the bestiary runs past 50,000px on a phone), and a search
@@ -395,11 +421,10 @@ html,body{max-width:100%;overflow-x:clip}
   /* A phone has no room for the page title, the tagline, two provenance chips and
      a search box before the content starts. The title and tagline stay; the chips
      shrink to one scannable row and give their vertical space back. */
-  .wtopbar-row{gap:10px;padding-top:16px}
+  .wtopbar-row{gap:10px;padding-top:14px}
   .brand h1{font-size:1.32rem}
   .chips{gap:7px}
   .chip{padding:5px 11px;font-size:.74rem}
-  .wtopbar-brandrow{padding-top:12px}
   .wiki-home-icon{width:38px;height:38px}
   .wbreadcrumb{flex-wrap:wrap;row-gap:2px}
   .wprov,.womit{padding:11px 13px}
@@ -437,12 +462,10 @@ html,body{max-width:100%;overflow-x:clip}
 .wside-all>summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .wside-all-body{display:flex;flex-direction:column;gap:2px}
 
-.wiki-home{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
+/* .wiki-home-copy and its four rules left with the second wordmark it dressed;
+   the link is the icon now, and the heading beside it is the page's one name. */
+.wiki-home{display:flex;align-items:center;text-decoration:none;flex:none}
 .wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
-.wiki-home-copy{display:flex;min-width:0;flex-direction:column;line-height:1.15}
-.wiki-home-copy b{color:var(--cream);font-size:1.02rem;letter-spacing:.02em}
-.wiki-home-copy span{color:var(--dim);font-size:.72rem;margin-top:3px}
-.wiki-home:hover .wiki-home-copy b{color:#fff}
 .wiki-home:hover .wiki-home-icon{transform:translateY(-1px)}
 .wiki-home:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
 @media (prefers-reduced-motion:no-preference){.wiki-home-icon{transition:transform .12s ease}}
@@ -466,12 +489,21 @@ footer a{color:var(--cyan);text-decoration:none}
 <a class="skip-link" href="#wiki-main">Skip to wiki content</a>
 
 <div class="wtopbar">
-  <div class="wtopbar-brandrow">
+  <div class="wtopbar-row">
+    <span class="brand">
 
     <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
       <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
-      <span class="wiki-home-copy"><b>WHOMP</b><span>Wiki home</span></span>
     </a>
+      <span>
+        <h1 class="chroma">WHOMP shop</h1>
+        <p class="subtag">Every rank you buy stays bought.</p>
+      </span>
+    </span>
+    <div class="wtopbar-aside">
+      <div class="chips"><span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Live <b>0.7.12</b> · <code>b91a9e91</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -482,17 +514,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
   </span>
 </div>
-  </div>
-  <div class="wtopbar-row">
-    <span class="brand">
-      <span>
-        <h1 class="chroma">WHOMP shop</h1>
-        <p class="subtag">Every rank you buy stays bought.</p>
-      </span>
-    </span>
-    <div class="chips"><span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>b91a9e91</code></span></div>
+    </div>
   </div>
 </div>
 
@@ -1091,7 +1113,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@b91a9e912</code> on 2026-08-26 02:20 UTC
+  Every number on this page came straight out of the game, read at <code>game@b91a9e912</code> on 2026-08-26 05:44 UTC
   from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
