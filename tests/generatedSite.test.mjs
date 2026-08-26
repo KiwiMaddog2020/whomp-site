@@ -255,9 +255,14 @@ test('every page a stranger can land on unfurls as something, not as a bare URL'
 /* ------------------------------------------------------------------- the run */
 
 test('the page says how long a run is, and agrees with the wiki about it', options, () => {
-  const claimed = /(\d+) minutes, one weapon you aim yourself/.exec(visibleText(index));
+  // RE-POINTED 2026-08-25: commit 4e6b72d re-voiced the lede ("Twenty minutes,
+  // and every one of them wants you dead") and this pin still grepped the old
+  // sentence. The pin's job is the number and the cross-surface agreement, not
+  // the prose, so it now parses either a digit or the spelled form.
+  const claimed = /\b(\d+|Twenty|Thirty|Fifteen|Ten) minutes\b/.exec(visibleText(index));
   assert.ok(claimed, 'the landing page never says how long a run is');
-  const minutes = Number(claimed[1]);
+  const spelled = { Ten: 10, Fifteen: 15, Twenty: 20, Thirty: 30 };
+  const minutes = spelled[claimed[1]] ?? Number(claimed[1]);
   assert.ok(minutes > 0 && minutes < 120, `a run of ${minutes} minutes is not a run`);
   // The wiki derives the same figure from the same artifact and prints it as a
   // clock. Two surfaces disagreeing about the length of a run is the exact class
