@@ -886,6 +886,34 @@ const releaseEntries = releases
     bugFixes: r.bugFixes.map(cleanDoc),
   }));
 
+/* THE DAYS A VERSION NUMBER COULD NOT HOLD, flattened into the same entry shape
+ * as everything else so nothing downstream needs to learn a third kind. The
+ * landing page's five lines, log.html's cards, the story's per-day links and the
+ * search index all read `conciseEntries`; an addition that arrives here as an
+ * ordinary entry reaches every one of them for free.
+ *
+ * FILTERED ON DATE ONLY, and deliberately not on version. A note takes a
+ * VERSION's slot (see the block above authoredDates), which is a statement about
+ * one release entry. An addition is a different day under that version, and a
+ * note written on the 25th has no business suppressing what shipped on the 26th.
+ * A note dated the same day as an addition does replace it, because that is what
+ * "Kevin wrote that day's entry" has always meant here.
+ *
+ * `cut` falls out FALSE for every one of these, because cutOn is keyed on
+ * date|version out of the release list and no version was cut on an addition's
+ * date. That is the honest reading: the day shipped, no release was cut. */
+const additionEntries = releases.flatMap((r) => (r.additions || [])
+  .filter((a) => !authoredDates.has(a.date))
+  .map((a) => ({
+    kind: 'addition',
+    date: a.date,
+    version: r.version,
+    anchor: `release-${slug(r.version)}-${a.date}`,
+    title: cleanDoc(a.headline),
+    keyChanges: a.changes.map(cleanDoc),
+    bugFixes: [],
+  })));
+
 const authoredEntries = notes.map((n) => ({
   kind: 'authored',
   date: n.date,
@@ -898,7 +926,7 @@ const authoredEntries = notes.map((n) => ({
 
 /* Newest first, and version breaks a date tie so the two 2026-07-17 releases
  * do not render in whatever order the sort happened to leave them. */
-const conciseEntries = [...authoredEntries, ...releaseEntries]
+const conciseEntries = [...authoredEntries, ...releaseEntries, ...additionEntries]
   .sort((a, b) => b.date.localeCompare(a.date) || String(b.version).localeCompare(String(a.version)));
 const conciseShown = conciseEntries.slice(0, CONCISE_RELEASES_CAP);
 const conciseDropped = conciseEntries.length - conciseShown.length;
@@ -2157,6 +2185,14 @@ ${AUTH_SCRIPT()}
 const SOURCE_LABEL = {
   authored: 'written for the log',
   release: 'from the release notes',
+  /* A DAY THAT SHIPPED UNDER A VERSION THAT DID NOT MOVE, and it gets its own
+   * label rather than borrowing the release one. Two cards chipped v0.7.12 with
+   * different dates and different words in them is a reader's fair question, and
+   * this label is the answer: the version held, the content kept arriving. The
+   * words still come from the game's own release notes and are still authored by
+   * a person, which is why the label names the RELATIONSHIP rather than a second
+   * source. See the header of bin/patch-notes.mjs. */
+  addition: 'added under this version',
 };
 
 const LOG_DESCRIPTION = 'The WHOMP dev log: what shipped, what is still broken, and what is coming next.';
@@ -3091,7 +3127,7 @@ for (const track of tracks) {
 /* The concise view's counts are printed separately and in full because this is
  * the surface that used to fail silently. "8 releases read, 1 authored note,
  * 8 entries published" is a sentence an operator can check against the page. */
-console.log(`  concise log: ${releases.length} releases read (at most ${KEY_CHANGE_CAP} highlights each), ${notes.length} authored note${notes.length === 1 ? '' : 's'}, ${releaseEntries.length} generated, ${conciseShown.length} entries published${conciseDropped > 0 ? `, ${conciseDropped} older not shown` : ''}`);
+console.log(`  concise log: ${releases.length} releases read (at most ${KEY_CHANGE_CAP} highlights each), ${notes.length} authored note${notes.length === 1 ? '' : 's'}, ${releaseEntries.length} generated, ${additionEntries.length} dated addition${additionEntries.length === 1 ? '' : 's'}, ${conciseShown.length} entries published${conciseDropped > 0 ? `, ${conciseDropped} older not shown` : ''}`);
 /* The story and the pitch print in full for the same reason the concise view
  * does: these are the surfaces whose failure mode is a page that renders, exits
  * zero and says less than it did yesterday. "7 days, 2 of them quiet" and "10 of
