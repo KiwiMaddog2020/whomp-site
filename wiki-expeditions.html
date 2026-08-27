@@ -503,7 +503,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
+    Live <b>0.7.14</b> · <code>a34bf5f9</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -619,6 +619,13 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div class="wbar">
       <div class="wfacet">
+        <span class="wfacet-h" id="facet-expeditions-access">Availability</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-expeditions-access" data-facet="access" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="from the start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="unlockable" aria-pressed="false" aria-controls="wiki-groups">Unlockable <span style="opacity:.5">1</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
         <label class="wfacet-h" for="wsort">Sort</label>
         <select class="wsort" id="wsort" aria-label="Sort Expeditions">
           <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option>
@@ -661,7 +668,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
-      <article class="wcard" id="e-stillwater" tabindex="-1" data-access="from the start" data-s-roster="1" data-s-name="stillwater">
+      <article class="wcard" id="e-stillwater" tabindex="-1" data-access="unlockable" data-s-roster="1" data-s-name="stillwater">
         <div class="wcard-h">
 
           <h4>Stillwater</h4>
@@ -672,10 +679,10 @@ footer a{color:var(--cyan);text-decoration:none}
     <figcaption><b>The colors it is made of</b><span>Repo-authored-data · src/render/palettes.ts#resolvePalette</span></figcaption>
   </figure>
 
-      <div class="wtags"><span class="wtag ink-cyan">Grass</span><span class="wtag ink-cyan">Water</span><span class="wtag ink-gold">From the start</span></div>
+      <div class="wtags"><span class="wtag ink-cyan">Grass</span><span class="wtag ink-cyan">Water</span></div>
       <p class="wdesc">One great lake. One island in it. Wade, or go the long way round.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Availability</span><span class="wfact-v">From the start</span></div>
+        <div class="wfact"><span class="wfact-k">Availability</span><span class="wfact-v">Kind lifetimeClears, Minimum 1</span></div>
 
 
         <div class="wfact"><span class="wfact-k">Rare events</span><span class="wfact-v"><a href="wiki-world-events.html#e-mimicChest">Mimic chest</a>, <a href="wiki-world-events.html#e-ancientBell">Ancient bell</a>, <a href="wiki-world-events.html#e-treasureMound">Treasure mound</a> and <a href="wiki-world-events.html#e-voidRift">Void rift</a></span></div>
@@ -718,7 +725,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
+  Every number on this page came straight out of the game, read at <code>game@a34bf5f93</code> on 2026-08-27 23:57 UTC
   from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
