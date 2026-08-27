@@ -234,6 +234,23 @@ reads the files just written is green.
 right now.** See below. Nothing here needs the integrator to act, but a lane
 firing into that directory should expect company.
 
+**3. `claude/wiki-curation` is editing `bin/landing.mjs` too, and it changes what
+these cards say.** Read out of the shared checkout's working tree at 23:36, so
+uncommitted and still moving: that lane is replacing `kitShape`'s domain count
+with a live count that subtracts retired defs, under its ruling
+`2026-08-26-wiki-curation`. Nine automatic weapons are retired, so **THE
+ARSENAL's "pulled from 45 weapons" becomes "pulled from 36 weapons"** the moment
+both lanes are in the tree, and the same subtraction reaches any other card whose
+roster has a retirement in it.
+
+Two things follow for the integrator. The merge itself should be clean: their
+hunks land at lines 36, 357 and 428 and every line this lane touches is below
+459, in `kitCards` and its doc comment, which they do not enter. But the
+**director signed off on 45 in the ask, and he will read 36 on the page**, so
+that is a ruling to surface rather than a merge to wave through. The card copy
+needs no rewrite either way: the figure is interpolated, and 36 and 45 are both
+two digits, so the measured line counts above hold.
+
 ## The collision
 
 Recorded because the near miss was real, not because anything is broken.
