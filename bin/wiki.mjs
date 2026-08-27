@@ -315,13 +315,13 @@ const WIKI_CSS = `
    behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
    band still sticks and still works, it just carries no backdrop, which is the
    right way round for a decoration. */
-.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
 .wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
   pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
   border-bottom:1px solid rgba(255,243,207,.07)}
 .is-stuck .wsearchband::before{opacity:1}
 @media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
-.wsearchband .searchwrap{margin-top:14px}
+.wsearchband .searchwrap{margin-top:18px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
