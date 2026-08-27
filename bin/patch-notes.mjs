@@ -44,6 +44,28 @@ import { join } from 'node:path';
  *  and seventh highlight per release. This constant is that refusal. */
 export const KEY_CHANGE_CAP = 4;
 
+/** THE SAME BOUND ON A DAY, AND THE SAME REASON IT IS OWNED HERE.
+ *
+ *  A release holds its version through the game's hotfix door on a same-week
+ *  redeploy (whomp/bin/release-channel.mjs: `hotfix` takes an explicit version
+ *  verbatim), and by house law a version number is a batch label. So several
+ *  shipped days share one 0.7.x, and before 2026-08-26 there was nowhere for
+ *  those days to be written: this view is keyed by version and refuses a
+ *  duplicate, so six deploy days between 2026-08-21 and 2026-08-26 published
+ *  nothing here at all while the pipeline reported success every time.
+ *
+ *  whomp/src/data/patchNotes.ts now carries `additions`: one entry per shipped
+ *  DAY under a version that did not move, authored by a person in the same
+ *  player-facing language as the release above it. THIS FILE STILL NEVER
+ *  WRITES A SENTENCE ABOUT THE GAME. It reads them, validates them, refuses
+ *  them, and hands them on; every word a visitor reads was authored in the
+ *  game repo.
+ *
+ *  Mirrors ADDITION_CHANGE_CAP in the game. Owned separately for the same
+ *  reason KEY_CHANGE_CAP is: if the game repo ever raises its own ceiling, this
+ *  view refuses to publish rather than quietly growing a second full log. */
+export const ADDITION_CHANGE_CAP = 5;
+
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const IDENTIFIER = /[A-Za-z_$][A-Za-z0-9_$]*/y;
@@ -218,6 +240,36 @@ export function readPatchReleases(repoRoot) {
   return parsePatchReleases(readFileSync(path, 'utf8'), label);
 }
 
+function readAdditions(entry, where, version, releaseDate) {
+  if (entry.additions === undefined) return [];
+  if (!Array.isArray(entry.additions)) throw new Error(`${where} (${version}) has an additions key that is not an array.`);
+  if (entry.additions.length === 0) {
+    throw new Error(`${where} (${version}) carries an EMPTY additions list. An empty list is the absent case written out longhand, and the two states reading differently is how a day gets lost between them. Delete the key.`);
+  }
+  const seen = new Set();
+  let previous = null;
+  return entry.additions.map((raw, at) => {
+    const spot = `${where} (${version}) addition ${at}`;
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error(`${spot} is not an object.`);
+    if (typeof raw.date !== 'string' || !ISO_DATE.test(raw.date)) throw new Error(`${spot} has no YYYY-MM-DD date.`);
+    if (typeof raw.headline !== 'string' || raw.headline.trim().length === 0) throw new Error(`${spot} (${raw.date}) has no headline.`);
+    if (!isNonEmptyStringList(raw.changes)) throw new Error(`${spot} (${raw.date}) has no non-empty changes list.`);
+    if (raw.changes.length > ADDITION_CHANGE_CAP) {
+      throw new Error(`${spot} (${raw.date}) carries ${raw.changes.length} changes. This view publishes at most ${ADDITION_CHANGE_CAP} per day and refuses rather than growing into a second full log. Either the day needs fewer lines or the cap is a deliberate change and belongs in bin/patch-notes.mjs, whomp/src/data/patchNotes.ts and both suites together.`);
+    }
+    if (raw.date < releaseDate) {
+      throw new Error(`${spot} is dated ${raw.date}, before its own release ${version} (${releaseDate}). That is work from an earlier version filed under this one.`);
+    }
+    if (seen.has(raw.date)) throw new Error(`${spot} repeats the date ${raw.date}. One shipped day is one entry; two would render two cards for one day.`);
+    seen.add(raw.date);
+    if (previous && raw.date > previous) {
+      throw new Error(`${spot} (${raw.date}) is dated after the addition above it (${previous}) but sits below it. Additions are newest-first, like the releases that hold them.`);
+    }
+    previous = raw.date;
+    return { date: raw.date, headline: raw.headline.trim(), changes: raw.changes.map((c) => c.trim()) };
+  });
+}
+
 /** Split from readPatchReleases so the parser can be tested against fixture
  *  text without a game checkout beside the site. */
 export function parsePatchReleases(source, label = 'patchNotes.ts') {
@@ -238,12 +290,26 @@ export function parsePatchReleases(source, label = 'patchNotes.ts') {
     if (entry.keyChanges.length > KEY_CHANGE_CAP) {
       throw new Error(`${where} (${entry.version}) carries ${entry.keyChanges.length} keyChanges. The concise dev log publishes at most ${KEY_CHANGE_CAP} per release and refuses rather than growing into a second full log. Either the release needs fewer highlights or this cap is a deliberate change and belongs in bin/patch-notes.mjs, whomp/tests/patchNotes.test.ts and the site's own test together.`);
     }
+    /* ADDITIONS ARE OPTIONAL AND ARE VALIDATED HARDER THAN THEY LOOK.
+     *
+     * Absent is the ordinary state: every release before 0.7.12 has none, and a
+     * release nothing was added to never grows the key. But an addition that IS
+     * present becomes a dated entry in the default view, so every way it can be
+     * wrong is a way this page can be wrong. Out of order buries the newest day
+     * under an older one; two on a date renders two cards for one day, which is
+     * the per-deploy cadence this view was told not to grow; a date before the
+     * release means work that shipped under an earlier version filed under this
+     * one. All three throw, on the same loud-on-everything law as the rest of
+     * this file. */
+    const additions = readAdditions(entry, where, entry.version, entry.date);
+
     return {
       version: entry.version,
       date: entry.date,
       headline: entry.headline.trim(),
       keyChanges: entry.keyChanges.map((s) => s.trim()),
       bugFixes: entry.bugFixes.map((s) => s.trim()),
+      additions,
     };
   });
 
