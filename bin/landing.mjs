@@ -36,6 +36,43 @@
  *  feed window is reckoned locally in bin/generate.mjs: a UTC boundary is a
  *  different day for most of the evening in this timezone, and "is this date in
  *  the past" is a question that has to be asked in one clock or the other. */
+import { retiredDomainIds } from './wiki.mjs';
+
+/* THE LIVE HALF OF A ROSTER, not the registry census.
+ *
+ * Director ruling 2026-08-26-wiki-curation took retired defs off the wiki. This
+ * page reads the same artifact for the same reader and was printing "drawn from
+ * 45 weapons" while nine of those forty-five had been out of every offer pool
+ * since 2026-08-11. Once the wiki beside it says thirty-six, two surfaces of one
+ * site disagree about the size of a roster, which is the exact drift this repo
+ * exists to prevent - so both count the same way, through one exported
+ * predicate, and neither carries a list.
+ *
+ * It still refuses a domain it cannot read, and now also refuses one that has
+ * retired away to nothing, because a roster of zero is a sentence nobody wants
+ * generated on a landing page.
+ */
+const liveCount = (gameData, domain, surface) => {
+  const source = gameData?.domains?.[domain];
+  const census = source?.count;
+  if (!Number.isInteger(census) || census <= 0) {
+    throw new Error(`data/game-data.json has no positive count for domain "${domain}". The ${surface} will not print a roster size it did not read.`);
+  }
+  /* SUBTRACT THE RETIRED, rather than recount the live.
+     The shipped artifact's entry map covers its whole domain, so the two agree
+     there; a partial or absent entry map is the difference, and this module is
+     deliberately unit-testable against small synthetic shapes that declare a
+     census with a sample of entries or none at all. Counting what is present
+     would report a roster of one. Retirement is a fact stated ON an entry, so an
+     entry that is not there states nothing and subtracts nothing, which is the
+     honest reading of a partial shape and exactly right on the real one. */
+  const live = census - retiredDomainIds(source).length;
+  if (live <= 0) {
+    throw new Error(`data/game-data.json has ${census} entries for domain "${domain}" and every one of them is retired. The ${surface} will not print a roster nobody can reach.`);
+  }
+  return live;
+};
+
 export function localDay(now = new Date()) {
   return [
     now.getFullYear(),
@@ -357,13 +394,7 @@ export function runShape(gameData) {
   if (Math.abs(finalHordeSec + holdSec - bankSec) > 1) {
     throw new Error(`The run clock does not close: the final horde at ${CLOCK(finalHordeSec)} plus a ${CLOCK(holdSec)} hold does not reach the bank at ${CLOCK(bankSec)}. Read the mode profile before publishing a sentence about it.`);
   }
-  const count = (domain) => {
-    const value = gameData?.domains?.[domain]?.count;
-    if (!Number.isInteger(value) || value <= 0) {
-      throw new Error(`data/game-data.json has no positive count for domain "${domain}". The landing page will not print a roster size it did not read.`);
-    }
-    return value;
-  };
+  const count = (domain) => liveCount(gameData, domain, 'landing page');
   return {
     minutes: MINUTES(bankSec),
     bank: CLOCK(bankSec),
@@ -428,13 +459,7 @@ export function parseBuildSlots(source) {
  * back, and saying it anyway is the failure this whole module exists to stop.
  */
 export function kitShape(gameData, slots) {
-  const count = (domain) => {
-    const value = gameData?.domains?.[domain]?.count;
-    if (!Number.isInteger(value) || value <= 0) {
-      throw new Error(`data/game-data.json has no positive count for domain "${domain}". The kit section will not print a roster size it did not read.`);
-    }
-    return value;
-  };
+  const count = (domain) => liveCount(gameData, domain, 'kit section');
 
   const ultimates = gameData?.domains?.ultimates;
   const held = Object.values(ultimates?.entries || {});
