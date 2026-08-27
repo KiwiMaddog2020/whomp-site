@@ -18,8 +18,12 @@ import {
   DISPLAY_REF_FIELD_PATHS,
   DISPLAY_ROOT_FIELD_PATHS,
   EXPLAINER_FILE,
+  isLiveVisualEntry,
+  liveDomainIds,
+  retiredDomainIds,
   rosterSpecs,
   SEARCH_TYPE,
+  visualKindLabel,
   visualOutputPath,
 } from './wiki.mjs';
 
@@ -213,7 +217,13 @@ for (const domain of FORMERLY_DEFERRED_DOMAINS) {
   requireThat(D.domainOrder.includes(domain) && D.domains[domain], `formerly deferred source domain ${domain} is missing`);
   const roster = rosters.find((candidate) => candidate.domain === domain);
   requireThat(roster, `formerly deferred source domain ${domain} has no generated route`);
-  requireThat(roster.entries.length === D.domains[domain].count, `formerly deferred route ${domain} renders ${roster.entries.length} of ${D.domains[domain].count} source entries`);
+  // COUNTED AGAINST THE LIVE HALF since 2026-08-26-wiki-curation. `count` is the
+  // registry census and includes defs the game has retired in place; `utilities`
+  // is the domain in this list that has one (Stasis). The completeness promise
+  // is unchanged in strength - every live entry, exactly once - and the absence
+  // of the retired ones is asserted separately below rather than assumed.
+  const liveCount = liveDomainIds(D.domains[domain]).length;
+  requireThat(roster.entries.length === liveCount, `formerly deferred route ${domain} renders ${roster.entries.length} of ${liveCount} live source entries`);
   formerlyDeferredRosters.push(roster);
 }
 
@@ -680,8 +690,29 @@ for (const roster of rosters) {
         && card.includes(`width="${firstVariant.width}" height="${firstVariant.height}"`)
         && card.includes(`alt="${esc(visual.alt.text)}"`)
         && card.includes('data-pixelated="false"'), `${file}#e-${entry.id} renders the wrong source, dimensions, alt text or pixel-rendering policy`);
-      requireThat(card.includes(esc(visual.source)) && card.toLocaleLowerCase().includes(visual.provenanceClass.toLocaleLowerCase()),
-        `${file}#e-${entry.id} does not expose visual source/provenance`);
+      /* SOURCE AND PROVENANCE ARE STILL PINNED, on the kinds that still print a
+         caption. Director ruling 2026-08-26-wiki-curation removed the
+         "Card art, painted by the game" designation, and with it the provenance
+         line that sat under it, from the `runtime-glyph` kind - 138 repetitions
+         across six routes. So this pin now has two halves and neither is weaker
+         than what it replaced: a captioned kind must still print its exact
+         source symbol and provenance class, and an UNCAPTIONED kind must print
+         NEITHER, so the designation cannot creep back one route at a time. Both
+         halves still require the machine-readable association, which is checked
+         just above and is what actually ties a picture to its subject. The
+         metadata itself is untouched in data/wiki-visuals.json. */
+      const captioned = visualKindLabel(visual.kind) !== null;
+      if (captioned) {
+        requireThat(card.includes(esc(visual.source)) && card.toLocaleLowerCase().includes(visual.provenanceClass.toLocaleLowerCase()),
+          `${file}#e-${entry.id} does not expose visual source/provenance`);
+      } else {
+        const figureStart = card.indexOf(marker);
+        const figure = card.slice(figureStart, card.indexOf('</figure>', figureStart));
+        requireThat(!card.includes(esc(visual.source))
+          && !/painted by the game/i.test(card)
+          && !/<figcaption>/.test(figure),
+        `${file}#e-${entry.id} reprints the provenance designation the ruling removed from uncaptioned visuals`);
+      }
       if (visual.kind === 'runtime-render') {
         for (const variant of visual.variants) {
           requireThat(card.includes(`${esc(visualOutputPath(variant.path))} ${variant.width}w`),
@@ -713,9 +744,19 @@ for (const roster of rosters) {
   }
 }
 
+/* ONE CARD PER PICTURE, for every picture that has a card. The manifest keeps a
+ * canonical image for every registered def including the retired ones (that is
+ * its job); the routes carry the live half. Both directions are still asserted:
+ * a live association missing from its route fails, and a retired association
+ * that somehow got rendered fails with its own message rather than being
+ * quietly tolerated by a >= 0 test. */
 for (const entry of V.entries) {
-  requireThat(renderedVisualAssociations.get(entry.assetKey) === 1,
-    `canonical visual ${entry.assetKey} is not rendered exactly once on its source entry route`);
+  const rendered = renderedVisualAssociations.get(entry.assetKey) || 0;
+  if (isLiveVisualEntry(D, entry)) {
+    requireThat(rendered === 1, `canonical visual ${entry.assetKey} is not rendered exactly once on its source entry route`);
+  } else {
+    requireThat(rendered === 0, `retired ${entry.assetKey} still has a card carrying its canonical visual`);
+  }
 }
 
 requireThat(!/Not built yet/i.test(hub), 'wiki hub still renders the retired deferred-domain section');
@@ -851,10 +892,47 @@ requireThat(/Opening enemy HP bonus/.test(modesHtml)
 const wikiOutputText = [hub, ...rosters.map((roster) => readFileSync(join(OUTDIR, `wiki-${roster.slug}.html`), 'utf8'))].join('\n');
 const renderedAssetRefs = new Set([...wikiOutputText.matchAll(/wiki-assets\/(?:[a-z0-9][a-z0-9._-]*\/)*[a-z0-9][a-z0-9._-]*\.png/g)]
   .map((match) => match[0]));
+/* THE PAGES RENDER THE LIVE HALF OF THE MANIFEST, EXACTLY.
+ *
+ * The manifest is deliberately still complete - one entry per registered def,
+ * retired ones included, which is its job as an inventory and what the visual
+ * coverage contract in wiki.mjs still demands of it. The PAGES are not an
+ * inventory. Since 2026-08-26-wiki-curation a def the game has retired has no
+ * card, so its picture is on no page, and comparing rendered URLs against the
+ * whole manifest would now fail for the correct behaviour.
+ *
+ * So the equality moves to the live subset and keeps both directions: a live
+ * picture silently dropped from a page still fails, and a retired picture that
+ * reappears fails by name in the second check. Both sets are derived; neither is
+ * a list anybody has to maintain. */
+const liveVisualFiles = new Set(V.entries.filter((entry) => isLiveVisualEntry(D, entry))
+  .flatMap((entry) => entry.variants.map((variant) => visualOutputPath(variant.path))));
+const retiredVisualRefs = [...renderedAssetRefs].filter((file) => !liveVisualFiles.has(file)).sort();
 requireThat(
-  JSON.stringify([...renderedAssetRefs].sort()) === JSON.stringify([...expectedVisualFiles].sort()),
-  `rendered visual URLs do not exactly cover the verified visual asset set`,
+  JSON.stringify([...renderedAssetRefs].sort()) === JSON.stringify([...liveVisualFiles].sort()),
+  `rendered visual URLs do not exactly cover the live half of the verified visual asset set`,
 );
+requireThat(retiredVisualRefs.length === 0,
+  `generated wiki still renders art for retired content: ${retiredVisualRefs.join(', ')}`);
+
+/* AND THE CARDS THEMSELVES ARE GONE, said as its own promise rather than
+ * inferred from a picture count. This is the ruling's actual sentence - a
+ * retired thing leaves the player-facing wiki - and it is checked against the
+ * bytes a visitor is served, including the search index, because a card removed
+ * from a page but left in search is still a reader finding Wrecking Ball. */
+const retiredByDomain = Object.entries(D.domains)
+  .map(([domain, source]) => [domain, retiredDomainIds(source)])
+  .filter(([, ids]) => ids.length > 0);
+for (const [domain, ids] of retiredByDomain) {
+  const roster = rosters.find((candidate) => candidate.domain === domain);
+  if (!roster) continue;
+  for (const id of ids) {
+    requireThat(!wikiOutputText.includes(`id="e-${esc(id)}"`),
+      `retired ${domain} ${id} still has a card in the generated wiki`);
+    requireThat(!model.searchEntries.some((search) => search.href.endsWith(`#e-${id}`)),
+      `retired ${domain} ${id} is still reachable from wiki search`);
+  }
+}
 requireThat(!/boss ultimates?/i.test(wikiOutputText), 'generated wiki has regressed to the misleading boss-ultimate taxonomy');
 requireThat(!/UNMEASURED:\s*UNMEASURED:/i.test(wikiOutputText), 'generated wiki duplicates an UNMEASURED label already carried by source evidence');
 requireThat(!model.searchEntries.some((entry) => /boss ultimates?/i.test(`${entry.title} ${entry.text}`)), 'wiki search has regressed to the misleading boss-ultimate taxonomy');

@@ -564,13 +564,90 @@ const patternGloss = (entry) => {
  * to lead with "Canonical", which is a word about our pipeline and not about
  * the image. The label still has to be exact: a render is not a screenshot and
  * a painted card glyph is not a sprite, and bin/wiki-check.mjs pins the render
- * label so a future rewrite cannot quietly promote one into the other. */
-const visualKindLabel = (kind) => ({
+ * label so a future rewrite cannot quietly promote one into the other.
+ *
+ * A GLYPH GETS NO CAPTION AT ALL, director ruling 2026-08-26-wiki-curation: "i
+ * also don't want the 'painted by the game' designation everywhere throughout".
+ * It was on 138 cards across six routes, and at that density it had stopped
+ * being a disclosure and become wallpaper. The `runtime-glyph` kind, its
+ * provenance class and its exact source symbol all survive UNCHANGED in
+ * data/wiki-visuals.json, which is where the provenance question is actually
+ * settled and where the visual contract below still checks it; what left is the
+ * repetition of the answer next to every small picture on the page. The RENDER
+ * caption stays: it is the one that carries the four disclosures (isolated,
+ * stand-in palette, camera view, not a screenshot), it appears once or twice a
+ * card rather than on every one, and wiki-check pins its label.
+ *
+ * `null` means "this kind is shown without a caption". It is deliberately not
+ * the empty string and deliberately not a missing key: an UNKNOWN kind still
+ * falls through to humanize() and still gets a caption, because a new visual
+ * kind arriving unlabelled is a bug and should look like one. */
+const VISUAL_KIND_LABEL = Object.freeze({
   'runtime-render': 'Drawn by the game',
-  'runtime-glyph': 'Card art, painted by the game',
+  'runtime-glyph': null,
   'palette-strip': 'The colors it is made of',
   'evolution-strip': 'The pieces it comes from',
-}[kind] || humanize(kind));
+});
+export const visualKindLabel = (kind) => (Object.hasOwn(VISUAL_KIND_LABEL, kind)
+  ? VISUAL_KIND_LABEL[kind]
+  : humanize(kind));
+
+/* ── WHAT IS STILL PLAYER-FACING, and it curates itself ───────────────────────
+ *
+ * Director ruling 2026-08-26-wiki-curation: "i see some things on the wiki like
+ * wrecking ball that are no longer player facing in the game". He was right and
+ * the card was worse than merely present: Wrecking Ball rendered under
+ * `data-access="start"` with the words "In the level-up pool from the first
+ * run." It has not been in that pool since 2026-08-11.
+ *
+ * WHAT THE GAME DOES WITH A RETIREMENT. It does not delete the def. Nine
+ * automatic weapons and one utility are RETIRED IN PLACE, because something
+ * still reads them: the Shotgun and Flamethrower cores read their donor def's
+ * damage, pellets and hit radius at runtime by id, and a save carrying a retired
+ * pick is migrated onto a live one rather than losing it. `disabled: true` is
+ * the single flag that takes a def out of everything a player can reach. In the
+ * game repo it is read by src/sim/meta.ts (unlock sets and fresh-save defaults),
+ * src/sim/progression.ts and src/data/offerRelevance.ts (the level-up offer),
+ * src/ui/weaponCodex.ts (the in-game codex), src/ui/startingWeaponSelect.ts and
+ * src/hub/trainingLoadout.ts (loadouts), src/data/utilities.ts
+ * (implementedUtilityIds), src/coop/campaignRunAuthority.ts, and
+ * bin/tier-engine.mjs refuses to measure one at all.
+ *
+ * SO THE FLAG IS THE PREDICATE, AND THERE IS NO LIST HERE. That is the whole
+ * point of doing it this way. The game's own codex has been hiding these for a
+ * fortnight and this wiki was the last surface still presenting them as
+ * something you could be handed; retiring the tenth is now one word in
+ * src/data, and this page curates itself the next time it is built. A hand list
+ * would have to be remembered, and the thing nobody remembers is exactly what
+ * put Wrecking Ball on a public page for two weeks.
+ *
+ * IT IS DISPLAY, NOT DELETION. data/wiki-visuals.json stays a complete
+ * inventory of every registered def's canonical art, its coverage contract below
+ * still demands one entry per domain member, and the game data still publishes
+ * the retired defs with their flag. The wiki simply stops rendering a card for
+ * something a player cannot get. bin/wiki-check.mjs holds the other half: the
+ * retired ids must be ABSENT, which is what makes this a contract rather than a
+ * filter somebody can quietly widen. */
+const isRetiredEntry = (entry) => entry?.disabled === true;
+export const liveDomainIds = (domain) => (domain?.order || Object.keys(domain?.entries || {}))
+  .filter((id) => domain.entries[id] != null && !isRetiredEntry(domain.entries[id]));
+export const retiredDomainIds = (domain) => (domain?.order || Object.keys(domain?.entries || {}))
+  .filter((id) => isRetiredEntry(domain.entries[id]));
+/** The visual manifest is a complete inventory; the pages are not. This is the
+ *  subset a reader can actually reach, and it is what the picture counts and the
+ *  rendered-asset contract are measured against. */
+export const isLiveVisualEntry = (D, entry) => {
+  const domain = D?.domains?.[entry?.domain];
+  if (!domain) return true;
+  return !isRetiredEntry(domain.entries?.[entry.id]);
+};
+
+/** HOW MANY PICTURES ARE ACTUALLY ON THESE PAGES. Three sentences on the hub and
+ *  the explainer print this number and two of them say "on these pages", so it
+ *  has to be the shown count and not the manifest's. The manifest still holds
+ *  one entry per registered def, retired ones included; a reader cannot reach a
+ *  retired card, so those images are on no page and are not counted here. */
+const shownPictureCount = (D, V) => (V?.entries || []).filter((entry) => isLiveVisualEntry(D, entry)).length;
 
 const visualIndex = (V) => new Map((V?.entries || []).map((entry) => [`${entry.domain}:${entry.id}`, entry]));
 
@@ -599,9 +676,27 @@ function renderWikiVisual(entry, esc, { primary = false, use = 'entry', compact 
     ? `<span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the ${esc(cameraView)}, ${entry.renderContext.palette?.id === 'toyMeadow' ? 'in stand-in colors a live world may repaint' : 'in its own colors'}. It is not a screenshot, and it is not how it looks in a live world. Frame: ${esc(humanize(String(entry.renderContext.frame?.mode || 'neutral frame').replace(/[-_]+/g, ' ')))}.</span>`
     : '';
   const limitation = entry.renderContext?.limitation || entry.limitation;
+  /* AN UNCAPTIONED KIND DROPS THE PROVENANCE LINE WITH ITS LABEL, not just the
+   * label. Removing "Card art, painted by the game" and leaving
+   * "Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion" under
+   * every small picture would be a worse version of the thing the ruling asked
+   * to remove: the same repetition, now in a file path a player has no use for.
+   * The kind, the provenance class and that exact symbol are all still in
+   * data/wiki-visuals.json and still contract-checked; `data-visual-key` still
+   * names the association in the markup. Nothing is being hidden, one answer
+   * has stopped being printed 138 times.
+   * A render context or a stated limitation is a real disclosure rather than a
+   * designation, so if an uncaptioned kind ever carries one the caption comes
+   * back with only that in it. */
+  const label = visualKindLabel(entry.kind);
+  const designation = label === null
+    ? ''
+    : `<b>${esc(label)}</b><span>${esc(humanize(entry.provenanceClass))} · ${esc(entry.source)}</span>`;
+  const limit = limitation ? `<span class="wvisual-limit">${esc(limitation)}</span>` : '';
+  const caption = `${designation}${renderContext}${limit}`;
   return `<figure class="wvisual wvisual-${esc(entry.kind)}" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">
-    ${image}
-    <figcaption><b>${esc(visualKindLabel(entry.kind))}</b><span>${esc(humanize(entry.provenanceClass))} · ${esc(entry.source)}</span>${renderContext}${limitation ? `<span class="wvisual-limit">${esc(limitation)}</span>` : ''}</figcaption>
+    ${image}${caption ? `
+    <figcaption>${caption}</figcaption>` : ''}
   </figure>`;
 }
 
@@ -655,10 +750,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const questName = (id) => Q.entries[id]?.title || humanize(id);
 
   const maxOf = (entries, of) => entries.reduce((m, e) => Math.max(m, Number(of(e)) || 0), 0);
-  const ordered = (domain, map = (e) => e) => (domain.order || Object.keys(domain.entries))
-    .map((id) => ({ id, entry: domain.entries[id] }))
-    .filter(({ entry }) => entry !== undefined && entry !== null)
-    .map(({ id, entry }) => map(entry, id));
+  /* THE ONE FUNNEL every roster's entry list comes through, which is why the
+     liveness predicate goes here and not in twenty-six card functions. See
+     liveDomainIds above for what "live" means and why it is a data flag rather
+     than a list. A domain with nothing retired in it is unaffected, which today
+     is every domain but weapons and utilities. */
+  const ordered = (domain, map = (e) => e) => liveDomainIds(domain)
+    .map((id) => map(domain.entries[id], id));
   const colorHex = (value) => {
     if (typeof value === 'string') return value.startsWith('#') ? value : `#${value}`;
     if (!Number.isFinite(Number(value))) return '';
@@ -749,7 +847,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   }
 
   // ---- weapons ------------------------------------------------------------
-  const weaponEntries = W.order.map((id) => W.entries[id]).filter(Boolean);
+  /* THE SECOND SELECTION PATH. Weapons predate `ordered` and built their own
+     list, which is how the fresh-save sentence below went wrong: seven of the
+     nine retired defs still carry `unlockedFromStart: true`, so counting them
+     told a new player that 23 weapons were in their level-up pool on a fresh
+     save when 16 are. Same predicate, same reason, one place each. */
+  const weaponEntries = ordered(W);
+  const liveWeaponCount = weaponEntries.length;
   const evolvedWeaponCount = weaponEntries.filter((entry) => entry.evolved).length;
   const freshBaseWeaponCount = weaponEntries.filter((entry) => !entry.evolved && entry.unlockedFromStart).length;
   const wMax = {
@@ -910,6 +1014,27 @@ export function rosterSpecs(D, esc, T = null, V = null) {
 
   // ---- core weapons -------------------------------------------------------
   const coreEntries = C.selectOrder.map((id) => C.entries[id]).filter(Boolean);
+  /* THE ONLY INBOUND LINK THE CURATION BREAKS, and it is worth spelling out
+     because it is also the reason the two defs still exist at all. Both donors
+     are retired weapons: the Shotgun core reads `shotgun` and the Flamethrower
+     core reads `flameThrower` for damage, pellets and hit radius at runtime, so
+     the defs cannot be deleted, and with their cards gone `cardLink` would have
+     pointed at an anchor that is not on the page any more. The generator's own
+     link check would have caught it; saying it here means the next reader knows
+     WHY the link is gone rather than reinstating it.
+     The relation is still stated, because it is true and it explains where the
+     core's numbers come from. What it no longer does is invite a player to go
+     and read about a weapon they cannot have. Any future live donor keeps its
+     link. */
+  const donorFact = (donorId) => {
+    if (!donorId) return '';
+    const donor = W.entries[donorId];
+    if (!donor) return '';
+    const anchored = 'which is where its damage is anchored';
+    return donor.disabled === true
+      ? fact('Built on', `the retired <b>${esc(weaponName(donorId))}</b> automatic weapon, ${anchored}. That weapon left the game and this core inherited its identity, which is why there is no page for it.`)
+      : fact('Built on', `${cardLink('weapons', donorId, esc(weaponName(donorId)))}, ${anchored}`);
+  };
   const forgivenessUnit = (key) => key.endsWith('Rad') ? 'rad' : key.endsWith('M') ? 'm' : 'unitless';
   const forgivenessDetails = (profile) => `<details class="wraw"><summary>Aim &amp; forgiveness <span>${Object.keys(profile).length} runtime fields</span></summary><dl>${Object.entries(profile)
     .map(([key, value]) => `<div><dt><code>${esc(key)}</code></dt><dd>${num(value, 4)} ${forgivenessUnit(key)}</dd></div>`)
@@ -968,7 +1093,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
           ${fact('Meter', e.meter === 'discrete'
     ? `<b>${e.meterPips}</b> ${e.meterPips === 1 ? 'pip' : 'pips'} marked ${esc(e.cadenceLabel)}, spent one at a time`
     : `a continuous ${esc(e.cadenceLabel)} fill rather than countable shots`)}
-          ${r.donorWeapon ? fact('Built on', `${cardLink('weapons', r.donorWeapon, esc(weaponName(r.donorWeapon)))}, which is where its damage is anchored`) : ''}
+          ${donorFact(r.donorWeapon)}
         </div>
         ${forgivenessDetails(r.forgiveness)}`;
     },
@@ -2312,7 +2437,18 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     sourceKind: 'controlled simulation',
     title: 'Automatic weapons, measured',
     tagline: `${spellCap(T.metric.axes.length)} lab tests, run over and over, with the spread left in.`,
-    lede: `${T.coverage.measured === T.coverage.weaponDefs ? `Every one of the ${T.coverage.weaponDefs} automatic weapons` : `${T.coverage.measured} of the ${T.coverage.weaponDefs} automatic weapons`} went through the same ${spell(T.metric.axes.length)} tests, at ${T.coverage.rows} combinations of form and level. This is a laboratory and not a run: nothing here dodges, nothing here is aimed, and a letter only says where a row landed against the other rows it was compared with. Where a test could not honestly produce a number, the row says so instead of taking a guess.`,
+    /* THE CENSUS THIS SENTENCE COUNTS AGAINST IS THE PAGE'S, NOT THE REGISTRY'S.
+       It used to read "36 of the 45 automatic weapons", and the nine it was
+       apologising for are exactly the nine the tier engine refuses to measure
+       because they have no acquisition path: coverage.unmeasured and the retired
+       set are the same nine, which the evidence contract further down asserts.
+       Now that a reader cannot reach those nine anywhere on this site, "36 of
+       45" would be an apology for a shortfall that does not exist, and would
+       leave them wondering where the other nine went. Measured against the live
+       roster, the true sentence is that every one of them was tested. If a LIVE
+       weapon ever goes unmeasured the shortfall branch is still here and still
+       tells the truth about it. */
+    lede: `${T.coverage.measured === liveWeaponCount ? `Every one of the ${liveWeaponCount} automatic weapons` : `${T.coverage.measured} of the ${liveWeaponCount} automatic weapons`} went through the same ${spell(T.metric.axes.length)} tests, at ${T.coverage.rows} combinations of form and level. This is a laboratory and not a run: nothing here dodges, nothing here is aimed, and a letter only says where a row landed against the other rows it was compared with. Where a test could not honestly produce a number, the row says so instead of taking a guess.`,
     omissions: `<b>Core weapons, tomes, relics and characters have no letters here, and the measurement says why.</b> ${Object.entries(T.notCovered).map(([key, reason]) => `<b>${esc(humanize(key))}:</b> ${esc(reason)}`).join(' ')}`,
     featureHtml: tierFeature,
     sourceLabel: `data/tier-rankings.json · fingerprint ${T.fingerprint} · source ${T.sourceContract.digest}`,
@@ -2966,6 +3102,7 @@ function renderHub(rosters, ctx) {
   const sections = [...new Set(rosters.map((r) => r.section))];
   const catalogRosters = rosters.filter((r) => r.domain);
   const catalogEntries = catalogRosters.reduce((sum, r) => sum + r.entries.length, 0);
+  const shownPictures = shownPictureCount(D, V);
 
   const body = `
 <div class="wtopbar">
@@ -2996,7 +3133,7 @@ function renderHub(rosters, ctx) {
     <p class="lede">Every weapon, every enemy, every bad idea you can take at a level up. Written by people who have died to all of it.</p>
 
     <p class="wprov"><b>${D.coverage.domains}</b> catalogs have a page here, <b>${catalogEntries}</b> entries in all, plus
-      <b>${T?.coverage?.rows || 0}</b> measured weapon rows, <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, and <b>${V.coverage.entries}</b> pictures the game
+      <b>${T?.coverage?.rows || 0}</b> measured weapon rows, <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, and <b>${shownPictures}</b> pictures the game
       sat still for.</p>
 
     <p class="womit">Where the game has no answer, these pages say so rather than guess. A few numbers an ordinary wiki
@@ -3045,6 +3182,7 @@ function renderHub(rosters, ctx) {
 function renderExplainer(rosters, ctx) {
   const { esc, chrome, D, T, V } = ctx;
   const catalogEntries = rosters.filter((r) => r.domain).reduce((sum, r) => sum + r.entries.length, 0);
+  const shownPictures = shownPictureCount(D, V);
 
   const section = (eyebrow, heading, id, paragraphs) => `
     <section class="wfeature" aria-labelledby="${esc(id)}">
@@ -3097,7 +3235,7 @@ function renderExplainer(rosters, ctx) {
   ])}
 
     ${section('The pictures', 'The game drew them, alone', 'the-pictures', [
-    `The <b>${V.coverage.entries}</b> images on these pages are not screenshots, and nobody drew them for the site. The game rendered each one itself, on a clear background under fixed light, and the build redraws all of them to compare against what it is about to publish.`,
+    `The <b>${shownPictures}</b> images on these pages are not screenshots, and nobody drew them for the site. The game rendered each one itself, on a clear background under fixed light, and the build redraws all of them to compare against what it is about to publish.`,
     'A live world lights and repaints the same thing differently. Treat a picture here as the shape of a thing rather than the sight of it.',
   ])}
 
@@ -3113,7 +3251,7 @@ function renderExplainer(rosters, ctx) {
       about damage is worse than an obvious hole.</p>
 
     <p class="wcount">Coverage right now: <b>${D.coverage.domains}</b> catalogs, <b>${catalogEntries}</b> entries, <b>${T?.coverage?.rows || 0}</b> measured weapon rows,
-      <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, <b>${V.coverage.entries}</b> pictures.</p>
+      <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, <b>${shownPictures}</b> pictures.</p>
   </main>
 </div>
 
@@ -3702,14 +3840,31 @@ export function buildWiki(ctx) {
       byDomain.set(roster.domain, roster);
       const source = D.domains[roster.domain];
       if (!source) { violations.push(`roster ${roster.slug} points at missing domain ${roster.domain}`); continue; }
+      /* COMPLETENESS, AGAINST THE LIVE ROSTER RATHER THAN THE WHOLE REGISTRY.
+         This promise is the reason the wiki is trustworthy and it has not been
+         weakened: a route must still render EVERY entry its domain has, exactly
+         once, with nothing invented. What changed on 2026-08-26 is which set
+         "every" names. A def the game has retired is not something the page is
+         missing, and the second clause below is the new half of the contract:
+         a retired id appearing on a page is now a build failure with the id in
+         the message, so this cannot decay back into a page that ships whatever
+         the registry happens to still hold. The registry census is still
+         checked, and against source.count, so the two halves have to add up. */
       const sourceIds = Object.keys(source.entries).sort();
+      const liveIds = liveDomainIds(source).sort();
+      const retiredIds = retiredDomainIds(source).sort();
       const renderedIds = roster.entries.map((entry) => entry.id).sort();
       if (sourceIds.length !== source.count) violations.push(`domain ${roster.domain} declares ${source.count} entries but contains ${sourceIds.length}`);
+      if (liveIds.length + retiredIds.length !== sourceIds.length) violations.push(`domain ${roster.domain} does not split cleanly into live and retired entries`);
       if (new Set(renderedIds).size !== renderedIds.length) violations.push(`roster ${roster.slug} emits duplicate entry ids`);
-      if (JSON.stringify(renderedIds) !== JSON.stringify(sourceIds)) {
-        const missing = sourceIds.filter((id) => !renderedIds.includes(id));
-        const extra = renderedIds.filter((id) => !sourceIds.includes(id));
-        violations.push(`roster ${roster.slug} does not exactly cover ${roster.domain}; missing [${missing.join(', ')}], extra [${extra.join(', ')}]`);
+      if (JSON.stringify(renderedIds) !== JSON.stringify(liveIds)) {
+        const missing = liveIds.filter((id) => !renderedIds.includes(id));
+        const extra = renderedIds.filter((id) => !liveIds.includes(id));
+        violations.push(`roster ${roster.slug} does not exactly cover the live half of ${roster.domain}; missing [${missing.join(', ')}], extra [${extra.join(', ')}]`);
+      }
+      const shownRetired = renderedIds.filter((id) => retiredIds.includes(id));
+      if (shownRetired.length) {
+        violations.push(`roster ${roster.slug} publishes ${shownRetired.length} retired ${roster.domain} the player cannot obtain: [${shownRetired.join(', ')}]`);
       }
       const displayedPaths = DISPLAY_FIELD_PATHS[roster.domain];
       if (!displayedPaths) {
