@@ -2010,10 +2010,20 @@ h2{font-size:1.65rem;margin:0 0 6px}
    wrap the column is 892px, which fits three 260px tracks and their two gaps and
    cannot fit four, so six cards are two full rows and five were a row with a
    hole in it. The evenness is a consequence of the track sizing rather than a
-   column count typed here, so it survives the wrap changing width. */
+   column count typed here, so it survives the wrap changing width.
+   THE CONTENT IS CENTRED IN THE CARD (director, 2026-08-26 23:11: "have the text
+   vertically centered within to make good use of the space in the cards"). Grid
+   stretches every card in a row to the tallest one in it, so a card whose body
+   runs a line shorter than its neighbours used to pool its text at the top and
+   leave the gap under it. justify-content:center hands that gap back as equal
+   air above and below. The padding goes even at the same time: an off-centre box
+   inside a centred one is the centring undone by a 2px shorthand. The other half
+   of the ask is the copy itself, and it lives in kitCards in bin/landing.mjs,
+   where the six bodies are held within a line of each other so the two rows sit
+   level before the centring has anything to correct. */
 .kits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
-.kit{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;padding:16px 18px 18px;
-  background:rgba(255,243,207,.025)}
+.kit{display:flex;flex-direction:column;justify-content:center;border:var(--edge);border-radius:14px;
+  padding:18px;background:rgba(255,243,207,.025)}
 .kit-meta{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;
   font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
 .kit-meta span:first-child{color:var(--gold)}
