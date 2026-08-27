@@ -735,6 +735,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const SS = D.domains.shipSystems;
   const CO = D.domains.cosmetics;
   const JA = D.domains.jumpAugments;
+  const BV = D.domains.bossVariants;
   const SM = D.domains.shrineMovement;
   const MB = T?.measuredBuilds;
   const buildSample = T?.sample?.builds;
@@ -1323,6 +1324,35 @@ export function rosterSpecs(D, esc, T = null, V = null) {
           ${speed ? meter('Profile speed', speed.liveRunBaseMps, eMax.speed, E.speedPolicy.unit) : ''}
         </div>`;
     },
+  };
+
+  // ---- boss variants ------------------------------------------------------
+  const bossVariantEntries = ordered(BV);
+  const bvBaseName = (id) => EN.entries[id]?.name || id;
+  const bossVariantsRoster = {
+    section: 'World',
+    slug: 'boss-variants',
+    domain: 'bossVariants',
+    title: 'Boss Variants',
+    tagline: 'The same animal, dressed by the world that fields it.',
+    lede: 'A variant is a mid-run boss wearing the world it is fought on: the same fight underneath, re-dressed in that map\'s own growth, crust or rime so a glacier player never meets an undressed desert crab. Every portrait below is the game\'s own render of the dressed body, and every name was christened by hand.',
+    omissions: '<b>The numbers live on the animal underneath.</b> A variant changes nothing about health, damage or timing - those belong to its base kind in the Bestiary, linked on every card.',
+    entries: bossVariantEntries,
+    facets: [
+      { key: 'base', label: 'Base kind', of: (e) => bvBaseName(e.baseKind) },
+    ],
+    sorts: [
+      { key: 'roster', label: 'Roster order', of: (e) => bossVariantEntries.indexOf(e) },
+      { key: 'name', label: 'Name', of: (e) => e.name, text: true },
+      { key: 'base', label: 'Base kind', of: (e) => bvBaseName(e.baseKind), text: true },
+    ],
+    searchText: (e) => `${e.name} boss variant re-dress ${bvBaseName(e.baseKind)} ${e.skin}`,
+    card: (e) => `
+      <div class="wtags">${tag(esc(bvBaseName(e.baseKind)), 'cyan')}${tag(esc(humanize(e.skin)), 'violet')}</div>
+      <div class="wfacts">
+        ${fact('Wears', `the ${esc(humanize(e.skin))} dress`)}
+        ${fact('Underneath', cardLink('bestiary', e.baseKind, esc(bvBaseName(e.baseKind))))}
+      </div>`,
   };
 
   // ---- relics -------------------------------------------------------------
@@ -2569,6 +2599,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     innatesRoster,
     signaturesRoster,
     bestiaryRoster,
+    bossVariantsRoster,
     worldsRoster,
     expeditionsRoster,
     runModesRoster,
@@ -2636,6 +2667,7 @@ export const SEARCH_TYPE = {
   shipSystems: 'ship system',
   cosmetics: 'cosmetic style',
   jumpAugments: 'legacy jump alias',
+  bossVariants: 'boss variant',
 };
 
 /* Every path below feeds a visible title, sentence, fact, facet, sort key or
