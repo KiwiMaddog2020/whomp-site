@@ -369,7 +369,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -421,15 +421,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">352 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">476 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-08-27">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-08-27</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 69</span><span class="storyday-kind" style="background:var(--pink)">Fixed 44</span></span>
+      </div>
+      <p class="storyday-shape">113 changes landed: 69 new, 44 fixed.</p>
+      <a class="storyday-release" href="#release-0-7-14">
+        <b>v0.7.14</b><span>The boss armada: every level now opens with a boss of its own, the worlds got a top-to-bottom polish pass, and the hub sings.</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-08-26">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-26</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 30</span><span class="storyday-kind" style="background:var(--pink)">Fixed 27</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 77</span><span class="storyday-kind" style="background:var(--pink)">Fixed 58</span></span>
       </div>
-      <p class="storyday-shape">57 changes landed: 30 new, 27 fixed.</p>
+      <p class="storyday-shape">135 changes landed: 77 new, 58 fixed.</p>
 
 
     </article>
@@ -477,17 +488,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">54 changes landed: 28 new, 26 fixed.</p>
 
 
-    </article>
-    <article class="storyday" id="day-2026-08-20">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-20</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 42</span><span class="storyday-kind" style="background:var(--cyan)">New 24</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
-      </div>
-      <p class="storyday-shape">67 changes landed: 42 fixed, 24 new, 1 performance.</p>
-      <a class="storyday-release" href="#release-0-7-12">
-        <b>v0.7.12</b><span>PvP finds its aim: cores are live in every duel, weapons climb to 20, and the void rift keeps its appointment on every single map.</span>
-      </a>
-
     </article></div>
   </section>
 
@@ -507,6 +507,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-14">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-27</span>
+      <span class="notecard-version">v0.7.14</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The boss armada: every level now opens with a boss of its own, the worlds got a top-to-bottom polish pass, and the hub sings.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>FOUR NEW SIGNATURE BOSSES in one night: the Drowned Bell walks Stillwater's lake, the Watcher on the Road strides Shiverpeak Summit, the Second Sun splits into mirages on Mirage Flats, and the Last Light burns its lane across Gilded Canyon. No level borrows its 6-minute boss anymore.</li><li>SIXTEEN RE-DRESSED BOSS VARIANTS: the mid-run bosses on every world now wear that world - orchard garlands, salt crust, rime scutes - instead of arriving as visitors.</li><li>THE WORLD POLISH WAVE: cleaner fields (clutter down a third), pinecones and fruit where they belong, five real rock shapes instead of one gray ball, per-level weather, and the Hellmouth's pits finally read as holes.</li><li>MUSIC EVERYWHERE: four hub zone themes that follow your feet, and a frost song family for the snow tier runs.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Desktop auto-update works again: 0.7.13 shipped installers that told every client it was already current - this release carries the corrected version plumbing.</li><li>The meteor impact sites keep their target-on-the-ground read, with an ember fringe in the outer ring so the site looks hit.</li><li>Shrines no longer spawn on top of you at the run start.</li><li>Elite enemies drop gold bags; free chests dialed down about a quarter, aimed at the elites you fight for.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-12">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-20</span>
@@ -981,27 +1001,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <ul><li>More PvP tuning is already queued behind this fix. We want a good read and a clean hit to matter without turning every duel into a coinflip.</li><li><span class="spoiler" tabindex="0" role="button" aria-label="Spoiler, click to reveal">Accounts unlocking cross-device saves and a real leaderboard are next.</span></li></ul>
     </div></div>
   </article>
-  <article class="notecard" id="release-0-4-0">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-07-20</span>
-      <span class="notecard-version">v0.4.0</span>
-      <span class="notecard-source">from the release notes</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">Heroic Leap joins the kit, multiplayer duels get a real feel pass, and a big craft sweep across movement, depth, and sprites.</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The full standard control kit is ready from the start: Boost, WHOMP, your character signature, and Heroic Leap on F. Seven alternate F utilities remain separate unlocks in the Arsenal Forge: Recall Rune, Second Wind, Bulwark, Boop, Hook, Stasis, and Chasm.</li><li>Multiplayer duels got a full feel pass: your HUD now carries into the ring, phase changes show loading screens instead of hard freezes, a pre-duel 3-2-1 countdown and a round score card frame each bout, a dropped opponent hands you the win, and the top-left score readout was cleaned up. Hitting Escape mid-duel now opens the menu without freezing your opponent, and online lobbies support up to four players in a free-for-all beta.</li><li>Movement and traversal polish: the walk gait speeds up toward a jog and scales with your speed, jump pads launch twice as high, pits are deeper with pitch-black bottoms that no longer catch stray shadows from above, and paired in-run portals let you stumble onto a teleport across the map.</li><li>A craft sweep on how things sit in the world: ground rings (starfield, aura, jump-landing dust) always render above the ground yet under the trees, rings centered on you ride your jump and pass correctly over the trees when you are airborne above them, and your shadow now shrinks and fades as you rise so it reads your height.</li></ul>
-    </div>
-
-    <div class="bucket">
-      <h4 style="color:var(--pink)">Fixed</h4>
-      <ul><li>The home-world camera no longer stutters or shakes while strafing; it now interpolates smoothly at any framerate, matching the in-run feel.</li><li>The Apprentice wand is now properly gripped in the right hand instead of floating beside the hip, and every character got rounder joints where limbs read jagged.</li><li>In default Drag to Look, holding either mouse button locks the pointer in place and hides it; releasing the final held button restores it. Classic Mouse Look remains an opt-in persistent lock.</li><li>The full-download build launches fullscreen. Web browsers may show their own brief pointer-lock guidance when a look drag begins.</li></ul>
-    </div>
-  </div>
-  </article>
-      <p class="lede">3 earlier releases not shown here.</p>
+      <p class="lede">4 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1011,108 +1011,212 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-08-27</h4>
+
+    <div class="row" data-kind="feat" id="chg-0139492bc">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the bossVariants domain enters game-data - the portrait seam's owed half. The site's wiki contract requires every visual entry's domain to exist in canonical game-data, and the seam shipped the wiki half only; 27 dress entries land keyed to the animals that wear them (baseKind ref into enemies), coverage re-derives 491 to 518, and the site deploy that refused on cairnfather can now build. sim/bosses.ts joins RUNTIME_MODULES the way forgiveness did: the registry is data that lives beside its brain <span class="scope">(data-layer)</span></span>
+      <span class="sha">0139492bc</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f6ce3ae3e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">board three's names are law - every wave-A plate kept as authored, the 18:00 canyon oilfather re-plates as The Duskfather, and the full board lands in the rulings doc (2026-08-27-christening-board) <span class="scope">(christening)</span></span>
+      <span class="sha">f6ce3ae3e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e61c67649">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the armada's reader-side ripples, each moved with its reason <span class="scope">(gate)</span></span>
+      <span class="sha">e61c67649</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e2a64a21d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the museum's depth derives from the monument row - the fifteenth boss grew the row to eight rows a side and it stood outside a back wall that was still a literal 40.4 <span class="scope">(trophyHall)</span></span>
+      <span class="sha">e2a64a21d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9dc6fa15f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the music and announcer lanes' inner bindings step out of the module names' light - zi for the zone scan, def and row for the bark rows; the ceiling stays 2 and the pre-gate is green again <span class="scope">(shadows)</span></span>
+      <span class="sha">9dc6fa15f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a95150132">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the append is an append again, second time - the watcher merge's entry re-seated in the file's own 1-space style with the second-sun PASS appended behind it; json.dump(indent=2) had reformatted 3,994 lines exactly as 1dd174ca1 once repaired <span class="scope">(render-gate-ledger)</span></span>
+      <span class="sha">a95150132</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3c20ad69c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">THE DROWNED BELL takes Stillwater's 6:00 - the game's first water boss, fairness cleared on the warning alone at wading pace, the ripple wall pushing down-range never radial (2026-08-26-new-rigs) <span class="scope">(bosses)</span></span>
+      <span class="sha">3c20ad69c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ebb409703">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">borealisk-raise lands from the armada <span class="scope">(bosses)</span></span>
+      <span class="sha">ebb409703</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-812c7991d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">tidebound-raise lands from the armada <span class="scope">(bosses)</span></span>
+      <span class="sha">812c7991d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ebdf5534b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the sixteen wave variants take names at the seam landing - wave B's authored six, wave A's ten mechanical placeholders for board-three christening, and the canyon 18:00 dress provisionally Canyon Father (its census-seed name now belongs to the map's real 6:00 rig - a two-Last-Lights collision for the director) <span class="scope">(bosses)</span></span>
+      <span class="sha">ebdf5534b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b1a70b59c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the variant-portrait seam lands - 13 skins players fight become photographable, BossVariantDef gains its name field <span class="scope">(wiki)</span></span>
+      <span class="sha">b1a70b59c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-05c898d45">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">redress-wave-b lands from the armada <span class="scope">(bosses)</span></span>
+      <span class="sha">05c898d45</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-22c9b2203">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">redress-wave-a lands from the armada <span class="scope">(bosses)</span></span>
+      <span class="sha">22c9b2203</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f3524fea1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">Stillwater's row pastes in at the merge exactly as the lane's forcing function demanded - harrier leads the crossing, the warden loses its slot to the long approaches <span class="scope">(pools)</span></span>
+      <span class="sha">f3524fea1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b1a392a72">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">per-level miniboss pools land - twelve distinct sequences from one, witness-safe three ways (2026-08-26-miniboss-pools) <span class="scope">(night)</span></span>
+      <span class="sha">b1a392a72</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-034a23e92">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">removals-and-ambience lands from the armada (the ratified world waves + per-level pools) <span class="scope">(night)</span></span>
+      <span class="sha">034a23e92</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-22cb85f73">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">weather-wave lands from the armada (the ratified world waves + per-level pools) <span class="scope">(night)</span></span>
+      <span class="sha">22cb85f73</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-af86c24dc">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rock-family lands from the armada (the ratified world waves + per-level pools) <span class="scope">(night)</span></span>
+      <span class="sha">af86c24dc</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf4381036">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">flora-families lands from the armada (the ratified world waves + per-level pools) <span class="scope">(night)</span></span>
+      <span class="sha">cf4381036</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-03d0549e8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">world-dials lands from the armada (the ratified world waves + per-level pools) <span class="scope">(night)</span></span>
+      <span class="sha">03d0549e8</span>
+    </div><div class="row more">+ 93 more that day, not shown</div>
+  </div>
+  <div class="day">
     <h4>2026-08-26</h4>
 
-    <div class="row" data-kind="fix" id="chg-8c58c8246">
+    <div class="row" data-kind="fix" id="chg-eb5e5e256">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the seven composed reds of the morning batch cure by their own laws - island digest and triangle baseline move by printline (+650 attributed to grotto crossing seams), the crystal census row takes its attributed 20 shards, the docIndex ratchet records two legitimate citations, the queue cut reaches the train hook pin and the telemetry schema, the vending comment loses the parens that broke its paren-walk fence, and the wiki re-stamps over the director's recovered mascot reference <span class="scope">(gate)</span></span>
-      <span class="sha">8c58c8246</span>
+      <span class="what">the bag read as a potato at gameplay distance - the gold moves to the sack's widest line where the follow rig actually looks, the collar gets weight, and the canvas lifts until the bands separate from it <span class="scope">(render)</span></span>
+      <span class="sha">eb5e5e256</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-365893e67">
+    <div class="row" data-kind="fix" id="chg-f4627b98c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the telemetry view follows the queue cut to sol-status v2 - the stale v1 pin was rejecting every real payload and rendering nothing; the queue row dies with its key (2026-08-26-cut-list) <span class="scope">(devConsole)</span></span>
-      <span class="sha">365893e67</span>
+      <span class="what">seat the bag on the ground - a settled row rests at the pool's 0.18m lift, which is a coin's centre and a sack's hover, so the geometry cancels it rather than the physics forking <span class="scope">(render)</span></span>
+      <span class="sha">f4627b98c</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-7f36018c2">
+    <div class="row" data-kind="fix" id="chg-97bc3ed28">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">two pre-gate falsities die - artifact-order learns the generator-self-check rung so a comment-only generator edit cannot wedge the gate forever, and the parity board's prose mentions of the marker syntax stop parsing as markers <span class="scope">(gate)</span></span>
-      <span class="sha">7f36018c2</span>
+      <span class="what">the graviton lesson clause fits the log card - 59 characters against the 74 the run-communication lane measured as a four-line wrap, with INSTEAD OF A CHEST moved to the drop card that can prove it <span class="scope">(voice)</span></span>
+      <span class="sha">97bc3ed28</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-11b8f214d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">LAW.md lands with the ratified cuts - the queue and claim-check die with their guards rescued, the wiki leaves the deploy gate, dated slugs replace the top-cited numbers, and the ratification ledger learns report ids; cuts 2a/2c refused on measurement per the director's no-over-correction steer (2026-08-26-two-class-law, -cut-list, -dated-slugs, -ledger-extension) <span class="scope">(governance)</span></span>
-      <span class="sha">11b8f214d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2b070135b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the ratification ledger traces the ask, not just the shipping (2026-08-26-ledger-extension) <span class="scope">(ledger)</span></span>
-      <span class="sha">2b070135b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3909740dd">
+    <div class="row" data-kind="fix" id="chg-9009ddbf6">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">item 11's git guard exists - the gap is its scope, not its absence <span class="scope">(law)</span></span>
-      <span class="sha">3909740dd</span>
+      <span class="what">report 482's fill - the fin's crest runs on across the corner instead of running out, giving back only what ruling 176's shoulder took and reaching zero on the keep's own east and north edges <span class="scope">(hub)</span></span>
+      <span class="sha">9009ddbf6</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-9f3fe3d9a">
+    <div class="row" data-kind="feat" id="chg-d5106039d">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Grumbo's staff becomes a walking stick - gripped at the palm, planted with the left boot, the correction slides along the shaft; derived from GRUMBO_GRIP so hand and staff share one truth (2026-08-26-wizard-staff) <span class="scope">(hub)</span></span>
-      <span class="sha">9f3fe3d9a</span>
+      <span class="what">the bag landing gets its own cue - heavier and duller than the chest thud it replaces, with a metallic chink of contents instead of the chest's chime, so the swap is audible without looking <span class="scope">(audio)</span></span>
+      <span class="sha">d5106039d</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-c9d1aac20">
+    <div class="row" data-kind="feat" id="chg-d4c50ba7b">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-stone-pillar-dup-shot lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">c9d1aac20</span>
+      <span class="what">the bag is a slumped canvas satchel with a gold drawstring and two coins in its mouth - a seventh pooled draw split out of the coin SoA on kind, budget stated <span class="scope">(render)</span></span>
+      <span class="sha">d4c50ba7b</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-7c1967262">
+    <div class="row" data-kind="feat" id="chg-49aae0d56">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-frostling-mote-comment lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">7c1967262</span>
+      <span class="what">wire the gold-bag port in all four rigs - a setter rather than a constructor option because engine builds the director 800 lines before the pool, and co-op reads the opening price as the first elite reward it has ever had <span class="scope">(elites)</span></span>
+      <span class="sha">49aae0d56</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-81eadb1a9">
+    <div class="row" data-kind="feat" id="chg-bad14707e">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-core-sword-comment-truth lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">81eadb1a9</span>
+      <span class="what">the graviton always pays a gold bag and the shielded pays one before 12:00, with the affix read into a local BEFORE the slot clear the recon named as the trap <span class="scope">(elites)</span></span>
+      <span class="sha">bad14707e</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-8fc913346">
+    <div class="row" data-kind="feat" id="chg-fb3471696">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-intro-skip-pin lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">8fc913346</span>
+      <span class="what">the gold bag becomes a pickup kind on the shipped coin pool - a value column so a 600-gold bag is one heavy row rather than 600 coins, an RNG-free drop that leaves every existing seed byte-identical, and the collect pass summing value instead of counting rows <span class="scope">(economy)</span></span>
+      <span class="sha">fb3471696</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-4492d413c">
+    <div class="row" data-kind="feat" id="chg-acbadba0d">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-surge-warning-bake lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">4492d413c</span>
+      <span class="what">buildBossWikiPortrait addresses the thirteen boss VARIANTS, so the dressed skin can be looked at before it is re-dressed <span class="scope">(wiki)</span></span>
+      <span class="sha">acbadba0d</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-df5bf36ce">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-uncommon-relics-board lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">df5bf36ce</span>
+    <div class="row" data-kind="fix" id="chg-cecf956f5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Stillwater composes by printline - triangles 1283697, island work {194, 498459}, digest 492e48fd48c9bc05; the +906/-54 closing exactly as the lane's own tree measured <span class="scope">(hub)</span></span>
+      <span class="sha">cecf956f5</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-27495d950">
+    <div class="row" data-kind="feat" id="chg-2e70c767b">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-pipestatus lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">27495d950</span>
+      <span class="what">STILLWATER opens through the retired Hearth gate (2026-08-26-lake-level) - a 121 m lake with a real island at zero bed defect, the water carve learns to compose by depth (opt-in, fourteen shipped maps byte-identical), and the run opens on the island so the lake is the horde's approach lane <span class="scope">(levels)</span></span>
+      <span class="sha">2e70c767b</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-43314d11c">
+    <div class="row" data-kind="feat" id="chg-733549858">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-buildpeek-input lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">43314d11c</span>
+      <span class="what">the director token gets its desktop card in the tester panel, Live Wire's temple stops paying cyan for a crescent that does not exist (62 to 3.6 cm2 at the worst azimuth), and Fissure wears the radial family with the overrider census moved to two by provenance <span class="scope">(trio)</span></span>
+      <span class="sha">733549858</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-e9400a4fd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-pooled-shot-chill lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">e9400a4fd</span>
+    <div class="row" data-kind="fix" id="chg-8042ec73c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cove-north composes by printline on the merged tree - triangles 1282791, island work {194, 498513}, digest 2003ae9574e65579, the seven stones' +252/+756 closing to the digit <span class="scope">(hub)</span></span>
+      <span class="sha">8042ec73c</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-b3223e60e">
+    <div class="row" data-kind="feat" id="chg-53664282d">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-mirage-cap-winding lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">b3223e60e</span>
+      <span class="what">the cove's north bank dresses in the lake's own beach grammar - seven stones seated against measured water and ground, and the spire lamp's solitude becomes an assertion instead of a premise (hub-dressing debts) <span class="scope">(hub)</span></span>
+      <span class="sha">53664282d</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-ab38faec0">
+    <div class="row" data-kind="feat" id="chg-472dc3404">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-grotto-dressing lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">ab38faec0</span>
+      <span class="what">the final horde takes the plate at the swarm's rung (2026-08-26-evening-calls c) - SURVIVE / FINAL HORDE follows the finale boss's plate it always shared a tick with, owed-until-seen so it stops rendering zero frames, under an escalation swell that never silences the authored stinger <span class="scope">(comms)</span></span>
+      <span class="sha">472dc3404</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-4fff55858">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-cairn-risers lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">4fff55858</span>
+    <div class="row" data-kind="fix" id="chg-1dd174ca1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the append is an append again - 3,913 reformatted lines restored to 40 added ones <span class="scope">(render-gate-ledger)</span></span>
+      <span class="sha">1dd174ca1</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-dfc2dbdc1">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">salvage-campaign-boards lands from the ranked batch (2026-08-26-salvage-fire) <span class="scope">(salvage)</span></span>
-      <span class="sha">dfc2dbdc1</span>
-    </div><div class="row more">+ 37 more that day, not shown</div>
+    <div class="row" data-kind="fix" id="chg-ecedc5802">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the goggle skirt stops painting her temple in glass - the cup's cyan now ends where the goggle ends, and the crescent it was bought to prevent turns out not to exist <span class="scope">(liveWire)</span></span>
+      <span class="sha">ecedc5802</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f08c9b07e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">report 483 - he speaks in the villagers' own bubble and his walk sheds five phase errors (facing continuity, arm counter-swing, leading hip, bob and rock timing) at zero amplitude moved and zero pins touched <span class="scope">(grumbo)</span></span>
+      <span class="sha">f08c9b07e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-02ec46863">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">an expedition's portal card offered 0 of 3 stars on a ladder it can never climb - stars are campaign-only at two gates, so the row is undefined for a non-campaign id; found on Stillwater's door, standing on sunkenSteps since it got one <span class="scope">(hub)</span></span>
+      <span class="sha">02ec46863</span>
+    </div><div class="row more">+ 115 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-25</h4>
@@ -1612,91 +1716,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">shared centered/evenly-spaced card layout system (ruling 46) <span class="scope">(ui)</span></span>
       <span class="sha">b0e44f078</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-5b7524bd4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close the plaza-disc corner-clip pinhole (director #430) <span class="scope">(hub-walk-plugs)</span></span>
-      <span class="sha">5b7524bd4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cb101b30e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">lead the frame writer's aim, gate the tether's leash, tune the dial <span class="scope">(bot-aim-four)</span></span>
-      <span class="sha">cb101b30e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7a0fdc2bd">
+  </div>
+  <div class="day">
+    <h4>2026-08-19</h4>
+
+    <div class="row" data-kind="feat" id="chg-f51080f30">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">fx-polish-trio, ruling 76's three reversible dials <span class="scope">(fx)</span></span>
-      <span class="sha">7a0fdc2bd</span>
+      <span class="what">the bar-round candidate switch, default unchanged <span class="scope">(whiteout)</span></span>
+      <span class="sha">f51080f30</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-3e898d7da">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">shock ring true-to-scale + wedge-shaped for Breaker Bar/Inbound (r5) <span class="scope">(rightclick)</span></span>
-      <span class="sha">3e898d7da</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9ffe28b84">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">drop trailing slash so the frames dir glob matches under it <span class="scope">(claims)</span></span>
-      <span class="sha">9ffe28b84</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1f4f5febf">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">statue cards carry the right click; fix the duel-lock read <span class="scope">(ui)</span></span>
-      <span class="sha">1f4f5febf</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-da41ffa62">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the merge review's color cure - ruling 69's icy blue restored at the family's saturation ceiling (COLD_CORE lerp 0.55 -&gt; 0x87bdd8, COLD_RIME toward pure white -&gt; 0xd6edf8); the report addendum records the inversion honestly <span class="scope">(frostlings)</span></span>
-      <span class="sha">da41ffa62</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2ecf31144">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hammer becomes a carried prop, DIRECTOR RULING 73 - excluded from the shield fit like every other prop, the damp row deletes, full wave-0 swing returns; renderPolish holds 0.505 with the hammer out (170 green) <span class="scope">(striker)</span></span>
-      <span class="sha">2ecf31144</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e0f605b13">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ground reach + impact weight for the four kits (ruling 70) <span class="scope">(rightclick)</span></span>
-      <span class="sha">e0f605b13</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3d2652d94">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the visualScale disclosure comment states the true table size and lift (twenty rows, 0.036 cm) - the review's at-merge cure <span class="scope">(mirage)</span></span>
-      <span class="sha">3d2652d94</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f56e82ff3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">cuter, rounder silhouette and icy-blue-with-white palette (ruling 69) <span class="scope">(frostlings)</span></span>
-      <span class="sha">f56e82ff3</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-67ed8dbe1">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the drawn-end cache holds both of the island's samplers - review item 2 <span class="scope">(fourway)</span></span>
-      <span class="sha">67ed8dbe1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-73ffc9e46">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the lamp seats get #428's standoff compensation too - review item 1 <span class="scope">(frostreach)</span></span>
-      <span class="sha">73ffc9e46</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-dbf56008e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">make the snath/robe static-overlap guard actually fire <span class="scope">(grimhex)</span></span>
-      <span class="sha">dbf56008e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7ed77cf9b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-point wispmother's measured height and retire the false 'to the digit' claim <span class="scope">(grimhex)</span></span>
-      <span class="sha">7ed77cf9b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-00c31f364">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">D1 the scrub writes no global at all, D2 the dump is self-delimiting, D3 the sentinel is multiline and the env-log readers digest, D4 an ambient WHOMP_GATE_RUNNER is refused unless it is a label, D5 the per-run key is proved across a process <span class="scope">(cloud-gate)</span></span>
-      <span class="sha">00c31f364</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-41386e274">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">seat strobeRig in the arena pool and lift masterTape's deferral, DIRECTOR RULING 48 - pool 17 -&gt; 18 (epic 4), inert side 17 -&gt; 16; masterTape's remaining arena inertness is structural (no evolved weapons), not a deferral <span class="scope">(relics)</span></span>
-      <span class="sha">41386e274</span>
-    </div><div class="row more">+ 47 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-16</h4>
@@ -1823,12 +1851,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC.
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC.
 
-  The game is serving <code>0.7.12</code>.
+  The game is serving <code>0.7.14</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">356 player-visible changes in the last 7 days, across 9 active days, 746 internal-only commits filtered out</div>
+  <div class="stat">484 player-visible changes in the last 7 days, across 11 active days, 859 internal-only commits filtered out</div>
 </footer>
 
 

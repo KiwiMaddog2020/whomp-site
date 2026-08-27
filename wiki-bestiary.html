@@ -236,13 +236,13 @@ html,body{max-width:100%;overflow-x:clip}
    behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
    band still sticks and still works, it just carries no backdrop, which is the
    right way round for a decoration. */
-.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
 .wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
   pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
   border-bottom:1px solid rgba(255,243,207,.07)}
 .is-stuck .wsearchband::before{opacity:1}
 @media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
-.wsearchband .searchwrap{margin-top:14px}
+.wsearchband .searchwrap{margin-top:18px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
@@ -503,7 +503,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -532,7 +532,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <nav class="wside" aria-label="Wiki navigation">
 
     <details class="wside-all" open>
-      <summary>Wiki <span>31</span></summary>
+      <summary>Wiki <span>32</span></summary>
       <div class="wside-all-body">
         <a href="wiki.html">All guides</a>
         <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
@@ -564,9 +564,10 @@ footer a{color:var(--cyan);text-decoration:none}
           </div>
         </details>
         <details class="wside-section is-current-section" open>
-          <summary>World <span>6</span></summary>
+          <summary>World <span>7</span></summary>
           <div class="wside-links">
             <a href="wiki-bestiary.html" class="is-here" aria-current="page">Bestiary</a>
+            <a href="wiki-boss-variants.html">Boss Variants</a>
             <a href="wiki-worlds.html">Campaign worlds</a>
             <a href="wiki-expeditions.html">Expeditions</a>
             <a href="wiki-modes.html">Run modes</a>
@@ -597,7 +598,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>
-    <div class="stat">58 entries</div>
+    <div class="stat">62 entries</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
@@ -645,7 +646,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-bestiary-tier">Tier</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-bestiary-tier" data-facet="tier" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="special" aria-pressed="false" aria-controls="wiki-groups">Special <span style="opacity:.5">37</span></button><button class="wf" type="button" data-value="boss" aria-pressed="false" aria-controls="wiki-groups">Boss <span style="opacity:.5">11</span></button><button class="wf" type="button" data-value="basic" aria-pressed="false" aria-controls="wiki-groups">Basic <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="miniboss" aria-pressed="false" aria-controls="wiki-groups">Miniboss <span style="opacity:.5">5</span></button>
+          <button class="wf" type="button" data-value="special" aria-pressed="false" aria-controls="wiki-groups">Special <span style="opacity:.5">37</span></button><button class="wf" type="button" data-value="boss" aria-pressed="false" aria-controls="wiki-groups">Boss <span style="opacity:.5">15</span></button><button class="wf" type="button" data-value="basic" aria-pressed="false" aria-controls="wiki-groups">Basic <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="miniboss" aria-pressed="false" aria-controls="wiki-groups">Miniboss <span style="opacity:.5">5</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -692,7 +693,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Walks straight at you and tries to touch you. The baseline threat.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a>, <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span></span></div>
 
 
 
@@ -728,7 +729,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Comes at you on a curve rather than a line, flanking wider the further out it starts.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-ember">Ember Wastes</a> <span class="wsub">from 0:12</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:18</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:27</span>; <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:36</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a>, <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-ember">Ember Wastes</a> <span class="wsub">from 0:12</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:18</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:27</span>; <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:36</span></span></div>
 
 
 
@@ -764,7 +765,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Slow and heavy, and it pushes through the crowd instead of spreading around it.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:12</span>; <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:54</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a>, <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> <span class="wsub">from 0:12</span>; <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:54</span></span></div>
 
 
 
@@ -800,7 +801,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Clumps together as it comes. Individually trivial, and it does not arrive individually.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:18</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> and <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:54</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a>, <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a> <span class="wsub">from 0:18</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a> and <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:54</span></span></div>
 
 
 
@@ -836,7 +837,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Closes on you, lights a fuse you can see, and detonates. The damage is on the death, not the touch.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">every campaign level, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a>, <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span></span></div>
 
 
 
@@ -877,7 +878,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Backs off to its own preferred distance, swells up as a tell, then lobs a glob at you. Distance is not safety.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 1:12</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 3:00</span>; <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 4:12</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> <span class="wsub">from 1:12</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 3:00</span>; <a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 4:12</span></span></div>
 
 
 
@@ -913,7 +914,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Winds up with a line drawn on the ground, locks that direction, then commits to a fast straight rush. Readable, and it does not steer once it has gone.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 2:24</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 3:00</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> <span class="wsub">from 2:24</span>; <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> <span class="wsub">from 3:00</span></span></div>
 
 
 
@@ -949,7 +950,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Walks at you like anything else. The trick is what happens when it dies.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 1:12</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 4:12</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-rift">Void Rift</a> <span class="wsub">from 0:36</span>; <a href="wiki-worlds.html#e-inferno">Hellmouth</a> <span class="wsub">from 1:12</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> <span class="wsub">from 4:12</span></span></div>
 
 
           <div class="wfact"><span class="wfact-k">Leaves behind</span><span class="wfact-v"><b>2</b> <a href="wiki-bestiary.html#e-splitterMite">Splitter Mites</a> when it dies</span></div>
@@ -2029,7 +2030,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="wgloss">Crouches, flashes, then arcs over the ground between you. It gets past the line you thought was holding.</p>
         <div class="wfacts">
 
-          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> <span class="wsub">from 4:00</span></span></div>
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v"><a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a> <span class="wsub">from the start</span>; <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-stillwater">Stillwater</a> <span class="wsub">from 4:00</span></span></div>
 
 
 
@@ -2376,7 +2377,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article></div>
     </section>
     <section class="wgroup" data-group="boss" id="g-boss">
-      <div class="wgroup-h"><h3>Bosses</h3><span class="wgroup-n">11</span></div>
+      <div class="wgroup-h"><h3>Bosses</h3><span class="wgroup-n">15</span></div>
       <p class="wgroup-note">Booked into a world at a fixed time rather than rolled for, and driven directly once they arrive. The behaviour names in this roster do not describe how a boss moves.</p>
       <div class="wgrid">
       <article class="wcard" id="e-thistlemaw" tabindex="-1" data-tier="boss" data-s-roster="16" data-s-name="thistlemaw"    >
@@ -2398,7 +2399,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a></span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a></span></div>
 
 
 
@@ -2434,7 +2435,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a></span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>12:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-stillwater">Stillwater</a></span></div>
 
 
 
@@ -2470,7 +2471,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>18:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a> and <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a></span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>18:00</b> into <a href="wiki-worlds.html#e-meadow">Neon Meadow</a>, <a href="wiki-worlds.html#e-marsh">Gloom Marsh</a>, <a href="wiki-worlds.html#e-glimmerOrchard">Glimmer Orchard</a>, <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a>, <a href="wiki-expeditions.html#e-meadowfall">Meadowfall</a> and <a href="wiki-expeditions.html#e-stillwater">Stillwater</a></span></div>
 
 
 
@@ -2506,7 +2507,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
 
         <div class="wfacts">
-          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a>, <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a></span></div>
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-desert">Scorchdune</a>, <a href="wiki-worlds.html#e-necropolis">Neon Necropolis</a>, <a href="wiki-worlds.html#e-ember">Ember Wastes</a>, <a href="wiki-worlds.html#e-rift">Void Rift</a>, <a href="wiki-worlds.html#e-inferno">Hellmouth</a>, <a href="wiki-worlds.html#e-frostreachPines">Frostreach Pines</a>, <a href="wiki-worlds.html#e-theAscent">The Ascent</a> and <a href="wiki-expeditions.html#e-sunkenSteps">Sunken Sands</a></span></div>
 
 
 
@@ -2774,13 +2775,157 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
 
+      </article>
+      <article class="wcard" id="e-drownedBell" tabindex="-1" data-tier="boss" data-s-roster="58" data-s-name="the drowned bell"    >
+        <div class="wcard-h">
+
+          <h4>The Drowned Bell</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="enemies:drownedBell" data-visual-use="entry">
+    <img src="wiki-assets/enemies/drowned-bell-256w.png" srcset="wiki-assets/enemies/drowned-bell-256w.png 256w, wiki-assets/enemies/drowned-bell-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of The Drowned Bell, a boss enemy." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/enemies.ts#ENEMY_KINDS + src/render/bossRenderer.ts#BOSS_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, and encounter state are omitted.</span></figcaption>
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-pink">Boss</span>
+
+
+
+        </div>
+
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-expeditions.html#e-stillwater">Stillwater</a></span></div>
+
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+        </div>
+        <div class="wmeters">
+
+
+
+
+        </div>
+
+      </article>
+      <article class="wcard" id="e-watcher" tabindex="-1" data-tier="boss" data-s-roster="59" data-s-name="the watcher on the road"    >
+        <div class="wcard-h">
+
+          <h4>The Watcher on the Road</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="enemies:watcher" data-visual-use="entry">
+    <img src="wiki-assets/enemies/watcher-256w.png" srcset="wiki-assets/enemies/watcher-256w.png 256w, wiki-assets/enemies/watcher-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of The Watcher on the Road, a boss enemy." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/enemies.ts#ENEMY_KINDS + src/render/bossRenderer.ts#BOSS_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, and encounter state are omitted.</span></figcaption>
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-pink">Boss</span>
+
+
+
+        </div>
+
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-shiverpeakSummit">Shiverpeak Summit</a></span></div>
+
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+        </div>
+        <div class="wmeters">
+
+
+
+
+        </div>
+
+      </article>
+      <article class="wcard" id="e-secondSun" tabindex="-1" data-tier="boss" data-s-roster="60" data-s-name="the second sun"    >
+        <div class="wcard-h">
+
+          <h4>The Second Sun</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="enemies:secondSun" data-visual-use="entry">
+    <img src="wiki-assets/enemies/second-sun-256w.png" srcset="wiki-assets/enemies/second-sun-256w.png 256w, wiki-assets/enemies/second-sun-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of The Second Sun, a boss enemy." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/enemies.ts#ENEMY_KINDS + src/render/bossRenderer.ts#BOSS_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, and encounter state are omitted.</span></figcaption>
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-pink">Boss</span>
+
+
+
+        </div>
+
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-suncoastShallows">Mirage Flats</a></span></div>
+
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+        </div>
+        <div class="wmeters">
+
+
+
+
+        </div>
+
+      </article>
+      <article class="wcard" id="e-lastLight" tabindex="-1" data-tier="boss" data-s-roster="61" data-s-name="the last light"    >
+        <div class="wcard-h">
+
+          <h4>The Last Light</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="enemies:lastLight" data-visual-use="entry">
+    <img src="wiki-assets/enemies/last-light-256w.png" srcset="wiki-assets/enemies/last-light-256w.png 256w, wiki-assets/enemies/last-light-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of The Last Light, a boss enemy." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/enemies.ts#ENEMY_KINDS + src/render/bossRenderer.ts#BOSS_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, and encounter state are omitted.</span></figcaption>
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-pink">Boss</span>
+
+
+
+        </div>
+
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">Arrives</span><span class="wfact-v"><b>6:00</b> into <a href="wiki-worlds.html#e-gildedCanyon">Gilded Canyon</a></span></div>
+
+
+
+
+
+
+          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+        </div>
+        <div class="wmeters">
+
+
+
+
+        </div>
+
       </article></div>
     </section></div>
   </main>
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
   from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>

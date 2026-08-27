@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WHOMP boss variants</title>
+<meta name="description" content="Boss Variants: The same animal, dressed by the world that fields it. The full list, with the numbers the game actually runs on.">
+<link rel="icon" href="whomp-icon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WHOMP">
+<meta property="og:title" content="WHOMP boss variants">
+<meta property="og:description" content="Boss Variants: The same animal, dressed by the world that fields it. The full list, with the numbers the game actually runs on.">
+<meta property="og:url" content="https://kiwimaddog2020.github.io/whomp-site/wiki-boss-variants.html">
+<meta property="og:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="The WHOMP mark: a chromatic cream W on a dark violet square.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WHOMP boss variants">
+<meta name="twitter:description" content="Boss Variants: The same animal, dressed by the world that fields it. The full list, with the numbers the game actually runs on.">
+<meta name="twitter:image" content="https://kiwimaddog2020.github.io/whomp-site/whomp-icon-512.png">
+<link rel="canonical" href="https://kiwimaddog2020.github.io/whomp-site/wiki-boss-variants.html">
+<style>
+
+:root{
+  --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
+  --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
+  --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --edge:1px solid rgba(255,243,207,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:radial-gradient(ellipse 120% 80% at 50% -10%,var(--lift),var(--ink) 60%) no-repeat,var(--ink);
+  color:var(--body); font-family:var(--font); line-height:1.6;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+a{color:var(--cyan)}
+button{font-family:var(--font)}
+
+/* THE CHROMATIC OFFSET IS THE SIGNATURE, carried from the icon to type:
+   cyan right-and-down, pink left-and-down, cream face on top. Flat offsets,
+   zero blur, matching the de-BOO flat-plinth doctrine the game already uses. */
+.chroma{
+  color:var(--cream); font-weight:900; letter-spacing:-.02em;
+  text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
+}
+
+/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
+   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
+   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
+   comment explains 1000 exceeds the heaviest real weight of the system
+   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
+   The retro chromatic layering is two ::before/::after copies of the word
+   via content:attr(data-wordmark), every offset and shadow expressed in em
+   rather than px so the layering scales WITH the clamped font-size and holds
+   together at every viewport width instead of drifting apart. SACRED, same
+   as the game's own comment on this block: a frozen copy, not a reference,
+   do not tokenize.
+
+   NOTE 2026-07-30: a Chromium variable-font interpolation fix briefly replaced
+   this stack with a static Black face. The director judged the resulting face
+   worse and it was reverted, here and in the game together, so both surfaces
+   stay identical. The squish and seam report on narrow Android is therefore
+   still OPEN, and any future fix must preserve this face rather than swap it. */
+.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
+  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+  /* PAINT ORDER IS LOAD BEARING. letter-spacing is negative, so glyphs OVERLAP,
+     and a per-glyph stroke would otherwise draw the M's dark outline straight
+     across the O's cream face. That is the seam the director reported, not a
+     font problem. paint-order lays every stroke down first, so they merge into
+     one silhouette, then every fill on top of all of them. Tight tracking and
+     the outline both survive; the lines through the letters do not. */
+  paint-order:stroke fill;
+  text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
+  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
+.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+@keyframes whomp-wordmark-hit{
+  0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
+  2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
+  5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
+}
+@media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;
+  border:var(--edge);background:rgba(255,243,207,.04);font-size:.82rem;color:var(--body);
+  font-variant-numeric:tabular-nums;
+}
+.chip b{color:var(--cream);font-weight:700}
+.chip code{font-family:var(--mono);font-size:.92em;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.16);flex:none}
+/* Measured or not measured. There is no third state and no verdict; see the
+   comment on trackChip for why the gold dot that used to compare the live sha
+   against the wiki source was retired rather than recoloured. */
+.dot.unknown{background:var(--dim);box-shadow:0 0 0 3px rgba(141,132,161,.14)}
+
+.btn{
+  display:inline-block;padding:13px 26px;border-radius:12px;text-decoration:none;
+  font-weight:700;color:var(--ink);background:var(--sweep);border:0;cursor:pointer;
+  box-shadow:0 4px 0 #7a1440; transition:transform .12s ease,box-shadow .12s ease;font-size:1rem;
+}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 #7a1440}
+.btn.ghost{background:none;color:var(--cream);border:var(--edge);box-shadow:0 4px 0 rgba(0,0,0,.4)}
+.btn.small{padding:9px 18px;font-size:.82rem;box-shadow:none}
+
+.rule{height:3px;border-radius:2px;background:var(--sweep);opacity:.85;margin-bottom:26px;max-width:120px}
+
+.arcs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.arc{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025)}
+/* A card that does nothing on hover reads as a picture of a card. These lift by
+   one pixel and warm their rim, which is the same gesture the play button makes
+   and the smallest one that still registers. */
+.arc:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
+@media (prefers-reduced-motion:no-preference){
+  .arc{transition:border-color .14s ease,background .14s ease,transform .14s ease}
+  .arc:hover{transform:translateY(-1px)}
+}
+.arc .id{color:var(--gold);font-weight:800;font-size:.8rem;letter-spacing:.06em}
+.arc h4{margin:4px 0 6px;color:var(--cream);font-size:1rem}
+.arc p{margin:0;font-size:.88rem;color:var(--dim)}
+
+/* SIGN-IN, reused from the game's own accounts worker so one account covers
+   both surfaces. Same worker, same client id, same session shape. */
+.authbar{display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:16px 0 0}
+.authbar-name{color:var(--cream);font-weight:700;font-size:.85rem}
+
+.spoiler{cursor:pointer;border-radius:4px;padding:0 2px;background:rgba(255,243,207,.08);color:transparent;text-shadow:0 0 0 transparent;transition:color .12s ease}
+.spoiler::selection{color:transparent}
+.spoiler.revealed{color:var(--cream);background:none}
+.spoiler:not(.revealed)::after{content:"spoiler, click to reveal";color:var(--dim);font-style:italic}
+.spoiler.revealed::after{content:""}
+
+footer{margin-top:80px;padding-top:24px;border-top:var(--edge);color:var(--dim);font-size:.82rem;text-align:center}
+footer code{color:var(--body)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* NOTHING may make the page itself scroll sideways, on ANY page. A floor rather
+   than a fix: the per-element fixes are real but the next long token will arrive
+   somewhere nobody predicted, and this was reported twice on mobile before it got
+   one. Lives in SHARED_CSS because the second report was on the log while the wiki
+   pages had no protection at all.
+
+   CLIP, NOT HIDDEN, AND THE DIFFERENCE IS LOAD BEARING. overflow-x:hidden makes
+   the element a scroll container, and a scroll container on html/body silently
+   defeats position:sticky for EVERY descendant on the page: the wiki's sticky
+   search band scrolled away with the document and looked simply unimplemented.
+   overflow-x:clip clips exactly the same overflow without becoming a scroll
+   container, so the sideways-scroll floor this rule exists for is unchanged and
+   sticky positioning works again. Verified on all three surfaces. */
+html,body{max-width:100%;overflow-x:clip}
+
+
+.searchwrap{position:relative;max-width:1180px;margin:22px auto 0;padding:0 24px}
+.searchlabel{display:flex;align-items:center;gap:8px;margin:0 0 7px;color:var(--body);font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+/* The shortcut is only worth having if a reader knows it is there, so the key is
+   printed on the label rather than left to be discovered. */
+.searchkey{border:var(--edge);border-radius:5px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;
+  font-weight:700;letter-spacing:0;color:var(--dim);background:rgba(255,243,207,.05);text-transform:none;line-height:1.5}
+/* THE PROMPT SITS IN THE MIDDLE OF THE BOX (director, 2026-08-25: "search the
+   wiki and the dev log in the search bar should be centered"). The box is the
+   full width of the column, so a prompt pinned to the left edge reads as a stray
+   label rather than as the invitation it is.
+   CENTRED AT REST, LEFT ONCE IT IS IN USE, and that split is deliberate.
+   text-align cannot be set on ::placeholder in any engine that matters, so the
+   alignment has to live on the input itself, which would carry a reader's own
+   typing to the middle too: a query that grows out from its own centre while the
+   result panel below it is left-aligned, and a caret that will not hold still.
+   So the centring is the RESTING state only. Focus hands the box back to normal
+   text alignment before the first keystroke, and :not(:placeholder-shown) keeps
+   it there for a page restored with a query already in it (bfcache, back
+   button), where nothing was ever focused. */
+.searchbox{width:100%;padding:14px 18px;border-radius:12px;border:var(--edge);background:rgba(255,243,207,.04);
+  color:var(--cream);font-family:var(--font);font-size:1rem;text-align:center}
+.searchbox:focus,.searchbox:not(:placeholder-shown){text-align:left}
+.searchbox::placeholder{color:var(--dim)}
+.searchbox:focus{outline:2px solid var(--cyan);outline-offset:2px}
+.sr-panel{position:absolute;left:24px;right:24px;top:calc(100% + 6px);background:var(--lift);border:var(--edge);
+  border-radius:12px;max-height:60vh;overflow:auto;z-index:20;box-shadow:0 12px 32px rgba(0,0,0,.5);display:none}
+.sr-panel.open{display:block}
+.sr-empty{padding:16px;color:var(--dim);font-size:.88rem}
+.sr-item{display:block;padding:12px 16px;border-top:1px solid rgba(255,243,207,.06);text-decoration:none;color:var(--body)}
+.sr-item:first-child{border-top:0}
+.sr-item:hover,.sr-item:focus,.sr-item.is-active,.sr-item[aria-selected="true"]{background:rgba(36,240,255,.08);outline:none}
+.sr-kind{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--gold);margin-right:8px}
+.sr-title{color:var(--cream)}
+.sr-status{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+
+
+/* One number, because four things depend on the height of the sticky search
+   band: what the band clears, where the sidebar starts sticking, how tall the
+   sidebar may be, and how far an anchored card must sit below the fold so a deep
+   link does not land underneath the band. Naming it once is what stops those four
+   from drifting apart the next time the band gains a row. */
+:root{--band:103px}
+.skip-link{position:fixed;left:16px;top:12px;z-index:100;transform:translateY(-160%);padding:10px 14px;border-radius:8px;background:var(--cream);color:var(--ink);font-weight:800;text-decoration:none}
+.skip-link:focus{transform:translateY(0);outline:3px solid var(--cyan);outline-offset:2px}
+/* ONE IDENTITY ON ONE ROW (director, 2026-08-25: "the womp wiki is redundant on
+   the left and we only need one so we can fold the sign in into the same line").
+   .wtopbar-brandrow is gone and it took a whole row of the page with it. It had
+   carried the icon plus the words WHOMP / Wiki home at the left and the sign-in
+   button at the right, immediately above a row whose <h1> says WHOMP wiki and
+   whose right end already held the version chips. Two rows, two WHOMP names, two
+   right-aligned controls, and the content started a hundred pixels down.
+   Now: the icon keeps its wiki-home link (see wikiBrand in bin/generate.mjs) and
+   sits INSIDE .brand as the heading's own mark, and the chips and sign-in share
+   .wtopbar-aside at the right end of that same row. Nothing was deleted except
+   the second wordmark and the row it stood on. */
+.wtopbar{max-width:1180px;margin:0 auto;padding:0 24px}
+.wtopbar-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 0 0}
+.wtopbar-aside{display:flex;align-items:center;justify-content:flex-end;gap:12px 18px;flex-wrap:wrap}
+/* .authbar carries its own top padding for the row it used to own alone. */
+.wtopbar-aside .authbar{padding:0}
+
+/* SEARCH IN THE SAME PLACE ON EVERY PAGE, AND STILL THERE AT CARD 400.
+   These pages are long (the bestiary runs past 50,000px on a phone), and a search
+   box that scrolls away is only findable from the top of the page. Sticky keeps
+   the one entry point to all 990 index entries within reach at any scroll depth.
+   The band, not .searchwrap, is what sticks: .searchwrap is position:relative
+   because the result panel is absolutely positioned inside it, and a sticky
+   element cannot also be the containing block that panel needs. Wiki-only, so
+   log.html's own copy of the widget is untouched.
+
+   THE BACKDROP IS PAINTED ONLY WHILE THE BAND IS ACTUALLY STUCK. A permanent one
+   is a flat ink rectangle sitting on top of the body's radial ground, which seams
+   visibly across the page at rest for no benefit: at scroll zero there is nothing
+   behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
+   band still sticks and still works, it just carries no backdrop, which is the
+   right way round for a decoration. */
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
+.wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
+  pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
+  border-bottom:1px solid rgba(255,243,207,.07)}
+.is-stuck .wsearchband::before{opacity:1}
+@media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
+.wsearchband .searchwrap{margin-top:18px}
+.wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
+.wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
+.wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
+.wside a:hover{background:rgba(255,243,207,.05);color:var(--cream)}
+.wside a.is-here{color:var(--cream);background:rgba(255,243,207,.06);font-weight:700}
+.wside a[aria-current="page"]{box-shadow:inset 3px 0 0 var(--cyan)}
+.wside-h{padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wside .stat{padding:12px 12px 2px;margin-top:6px;border-top:1px solid rgba(255,243,207,.06);color:var(--dim);font-size:.76rem;line-height:1.45}
+.wmain{flex:1;min-width:0}
+.wbreadcrumb{display:flex;align-items:center;gap:8px;margin:0 0 14px;color:var(--dim);font-size:.78rem;letter-spacing:.01em}
+.wbreadcrumb a{color:var(--cyan);text-decoration:none}
+.wbreadcrumb [aria-current="page"]{color:var(--body)}
+
+/* THE PROVENANCE BANNER. The one thing that makes this different from a wiki is
+   that it cannot go stale, and a reader has no way to know that unless the page
+   says so. Said once per page, quietly, near the top: one sentence and a link to
+   the page that argues it. It used to be five lines of the same paragraph on all
+   thirty-two routes, which is furniture, not an argument. */
+.wprov{border:var(--edge);border-left:3px solid var(--cyan);border-radius:10px;padding:12px 16px;
+  background:rgba(36,240,255,.04);color:var(--dim);font-size:.84rem;margin:0 0 18px;line-height:1.55}
+.wprov b{color:var(--cream);font-weight:700}
+/* THE OMISSIONS BOX. What the page will not tell you and why. A wiki that just
+   leaves a column out reads as incomplete; one that says "this number exists and
+   here is why publishing it would be a lie" reads as trustworthy. */
+.womit{border:var(--edge);border-left:3px solid var(--gold);border-radius:10px;padding:12px 16px;
+  background:rgba(255,207,63,.035);color:var(--dim);font-size:.83rem;margin:0 0 24px;line-height:1.55}
+.womit b{color:var(--gold);font-weight:700}
+
+.wbar{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;margin-bottom:16px}
+.wfacet{display:flex;flex-direction:column;gap:6px}
+.wfacet-h{color:var(--dim);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wfacet-row{display:flex;flex-wrap:wrap;gap:6px}
+.wf{padding:6px 13px;border-radius:999px;border:var(--edge);background:none;color:var(--dim);cursor:pointer;
+  font-size:.79rem;font-family:var(--font)}
+.wf:hover{color:var(--cream)}
+.wf.is-active{color:var(--cream);border-color:var(--cyan);background:rgba(36,240,255,.08)}
+.wsort{padding:7px 12px;border-radius:8px;border:var(--edge);background:var(--lift);color:var(--cream);
+  font-family:var(--font);font-size:.82rem}
+.wcount{color:var(--body);font-size:.82rem;margin:0 0 20px;font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.01em}
+.wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
+.wempty b{display:block;color:var(--cream);margin-bottom:8px}
+.wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+
+.wgroup{margin-bottom:38px;scroll-margin-top:calc(var(--band) + 18px)}
+.wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px;padding-bottom:7px;border-bottom:var(--edge)}
+.wgroup-h h3{margin:0;font-size:1.22rem;color:var(--cream);letter-spacing:-.01em}
+.wgroup-n{color:var(--gold);font-size:.72rem;font-weight:800;letter-spacing:.07em;font-variant-numeric:tabular-nums}
+.wgroup-note{color:var(--dim);font-size:.86rem;margin:8px 0 15px;max-width:74ch}
+.wgroup[data-empty="1"]{display:none}
+
+.wgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.wcard{border:var(--edge);border-radius:14px;padding:16px 18px;background:rgba(255,243,207,.025);
+  display:flex;flex-direction:column;gap:10px;scroll-margin-top:calc(var(--band) + 18px)}
+.wcard[data-hidden="1"]{display:none}
+.wcard:target{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(36,240,255,.14)}
+.wcard:focus{outline:2px solid var(--cyan);outline-offset:3px}
+.wcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wcard-h h4{margin:0;flex:1;min-width:0;font-size:1.06rem;color:var(--cream);font-weight:800}
+.wcard-accent{width:30px;height:4px;border-radius:2px;flex:none}
+/* THE AUTHORED GLYPH. Four domains ship one and the site used to drop it on the
+   floor. It sits in the same inset well the measured pages already use for a
+   component thumbnail (.wvisual-compact), at card-header size, so it reads as
+   the same family of part rather than an emoji stuck on the front. Where the
+   card has an accent the well borrows it, which is the accent bar the card is
+   already wearing, one component earlier. An entry with no glyph renders no
+   well at all: the header is a flex row and the title simply starts at the
+   edge, so nothing reserves an empty square. */
+.wcard-glyph{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  border:var(--edge);background:rgba(255,243,207,.045);font-size:1.1rem;line-height:1}
+.wvisual{margin:0 0 4px;border:var(--edge);border-radius:12px;padding:10px;background:radial-gradient(circle at 50% 42%,rgba(36,240,255,.08),rgba(255,243,207,.015) 70%);overflow:hidden}
+.wvisual img{display:block;width:auto;max-width:100%;height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
+.wvisual-runtime-render img{width:min(256px,100%)}
+.wvisual-runtime-glyph img{width:min(160px,52%)}
+.wvisual-palette-strip img,.wvisual-evolution-strip img{width:100%}
+.wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
+.wvisual figcaption b{color:var(--cream);font-size:.74rem}
+.wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+.wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
+.wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
+.wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
+.wrange{margin:7px 0 2px;padding:7px 9px;border-radius:8px;background:rgba(255,243,207,.025)}
+.wrange-track{position:relative;display:block;height:5px;margin:5px 3px;background:linear-gradient(90deg,var(--violet),var(--cyan));border-radius:4px}
+.wrange-track::before,.wrange-track::after,.wrange-mid{content:"";position:absolute;top:50%;width:2px;height:11px;background:var(--cream);transform:translate(-50%,-50%)}
+.wrange-track::before{left:0}.wrange-track::after{left:100%}.wrange-mid{left:var(--median)}
+.wrange-values{display:flex;justify-content:space-between;gap:8px;color:var(--cream);font-size:.7rem;font-variant-numeric:tabular-nums}
+.wrange-limit{display:block;color:var(--dim);font-size:.64rem;line-height:1.35;margin-top:3px}
+.wdesc{margin:0;font-size:.9rem;color:var(--body)}
+.wgloss{margin:0;font-size:.88rem;color:var(--dim)}
+.wnote{margin:0;font-size:.88rem;color:var(--body);border-left:2px solid var(--violet);padding-left:12px}
+.wequation{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:9px;background:rgba(36,240,255,.04);font-size:.9rem}
+.wequation a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wequation b{color:var(--gold)}
+.wswatch{display:inline-block;width:13px;height:13px;border-radius:50%;border:1px solid rgba(255,255,255,.25);vertical-align:-2px;margin-right:5px}
+
+.wtags{display:flex;flex-wrap:wrap;gap:6px}
+.wtag{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;
+  border-radius:6px;border:var(--edge);color:var(--dim)}
+.wtag.ink-cyan{color:var(--cyan);border-color:rgba(36,240,255,.35)}
+.wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
+.wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
+.wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
+
+.wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
+.wfact{display:flex;gap:10px;font-size:.85rem;align-items:baseline}
+.wfact-k{flex:none;width:96px;color:var(--dim);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase}
+.wfact-v{flex:1;min-width:0;overflow-wrap:break-word;color:var(--body)}
+.wfact-v b{color:var(--cream);font-weight:700;font-variant-numeric:tabular-nums}
+.wfact-v a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(36,240,255,.3)}
+.wfact-v a:hover{border-bottom-color:var(--cyan)}
+.wfact-v .wsub{color:var(--dim);font-size:.92em}
+
+.wraw{border-top:var(--edge);padding-top:8px;color:var(--dim);font-size:.78rem}
+.wraw summary{cursor:pointer;color:var(--cyan);font-weight:700;list-style-position:outside;margin-left:15px}
+.wraw summary span{color:var(--dim);font-weight:400;margin-left:5px;font-variant-numeric:tabular-nums}
+.wraw dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:5px 12px;margin:10px 0 0}
+.wraw dl div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(255,243,207,.05);padding:3px 0}
+.wraw dt,.wraw dd{margin:0;overflow-wrap:anywhere}
+.wraw dd{color:var(--body);text-align:right;font-variant-numeric:tabular-nums}
+.wschedule ol{margin:10px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.wschedule li{padding-left:3px;color:var(--body)}
+.wschedule li a{color:var(--cyan);text-decoration:none}
+.wschedule li span{color:var(--dim);margin-left:6px}
+.wschedule li code{float:right;margin-left:8px}
+
+.wfeature{border:var(--edge);border-radius:14px;padding:20px;margin:0 0 24px;background:linear-gradient(135deg,rgba(36,240,255,.05),rgba(177,75,255,.035));color:var(--body)}
+.wfeature h3{margin:2px 0 8px;color:var(--cream);font-size:1.2rem}
+.wfeature p{margin:7px 0;color:var(--dim);font-size:.86rem}
+.wfeature .eyebrow{color:var(--gold);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.wmethod-grid,.wbuild-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:14px 0}
+.wmethod-grid>div,.wbuild-grid>article{border:var(--edge);border-radius:10px;padding:12px;background:rgba(6,4,14,.34)}
+.wmethod-grid b,.wmethod-grid span,.wmethod-grid code{display:block}
+.wmethod-grid span{color:var(--body);font-size:.82rem;margin:5px 0}
+.wbuild-grid h4{margin:10px 0 5px;font-size:.9rem;line-height:1.5}
+.wbuild-grid h4 a,.wbuild-grid li a{color:var(--cyan);text-decoration:none}
+.wbuild-grid ol{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:.78rem}
+
+/* COMPARISON METERS. The bar is relative to the biggest value in THIS roster and
+   the real number is always printed beside it, so the bar is a sorting aid and
+   never the claim. Said out loud in the provenance banner. */
+.wmeters{display:flex;flex-direction:column;gap:4px}
+.wmeter{display:flex;align-items:center;gap:8px;font-size:.78rem}
+.wmeter-k{flex:none;width:96px;color:var(--dim);letter-spacing:.05em;text-transform:uppercase;font-size:.68rem}
+.wmeter-t{flex:1;min-width:40px;height:6px;border-radius:3px;background:rgba(255,243,207,.07);overflow:hidden}
+.wmeter-t i{display:block;height:100%;border-radius:3px;background:var(--sweep)}
+.wmeter-v{flex:none;min-width:66px;text-align:right;color:var(--cream);font-variant-numeric:tabular-nums;font-weight:700}
+.wmeter-u{color:var(--dim);font-weight:400}
+
+.whub{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin-bottom:12px}
+.whubcard{border:var(--edge);border-radius:14px;padding:20px 22px;background:rgba(255,243,207,.025);
+  text-decoration:none;display:block;transition:border-color .12s ease,transform .12s ease}
+.whubcard:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.whubcard h3{margin:0 0 4px;color:var(--cream);font-size:1.1rem;letter-spacing:.01em}
+.whubcard .n{color:var(--gold);font-weight:800;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
+.whubcard p{margin:6px 0 0;color:var(--dim);font-size:.88rem}
+.whubsection{margin:0 0 38px;scroll-margin-top:calc(var(--band) + 18px)}
+.whubsection-h{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;padding-bottom:8px;border-bottom:var(--edge)}
+.whubsection-h h3{margin:0;color:var(--cream);font-size:1.3rem;letter-spacing:-.01em}
+.whubsection-h span{color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+@media (max-width:760px){
+  .wshell{flex-direction:column;gap:16px;padding-top:14px}
+  .wside{width:100%;max-height:none;position:static;overflow:visible;padding:0}
+  .wgrid{grid-template-columns:1fr}
+  .wfact-k,.wmeter-k{width:84px}
+  .wraw dl{grid-template-columns:1fr}
+  .wschedule li code{float:none;display:block;width:max-content;margin:2px 0 0}
+  .wfeature{padding:16px}
+  .wtopbar,.wshell{padding-left:16px;padding-right:16px}
+  .wsearchband{padding-left:0;padding-right:0}
+  /* WAS: .wside-section:not(.is-current-section){display:none}
+     That hid four of the five sections on a phone, so a reader on Weapons could
+     reach the thirteen other Buildcraft guides and none of the seventeen
+     elsewhere, and the hub (which has no current section) hid all five. The
+     sidebar is now one closed disclosure instead, which costs less room than the
+     old single open section did and still reaches all thirty-one guides. */
+  .wf,.wside a,.wside-section summary{min-height:44px;display:flex;align-items:center}
+  /* A phone has no room for the page title, the tagline, two provenance chips and
+     a search box before the content starts. The title and tagline stay; the chips
+     shrink to one scannable row and give their vertical space back. */
+  .wtopbar-row{gap:10px;padding-top:14px}
+  .brand h1{font-size:1.32rem}
+  .chips{gap:7px}
+  .chip{padding:5px 11px;font-size:.74rem}
+  .wiki-home-icon{width:38px;height:38px}
+  .wbreadcrumb{flex-wrap:wrap;row-gap:2px}
+  .wprov,.womit{padding:11px 13px}
+}
+@media (max-width:420px){
+  .wcard{padding:14px}
+  .wfact{flex-direction:column;gap:2px}
+  .wfact-k{width:auto}
+  .wmeter{display:grid;grid-template-columns:80px 1fr auto}
+}
+@media (prefers-reduced-motion:reduce){.whubcard{transition:none}}
+.wf:focus-visible,.wsort:focus-visible,.wside a:focus-visible,.wraw summary:focus-visible,.wempty button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+.wside-section{border-top:1px solid rgba(255,243,207,.06)}
+.wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
+  font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
+.wside-section summary:hover{background:rgba(255,243,207,.04)}
+.wside-section summary::marker{color:var(--cyan)}
+.wside-section summary span{float:right;color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums}
+.wside-section[open] summary{color:var(--cream)}
+.wside-links{padding:0 0 5px 7px}
+.wside-section summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+/* The outer disclosure. Above 760px its summary is dressed as the plain section
+   heading it replaced (same gold, same tracking as .wside-h) and the count sits
+   on the right, so the sidebar keeps the silhouette it already had. Below 760px
+   it becomes a real, tappable row. */
+.wside-all{border:0}
+.wside-all>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;
+  padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:8px;list-style:none}
+.wside-all>summary::-webkit-details-marker{display:none}
+.wside-all>summary span{color:var(--dim);font-size:.65rem;font-variant-numeric:tabular-nums;font-weight:700}
+.wside-all>summary:hover{background:rgba(255,243,207,.04)}
+.wside-all>summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wside-all-body{display:flex;flex-direction:column;gap:2px}
+
+/* .wiki-home-copy and its four rules left with the second wordmark it dressed;
+   the link is the icon now, and the heading beside it is the page's one name. */
+.wiki-home{display:flex;align-items:center;text-decoration:none;flex:none}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home:hover .wiki-home-icon{transform:translateY(-1px)}
+.wiki-home:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
+@media (prefers-reduced-motion:no-preference){.wiki-home-icon{transition:transform .12s ease}}
+@media(max-width:760px){
+  .wside{display:block;border:var(--edge);border-radius:12px;padding:6px;background:rgba(255,243,207,.02)}
+  .wside-all>summary{padding:12px;min-height:44px;background:rgba(255,243,207,.03)}
+  .wside-all[open]>summary{color:var(--cream);margin-bottom:2px}
+  .wside-section summary{padding:12px}
+  .wside-links{padding-left:8px}
+  .wside-links a{padding:10px 12px}
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.brand h1{font-size:1.6rem;margin:0}
+.subtag{color:var(--dim);font-size:.85rem;margin:3px 0 0}
+h2{font-size:1.5rem;margin:0 0 6px}
+.lede{color:var(--dim);margin:0 0 20px;font-size:.92rem;max-width:78ch}
+footer a{color:var(--cyan);text-decoration:none}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#wiki-main">Skip to wiki content</a>
+
+<div class="wtopbar">
+  <div class="wtopbar-row">
+    <span class="brand">
+
+    <a class="wiki-home" href="wiki.html" aria-label="WHOMP wiki home">
+      <img class="wiki-home-icon" src="whomp-icon.svg" alt="" width="46" height="46">
+    </a>
+      <span>
+        <h1 class="chroma">WHOMP boss variants</h1>
+        <p class="subtag">The same animal, dressed by the world that fields it.</p>
+      </span>
+    </span>
+    <div class="wtopbar-aside">
+      <div class="chips"><span class="chip">
+    <span class="dot" aria-hidden="true"></span>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
+
+<div class="authbar">
+  <span id="ab-signedout">
+    <button id="ab-signin" class="btn ghost small" type="button">Sign in</button>
+  </span>
+  <span id="ab-signedin" style="display:none">
+    <span class="authbar-name" id="ab-name"></span>
+    <button id="ab-signout" class="btn ghost small" type="button">Sign out</button>
+  </span>
+</div>
+    </div>
+  </div>
+</div>
+
+<div class="wsearchband">
+<div class="searchwrap" role="search">
+  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
+    aria-label="Search WHOMP"
+    role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
+    aria-controls="sr-panel" aria-describedby="sr-status">
+  <div class="sr-panel" id="sr-panel" role="listbox" aria-label="Search results"></div>
+  <p class="sr-status" id="sr-status" role="status" aria-live="polite" aria-atomic="true">Enter at least two characters to search.</p>
+</div></div>
+
+<div class="wshell">
+  <nav class="wside" aria-label="Wiki navigation">
+
+    <details class="wside-all" open>
+      <summary>Wiki <span>32</span></summary>
+      <div class="wside-all-body">
+        <a href="wiki.html">All guides</a>
+        <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
+        <details class="wside-section">
+          <summary>Buildcraft <span>14</span></summary>
+          <div class="wside-links">
+            <a href="wiki-weapons.html">Weapons</a>
+            <a href="wiki-cores.html">Core weapons</a>
+            <a href="wiki-power-ceilings.html">Diminishing returns</a>
+            <a href="wiki-tiers.html">Automatic weapons, measured</a>
+            <a href="wiki-builds.html">Automatic weapons in pairs</a>
+            <a href="wiki-tomes.html">Tomes</a>
+            <a href="wiki-relics.html">Relics</a>
+            <a href="wiki-legendaries.html">Legendary upgrades</a>
+            <a href="wiki-blessings.html">Shrine blessings</a>
+            <a href="wiki-shrine-movement.html">Shrine movement</a>
+            <a href="wiki-utilities.html">Utility abilities</a>
+            <a href="wiki-ultimates.html">WHOMP Ultimate</a>
+            <a href="wiki-evolutions.html">Evolution recipes</a>
+            <a href="wiki-jump-augments.html">Legacy jump augment aliases</a>
+          </div>
+        </details>
+        <details class="wside-section">
+          <summary>Heroes <span>3</span></summary>
+          <div class="wside-links">
+            <a href="wiki-characters.html">Characters</a>
+            <a href="wiki-innates.html">Innates</a>
+            <a href="wiki-signatures.html">Signatures</a>
+          </div>
+        </details>
+        <details class="wside-section is-current-section" open>
+          <summary>World <span>7</span></summary>
+          <div class="wside-links">
+            <a href="wiki-bestiary.html">Bestiary</a>
+            <a href="wiki-boss-variants.html" class="is-here" aria-current="page">Boss Variants</a>
+            <a href="wiki-worlds.html">Campaign worlds</a>
+            <a href="wiki-expeditions.html">Expeditions</a>
+            <a href="wiki-modes.html">Run modes</a>
+            <a href="wiki-world-events.html">Rare world events</a>
+            <a href="wiki-ambient-events.html">Ambient events</a>
+          </div>
+        </details>
+        <details class="wside-section">
+          <summary>Progression <span>6</span></summary>
+          <div class="wside-links">
+            <a href="wiki-achievements.html">Achievements</a>
+            <a href="wiki-quests.html">Quests and rewards</a>
+            <a href="wiki-shop.html">Shop</a>
+            <a href="wiki-ship-cores.html">Ship cores</a>
+            <a href="wiki-ship-systems.html">Ship systems</a>
+            <a href="wiki-ship-fragments.html">Ship fragments</a>
+          </div>
+        </details>
+        <details class="wside-section">
+          <summary>Collection <span>2</span></summary>
+          <div class="wside-links">
+            <a href="wiki-wearables.html">Wearables</a>
+            <a href="wiki-cosmetics.html">Cosmetic styles</a>
+          </div>
+        </details>
+        <span class="wside-h">Elsewhere</span>
+        <a href="log.html#views">Dev log</a>
+        <a href="index.html">&larr; Back to WHOMP</a>
+      </div>
+    </details>
+    <div class="stat">27 entries</div>
+  </nav>
+  <main class="wmain" id="wiki-main" tabindex="-1">
+    <div class="rule"></div>
+    <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-world">World</a><span aria-hidden="true">/</span><span aria-current="page">Boss Variants</span></nav>
+    <h2 class="chroma">Boss Variants</h2>
+    <p class="lede">A variant is a mid-run boss wearing the world it is fought on: the same fight underneath, re-dressed in that map's own growth, crust or rime so a glacier player never meets an undressed desert crab. Every portrait below is the game's own render of the dressed body, and every name was christened by hand.</p>
+
+    <p class="womit"><b>The numbers live on the animal underneath.</b> A variant changes nothing about health, damage or timing - those belong to its base kind in the Bestiary, linked on every card.</p>
+
+
+
+    <div class="wbar">
+      <div class="wfacet">
+        <span class="wfacet-h" id="facet-boss-variants-base">Base kind</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-boss-variants-base" data-facet="base" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="Ramhorn" aria-pressed="false" aria-controls="wiki-groups">Ramhorn <span style="opacity:.5">9</span></button><button class="wf" type="button" data-value="Oilfather" aria-pressed="false" aria-controls="wiki-groups">Oilfather <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="Tidebound Colossus" aria-pressed="false" aria-controls="wiki-groups">Tidebound colossus <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="King Bloom" aria-pressed="false" aria-controls="wiki-groups">King bloom <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="Thistlemaw" aria-pressed="false" aria-controls="wiki-groups">Thistlemaw <span style="opacity:.5">2</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <label class="wfacet-h" for="wsort">Sort</label>
+        <select class="wsort" id="wsort" aria-label="Sort Boss Variants">
+          <option value="roster" data-desc="0" data-text="0">Roster order</option><option value="name" data-desc="0" data-text="1">Name</option><option value="base" data-desc="0" data-text="1">Base kind</option>
+        </select>
+      </div></div>
+    <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
+    <div class="wempty" id="wempty" hidden>
+      <b>Nothing here matches all of that at once.</b>
+      <button type="button" id="wreset">Reset filters</button>
+    </div>
+
+    <div id="wiki-groups">
+    <section class="wgroup" data-group="tidebound" id="g-tidebound">
+      <div class="wgroup-h"><h3>The Colossus dressed</h3><span class="wgroup-n">5</span></div>
+      <p class="wgroup-note">Tidebound underneath.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-sandwraith" tabindex="-1" data-base="Tidebound Colossus" data-s-roster="2" data-s-name="sandwraith" data-s-base="tidebound colossus">
+        <div class="wcard-h">
+
+          <h4>Sandwraith</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:sandwraith" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/sandwraith-256w.png" srcset="wiki-assets/boss-variants/sandwraith-256w.png 256w, wiki-assets/boss-variants/sandwraith-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Sandwraith, the world re-dress of Tidebound Colossus, fought on Scorchdune." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Tidebound Colossus</span><span class="wtag ink-violet">Sandwraith</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Sandwraith dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-gravetide" tabindex="-1" data-base="Tidebound Colossus" data-s-roster="4" data-s-name="gravetide" data-s-base="tidebound colossus">
+        <div class="wcard-h">
+
+          <h4>Gravetide</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:gravetide" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/gravetide-256w.png" srcset="wiki-assets/boss-variants/gravetide-256w.png 256w, wiki-assets/boss-variants/gravetide-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Gravetide, the world re-dress of Tidebound Colossus, fought on Neon Necropolis." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Tidebound Colossus</span><span class="wtag ink-violet">Grave</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Grave dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-cinderbrute" tabindex="-1" data-base="Tidebound Colossus" data-s-roster="6" data-s-name="cinderbrute" data-s-base="tidebound colossus">
+        <div class="wcard-h">
+
+          <h4>Cinderbrute</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:cinderbrute" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/cinderbrute-256w.png" srcset="wiki-assets/boss-variants/cinderbrute-256w.png 256w, wiki-assets/boss-variants/cinderbrute-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Cinderbrute, the world re-dress of Tidebound Colossus, fought on Ember Wastes." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Tidebound Colossus</span><span class="wtag ink-violet">Cinder</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Cinder dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-riftcolossus" tabindex="-1" data-base="Tidebound Colossus" data-s-roster="8" data-s-name="riftcolossus" data-s-base="tidebound colossus">
+        <div class="wcard-h">
+
+          <h4>Riftcolossus</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:riftcolossus" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/riftcolossus-256w.png" srcset="wiki-assets/boss-variants/riftcolossus-256w.png 256w, wiki-assets/boss-variants/riftcolossus-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Riftcolossus, the world re-dress of Tidebound Colossus, fought on Void Rift." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Tidebound Colossus</span><span class="wtag ink-violet">Rift</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Rift dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-hellslam" tabindex="-1" data-base="Tidebound Colossus" data-s-roster="10" data-s-name="hellslam" data-s-base="tidebound colossus">
+        <div class="wcard-h">
+
+          <h4>Hellslam</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:hellslam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/hellslam-256w.png" srcset="wiki-assets/boss-variants/hellslam-256w.png 256w, wiki-assets/boss-variants/hellslam-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Hellslam, the world re-dress of Tidebound Colossus, fought on Hellmouth." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Tidebound Colossus</span><span class="wtag ink-violet">Hellslam</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Hellslam dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a></span></div>
+      </div>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="oilfather" id="g-oilfather">
+      <div class="wgroup-h"><h3>The Father dressed</h3><span class="wgroup-n">8</span></div>
+      <p class="wgroup-note">Oilfather underneath.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-dunefather" tabindex="-1" data-base="Oilfather" data-s-roster="3" data-s-name="dunefather" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>Dunefather</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:dunefather" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/dunefather-256w.png" srcset="wiki-assets/boss-variants/dunefather-256w.png 256w, wiki-assets/boss-variants/dunefather-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Dunefather, the world re-dress of Oilfather, fought on Scorchdune." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Dunefather</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Dunefather dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-cryptfather" tabindex="-1" data-base="Oilfather" data-s-roster="5" data-s-name="cryptfather" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>Cryptfather</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:cryptfather" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/cryptfather-256w.png" srcset="wiki-assets/boss-variants/cryptfather-256w.png 256w, wiki-assets/boss-variants/cryptfather-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Cryptfather, the world re-dress of Oilfather, fought on Neon Necropolis." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Crypt</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Crypt dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-magmafather" tabindex="-1" data-base="Oilfather" data-s-roster="7" data-s-name="magmafather" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>Magmafather</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:magmafather" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/magmafather-256w.png" srcset="wiki-assets/boss-variants/magmafather-256w.png 256w, wiki-assets/boss-variants/magmafather-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Magmafather, the world re-dress of Oilfather, fought on Ember Wastes." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Magma</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Magma dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-voidpourer" tabindex="-1" data-base="Oilfather" data-s-roster="9" data-s-name="voidpourer" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>Voidpourer</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:voidpourer" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/voidpourer-256w.png" srcset="wiki-assets/boss-variants/voidpourer-256w.png 256w, wiki-assets/boss-variants/voidpourer-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Voidpourer, the world re-dress of Oilfather, fought on Void Rift." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Void</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Void dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-helloil" tabindex="-1" data-base="Oilfather" data-s-roster="11" data-s-name="helloil" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>Helloil</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:helloil" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/helloil-256w.png" srcset="wiki-assets/boss-variants/helloil-256w.png 256w, wiki-assets/boss-variants/helloil-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Helloil, the world re-dress of Oilfather, fought on Hellmouth." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Helloil</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Helloil dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-lastlight" tabindex="-1" data-base="Oilfather" data-s-roster="24" data-s-name="the duskfather" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>The Duskfather</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:lastlight" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/lastlight-256w.png" srcset="wiki-assets/boss-variants/lastlight-256w.png 256w, wiki-assets/boss-variants/lastlight-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of The Duskfather, the world re-dress of Oilfather, fought on Gilded Canyon." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Lastlight</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Lastlight dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-lanternjaw" tabindex="-1" data-base="Oilfather" data-s-roster="25" data-s-name="lantern-jaw" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>Lantern-Jaw</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:lanternjaw" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/lanternjaw-256w.png" srcset="wiki-assets/boss-variants/lanternjaw-256w.png 256w, wiki-assets/boss-variants/lanternjaw-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Lantern-Jaw, the world re-dress of Oilfather, fought on Frostreach Pines." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Lanternjaw</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Lanternjaw dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-cairnfather" tabindex="-1" data-base="Oilfather" data-s-roster="26" data-s-name="cairnfather" data-s-base="oilfather">
+        <div class="wcard-h">
+
+          <h4>Cairnfather</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:cairnfather" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/cairnfather-256w.png" srcset="wiki-assets/boss-variants/cairnfather-256w.png 256w, wiki-assets/boss-variants/cairnfather-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Cairnfather, the world re-dress of Oilfather, fought on The Ascent." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Oilfather</span><span class="wtag ink-violet">Cairnfather</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Cairnfather dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-oilfather">Oilfather</a></span></div>
+      </div>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="ramhorn" id="g-ramhorn">
+      <div class="wgroup-h"><h3>The Ram dressed</h3><span class="wgroup-n">9</span></div>
+      <p class="wgroup-note">Ramhorn underneath.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-bogfather" tabindex="-1" data-base="Ramhorn" data-s-roster="1" data-s-name="bogfather" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Bogfather</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:bogfather" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/bogfather-256w.png" srcset="wiki-assets/boss-variants/bogfather-256w.png 256w, wiki-assets/boss-variants/bogfather-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Bogfather, the world re-dress of Ramhorn, fought on Gloom Marsh." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Bog</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Bog dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-stormcarrion" tabindex="-1" data-base="Ramhorn" data-s-roster="12" data-s-name="stormcarrion" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Stormcarrion</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:stormcarrion" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/stormcarrion-256w.png" srcset="wiki-assets/boss-variants/stormcarrion-256w.png 256w, wiki-assets/boss-variants/stormcarrion-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Stormcarrion, the world re-dress of Ramhorn, fought on Meadowfall, Neon Meadow, Scorchdune." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Stormcarrion</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Stormcarrion dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-shoalRam" tabindex="-1" data-base="Ramhorn" data-s-roster="13" data-s-name="shoal ram" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Shoal Ram</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:shoalRam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/shoal-ram-256w.png" srcset="wiki-assets/boss-variants/shoal-ram-256w.png 256w, wiki-assets/boss-variants/shoal-ram-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Shoal Ram, the world re-dress of Ramhorn, fought on Stillwater." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Shoal</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Shoal dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-orchardRam" tabindex="-1" data-base="Ramhorn" data-s-roster="15" data-s-name="orchard ram" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Orchard Ram</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:orchardRam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/orchard-ram-256w.png" srcset="wiki-assets/boss-variants/orchard-ram-256w.png 256w, wiki-assets/boss-variants/orchard-ram-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Orchard Ram, the world re-dress of Ramhorn, fought on Glimmer Orchard." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Garland</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Garland dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-mirageRam" tabindex="-1" data-base="Ramhorn" data-s-roster="16" data-s-name="mirage ram" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Mirage Ram</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:mirageRam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/mirage-ram-256w.png" srcset="wiki-assets/boss-variants/mirage-ram-256w.png 256w, wiki-assets/boss-variants/mirage-ram-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Mirage Ram, the world re-dress of Ramhorn, fought on Mirage Flats." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Mirage</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Mirage dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-canyonRam" tabindex="-1" data-base="Ramhorn" data-s-roster="17" data-s-name="canyon ram" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Canyon Ram</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:canyonRam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/canyon-ram-256w.png" srcset="wiki-assets/boss-variants/canyon-ram-256w.png 256w, wiki-assets/boss-variants/canyon-ram-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Canyon Ram, the world re-dress of Ramhorn, fought on Gilded Canyon." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Strata</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Strata dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-pineRam" tabindex="-1" data-base="Ramhorn" data-s-roster="18" data-s-name="pine ram" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Pine Ram</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:pineRam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/pine-ram-256w.png" srcset="wiki-assets/boss-variants/pine-ram-256w.png 256w, wiki-assets/boss-variants/pine-ram-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Pine Ram, the world re-dress of Ramhorn, fought on Frostreach Pines." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Bough</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Bough dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-ascentRam" tabindex="-1" data-base="Ramhorn" data-s-roster="19" data-s-name="ascent ram" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Ascent Ram</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:ascentRam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/ascent-ram-256w.png" srcset="wiki-assets/boss-variants/ascent-ram-256w.png 256w, wiki-assets/boss-variants/ascent-ram-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Ascent Ram, the world re-dress of Ramhorn, fought on The Ascent." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Serac</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Serac dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-summitRam" tabindex="-1" data-base="Ramhorn" data-s-roster="20" data-s-name="summit ram" data-s-base="ramhorn">
+        <div class="wcard-h">
+
+          <h4>Summit Ram</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:summitRam" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/summit-ram-256w.png" srcset="wiki-assets/boss-variants/summit-ram-256w.png 256w, wiki-assets/boss-variants/summit-ram-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Summit Ram, the world re-dress of Ramhorn, fought on Shiverpeak Summit." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Ramhorn</span><span class="wtag ink-violet">Rime</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Rime dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a></span></div>
+      </div>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="thistlemaw" id="g-thistlemaw">
+      <div class="wgroup-h"><h3>The Maw dressed</h3><span class="wgroup-n">2</span></div>
+      <p class="wgroup-note">Thistlemaw underneath.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-mireMother" tabindex="-1" data-base="Thistlemaw" data-s-roster="0" data-s-name="mire mother" data-s-base="thistlemaw">
+        <div class="wcard-h">
+
+          <h4>Mire Mother</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:mireMother" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/mire-mother-256w.png" srcset="wiki-assets/boss-variants/mire-mother-256w.png 256w, wiki-assets/boss-variants/mire-mother-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Mire Mother, the world re-dress of Thistlemaw, fought on Gloom Marsh." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Thistlemaw</span><span class="wtag ink-violet">Mire</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Mire dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-blossomStalker" tabindex="-1" data-base="Thistlemaw" data-s-roster="14" data-s-name="blossom stalker" data-s-base="thistlemaw">
+        <div class="wcard-h">
+
+          <h4>Blossom Stalker</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:blossomStalker" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/blossom-stalker-256w.png" srcset="wiki-assets/boss-variants/blossom-stalker-256w.png 256w, wiki-assets/boss-variants/blossom-stalker-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Blossom Stalker, the world re-dress of Thistlemaw, fought on Glimmer Orchard." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">Thistlemaw</span><span class="wtag ink-violet">Blossom</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Blossom dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a></span></div>
+      </div>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="kingbloom" id="g-kingbloom">
+      <div class="wgroup-h"><h3>The King dressed</h3><span class="wgroup-n">3</span></div>
+      <p class="wgroup-note">Kingbloom underneath.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-rotcrown" tabindex="-1" data-base="King Bloom" data-s-roster="21" data-s-name="rotcrown" data-s-base="king bloom">
+        <div class="wcard-h">
+
+          <h4>Rotcrown</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:rotcrown" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/rotcrown-256w.png" srcset="wiki-assets/boss-variants/rotcrown-256w.png 256w, wiki-assets/boss-variants/rotcrown-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Rotcrown, the world re-dress of King Bloom, fought on Gloom Marsh." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">King Bloom</span><span class="wtag ink-violet">Rotcrown</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Rotcrown dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-windfallking" tabindex="-1" data-base="King Bloom" data-s-roster="22" data-s-name="the windfall king" data-s-base="king bloom">
+        <div class="wcard-h">
+
+          <h4>The Windfall King</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:windfallking" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/windfallking-256w.png" srcset="wiki-assets/boss-variants/windfallking-256w.png 256w, wiki-assets/boss-variants/windfallking-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of The Windfall King, the world re-dress of King Bloom, fought on Glimmer Orchard." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">King Bloom</span><span class="wtag ink-violet">Windfallking</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Windfallking dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a></span></div>
+      </div>
+
+      </article>
+      <article class="wcard" id="e-saltmother" tabindex="-1" data-base="King Bloom" data-s-roster="23" data-s-name="saltmother" data-s-base="king bloom">
+        <div class="wcard-h">
+
+          <h4>Saltmother</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="bossVariants:saltmother" data-visual-use="entry">
+    <img src="wiki-assets/boss-variants/saltmother-256w.png" srcset="wiki-assets/boss-variants/saltmother-256w.png 256w, wiki-assets/boss-variants/saltmother-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of Saltmother, the world re-dress of King Bloom, fought on Mirage Flats." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/sim/bosses.ts#BOSS_VARIANTS + src/render/bossRenderer.ts#BOSS_VARIANT_SPECS/buildBossWikiPortrait</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral variant dress family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, pair partner, flight cycle, and encounter state are omitted; the dress is the variant's own palette and grafted growth, not the world's lighting.</span></figcaption>
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-cyan">King Bloom</span><span class="wtag ink-violet">Saltmother</span></div>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">Wears</span><span class="wfact-v">the Saltmother dress</span></div>
+        <div class="wfact"><span class="wfact-k">Underneath</span><span class="wfact-v"><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a></span></div>
+      </div>
+
+      </article></div>
+    </section></div>
+  </main>
+</div>
+
+<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
+  from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
+  <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
+  &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
+</footer>
+
+<script type="module">
+import { getUser, onChange, signIn, signOut } from './bin/auth.js';
+const show = (el, visible) => { if (el) el.style.display = visible ? '' : 'none'; };
+function renderAuth(user) {
+  const signedIn = user !== null;
+  show(document.getElementById('ab-signedout'), !signedIn);
+  show(document.getElementById('ab-signedin'), signedIn);
+  if (signedIn) {
+    const name = user.displayName || user.email;
+    const el = document.getElementById('ab-name');
+    if (el) el.textContent = name;
+  }
+  window.__whompUser = user;
+  document.dispatchEvent(new CustomEvent('whomp-auth', { detail: user }));
+}
+async function runSignIn(button) {
+  button.disabled = true;
+  try { await signIn(); } finally { button.disabled = false; }
+}
+document.getElementById('ab-signin')?.addEventListener('click', (e) => runSignIn(e.currentTarget));
+document.getElementById('ab-signout')?.addEventListener('click', () => signOut());
+onChange(renderAuth);
+renderAuth(getUser());
+</script>
+<script type="module">
+
+// ---- facets ----
+const cards = [...document.querySelectorAll('.wcard')];
+const active = {};
+document.querySelectorAll('.wfacet-row').forEach((row) => {
+  const facet = row.dataset.facet;
+  active[facet] = 'all';
+  row.querySelectorAll('.wf').forEach((btn) => btn.addEventListener('click', () => {
+    row.querySelectorAll('.wf').forEach((b) => { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-pressed', 'true');
+    active[facet] = btn.dataset.value;
+    apply();
+  }));
+});
+function apply() {
+  let shown = 0;
+  for (const c of cards) {
+    const ok = Object.entries(active).every(([k, v]) => {
+      if (v === 'all') return true;
+      const row = document.querySelector('.wfacet-row[data-facet="' + k + '"]');
+      return row?.dataset.multi === '1' ? String(c.dataset[k] || '').split(' ').includes(v) : c.dataset[k] === v;
+    });
+    c.dataset.hidden = ok ? '0' : '1';
+    if (ok) shown++;
+  }
+  document.querySelectorAll('.wgroup').forEach((g) => {
+    const visible = [...g.querySelectorAll('.wcard')].filter((c) => c.dataset.hidden !== '1').length;
+    g.dataset.empty = visible ? '0' : '1';
+    const n = g.querySelector('.wgroup-n');
+    if (n) n.textContent = visible;
+  });
+  const el = document.getElementById('wcount');
+  if (el) el.textContent = shown === cards.length ? cards.length + ' shown' : shown + ' of ' + cards.length + ' shown';
+  const empty = document.getElementById('wempty');
+  if (empty) empty.hidden = shown !== 0;
+}
+function resetFilters() {
+  document.querySelectorAll('.wfacet-row').forEach((row) => {
+    row.querySelectorAll('.wf').forEach((b) => {
+      const selected = b.dataset.value === 'all';
+      b.classList.toggle('is-active', selected);
+      b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    });
+    active[row.dataset.facet] = 'all';
+  });
+  apply();
+}
+document.getElementById('wreset')?.addEventListener('click', resetFilters);
+// ---- sort ----
+const sortSel = document.getElementById('wsort');
+function sortCards() {
+  if (!sortSel) return;
+  const opt = sortSel.selectedOptions[0];
+  const key = sortSel.value, desc = opt.dataset.desc === '1', isText = opt.dataset.text === '1';
+  const prop = 's' + key.charAt(0).toUpperCase() + key.slice(1);
+  document.querySelectorAll('.wgrid').forEach((grid) => {
+    [...grid.children]
+      .sort((a, b) => {
+        const x = a.dataset[prop], y = b.dataset[prop];
+        if (x == null && y == null) return 0;
+        if (x == null) return 1;
+        if (y == null) return -1;
+        const cmp = isText ? String(x).localeCompare(String(y)) : (Number(x) - Number(y));
+        return desc ? -cmp : cmp;
+      })
+      .forEach((k) => grid.appendChild(k));
+  });
+}
+if (sortSel) sortSel.addEventListener('change', sortCards);
+sortCards();
+
+// ---- wiki navigation ----
+
+const navAll = document.querySelector('.wside-all');
+const navNarrow = window.matchMedia('(max-width:760px)');
+function syncWikiNav() {
+  if (navAll) navAll.open = !navNarrow.matches;
+}
+syncWikiNav();
+navNarrow.addEventListener?.('change', syncWikiNav);
+
+const stuckRoot = document.documentElement;
+let stuckFrame = 0;
+function syncStuck() {
+  stuckFrame = 0;
+  stuckRoot.classList.toggle('is-stuck', window.scrollY > 8);
+}
+syncStuck();
+window.addEventListener('scroll', () => {
+  if (!stuckFrame) stuckFrame = requestAnimationFrame(syncStuck);
+}, { passive: true });
+
+apply();
+// ---- search: clear the filters before jumping, so a hit is never display:none ----
+
+const searchInput = document.getElementById('search');
+const srPanel = document.getElementById('sr-panel');
+const searchStatus = document.getElementById('sr-status');
+const SEARCH_LIMIT = 30;
+let searchIndex = [];
+let searchState = 'loading';
+let renderedHits = [];
+let activeResult = -1;
+const ENTRY_HASH_PATTERN = /^#e-[A-Za-z0-9._-]+$/;
+
+function searchEntryTarget(hash = location.hash) {
+  if (!ENTRY_HASH_PATTERN.test(hash)) return null;
+  const target = document.getElementById(hash.slice(1));
+  return target?.matches('[id^="e-"][tabindex="-1"]') ? target : null;
+}
+
+function focusSearchEntryHash() {
+  const target = searchEntryTarget();
+  if (target) target.focus({ preventScroll: true });
+}
+
+window.addEventListener('hashchange', focusSearchEntryHash);
+queueMicrotask(focusSearchEntryHash);
+
+function setSearchStatus(message) {
+  if (searchStatus) searchStatus.textContent = message;
+}
+
+function setSearchOpen(open) {
+  srPanel.classList.toggle('open', open);
+  searchInput.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (!open) {
+    activeResult = -1;
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+}
+
+function showSearchMessage(message, announcement = message) {
+  renderedHits = [];
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  const empty = document.createElement('div');
+  empty.className = 'sr-empty';
+  empty.setAttribute('role', 'option');
+  empty.setAttribute('aria-disabled', 'true');
+  empty.textContent = message;
+  srPanel.append(empty);
+  setSearchStatus(announcement);
+  setSearchOpen(true);
+}
+
+const normalized = (value) => String(value || '').trim().toLowerCase();
+const hasWordPrefix = (value, query) => value.split(/\s+/).some((word) => word.startsWith(query));
+
+/* Ranking is deliberately source-aware. Exact and prefix title matches are
+ * always first; after those, a generated wiki route/card beats a generic
+ * change-log body match. This is what makes a short query such as "core" land
+ * on Core weapons and its cards instead of a commit that happened to say core. */
+function searchRank(item, query) {
+  const title = normalized(item.title);
+  const text = normalized(item.text);
+  const type = normalized(item.type);
+  const wikiResult = normalized(item.href).startsWith('wiki');
+  if (title === query) return 0;
+  if (title.startsWith(query)) return 10;
+  if (wikiResult && hasWordPrefix(title, query)) return 20;
+  if (wikiResult && title.includes(query)) return 30;
+  if (wikiResult && (text.startsWith(query) || type.startsWith(query))) return 40;
+  if (wikiResult && (hasWordPrefix(text, query) || hasWordPrefix(type, query))) return 45;
+  if (wikiResult) return 50;
+  if (title.includes(query)) return 60;
+  if (text.startsWith(query) || type.startsWith(query) || hasWordPrefix(text, query) || hasWordPrefix(type, query)) return 70;
+  return type === 'change' ? 90 : 80;
+}
+
+function setActiveResult(next) {
+  const options = [...srPanel.querySelectorAll('.sr-item')];
+  if (!options.length) return;
+  activeResult = (next + options.length) % options.length;
+  options.forEach((option, index) => {
+    const active = index === activeResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  const selected = options[activeResult];
+  searchInput.setAttribute('aria-activedescendant', selected.id);
+  selected.scrollIntoView({ block: 'nearest' });
+}
+
+function renderResults(query) {
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) {
+    renderedHits = [];
+    srPanel.replaceChildren();
+    setSearchOpen(false);
+    setSearchStatus('Enter at least two characters to search.');
+    return;
+  }
+  if (searchState === 'loading') {
+    showSearchMessage('Loading the search index...', 'Search is still loading.');
+    return;
+  }
+  if (searchState === 'error') {
+    showSearchMessage('Search is unavailable right now. Reload the page to try again.', 'Search could not load. Reload the page to try again.');
+    return;
+  }
+
+  const ranked = searchIndex
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => normalized(item.title + ' ' + item.text + ' ' + item.type).includes(q))
+    .sort((a, b) => searchRank(a.item, q) - searchRank(b.item, q)
+      || normalized(a.item.title).localeCompare(normalized(b.item.title))
+      || a.index - b.index);
+  renderedHits = ranked.slice(0, SEARCH_LIMIT).map(({ item }) => item);
+  if (renderedHits.length === 0) {
+    showSearchMessage('No matches for "' + query.trim() + '". Try a weapon, character, world, or dev-log term.', 'No search results for ' + query.trim() + '.');
+    return;
+  }
+
+  activeResult = -1;
+  searchInput.removeAttribute('aria-activedescendant');
+  srPanel.replaceChildren();
+  renderedHits.forEach((item, index) => {
+    const link = document.createElement('a');
+    link.className = 'sr-item';
+    link.id = 'sr-option-' + index;
+    link.href = String(item.href || '');
+    link.tabIndex = -1;
+    link.setAttribute('role', 'option');
+    link.setAttribute('aria-selected', 'false');
+    const kind = document.createElement('span');
+    kind.className = 'sr-kind';
+    kind.textContent = String(item.type || 'result');
+    const title = document.createElement('span');
+    title.className = 'sr-title';
+    title.textContent = String(item.title || 'Untitled');
+    link.append(kind, title);
+    srPanel.append(link);
+  });
+  const shown = renderedHits.length;
+  const total = ranked.length;
+  setSearchStatus((shown < total ? 'Showing ' + shown + ' of ' + total : total) + (total === 1 ? ' search result' : ' search results') + ' for ' + query.trim() + '.');
+  setSearchOpen(true);
+}
+searchInput.addEventListener('input', (e) => renderResults(e.target.value));
+searchInput.addEventListener('focus', (e) => { if (e.target.value.trim().length >= 2) renderResults(e.target.value); });
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (searchInput.value.trim().length < 2) return;
+    e.preventDefault();
+    if (!srPanel.classList.contains('open')) renderResults(searchInput.value);
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    setActiveResult(activeResult < 0 ? (direction > 0 ? 0 : renderedHits.length - 1) : activeResult + direction);
+    return;
+  }
+  if (e.key === 'Enter' && renderedHits.length && srPanel.classList.contains('open')) {
+    e.preventDefault();
+    const options = [...srPanel.querySelectorAll('.sr-item')];
+    const selected = options[activeResult >= 0 ? activeResult : 0];
+    selected?.click();
+    return;
+  }
+  if (e.key === 'Escape') {
+    if (srPanel.classList.contains('open')) e.preventDefault();
+    setSearchOpen(false);
+    setSearchStatus('Search suggestions closed.');
+  }
+  if (e.key === 'Tab') setSearchOpen(false);
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.searchwrap')) setSearchOpen(false); });
+
+/* REACHABLE FROM THE KEYBOARD, ANYWHERE ON THE PAGE. These pages are long enough
+ * that "scroll back up and click the box" is the real cost of a search, and both
+ * keys are what a reader who has used any other documentation site will already
+ * try. Never steals a keystroke that was going somewhere else: any field, any
+ * contenteditable surface and any modified "/" is left alone. */
+const typingTarget = (el) => !!el && (el.isContentEditable
+  || ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName));
+document.addEventListener('keydown', (e) => {
+  const shortcut = (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey)
+    || ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey) && !e.altKey);
+  if (!shortcut || typingTarget(e.target)) return;
+  e.preventDefault();
+  searchInput.focus();
+  searchInput.select();
+});
+srPanel.addEventListener('click', (e) => {
+  const a = e.target.closest('.sr-item');
+  if (!a) return;
+  setSearchOpen(false);
+  const href = a.getAttribute('href') || '';
+  let destination = null;
+  try { destination = new URL(href, location.href); } catch { /* malformed index href: normal navigation owns the failure */ }
+  const sameDocument = destination && destination.origin === location.origin
+    && destination.pathname === location.pathname && destination.search === location.search;
+  const target = sameDocument ? searchEntryTarget(destination.hash) : null;
+  if (target) {
+
+    if (target.classList.contains('wcard') && target.dataset.hidden === '1') {
+      document.querySelectorAll('.wfacet-row').forEach((row) => {
+        row.querySelectorAll('.wf').forEach((b) => {
+          const selected = b.dataset.value === 'all';
+          b.classList.toggle('is-active', selected);
+          b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+        });
+        active[row.dataset.facet] = 'all';
+      });
+      apply();
+    }
+    target.focus({ preventScroll: true });
+  }
+});
+
+fetch('./search-index.json')
+  .then((response) => {
+    if (!response.ok) throw new Error('Search index returned HTTP ' + response.status);
+    return response.json();
+  })
+  .then((data) => {
+    if (!Array.isArray(data)) throw new Error('Search index is not an array');
+    searchIndex = data;
+    searchState = 'ready';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  })
+  .catch(() => {
+    searchIndex = [];
+    searchState = 'error';
+    if (document.activeElement === searchInput && searchInput.value.trim().length >= 2) renderResults(searchInput.value);
+  });
+
+
+</script>
+</body>
+</html>

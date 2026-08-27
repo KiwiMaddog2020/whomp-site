@@ -236,13 +236,13 @@ html,body{max-width:100%;overflow-x:clip}
    behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
    band still sticks and still works, it just carries no backdrop, which is the
    right way round for a decoration. */
-.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
 .wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
   pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
   border-bottom:1px solid rgba(255,243,207,.07)}
 .is-stuck .wsearchband::before{opacity:1}
 @media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
-.wsearchband .searchwrap{margin-top:14px}
+.wsearchband .searchwrap{margin-top:18px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
@@ -503,7 +503,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -532,7 +532,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <nav class="wside" aria-label="Wiki navigation">
 
     <details class="wside-all" open>
-      <summary>Wiki <span>31</span></summary>
+      <summary>Wiki <span>32</span></summary>
       <div class="wside-all-body">
         <a href="wiki.html">All guides</a>
         <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
@@ -564,9 +564,10 @@ footer a{color:var(--cyan);text-decoration:none}
           </div>
         </details>
         <details class="wside-section">
-          <summary>World <span>6</span></summary>
+          <summary>World <span>7</span></summary>
           <div class="wside-links">
             <a href="wiki-bestiary.html">Bestiary</a>
+            <a href="wiki-boss-variants.html">Boss Variants</a>
             <a href="wiki-worlds.html">Campaign worlds</a>
             <a href="wiki-expeditions.html">Expeditions</a>
             <a href="wiki-modes.html">Run modes</a>
@@ -603,7 +604,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-buildcraft">Buildcraft</a><span aria-hidden="true">/</span><span aria-current="page">Automatic weapons, measured</span></nav>
     <h2 class="chroma">Automatic weapons, measured</h2>
-    <p class="lede">36 of the 45 automatic weapons went through the same two tests, at 96 combinations of form and level. This is a laboratory and not a run: nothing here dodges, nothing here is aimed, and a letter only says where a row landed against the other rows it was compared with. Where a test could not honestly produce a number, the row says so instead of taking a guess.</p>
+    <p class="lede">Every one of the 36 automatic weapons went through the same two tests, at 96 combinations of form and level. This is a laboratory and not a run: nothing here dodges, nothing here is aimed, and a letter only says where a row landed against the other rows it was compared with. Where a test could not honestly produce a number, the row says so instead of taking a guess.</p>
 
     <p class="womit"><b>Core weapons, tomes, relics and characters have no letters here, and the measurement says why.</b> <b>Tomes:</b> A tome has no standalone output; its number is a DELTA against a reference build, and choosing that reference is a design decision this lane was not scoped to make. Named follow-on lane. <b>Relics:</b> Relics span direct stats, economy, survival, movement and event effects. No universal reference build or grade was selected. <b>Characters:</b> Confounded by innate + signature + starting weapon at once; not separable on this rig. <b>Core weapons:</b> Campaign cores are aimed/manual-control weapons with a separate runtime registry. This automatic WeaponSystem orbit cannot measure human aim.</p>
 
@@ -618,7 +619,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wsub">Survival is the metric a run cares about and it is NOT reachable per weapon: src/dev/headlessSim.ts has no per-weapon damage attribution (damageByWeapon is keyed by source phase), no starting-weapon override, and its draft puts four weapons in the run within minutes. Locking the others out does not isolate either, because partitionLockedOut falls back to the held ids when a pool empties. Reported as a correct negative rather than faked.</p>
       <p class="wsub">Worker count changes wall-clock execution only. The CLI disables V8 Maglev before simulation, fixture workers inherit that process policy, and seeded tasks return in canonical order; numeric evidence and fingerprint are worker-count invariant. Workers used: 4 of cap 4; execution-only, not measurement evidence.</p>
       <details class="wraw"><summary>Evidence and limits <span>10 named limits</span></summary>
-        <dl><div><dt>Fixture fingerprint</dt><dd><code>550af8227c87623eb64126e4f06d3121</code></dd></div><div><dt>Source-contract digest</dt><dd><code>5d6577a8b8f6f872ab2a9646c13adf3510a653d07d6027af674f47cf5fb90da0</code></dd></div></dl>
+        <dl><div><dt>Fixture fingerprint</dt><dd><code>2e35314ef4d58d3dbd49bf136f0bc3b6</code></dd></div><div><dt>Source-contract digest</dt><dd><code>dc8ea7feaed8fbea6b361fa14ca6641cfd0130eb759c86f4c200e279e9d3dd24</code></dd></div></dl>
         <ul><li>This ranks bare automatic WeaponSystem weapons, not aimed core weapons and not full-run builds. A weapon that scales with stats is measured without those stats.</li><li>The rig is WeaponSystem + Projectiles + GroundPatches. No director, elites, boss attacks/phases, player damage, survival, XP or draft economy.</li><li>The trash fixture respawns on death, so kills/min measures throughput and is not capped by a finite population.</li><li>The boss-class fixture is stationary and stands 5.1-7.9m from the orbiting player. It does not execute authored boss movement, attacks, or phases; this is target-damage evidence, not boss-fight performance.</li><li>A weapon whose reach is shorter than the controlled target distance measures ZERO there, and that zero is a fact about this fixture as much as about the weapon.</li><li>Echo's wake does not intersect the stationary boss-class fixture. Those bossDamage rows are explicitly UNMEASURED and receive no tier or rank.</li><li>Order statistics are discrete, never interpolated: quantiles use the nearest zero-based sample index round((n - 1) * q), and even-sized medians use the upper middle sample.</li><li>Measured controlled-sim builds are greedy four-weapon chains, not exhaustive optima or live-play recommendations.</li><li>Greedy build selection and reported build performance use the same deterministic seed cohort; there is no holdout cohort, so selection bias is possible.</li><li>Multi-weapon rows use a fixed lexicographic insertion order. Other acquisition orders are not measured and can change cast interleave.</li></ul>
       </details>
     </section>
@@ -2976,8 +2977,8 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC
-  from <code>data/tier-rankings.json · fingerprint 550af8227c87623eb64126e4f06d3121 · source 5d6577a8b8f6f872ab2a9646c13adf3510a653d07d6027af674f47cf5fb90da0</code> and <code>data/wiki-visuals.json</code>.
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
+  from <code>data/tier-rankings.json · fingerprint 2e35314ef4d58d3dbd49bf136f0bc3b6 · source dc8ea7feaed8fbea6b361fa14ca6641cfd0130eb759c86f4c200e279e9d3dd24</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

@@ -236,13 +236,13 @@ html,body{max-width:100%;overflow-x:clip}
    behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
    band still sticks and still works, it just carries no backdrop, which is the
    right way round for a decoration. */
-.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
 .wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
   pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
   border-bottom:1px solid rgba(255,243,207,.07)}
 .is-stuck .wsearchband::before{opacity:1}
 @media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
-.wsearchband .searchwrap{margin-top:14px}
+.wsearchband .searchwrap{margin-top:18px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
@@ -503,7 +503,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -532,7 +532,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <nav class="wside" aria-label="Wiki navigation">
 
     <details class="wside-all" open>
-      <summary>Wiki <span>31</span></summary>
+      <summary>Wiki <span>32</span></summary>
       <div class="wside-all-body">
         <a href="wiki.html" class="is-here" aria-current="page">All guides</a>
         <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
@@ -564,9 +564,10 @@ footer a{color:var(--cyan);text-decoration:none}
           </div>
         </details>
         <details class="wside-section">
-          <summary>World <span>6</span></summary>
+          <summary>World <span>7</span></summary>
           <div class="wside-links">
             <a href="wiki-bestiary.html">Bestiary</a>
+            <a href="wiki-boss-variants.html">Boss Variants</a>
             <a href="wiki-worlds.html">Campaign worlds</a>
             <a href="wiki-expeditions.html">Expeditions</a>
             <a href="wiki-modes.html">Run modes</a>
@@ -603,8 +604,8 @@ footer a{color:var(--cyan);text-decoration:none}
     <h2 class="chroma">The wiki</h2>
     <p class="lede">Every weapon, every enemy, every bad idea you can take at a level up. Written by people who have died to all of it.</p>
 
-    <p class="wprov"><b>28</b> catalogs have a page here, <b>485</b> entries in all, plus
-      <b>96</b> measured weapon rows, <b>435</b> measured pairs, and <b>262</b> pictures the game
+    <p class="wprov"><b>29</b> catalogs have a page here, <b>508</b> entries in all, plus
+      <b>96</b> measured weapon rows, <b>435</b> measured pairs, and <b>285</b> pictures the game
       sat still for.</p>
 
     <p class="womit">Where the game has no answer, these pages say so rather than guess. A few numbers an ordinary wiki
@@ -615,7 +616,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <div class="whubsection-h"><h3>Buildcraft</h3><span>14 guides</span></div>
         <div class="whub">
           <a class="whubcard" href="wiki-weapons.html">
-            <span class="n">45 entries</span>
+            <span class="n">36 entries</span>
             <h3>Weapons</h3>
             <p>The half of your build that fires itself.</p>
           </a>
@@ -665,7 +666,7 @@ footer a{color:var(--cyan);text-decoration:none}
             <p>The five ways a shrine changes how you move.</p>
           </a>
           <a class="whubcard" href="wiki-utilities.html">
-            <span class="n">19 entries</span>
+            <span class="n">18 entries</span>
             <h3>Utility abilities</h3>
             <p>The F key, and what you put under it.</p>
           </a>
@@ -703,12 +704,17 @@ footer a{color:var(--cyan);text-decoration:none}
             <p>One move bound to R, and then the wait.</p>
           </a></div>
       </section><section class="whubsection" id="section-world">
-        <div class="whubsection-h"><h3>World</h3><span>6 guides</span></div>
+        <div class="whubsection-h"><h3>World</h3><span>7 guides</span></div>
         <div class="whub">
           <a class="whubcard" href="wiki-bestiary.html">
-            <span class="n">58 entries</span>
+            <span class="n">62 entries</span>
             <h3>Bestiary</h3>
             <p>Every kind in the game. Several of them never come near you.</p>
+          </a>
+          <a class="whubcard" href="wiki-boss-variants.html">
+            <span class="n">27 entries</span>
+            <h3>Boss Variants</h3>
+            <p>The same animal, dressed by the world that fields it.</p>
           </a>
           <a class="whubcard" href="wiki-worlds.html">
             <span class="n">13 entries</span>
@@ -716,7 +722,7 @@ footer a{color:var(--cyan);text-decoration:none}
             <p>The campaign, in the order it lets you have it.</p>
           </a>
           <a class="whubcard" href="wiki-expeditions.html">
-            <span class="n">2 entries</span>
+            <span class="n">3 entries</span>
             <h3>Expeditions</h3>
             <p>Arenas that sit outside the campaign entirely.</p>
           </a>
@@ -731,7 +737,7 @@ footer a{color:var(--cyan);text-decoration:none}
             <p>Placed before you arrive, and found only by walking into them.</p>
           </a>
           <a class="whubcard" href="wiki-ambient-events.html">
-            <span class="n">15 entries</span>
+            <span class="n">16 entries</span>
             <h3>Ambient events</h3>
             <p>The things a world does whether or not you are watching.</p>
           </a></div>
@@ -786,7 +792,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number in this wiki came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC
+  Every number in this wiki came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
   from <code>data/game-data.json</code>, <code>data/tier-rankings.json</code>, and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>

@@ -236,13 +236,13 @@ html,body{max-width:100%;overflow-x:clip}
    behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
    band still sticks and still works, it just carries no backdrop, which is the
    right way round for a decoration. */
-.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
 .wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
   pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
   border-bottom:1px solid rgba(255,243,207,.07)}
 .is-stuck .wsearchband::before{opacity:1}
 @media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
-.wsearchband .searchwrap{margin-top:14px}
+.wsearchband .searchwrap{margin-top:18px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
@@ -503,7 +503,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -532,7 +532,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <nav class="wside" aria-label="Wiki navigation">
 
     <details class="wside-all" open>
-      <summary>Wiki <span>31</span></summary>
+      <summary>Wiki <span>32</span></summary>
       <div class="wside-all-body">
         <a href="wiki.html">All guides</a>
         <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
@@ -564,9 +564,10 @@ footer a{color:var(--cyan);text-decoration:none}
           </div>
         </details>
         <details class="wside-section">
-          <summary>World <span>6</span></summary>
+          <summary>World <span>7</span></summary>
           <div class="wside-links">
             <a href="wiki-bestiary.html">Bestiary</a>
+            <a href="wiki-boss-variants.html">Boss Variants</a>
             <a href="wiki-worlds.html">Campaign worlds</a>
             <a href="wiki-expeditions.html">Expeditions</a>
             <a href="wiki-modes.html">Run modes</a>
@@ -597,13 +598,13 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>
-    <div class="stat">19 entries</div>
+    <div class="stat">18 entries</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-buildcraft">Buildcraft</a><span aria-hidden="true">/</span><span aria-current="page">Utility abilities</span></nav>
     <h2 class="chroma">Utility abilities</h2>
-    <p class="lede">You carry one of these and you press F. Heroic Leap is the one you already have, the other 18 cost gold, and every one of them is a cooldown you have to spend at the right moment.</p>
+    <p class="lede">You carry one of these and you press F. Heroic Leap is the one you already have, the other 17 cost gold, and every one of them is a cooldown you have to spend at the right moment.</p>
 
 
 
@@ -614,14 +615,14 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-utilities-targeting">Targeting</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-utilities-targeting" data-facet="targeting" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="immediate" aria-pressed="false" aria-controls="wiki-groups">Immediate <span style="opacity:.5">15</span></button><button class="wf" type="button" data-value="targeted" aria-pressed="false" aria-controls="wiki-groups">Targeted <span style="opacity:.5">4</span></button>
+          <button class="wf" type="button" data-value="immediate" aria-pressed="false" aria-controls="wiki-groups">Immediate <span style="opacity:.5">14</span></button><button class="wf" type="button" data-value="targeted" aria-pressed="false" aria-controls="wiki-groups">Targeted <span style="opacity:.5">4</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h" id="facet-utilities-access">Availability</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-utilities-access" data-facet="access" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="unlockable" aria-pressed="false" aria-controls="wiki-groups">Unlockable <span style="opacity:.5">18</span></button><button class="wf" type="button" data-value="from the start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">1</span></button>
+          <button class="wf" type="button" data-value="unlockable" aria-pressed="false" aria-controls="wiki-groups">Unlockable <span style="opacity:.5">17</span></button><button class="wf" type="button" data-value="from the start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -661,7 +662,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article></div>
     </section>
     <section class="wgroup" data-group="forge" id="g-forge">
-      <div class="wgroup-h"><h3>Unlockable utilities</h3><span class="wgroup-n">18</span></div>
+      <div class="wgroup-h"><h3>Unlockable utilities</h3><span class="wgroup-n">17</span></div>
       <p class="wgroup-note">The rest, each with a price on it.</p>
       <div class="wgrid">
       <article class="wcard" id="e-recallRune" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="1" data-s-name="recall rune" data-s-cooldown="18000" data-s-cost="400">
@@ -754,25 +755,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>3</span></summary><dl><div><dt><code>rangeM</code></dt><dd>12</dd></div><div><dt><code>pullSpeed</code></dt><dd>26</dd></div><div><dt><code>hookDamage</code></dt><dd>10</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-stasis" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="6" data-s-name="stasis" data-s-cooldown="26000" data-s-cost="700">
-        <div class="wcard-h">
-
-          <h4>Stasis</h4>
-          <span class="wcard-accent" style="background:#9de8ff"></span>
-        </div>
-
-
-      <div class="wtags"><span class="wtag ink-cyan">Implemented</span><span class="wtag ink-violet">Immediate</span></div>
-      <p class="wdesc">Freeze in place, invulnerable, for a moment. Then act.</p>
-      <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Cooldown</span><span class="wfact-v"><b>26 seconds</b></span></div>
-        <div class="wfact"><span class="wfact-k">Availability</span><span class="wfact-v"><b>700</b> gold</span></div>
-        <div class="wfact"><span class="wfact-k">Glyph</span><span class="wfact-v"><b>#</b></span></div>
-      </div>
-      <details class="wraw"><summary>Source parameters <span>1</span></summary><dl><div><dt><code>durationMs</code></dt><dd>1500</dd></div></dl></details>
-
-      </article>
-      <article class="wcard" id="e-chasm" tabindex="-1" data-targeting="targeted" data-access="unlockable" data-s-roster="7" data-s-name="chasm" data-s-cooldown="22000" data-s-cost="750">
+      <article class="wcard" id="e-chasm" tabindex="-1" data-targeting="targeted" data-access="unlockable" data-s-roster="6" data-s-name="chasm" data-s-cooldown="22000" data-s-cost="750">
         <div class="wcard-h">
 
           <h4>Chasm</h4>
@@ -790,7 +773,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>4</span></summary><dl><div><dt><code>rangeM</code></dt><dd>8</dd></div><div><dt><code>radiusM</code></dt><dd>2.6</dd></div><div><dt><code>warnMs</code></dt><dd>500</dd></div><div><dt><code>openMs</code></dt><dd>1400</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-aftershockDash" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="8" data-s-name="aftershock dash" data-s-cooldown="13000" data-s-cost="500">
+      <article class="wcard" id="e-aftershockDash" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="7" data-s-name="aftershock dash" data-s-cooldown="13000" data-s-cost="500">
         <div class="wcard-h">
 
           <h4>Aftershock Dash</h4>
@@ -808,7 +791,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>8</span></summary><dl><div><dt><code>rangeM</code></dt><dd>9</dd></div><div><dt><code>travelSpeedMps</code></dt><dd>45</dd></div><div><dt><code>minTravelMs</code></dt><dd>120</dd></div><div><dt><code>wakeHalfWidthM</code></dt><dd>1.1</dd></div><div><dt><code>wakeDamage</code></dt><dd>6</dd></div><div><dt><code>wakeKnockback</code></dt><dd>6</dd></div><div><dt><code>wakeStaggerMult</code></dt><dd>0.05</dd></div><div><dt><code>wakeStaggerMs</code></dt><dd>900</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-bouncePad" tabindex="-1" data-targeting="targeted" data-access="unlockable" data-s-roster="9" data-s-name="bounce pad" data-s-cooldown="16000" data-s-cost="550">
+      <article class="wcard" id="e-bouncePad" tabindex="-1" data-targeting="targeted" data-access="unlockable" data-s-roster="8" data-s-name="bounce pad" data-s-cooldown="16000" data-s-cost="550">
         <div class="wcard-h">
 
           <h4>Bounce Pad</h4>
@@ -826,7 +809,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>8</span></summary><dl><div><dt><code>rangeM</code></dt><dd>6</dd></div><div><dt><code>padRadiusM</code></dt><dd>1.5</dd></div><div><dt><code>lifetimeMs</code></dt><dd>8000</dd></div><div><dt><code>launchRangeM</code></dt><dd>10</dd></div><div><dt><code>travelSpeedMps</code></dt><dd>19</dd></div><div><dt><code>apexM</code></dt><dd>5.2</dd></div><div><dt><code>minTravelMs</code></dt><dd>300</dd></div><div><dt><code>enemyLaunchImpulse</code></dt><dd>22</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-reboundWall" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="10" data-s-name="rebound wall" data-s-cooldown="20000" data-s-cost="650">
+      <article class="wcard" id="e-reboundWall" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="9" data-s-name="rebound wall" data-s-cooldown="20000" data-s-cost="650">
         <div class="wcard-h">
 
           <h4>Rebound Wall</h4>
@@ -844,7 +827,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>8</span></summary><dl><div><dt><code>plantAheadM</code></dt><dd>1.6</dd></div><div><dt><code>halfWidthM</code></dt><dd>2.6</dd></div><div><dt><code>halfThicknessM</code></dt><dd>0.18</dd></div><div><dt><code>heightM</code></dt><dd>2.2</dd></div><div><dt><code>durationMs</code></dt><dd>2600</dd></div><div><dt><code>reflectedTtlMs</code></dt><dd>1500</dd></div><div><dt><code>reflectedKnockback</code></dt><dd>4</dd></div><div><dt><code>maxReflected</code></dt><dd>16</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-phaseSwap" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="11" data-s-name="phase swap" data-s-cooldown="20000" data-s-cost="650">
+      <article class="wcard" id="e-phaseSwap" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="10" data-s-name="phase swap" data-s-cooldown="20000" data-s-cost="650">
         <div class="wcard-h">
 
           <h4>Phase Swap</h4>
@@ -862,7 +845,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>3</span></summary><dl><div><dt><code>rangeM</code></dt><dd>14</dd></div><div><dt><code>windupMs</code></dt><dd>220</dd></div><div><dt><code>resolveRangeM</code></dt><dd>17.5</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-decoy" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="12" data-s-name="decoy" data-s-cooldown="22000" data-s-cost="550">
+      <article class="wcard" id="e-decoy" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="11" data-s-name="decoy" data-s-cooldown="22000" data-s-cost="550">
         <div class="wcard-h">
 
           <h4>Decoy</h4>
@@ -880,7 +863,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>2</span></summary><dl><div><dt><code>durationMs</code></dt><dd>6000</dd></div><div><dt><code>walkSpeedMps</code></dt><dd>4.5</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-rewind" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="13" data-s-name="rewind" data-s-cooldown="26000" data-s-cost="700">
+      <article class="wcard" id="e-rewind" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="12" data-s-name="rewind" data-s-cooldown="26000" data-s-cost="700">
         <div class="wcard-h">
 
           <h4>Rewind</h4>
@@ -898,7 +881,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>4</span></summary><dl><div><dt><code>windowMs</code></dt><dd>3000</dd></div><div><dt><code>recoverFrac</code></dt><dd>0.5</dd></div><div><dt><code>sampleMs</code></dt><dd>100</dd></div><div><dt><code>blinkFxMs</code></dt><dd>260</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-sentrySting" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="14" data-s-name="sentry sting" data-s-cooldown="24000" data-s-cost="600">
+      <article class="wcard" id="e-sentrySting" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="13" data-s-name="sentry sting" data-s-cooldown="24000" data-s-cost="600">
         <div class="wcard-h">
 
           <h4>Sentry Sting</h4>
@@ -916,7 +899,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>7</span></summary><dl><div><dt><code>durationMs</code></dt><dd>8000</dd></div><div><dt><code>rangeM</code></dt><dd>9</dd></div><div><dt><code>fireIntervalMs</code></dt><dd>900</dd></div><div><dt><code>stingDamage</code></dt><dd>2</dd></div><div><dt><code>slowMult</code></dt><dd>0.7</dd></div><div><dt><code>slowMs</code></dt><dd>600</dd></div><div><dt><code>slowRadiusM</code></dt><dd>0.6</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-overcharge" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="15" data-s-name="overcharge field" data-s-cooldown="20000" data-s-cost="550">
+      <article class="wcard" id="e-overcharge" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="14" data-s-name="overcharge field" data-s-cooldown="20000" data-s-cost="550">
         <div class="wcard-h">
 
           <h4>Overcharge Field</h4>
@@ -934,7 +917,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>3</span></summary><dl><div><dt><code>radiusM</code></dt><dd>3.6</dd></div><div><dt><code>durationMs</code></dt><dd>6000</dd></div><div><dt><code>damageMult</code></dt><dd>1.3</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-undertow" tabindex="-1" data-targeting="targeted" data-access="unlockable" data-s-roster="16" data-s-name="undertow" data-s-cooldown="18000" data-s-cost="600">
+      <article class="wcard" id="e-undertow" tabindex="-1" data-targeting="targeted" data-access="unlockable" data-s-roster="15" data-s-name="undertow" data-s-cooldown="18000" data-s-cost="600">
         <div class="wcard-h">
 
           <h4>Undertow</h4>
@@ -952,7 +935,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>6</span></summary><dl><div><dt><code>rangeM</code></dt><dd>10</dd></div><div><dt><code>radiusM</code></dt><dd>4.5</dd></div><div><dt><code>warnMs</code></dt><dd>400</dd></div><div><dt><code>dragMs</code></dt><dd>750</dd></div><div><dt><code>dragSpeedMps</code></dt><dd>7</dd></div><div><dt><code>innerStopM</code></dt><dd>0.9</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-timeBubble" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="17" data-s-name="time bubble" data-s-cooldown="28000" data-s-cost="750">
+      <article class="wcard" id="e-timeBubble" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="16" data-s-name="time bubble" data-s-cooldown="28000" data-s-cost="750">
         <div class="wcard-h">
 
           <h4>Time Bubble</h4>
@@ -970,7 +953,7 @@ footer a{color:var(--cyan);text-decoration:none}
       <details class="wraw"><summary>Source parameters <span>4</span></summary><dl><div><dt><code>radiusM</code></dt><dd>4.5</dd></div><div><dt><code>durationMs</code></dt><dd>4000</dd></div><div><dt><code>slowMult</code></dt><dd>0.45</dd></div><div><dt><code>slowReapplyMs</code></dt><dd>200</dd></div></dl></details>
 
       </article>
-      <article class="wcard" id="e-snareTrap" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="18" data-s-name="snare trap" data-s-cooldown="20000" data-s-cost="500">
+      <article class="wcard" id="e-snareTrap" tabindex="-1" data-targeting="immediate" data-access="unlockable" data-s-roster="17" data-s-name="snare trap" data-s-cooldown="20000" data-s-cost="500">
         <div class="wcard-h">
 
           <h4>Snare Trap</h4>
@@ -993,7 +976,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
   from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>

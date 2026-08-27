@@ -236,13 +236,13 @@ html,body{max-width:100%;overflow-x:clip}
    behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
    band still sticks and still works, it just carries no backdrop, which is the
    right way round for a decoration. */
-.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
 .wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
   pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
   border-bottom:1px solid rgba(255,243,207,.07)}
 .is-stuck .wsearchband::before{opacity:1}
 @media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
-.wsearchband .searchwrap{margin-top:14px}
+.wsearchband .searchwrap{margin-top:18px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
@@ -503,7 +503,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -532,7 +532,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <nav class="wside" aria-label="Wiki navigation">
 
     <details class="wside-all" open>
-      <summary>Wiki <span>31</span></summary>
+      <summary>Wiki <span>32</span></summary>
       <div class="wside-all-body">
         <a href="wiki.html">All guides</a>
         <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
@@ -564,9 +564,10 @@ footer a{color:var(--cyan);text-decoration:none}
           </div>
         </details>
         <details class="wside-section">
-          <summary>World <span>6</span></summary>
+          <summary>World <span>7</span></summary>
           <div class="wside-links">
             <a href="wiki-bestiary.html">Bestiary</a>
+            <a href="wiki-boss-variants.html">Boss Variants</a>
             <a href="wiki-worlds.html">Campaign worlds</a>
             <a href="wiki-expeditions.html">Expeditions</a>
             <a href="wiki-modes.html">Run modes</a>
@@ -648,7 +649,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:damage" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/damage.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Power." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Damage bonus</span></div>
@@ -664,7 +664,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:speed" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/speed.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Swiftness." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Speed bonus</span></div>
@@ -680,7 +679,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:attackSpeed" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/attack-speed.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Haste." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Attack speed bonus</span></div>
@@ -696,7 +694,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:regen" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/regen.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Vitality." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Regen bonus</span></div>
@@ -712,7 +709,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:lifesteal" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/lifesteal.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Vampirism." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Lifesteal</span></div>
@@ -728,7 +724,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:critChance" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/crit-chance.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Precision." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Crit chance</span></div>
@@ -744,7 +739,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:critMultiplier" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/crit-multiplier.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Lethality." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Crit multiplier</span></div>
@@ -760,7 +754,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:armor" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/armor.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Fortitude." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Armor</span></div>
@@ -776,7 +769,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:maxHp" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/max-hp.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Vigor." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Max hp bonus</span></div>
@@ -792,7 +784,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:pickupRange" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/pickup-range.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Magnetism." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Pickup bonus</span></div>
@@ -808,7 +799,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:xpBonus" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/xp-bonus.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Wisdom." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Xp bonus</span></div>
@@ -824,7 +814,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:luck" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/luck.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Fortune." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Luck</span></div>
@@ -840,7 +829,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:size" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/size.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Magnitude." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Size bonus</span></div>
@@ -856,7 +844,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:duration" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/duration.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Persistence." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Duration bonus</span></div>
@@ -872,7 +859,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:projSpeed" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/proj-speed.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Velocity." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Proj speed bonus</span></div>
@@ -888,7 +874,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:gold" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/gold.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Riches." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Gold bonus</span></div>
@@ -904,7 +889,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:thorns" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/thorns.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Thorns." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Thorns bonus</span></div>
@@ -920,7 +904,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:shield" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/shield.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Aegis." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Shield bonus</span></div>
@@ -936,7 +919,6 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-glyph" data-visual-key="shrineBlessings:projectiles" data-visual-use="entry">
     <img src="wiki-assets/shrine-blessings/projectiles.png" width="128" height="128" alt="Canonical in-game shrine blessing glyph for Barrage." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Card art, painted by the game</b><span>Repo-runtime · src/ui/cardArt.ts#shrineGlyphSpec+paintGlyphMedallion</span></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Bonus projectiles</span></div>
@@ -949,7 +931,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
   from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>

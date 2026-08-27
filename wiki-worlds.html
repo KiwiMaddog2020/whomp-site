@@ -236,13 +236,13 @@ html,body{max-width:100%;overflow-x:clip}
    behind the band to hide. NAV_SCRIPT owns the .is-stuck flag. Without script the
    band still sticks and still works, it just carries no backdrop, which is the
    right way round for a decoration. */
-.wsearchband{position:sticky;top:0;z-index:30;padding-bottom:14px}
+.wsearchband{position:sticky;top:0;z-index:30;padding-top:10px;padding-bottom:14px}/* director 2026-08-26 11:44 pm: the focus ring clipped against the viewport top when the band is stuck, and the bar sat a touch high even unstuck - 10px of band padding shows the whole ring and seats the bar. */
 .wsearchband::before{content:"";position:absolute;left:0;right:0;top:-44px;bottom:0;z-index:-1;
   pointer-events:none;opacity:0;background:linear-gradient(180deg,var(--ink) 72%,rgba(6,4,14,.9));
   border-bottom:1px solid rgba(255,243,207,.07)}
 .is-stuck .wsearchband::before{opacity:1}
 @media (prefers-reduced-motion:no-preference){.wsearchband::before{transition:opacity .16s ease}}
-.wsearchband .searchwrap{margin-top:14px}
+.wsearchband .searchwrap{margin-top:18px}
 .wshell{max-width:1180px;margin:0 auto;padding:20px 24px 96px;display:flex;gap:36px;align-items:flex-start}
 .wside{width:224px;max-height:calc(100vh - var(--band) - 26px);overflow-y:auto;flex:none;position:sticky;top:calc(var(--band) + 6px);display:flex;flex-direction:column;gap:2px;padding-right:5px}
 .wside a{display:block;padding:9px 12px;border-radius:8px;color:var(--body);text-decoration:none;font-size:.92rem}
@@ -503,7 +503,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -532,7 +532,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <nav class="wside" aria-label="Wiki navigation">
 
     <details class="wside-all" open>
-      <summary>Wiki <span>31</span></summary>
+      <summary>Wiki <span>32</span></summary>
       <div class="wside-all-body">
         <a href="wiki.html">All guides</a>
         <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
@@ -564,9 +564,10 @@ footer a{color:var(--cyan);text-decoration:none}
           </div>
         </details>
         <details class="wside-section is-current-section" open>
-          <summary>World <span>6</span></summary>
+          <summary>World <span>7</span></summary>
           <div class="wside-links">
             <a href="wiki-bestiary.html">Bestiary</a>
+            <a href="wiki-boss-variants.html">Boss Variants</a>
             <a href="wiki-worlds.html" class="is-here" aria-current="page">Campaign worlds</a>
             <a href="wiki-expeditions.html">Expeditions</a>
             <a href="wiki-modes.html">Run modes</a>
@@ -886,7 +887,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1</dd></div><div><dt><code>dmgMult</code></dt><dd>1</dd></div><div><dt><code>speedMult</code></dt><dd>1</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>10</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 35</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>from the start</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>from the start</span><code>weight 25</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 15</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>2:24 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>4:00 into a real run</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-thistlemaw">Thistlemaw</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-secondSun">The Second Sun</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-kingbloom">King Bloom</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article>
       <article class="wcard" id="e-gildedCanyon" tabindex="-1" data-access="unlockable" data-water="absent" data-oil="absent" data-s-roster="9" data-s-name="gilded canyon" data-s-hp="1.1" data-s-pressure="1.05">
@@ -912,7 +913,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.1</dd></div><div><dt><code>dmgMult</code></dt><dd>1.05</dd></div><div><dt><code>speedMult</code></dt><dd>1.05</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.05</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>14</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 28</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-dustDevil">Dust Devil</a> <span>0:09 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:18 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-mirageRunner">Mirage Runner</a> <span>0:27 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:36 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-duneScarab">Dune Scarab</a> <span>0:45 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-duneStinger">Dune Stinger</a> <span>1:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>3:00 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-lastLight">The Last Light</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-oilfather">Oilfather</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article></div>
     </section>
@@ -995,7 +996,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <details class="wraw"><summary>World tuning multipliers <span>4</span></summary><dl><div><dt><code>hpMult</code></dt><dd>1.1</dd></div><div><dt><code>dmgMult</code></dt><dd>1.05</dd></div><div><dt><code>speedMult</code></dt><dd>1.05</dd></div><div><dt><code>spawnRateMult</code></dt><dd>1.05</dd></div></dl></details>
       <details class="wraw wschedule"><summary>Spawn schedule <span>14</span></summary><ol><li><a href="wiki-bestiary.html#e-blob">Blob</a> <span>from the start</span><code>weight 28</code></li><li><a href="wiki-bestiary.html#e-popper">Popper</a> <span>from the start</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-rimeling">Rimeling</a> <span>0:09 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-sprinter">Sprinter</a> <span>0:18 into a real run</span><code>weight 18</code></li><li><a href="wiki-bestiary.html#e-glazeSkater">Glaze Skater</a> <span>0:27 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-mite">Mite</a> <span>0:36 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-hailTick">Hail Tick</a> <span>0:45 into a real run</span><code>weight 20</code></li><li><a href="wiki-bestiary.html#e-chonker">Chonker</a> <span>0:54 into a real run</span><code>weight 12</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>1:12 into a real run</span><code>weight 16</code></li><li><a href="wiki-bestiary.html#e-glacierBull">Glacier Bull</a> <span>1:48 into a real run</span><code>weight 14</code></li><li><a href="wiki-bestiary.html#e-charger">Charger</a> <span>3:00 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-splitter">Splitter</a> <span>4:12 into a real run</span><code>weight 10</code></li><li><a href="wiki-bestiary.html#e-jumper">Jumper</a> <span>from the start</span><code>weight 1.25</code></li><li><a href="wiki-bestiary.html#e-spitter">Spitter</a> <span>8:00 into a real run</span><code>weight 0.82</code></li></ol></details>
-      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-tidebound">Tidebound Colossus</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-borealisk">The Borealisk</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
+      <details class="wraw wschedule"><summary>Authored signature-boss schedule <span>3</span></summary><ol><li><a href="wiki-bestiary.html#e-watcher">The Watcher on the Road</a> <span>6:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-ramhorn">Ramhorn</a> <span>12:00 into a real run</span><code>signature slot</code></li><li><a href="wiki-bestiary.html#e-borealisk">The Borealisk</a> <span>18:00 into a real run</span><code>signature slot</code></li></ol></details>
 
       </article></div>
     </section></div>
@@ -1003,7 +1004,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC
   from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
   &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>

@@ -285,10 +285,20 @@ h2{font-size:1.65rem;margin:0 0 6px}
    wrap the column is 892px, which fits three 260px tracks and their two gaps and
    cannot fit four, so six cards are two full rows and five were a row with a
    hole in it. The evenness is a consequence of the track sizing rather than a
-   column count typed here, so it survives the wrap changing width. */
+   column count typed here, so it survives the wrap changing width.
+   THE CONTENT IS CENTRED IN THE CARD (director, 2026-08-26 23:11: "have the text
+   vertically centered within to make good use of the space in the cards"). Grid
+   stretches every card in a row to the tallest one in it, so a card whose body
+   runs a line shorter than its neighbours used to pool its text at the top and
+   leave the gap under it. justify-content:center hands that gap back as equal
+   air above and below. The padding goes even at the same time: an off-centre box
+   inside a centred one is the centring undone by a 2px shorthand. The other half
+   of the ask is the copy itself, and it lives in kitCards in bin/landing.mjs,
+   where the six bodies are held within a line of each other so the two rows sit
+   level before the centring has anything to correct. */
 .kits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
-.kit{display:flex;flex-direction:column;border:var(--edge);border-radius:14px;padding:16px 18px 18px;
-  background:rgba(255,243,207,.025)}
+.kit{display:flex;flex-direction:column;justify-content:center;border:var(--edge);border-radius:14px;
+  padding:18px;background:rgba(255,243,207,.025)}
 .kit-meta{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;
   font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
 .kit-meta span:first-child{color:var(--gold)}
@@ -373,7 +383,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
   </div>
   <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.12</b> · <code>028f7a4a</code></span></div>
+    Live <b>0.7.14</b> · <code>8e9ff60e</code></span></div>
 </header>
 
 <section id="run">
@@ -387,10 +397,10 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
   <div class="chips tally">
     <span class="chip"><b>13</b> worlds</span>
-    <span class="chip"><b>58</b> enemies</span>
+    <span class="chip"><b>62</b> enemies</span>
     <span class="chip"><b>20</b> characters</span>
     <span class="chip"><b>12</b> aimed cores</span>
-    <span class="chip"><b>45</b> weapons</span>
+    <span class="chip"><b>36</b> weapons</span>
   </div>
 </section>
 
@@ -404,37 +414,37 @@ h2{font-size:1.65rem;margin:0 0 6px}
       <div class="kit-meta"><span>One of 12</span><span>Aimed</span></div>
       <h3>THE CORE</h3>
       <p class="kit-line">The one you aim.</p>
-      <p>You pick a core at the door, and it holds a slot of its own that the draft cannot reach. It is the one weapon in the run that waits for you to point it.</p>
+      <p>You pick your core at the door, and it sits in a slot the draft can never touch. Everything else you carry fires on its own, and this is the one weapon that waits for you to point it.</p>
     </div>
     <div class="kit" id="kit-arsenal">
       <div class="kit-meta"><span>4 slots</span><span>Automatic</span></div>
       <h3>THE ARSENAL</h3>
       <p class="kit-line">4 that fire themselves.</p>
-      <p>Room for 4, drawn from 45 weapons that keep their own time and never ask you for permission. 6 of them have an end form, and it only arrives if you max the weapon, carry its paired tome, and open a boss chest.</p>
+      <p>Room for 4, pulled from 36 weapons that keep their own time and never ask permission. 6 of them have an end form, and getting there takes a maxed weapon, its paired tome, and a boss chest.</p>
     </div>
     <div class="kit" id="kit-tomes">
       <div class="kit-meta"><span>4 slots</span><span>Passive</span></div>
       <h3>THE TOMES</h3>
       <p class="kit-line">4 that bend the math.</p>
-      <p>4 more slots, filled out of 17 tomes. None of them fires at anything, and every one of them changes what the rest of your build is worth.</p>
+      <p>4 more slots, filled out of 17 tomes. None of them fires at anything. They decide how hard the rest of your build hits and how often, and the right stack is worth more than another weapon.</p>
     </div>
     <div class="kit" id="kit-whomp">
       <div class="kit-meta"><span>Every 40 seconds</span><span>On Q</span></div>
       <h3>THE WHOMP</h3>
       <p class="kit-line">The button the game is named after.</p>
-      <p>You come down on Q and the ground does the arguing. It is yours from the first second of the run, and it comes back every 40 seconds before anything you are carrying cuts into that.</p>
+      <p>You come down on Q and the ground does the arguing. It is yours from the first second of the run, it comes back every 40 seconds on a bare build, and plenty of what you pick up shortens that wait.</p>
     </div>
     <div class="kit" id="kit-character">
       <div class="kit-meta"><span>One of 20</span><span>Picked first</span></div>
       <h3>YOUR CHARACTER</h3>
       <p class="kit-line">Each one cheats differently.</p>
-      <p>20 to choose from, all of them open on a fresh save. Every one carries a rule that is always on and a signature move nobody else gets.</p>
+      <p>All 20 are open on a fresh save, so the first pick of the run is a real one. Every one of them carries a rule that is always on and a signature move nobody else gets to press.</p>
     </div>
     <div class="kit" id="kit-relics">
       <div class="kit-meta"><span>34 to find</span><span>Not drafted</span></div>
       <h3>THE RELICS</h3>
-      <p class="kit-line">The run hands these out. The draft never does.</p>
-      <p>Not one of the 34 is ever on a level up card. They come out of the chests you open on the way through and the machines that eat one relic and vend a better one, so the ones you are still carrying at the end decide how far everything else got to go.</p>
+      <p class="kit-line">The run picks these, not you.</p>
+      <p>Not one of the 34 ever shows up on a level up card. They come out of chests, and out of the machines that eat one relic and vend a better one, so a run can hand you a build you never drafted.</p>
     </div></div>
 </section>
 
@@ -444,6 +454,10 @@ h2{font-size:1.65rem;margin:0 0 6px}
   <p class="lede">The last 5 things that changed, in the words they were written in on the day.
     The dev log has the rest, including the days that went badly.</p>
   <div class="loglines">
+    <a class="logline" href="log.html#release-0-7-14">
+      <span class="logline-when">2026-08-27 &middot; v0.7.14</span>
+      <span class="logline-what">The boss armada: every level now opens with a boss of its own, the worlds got a top-to-bottom polish pass, and the hub sings.</span>
+    </a>
     <a class="logline" href="log.html#release-0-7-12">
       <span class="logline-when">2026-08-20 &middot; v0.7.12</span>
       <span class="logline-what">PvP finds its aim: cores are live in every duel, weapons climb to 20, and the void rift keeps its appointment on every single map.</span>
@@ -459,10 +473,6 @@ h2{font-size:1.65rem;margin:0 0 6px}
     <a class="logline" href="log.html#release-0-7-9">
       <span class="logline-when">2026-08-17 &middot; v0.7.9</span>
       <span class="logline-what">The overnight polish train, now with the afternoon answer: every piece of the morning's feedback batch is in - the crossroads walks clean end to end, the desert ramp stops short of the forge, the lake mouth is finally a river mouth, and the arena pool is retuned around the two retired weapons.</span>
-    </a>
-    <a class="logline" href="log.html#release-0-7-8">
-      <span class="logline-when">2026-08-16 &middot; v0.7.8</span>
-      <span class="logline-what">The big quality build: the four-way rebuilt as one scene, a flat glassy lake, a 30-weapon arsenal with an even elemental spread, and the forge now teaches evolutions.</span>
     </a></div>
   <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
 </section>
@@ -558,8 +568,8 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@028f7a4aa</code> on 2026-08-26 21:19 UTC.
-  The game is serving <code>0.7.12</code>.
+  Every number on this page came straight out of the game, read at <code>game@0139492bc</code> on 2026-08-27 18:16 UTC.
+  The game is serving <code>0.7.14</code>.
 </footer>
 
 </div>
