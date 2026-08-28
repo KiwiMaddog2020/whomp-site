@@ -890,6 +890,21 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     return Math.max(16, cadenceMs(e) * Math.pow(f, n));
   };
 
+  /* A RULING-96 STAR MOMENT as an unlock source (console v22 g1/g2,
+   * 2026-08-28). The star numbers have fixed authored meanings - star 1 is
+   * surviving to 20:00, star 2 is beating the 18-minute boss, star 3 is
+   * holding to 25:00 - and those meanings are the drop table's own tier
+   * ladder (src/data/campaignUnlocks.ts), so naming them here is glossary,
+   * not magnitude. The level name and id ride the ref from the data layer. */
+  const STAR_MOMENT_LABEL = {
+    1: 'survive to 20:00',
+    2: 'beat the 18-minute boss',
+    3: 'hold to 25:00',
+  };
+  const starRoute = (starRef) => starRef
+    ? `${cardLink('worlds', starRef.levelId, esc(starRef.levelName || humanize(starRef.levelId)))} star ${starRef.star} (${STAR_MOMENT_LABEL[starRef.star] || `star ${starRef.star}`})`
+    : null;
+
   /* HOW YOU GET IT is the first question a player asks about a weapon, so it
    * leads the card. Three real routes and every branch is a data relation.
    *
@@ -915,6 +930,12 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       const independence = routes.length > 1 ? ' Either route independently makes it available.' : '';
       return `Unlocked by ${list(routes)}, then it joins the level-up pool.${independence}`;
     }
+    /* Star-sourced weapons (console v22 g1/g2, 2026-08-28): the grant re-home
+       moved Gravity Well and Thunder Strike off their donor deeds and onto
+       Stillwater's stars, so the honest acquire line names the map and the
+       star moment rather than an achievement that no longer pays. */
+    const star = starRoute(r.unlockedByStar);
+    if (star) return `Earn ${star}, then it joins the level-up pool.`;
     return '';
   };
 
@@ -960,11 +981,19 @@ export function rosterSpecs(D, esc, T = null, V = null) {
           if (e.unlockedFromStart) return 'start';
           const refs = W.refs[e.id] || {};
           if (refs.unlockedByQuests?.length && refs.unlockedByAchievements?.length) return 'quest-or-achievement';
-          return refs.unlockedByQuests?.length ? 'quest' : 'achievement';
+          if (refs.unlockedByQuests?.length) return 'quest';
+          /* CONSOLE v22 g1/g2 (2026-08-28): a weapon whose only source is a
+             ruling-96 star moment says so. Before this branch, a star-sourced
+             weapon fell through to 'achievement' with no achievement behind it,
+             which is exactly the false chip the grant re-home would have
+             shipped on Gravity Well and Thunder Strike. */
+          if (refs.unlockedByStar && !refs.unlockedByAchievements?.length) return 'star';
+          return 'achievement';
         },
         name: (v) => ({
           start: 'From the start', quest: 'Quest', achievement: 'Achievement',
           'quest-or-achievement': 'Quest or achievement', evolution: 'Evolution',
+          star: 'Campaign star',
         }[v] || v),
       },
     ],
@@ -1408,6 +1437,10 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const passiveAccess = (entry) => {
     if (entry.unlockedFromStart) return 'from the start';
     if (P.refs[entry.id]?.runtimeUnlock) return 'signature-boss milestone';
+    /* CONSOLE v22 g1/g2 (2026-08-28): the Tome of Persistence moved off its
+       donor deed and onto Stillwater's third star, so a star-sourced tome must
+       not fall through to 'achievement' with no achievement behind it. */
+    if (P.refs[entry.id]?.unlockedByStar && !P.refs[entry.id]?.unlockedByAchievements?.length) return 'campaign star';
     return 'achievement';
   };
   const tomesRoster = {
@@ -1422,7 +1455,10 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     groups: [
       { key: 'start', title: 'Available from the start', note: 'Offered from the first run, before you have earned anything.', has: (e) => e.unlockedFromStart },
       { key: 'milestone', title: 'Campaign milestone unlock', note: 'Arrives when the campaign hits its signature-boss milestone, and stays in the pool afterwards.', has: (e) => !!P.refs[e.id]?.runtimeUnlock },
-      { key: 'earned', title: 'Achievement unlocks', note: 'Locked until you do the thing. The achievement that opens each one is on its card.', has: (e) => !e.unlockedFromStart && !P.refs[e.id]?.runtimeUnlock },
+      /* CONSOLE v22 g1/g2 (2026-08-28): star-paid tomes get their own shelf so
+         the achievement group's note stays true of every card under it. */
+      { key: 'star', title: 'Campaign star unlocks', note: 'Paid by a ruling-96 star moment on one campaign map. The map and the star are on the card.', has: (e) => passiveAccess(e) === 'campaign star' },
+      { key: 'earned', title: 'Achievement unlocks', note: 'Locked until you do the thing. The achievement that opens each one is on its card.', has: (e) => passiveAccess(e) === 'achievement' },
     ],
     facets: [
       { key: 'access', label: 'Availability', of: passiveAccess },
@@ -1438,11 +1474,16 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       const unlocks = inverseUnlocks.get(`passive:${e.id}`) || [];
       const recipes = evolutionsByPassive.get(e.id) || [];
       const runtimeUnlock = P.refs[e.id]?.runtimeUnlock;
+      const tomeStar = !runtimeUnlock && !unlocks.length ? starRoute(P.refs[e.id]?.unlockedByStar) : null;
       const availability = runtimeUnlock
         ? `${esc(runtimeUnlock.description)} <span class="wsub">${esc(humanize(runtimeUnlock.scope))} · ${runtimeUnlock.requiredMilestones} milestone · ${runtimeUnlock.permanent ? 'permanent' : 'run-scoped'} · ${esc(humanize(runtimeUnlock.availability))}</span>`
         : unlocks.length
           ? list(unlocks.map((row) => cardLink('achievements', row.id, esc(row.name))))
-          : 'In the tome pool from the first run.';
+          : tomeStar
+            /* Console v22 g1/g2: the star route, named the way the weapon
+               cards name theirs. */
+            ? `Earn ${tomeStar}.`
+            : 'In the tome pool from the first run.';
       return `
         <div class="wtags">${tag(esc(humanize(e.stat)), 'cyan')}${tag(esc(humanize(passiveAccess(e))), e.unlockedFromStart ? '' : 'gold')}</div>
         <p class="wdesc">${esc(e.desc)}</p>
@@ -1825,6 +1866,17 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   };
 
   // ---- worlds and expeditions --------------------------------------------
+  /* A star payout on a world card (console v22 g1/g2, 2026-08-28): the item a
+   * ruling-96 star moment pays, linked into its own roster page. Every pool in
+   * the drop table has a page; an unknown pool renders the bare id rather than
+   * inventing a link. */
+  const STAR_POOL_PAGE = { weapon: 'weapons', tome: 'tomes', core: 'cores', utility: 'utilities', relic: 'relics' };
+  const STAR_POOL_ENTRIES = { weapon: () => W.entries, tome: () => P.entries, core: () => C.entries, utility: () => UT.entries, relic: () => R.entries };
+  const starGrantLink = (g) => {
+    const page = STAR_POOL_PAGE[g.pool];
+    const name = STAR_POOL_ENTRIES[g.pool]?.()[g.id]?.name || humanize(g.id);
+    return page ? cardLink(page, g.id, esc(name)) : esc(name);
+  };
   const scheduleTime = (paceSec) => paceSec > 0
     ? (playClock(paceSec) ? `${playClock(paceSec)} into a real run` : `${paceSec} on the pace clock`)
     : 'from the start';
@@ -1846,7 +1898,15 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const worldCard = (e, refs) => {
     const surfaceNames = Object.entries(e.surfaces || {}).filter(([, enabled]) => enabled).map(([key]) => humanize(key));
     const unlockedById = refs?.unlockedBy;
-    const trigger = e.unlockTrigger ? compactObject(e.unlockTrigger, (key, value) => `${humanize(key)} ${value}`) : '';
+    /* Predicate doors read as the hub plate reads them (console v22 g1/g2:
+       Stillwater is the first hearth-plaza world to carry one). The
+       lifetimeClears sentence mirrors src/hub/hubBuilder.ts predicateHint;
+       any other trigger kind keeps the raw field dump rather than guessing. */
+    const trigger = e.unlockTrigger
+      ? (e.unlockTrigger.kind === 'lifetimeClears'
+        ? (e.unlockTrigger.minimum <= 1 ? 'Clear any world once' : `Clear ${e.unlockTrigger.minimum} worlds`)
+        : compactObject(e.unlockTrigger, (key, value) => `${humanize(key)} ${value}`))
+      : '';
     return `
       <div class="wtags">${surfaceNames.map((name) => tag(esc(name), 'cyan')).join('')}${e.unlockedFromStart ? tag('From the start', 'gold') : ''}</div>
       <p class="wdesc">${esc(e.tagline)}</p>
@@ -1854,6 +1914,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         ${fact('Availability', e.unlockedFromStart ? 'From the start' : unlockedById ? `Unlocked after ${cardLink('worlds', unlockedById, esc(levelName(unlockedById)))}` : trigger ? esc(trigger) : 'The registry carries no simple predecessor')}
         ${refs?.unlocksName ? fact('Unlocks next', cardLink('worlds', e.unlocks, esc(refs.unlocksName))) : ''}
         ${refs?.shipCore ? fact('Ship core', cardLink('ship-cores', refs.shipCore, esc(refs.shipCoreName))) : ''}
+        ${(L.starGrants?.[e.id] || []).length ? fact('Star payouts', list((L.starGrants[e.id]).map((g) => `${starGrantLink(g)} <span class="wsub">star ${g.star}</span>`))) : ''}
         ${refs?.worldEvents?.length ? fact('Rare events', list(refs.worldEvents.map((id) => cardLink('world-events', id, esc(humanize(id)))))) : ''}
         ${refs?.ambientEvents?.length ? fact('Ambient events', list(refs.ambientEvents.map((row) => cardLink('ambient-events', e.id, esc(humanize(row.event)))))) : ''}
         ${fact('World fixtures', `<b>${e.shrineCount}</b> shrines, <b>${e.launchPads}</b> launch pads`)}
@@ -1913,7 +1974,14 @@ export function rosterSpecs(D, esc, T = null, V = null) {
        expedition entry carries no unlocks field, nothing unlocks it, and its
        refs carry no shipCore, unlike every world on the campaign route. See
        the registry header in src/data/levels.ts, which calls them a parallel
-       mode rather than part of the unlock ladder. */
+       mode rather than part of the unlock ladder.
+
+       THE CLAIM SURVIVED CONSOLE v22 g1/g2 (2026-08-28) BY SUBTRACTION, not by
+       standing still: Stillwater, the one expedition that had grown an earned
+       door and was ruled into the grant budget, was FULLY PROMOTED into
+       CAMPAIGN_LEVELS and now lives on the worlds page. The two arenas left
+       here ship open, unlock nothing and are unlocked by nothing, so every
+       sentence below is true again of every card under it. */
     lede: 'An expedition is built like a campaign world and connected to none of it. Nothing unlocks it, nothing follows it and no ship core comes out of it, so the only reason to go is that you wanted to.',
     omissions: `<b>Nothing on this page is progression.</b> An expedition unlocks nothing and is unlocked by nothing, so a card here is only ever the arena itself. Its rows and its signature-boss times were written by hand the same way a world is, and the automatic minibosses laid over them are the same unpublished interval: how often, never which one and never when. ${clockNote}`,
     featureHtml: encounterScheduleFeature('expedition-encounter-schedule'),
@@ -2716,6 +2784,9 @@ export const DISPLAY_REF_FIELD_PATHS = Object.freeze({
     { path: 'suggestedByCharacters', when: (entry, D) => Object.values(D.domains.characters.entries).some((row) => row.startWeaponId === entry.id) },
     { path: 'unlockedByAchievements', when: (entry, D) => Object.values(D.domains.achievements.entries).some((row) => row.unlocks?.weapon === entry.id) },
     { path: 'unlockedByQuests', when: (entry, D) => Object.values(D.domains.quests.entries).some((row) => row.reward?.weaponId === entry.id) },
+    /* Console v22 g1/g2 (2026-08-28): the star backlink's independent owner is
+       the drop table's star rows, published per level as levels.starGrants. */
+    { path: 'unlockedByStar', when: (entry, D) => Object.values(D.domains.levels.starGrants || {}).some((rows) => rows.some((g) => g.pool === 'weapon' && g.id === entry.id)) },
     { path: 'evolvesFrom', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id) },
     { path: 'evolvesInto', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.baseId === entry.id) },
     { path: 'donorForCores', when: (entry, D) => Object.values(D.domains.coreWeapons.entries).some((row) => row.donorWeaponId === entry.id) },
@@ -2732,6 +2803,9 @@ export const DISPLAY_REF_FIELD_PATHS = Object.freeze({
   passives: [
     { path: 'requiredByEvolutions', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.passiveId === entry.id) },
     { path: 'unlockedByAchievements', when: (entry, D) => Object.values(D.domains.achievements.entries).some((row) => row.unlocks?.passive === entry.id) },
+    /* Console v22 g1/g2 (2026-08-28): same independent owner as the weapon
+       row above; the drop table's 'tome' pool grants are passive registry ids. */
+    { path: 'unlockedByStar', when: (entry, D) => Object.values(D.domains.levels.starGrants || {}).some((rows) => rows.some((g) => g.pool === 'tome' && g.id === entry.id)) },
     { path: 'runtimeUnlock', when: (entry) => entry.id === 'aegisTome' },
   ],
   jumpAugments: ['shrineMovementOffering'],
@@ -2775,6 +2849,11 @@ export const DISPLAY_REF_FIELD_PATHS = Object.freeze({
 /* Domain/root contracts also feed visible features. These paths keep the prose
  * bound to exported runtime semantics rather than to a hand-copied constant. */
 export const DISPLAY_ROOT_FIELD_PATHS = Object.freeze([
+  /* Console v22 g1/g2 (2026-08-28): the per-level star payout table the worlds
+     page and the star-source availability chips render from. Present only in a
+     game-data.json regenerated from a whomp tree carrying the grant re-home
+     train, which is the same-train coupling this guard exists to enforce. */
+  'domains.levels.starGrants',
   'domains.enemies.scaling.hpPer25s',
   'domains.enemies.scaling.damagePer30s',
   'domains.enemies.scaling.xpPer120s',

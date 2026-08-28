@@ -818,6 +818,24 @@ for (const id of D.domains.weapons.refs.blackSquirrel.unlockedByAchievements) {
 requireThat(squirrelCard.includes('Either route independently makes it available.'),
   'Black Squirrel card does not state that quest and achievement acquisition routes are independent');
 
+// CONSOLE v22 g1/g2 (2026-08-28): the three re-homed grants name a Stillwater
+// star as their source and never an achievement. gravityWell and thunderStrike
+// moved off survivor20/bossDown, the Tome of Persistence off necroLong; the
+// donor deeds survive as payload-free trophies, so a card here that still
+// links an achievement is the exact false chip the star-source plumbing
+// (data-layer starGrants -> refs.unlockedByStar) exists to prevent.
+for (const [html, id, star] of [
+  [weaponsHtml, 'gravityWell', 1],
+  [weaponsHtml, 'thunderStrike', 2],
+  [tomesHtml, 'persistTome', 3],
+]) {
+  const card = cardSlice(html, id);
+  requireThat(card.includes('wiki-worlds.html#e-stillwater') && card.includes(`star ${star}`),
+    `${id} card does not name its Stillwater star ${star} source`);
+  requireThat(!card.includes('wiki-achievements.html#'),
+    `${id} card still links an achievement source after the console v22 grant re-home`);
+}
+
 requireThat(/<title>WHOMP shrine movement<\/title>/.test(shrineMovementHtml)
   && /<h2 class="chroma">Shrine movement<\/h2>/.test(shrineMovementHtml)
   && D.domains.shrineMovement.order.every((id) => shrineMovementHtml.includes(`id="e-${esc(id)}"`)),
