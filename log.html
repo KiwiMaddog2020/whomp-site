@@ -369,7 +369,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.16</b> · <code>376b582a</code></span></div>
+    Live <b>0.7.17</b> · <code>c5c1ead8</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -421,16 +421,18 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">528 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
+    <p class="lede">567 player-visible changes landed in the last 7 days, across 7 of them. 4 releases were cut across 2 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-08-29">
       <div class="storyday-head">
         <span class="storyday-when">2026-08-29</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 32</span><span class="storyday-kind" style="background:var(--cyan)">New 19</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 48</span><span class="storyday-kind" style="background:var(--cyan)">New 41</span><span class="storyday-kind" style="background:var(--gold)">Performance 4</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
       </div>
-      <p class="storyday-shape">55 changes landed: 32 fixed, 19 new, 3 performance, 1 balance.</p>
-      <a class="storyday-release" href="#release-0-7-16">
+      <p class="storyday-shape">94 changes landed: 48 fixed, 41 new, 4 performance, 1 balance.</p>
+      <a class="storyday-release" href="#release-0-7-17">
+        <b>v0.7.17</b><span>The evening train: the mystery objects were enemy fire all along, co-op unfreezes at 20 minutes, the exit portal moves up, and every map grows in.</span>
+      </a><a class="storyday-release" href="#release-0-7-16">
         <b>v0.7.16</b><span>The morning train: Stillwater grows a great lake, level 50 gets its golden choice, the frost wall becomes Whiteout's signature, and every upgrade card learned to talk straight.</span>
       </a><a class="storyday-release" href="#release-0-7-15">
         <b>v0.7.15</b><span>The everything patch: distant bosses finally read through the fog, Stillwater joins the campaign with three paying stars, the hub gets solid fences and its own songs, and a mountain of feel fixes.</span>
@@ -511,6 +513,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-17">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-08-29</span>
+      <span class="notecard-version">v0.7.17</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The evening train: the mystery objects were enemy fire all along, co-op unfreezes at 20 minutes, the exit portal moves up, and every map grows in.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>THE MYSTERY SOLVED: those floating diamonds that rode your jumps were enemy bolts whose height tracked you mid-flight - a one-line bug reported five times over six weeks. They now fly at where you WERE when fired, like every honest projectile.</li><li>CO-OP UNFREEZES: co-op runs no longer lock up forever at 20:00 - the party gets a real Keep Going / Finish vote (everyone agrees to continue; one Finish settles it), with its own dialog and the ENCORE it never had.</li><li>THE EXIT MOVES UP: the portal now stands at 20:00. Leave early and it warns you about the third star still on the table; after 25:00 it is just a quick confirm. The old forced popup is gone.</li><li>EVERY MAP GROWS IN: ground life roughly tripled across all sixteen worlds at zero performance cost, snow wears ice crust instead of spike lawns, and Neon Necropolis went from the heaviest map in the game to lighter than Neon Meadow.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Capsule Signal has a face again - his visor sat 60mm inside an opaque helmet since forever.</li><li>See-through character bodies fully cured: the last 49 inside-out pieces across the roster are zero.</li><li>The Summit opening pan no longer plays hidden behind your bonus level-up rewards - the camera finishes, then the offers come.</li><li>Falling stars no longer streak through the perimeter walls when they land near the edge, and a quick camera tilt shows you where they come down.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-16">
     <div class="notecard-head">
       <span class="notecard-date">2026-08-29</span>
@@ -978,27 +1000,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <ul><li>The snow tier gets enemies of its own, so the frost worlds stop borrowing from the desert.</li><li><span class="spoiler" tabindex="0" role="button" aria-label="Spoiler, click to reveal">A boss to close the snow tier out.</span></li></ul>
     </div></div>
   </article>
-  <article class="notecard" id="release-0-6-1">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-08-04</span>
-      <span class="notecard-version">v0.6.1</span>
-      <span class="notecard-source">from the release notes</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">The Whomp Lab becomes a private director workspace, and new Stable and Preview tracks make it safer to try the latest green build.</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>Choose your build track from the title screen. Stable is the recommended weekly build; Preview is the latest fully green build. Each is its own installable PWA with separate on-device progress, and switching always goes to one fixed, trusted WHOMP address.</li><li>The Whomp Lab is reorganized into Explore, Practice, Review and QA. Seven taps on THE WHOMP LAB reveal a session-only Director Console with the local Studio Board and a copy-and-paste decision workspace for coordinating development without putting credentials or remote execution inside the game.</li><li>Online rooms now match both the build track and exact build. A Stable player and a Preview player cannot accidentally start a divergent duel or co-op run, and the lobby explains how to get everyone onto the same track.</li><li>Preview is intentionally low-risk: it keeps cloud saves and public leaderboard writes on Stable while still sending clearly labelled feedback, crash reports and play-session evidence so the newest build can improve quickly.</li></ul>
-    </div>
-
-    <div class="bucket">
-      <h4 style="color:var(--pink)">Fixed</h4>
-      <ul><li>Level-up velocity offers no longer appear when none of your live weapons can use them.</li><li>Account name dialogs can be escaped cleanly, keep keyboard focus available, and ignore stale results from an earlier modal session.</li><li>Preview no longer offers account sign-in or cloud-save controls that it cannot safely use.</li><li>Cross-track online mismatches now fail closed instead of retrying an incompatible room.</li></ul><p class="bucket-more">2 more fixes shipped in this release. The full log has all of them.</p>
-    </div>
-  </div>
-  </article>
-      <p class="lede">6 earlier releases not shown here.</p>
+      <p class="lede">7 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1010,6 +1012,31 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-08-29</h4>
 
+    <div class="row" data-kind="fix" id="chg-dff945193">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the evening train's four composition tails - the walk probe re-measures over the re-tessellated rigs, the island digest copies the adjudicator's own printline, the notes gain their fifth line (the blizzard storm), and the vending census follows the victory-choice queue's retirement from seven gates to six <span class="scope">(gate)</span></span>
+      <span class="sha">dff945193</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f229933db">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">an enemy bolt is aimed once - it stops riding the player's jump <span class="scope">(enemy-projectiles)</span></span>
+      <span class="sha">f229933db</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-16089dc9d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the waiting strip waits its turn, and a harness that made it visible <span class="scope">(coop-bank)</span></span>
+      <span class="sha">16089dc9d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a163adbcf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the roster stage owed brainAnchored, and omitting it read as &quot;not one frame rendered&quot; <span class="scope">(dev)</span></span>
+      <span class="sha">a163adbcf</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bd65cf5bb">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the roster page could not be photographed, which is why the plant had no vantage <span class="scope">(dev)</span></span>
+      <span class="sha">bd65cf5bb</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-1b1e18cb8">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">stillwater's verticality follows its lake - 9 to 8.5 with the flattening measured (mean 4.39 to 2.14, the old peak inside the carve), the director's own GO recorded as the cause <span class="scope">(tests)</span></span>
@@ -1020,15 +1047,50 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the provenance walk batches two git calls instead of 391, and stops calling a 2 MB source changed <span class="scope">(wiki)</span></span>
       <span class="sha">3a494a57c</span>
     </div>
+    <div class="row" data-kind="feat" id="chg-1f96becf0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mount the dialog on the seam, and hand the seat a cursor to answer with <span class="scope">(coop-bank)</span></span>
+      <span class="sha">1f96becf0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5663c6bf5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">draw the dialog - the choice, the party, and what absence means <span class="scope">(coop-bank)</span></span>
+      <span class="sha">5663c6bf5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-12317a252">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the party's 20:00 question in words and rows, with no DOM under it <span class="scope">(coop-bank)</span></span>
+      <span class="sha">12317a252</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-862cda39e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the modifier layer becomes reachable - and the witness moved without breaking a bar <span class="scope">(minibosses)</span></span>
+      <span class="sha">862cda39e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bd943198e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the warden's guard drove 0.09 past the contact floor - budget the plant, do not move the wall <span class="scope">(minibosses)</span></span>
+      <span class="sha">bd943198e</span>
+    </div>
     <div class="row" data-kind="perf" id="chg-0c42ab194">
       <span class="kind" style="background:var(--gold)">Performance</span>
       <span class="what">the provenance walk batches two git calls instead of 391, and stops calling a 2 MB source changed <span class="scope">(wiki)</span></span>
       <span class="sha">0c42ab194</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-a0365dd7b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the 20:00 bank asks the party instead of freezing them - the declared unanimousKeepGoing policy finally has a runtime <span class="scope">(coop)</span></span>
+      <span class="sha">a0365dd7b</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-068793179">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the rim shelf gets the region row the fill never gave it <span class="scope">(hub)</span></span>
       <span class="sha">068793179</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9ae03b398">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">Capsule Signal's visor is drawn at last, aligned to his own ring <span class="scope">(avatars)</span></span>
+      <span class="sha">9ae03b398</span>
     </div>
     <div class="row" data-kind="fix" id="chg-e8f027892">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1040,76 +1102,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">restore blizzard:sharperSleet's material word <span class="scope">(core)</span></span>
       <span class="sha">24ee90868</span>
     </div>
+    <div class="row" data-kind="feat" id="chg-d72684084">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the plant pose on three rigs, the fourth refusing it, and the comment that stopped being true <span class="scope">(minibosses)</span></span>
+      <span class="sha">d72684084</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-2de905ad8">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the marchward teeth ask the ramp before they stand - three stones out of the void ramp <span class="scope">(hub)</span></span>
       <span class="sha">2de905ad8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7870a151c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">nine blizzard cards tagged 'ice' now name a frozen material, and snow joins the vocabulary <span class="scope">(cards)</span></span>
-      <span class="sha">7870a151c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3200e4f48">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">bring blizzard's card descs to house voice <span class="scope">(core)</span></span>
-      <span class="sha">3200e4f48</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-466dd49c4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the barricade census composes too - 176 to 179, three anchors released by the fill's keep-outs leaving, report #484's bench mechanism at the perimeter's scale; copied from the printed value <span class="scope">(tests)</span></span>
-      <span class="sha">466dd49c4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7b3004fe6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the cap census follows its cleft twin onto the merged tree - 2568 to 2509, caps lagging clefts (-59 against -42) for the rim reason the pin's own history names; copied from the suite's printed value <span class="scope">(tests)</span></span>
-      <span class="sha">7b3004fe6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ea0d2cc02">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the cast rig's three orphaned pins find their post-frost homes - the raise clock pins against WALL_RISE_MS (iceWallRise is the raise authority now), the thickness against ICE_WALL_SIGNATURE_TUNING.wallHalfWidthM, and the tint against blizzard, the slot's heir, which kept the glacial blue whole <span class="scope">(tests)</span></span>
-      <span class="sha">ea0d2cc02</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6675b7507">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">taperedTube winds its side wall outward, not inward <span class="scope">(avatars)</span></span>
-      <span class="sha">6675b7507</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-83a8fbe24">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">coreShots joins the cadence probe's observables - the deduped blizzard's faster recharge buys placements while damage and calls stay flat on a fixed tile by construction; the firing end is the honest observable, per coreTriggerEdges' own re-derivation (console v25 m3) <span class="scope">(tests)</span></span>
-      <span class="sha">83a8fbe24</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b9d025fad">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">docIndex's three-state case gets a measured budget - eight doc-index shells at ~4s each on the overnight wave's grown corpus sit exactly at the old 30s default; 120s cited from the measurement, assertions untouched <span class="scope">(tests)</span></span>
-      <span class="sha">b9d025fad</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b9d1c85eb">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">resume the dead lane's heading redo, recovered from the worktree, plus a real hang found and fixed live <span class="scope">(cats)</span></span>
-      <span class="sha">b9d1c85eb</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-324acfcb8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the plasma pin catches up to console v23 e5 - a depleted head sits AT the charge-meter floor (PLASMA_FLOOR_BODY_BRIGHT), not below an arbitrary 30% dimness; the old pin predates the ruling the weapon-wave landing executed <span class="scope">(tests)</span></span>
-      <span class="sha">324acfcb8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-65b5a1769">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">console v25 m6 - take fx-feel-pair's option B spacing re-pin <span class="scope">(emberWake)</span></span>
-      <span class="sha">65b5a1769</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-791d2c4a8">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">blizzard 16 -&gt; 14, the reference-band match on this tree <span class="scope">(duel)</span></span>
-      <span class="sha">791d2c4a8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1725ff64b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ruling 113's knee pins re-base 1.2x under the funded derate - rig-gait-systemic raised KNEE_GAIN_DERATE 0.5 to 0.60 and the guarded literals (0.369/0.337/0.277) still held the old floor; the derivations were always the authority, the literals only the guard, and the probe artifact re-measures over the same landing (20 rigs) <span class="scope">(tests)</span></span>
-      <span class="sha">1725ff64b</span>
-    </div><div class="row more">+ 35 more that day, not shown</div>
+    </div><div class="row more">+ 74 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-28</h4>
@@ -1853,12 +1855,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@376b582a8</code> on 2026-08-29 22:27 UTC.
+  Every number on this page came straight out of the game, read at <code>game@c5c1ead87</code> on 2026-08-30 03:24 UTC.
 
-  The game is serving <code>0.7.16</code>.
+  The game is serving <code>0.7.17</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">537 player-visible changes in the last 7 days, across 11 active days, 995 internal-only commits filtered out</div>
+  <div class="stat">576 player-visible changes in the last 7 days, across 11 active days, 1081 internal-only commits filtered out</div>
 </footer>
 
 
