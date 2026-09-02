@@ -369,7 +369,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>94778c6d</code></span></div>
+    Live <b>0.7.20</b> · <code>a27f1865</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -421,15 +421,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">525 player-visible changes landed in the last 7 days, across 5 of them. 7 releases were cut across 4 of those days, and that is the part a player can already play.
+    <p class="lede">535 player-visible changes landed in the last 7 days, across 5 of them. 7 releases were cut across 4 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-02">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-02</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 44</span><span class="storyday-kind" style="background:var(--pink)">Fixed 44</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 52</span><span class="storyday-kind" style="background:var(--cyan)">New 46</span></span>
       </div>
-      <p class="storyday-shape">88 changes landed: 44 new, 44 fixed.</p>
+      <p class="storyday-shape">98 changes landed: 52 fixed, 46 new.</p>
       <a class="storyday-release" href="#release-0-7-20">
         <b>v0.7.20</b><span>The shorter game lands: three bosses at 4:30, 9:00 and 13:30, the bank at 15:00, the hammer hits when it hits, and the world keeps its shape in the distance.</span>
       </a>
@@ -1011,6 +1011,56 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-02</h4>
 
+    <div class="row" data-kind="fix" id="chg-0a32348b6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the shrine density pass sweeps for its candidates instead of drawing them uniformly - the brief said the monumental rung left no legal candidate in Scorchdune biggest hole and the lane disproved it (every candidate legal, the pass never drew one there; more candidates made it worse); a sweep over open ground with a refusal for any winner that strands a hole, desert worst gap 296.7 to 167.3 m over twenty seeds, the desert-only ceiling and its DEBT comment gone, 290 for every world, mutation-checked both halves (v31 item 13; lane desert-shrine-holes) <span class="scope">(sim)</span></span>
+      <span class="sha">0a32348b6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f471264fe">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the lake north shore is a natural barrier - the walk plan moves so the bluff owns five to six metres, the keep and apron plates refuse the beach plan, every thin strip is gone (hubBluffWalk516, nine cases, mutation-checked), the bluff authored as a stepped crag seated with eleven masses, the skirting law refused under the three north-shore plates (closing a real walk-through), phantom censuses down 17 to 16 and 93 to 91, height field byte-identical outside the shore cells, frames at the director three vantages (report #516, v30 ruling 25; Fable lane bluff-widen-516) <span class="scope">(hub)</span></span>
+      <span class="sha">f471264fe</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-70b345a94">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the double-support trade returns with its pins answered, and the cast-walk probe reads the solver's lift window - the pelvis-cast-walk-pins lane restores the reverted solve, answers the five reds that convicted it and fixes the leprechaun's planted sole; the probe lane re-points the stance split (the boot-box midpoint agreed with the solver at chance), regenerates the metrics and appends a dated re-read to the cast-walk board whose ranking does not survive (v31 item 14; lanes pelvis-cast-walk-pins and cast-walk-probe-repoint) <span class="scope">(gait)</span></span>
+      <span class="sha">70b345a94</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7a77c38e5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the lake's north bluff gets six metres and a landform - the walk plan moves (WESTERWICK_SKIRT's shelf and lobe end at x = -60, LAKE_NORTH_BLUFF_KEEP refuses the beach west of x = -54, the skirting law is refused under the three north-shore plates), the bluff sheet authors its own surface over the field (a 6.6 m crest, two treads, a cleft, a sheer west wall on the shelf's line, a battered east flank on the beach's line, an apron down the island's brink behind it), its eleven masses seat on that surface, the bank shoulder's south row and the waterways floor's row on z = -54 share one function so strip S3's 1.5 m ramp over the shore is a drawn riser, one spire re-sited west onto the shelf that still exists, budgets printline-copied (+1,664 triangles, 364 draws unmoved); bluff-widen-516, director report #516, v30 ruling 25 <span class="scope">(hub)</span></span>
+      <span class="sha">7a77c38e5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a3f152ea5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the live view-distance change delivers all four fog levers, not two, and the pixel pin is bounded - the frames lane measured the clear band and the silhouette floor inert on the live path while the build path had them all along; the repair routes the rung change through the same seam and pins every lever to pixels (build path and live path equal to the hundredth of a percent), and the pin runs only under WHOMP_PIXEL_PIN=1 with a 90 s kill timeout and a load watchdog, reported OWED otherwise; the floor's visible effect measured as a thin horizon band, a director card (v31 ruling 24; lanes fog-levers-repair and fog-levers-r2) <span class="scope">(render)</span></span>
+      <span class="sha">a3f152ea5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1a3c083b2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the shrine density pass sweeps for its candidates instead of drawing them uniformly, and refuses a winner that strands a shrine <span class="scope">(sim)</span></span>
+      <span class="sha">1a3c083b2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-058553b2f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">fog-lever-pixel-diff.mjs fails fast on a hung browser <span class="scope">(render)</span></span>
+      <span class="sha">058553b2f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bb74c7c67">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the cast-walk stance split reads the solver's lift window, not the boot box's midpoint <span class="scope">(probe)</span></span>
+      <span class="sha">bb74c7c67</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-be469f5dd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the live rung change delivers all four fog levers, not two <span class="scope">(render)</span></span>
+      <span class="sha">be469f5dd</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e8b097f75">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the leprechaun keeps his planted sole - the double-support train charged a rig with no leg to scale <span class="scope">(gait)</span></span>
+      <span class="sha">e8b097f75</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-cfc30a02a">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the hub grounding census judges a Court statue as the one bake it is - the cast landing left hubPropGrounding red (three floating, three hanging, two ceilings over) and the lane measured every statue at zero gap to its pedestal cap: nothing hovers, the census was splitting baked monuments into components; a monolithic-family rule, mutation-checked (unseat a statue and the law goes red), display names in every line the suite emits, no src change (v31 ruling 4) <span class="scope">(test)</span></span>
@@ -1060,57 +1110,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the Court of Heroes ships as a cast - every pedestal its own hero at statue detail (204,069 triangles over twenty pedestals, 20.6 percent of full rig detail), HUB_STATUE_PLACEHOLDER_DEFAULT to hero-cast, the triangle ceiling raised by the measured cost as the director's fifth-of-detail ruling accepts (1.40M to 1.55M, headroom tighter than before), draws unmoved; the hub boot is the laptop gate's to measure, the container's boot budget is red on clean main there (v31 item 4) <span class="scope">(hub)</span></span>
       <span class="sha">4a9480350</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4146a8add">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Aegis and Rebound Wall stop or slow enemy CONTACT through them - a planted defensive object does something in a run again, the numbers measured in a 25-seed soak against survival and the duel, three guards each failed on purpose, Rebound Wall kept in the offer pool, the duel witnesses unmoved (v31 item 7) <span class="scope">(sim)</span></span>
-      <span class="sha">4146a8add</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ea83aef10">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Meadowfall's spawn ring carries landmarks - a tree line and stones inside the ring, off the spawn-to-portal corridor and the arrow's sightline, the bowl's relief untouched, the prop-distance pin re-pointed to the generator's own 51 m disc with the reason in the file (the 34 m pin was 17 m looser than the thing it guarded), five re-points each stating the ruling; FRAME DEBT for the laptop (v31 item 3) <span class="scope">(world)</span></span>
-      <span class="sha">ea83aef10</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-adbb00c9d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the walk arc's stage 2 lands - the pelvis solved against both feet through every step (the one-frame body drop halved to two thirds on twenty rigs, the hip step to zero, the arriving foot lands instead of hanging 2 to 18 cm in the air), the three body-travel ceilings raised to their re-measured values as the director's trade (v31 item 14; the pelvis-stage-2, r2 and r3 lanes' work, ceilings by the pelvis-ceilings lane) <span class="scope">(gait)</span></span>
-      <span class="sha">adbb00c9d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6664a4015">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the dune aprons ride the ladder, so the placement floor holds at monumental <span class="scope">(desert)</span></span>
-      <span class="sha">6664a4015</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-294091082">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">projectiles loft to the resolved target's altitude through the aimHeight policy the beams use, with a per-weapon opt-out table - the Groundbreaker's row is the director's own exception (the shot is the ground), three other weapons whose animation cannot carry a loft stay flat with the reason in their rows; suites for the loft and the opt-out, sacred witnesses unmoved (v31 item 8) <span class="scope">(sim)</span></span>
-      <span class="sha">294091082</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6430254c9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ship the monumental dune rung (v31 item 13) <span class="scope">(desert)</span></span>
-      <span class="sha">6430254c9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cca8f3798">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the WHOMP presentation clock follows the world time scale - the death slow-motion slows a swing in flight and a pause still freezes it, the pause-clock suite extended and mutation-checked (v31 item 12) <span class="scope">(fx)</span></span>
-      <span class="sha">cca8f3798</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-37d521ced">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-pin the two suites the cast's true height and the carve legitimately move <span class="scope">(hub)</span></span>
-      <span class="sha">37d521ced</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9161cab29">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the molten river is ON - MOLTEN_LAVA flipped as the director picked from the sheet, the co-op thread the lane report owed closed, the toaster tier's frozen flow kept, zero draws added (v31 item 9) <span class="scope">(render)</span></span>
-      <span class="sha">9161cab29</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-df898e184">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the spitter machine returns to Sunken Steps and Ember <span class="scope">(sim)</span></span>
-      <span class="sha">df898e184</span>
-    </div><div class="row more">+ 68 more that day, not shown</div>
+    </div><div class="row more">+ 78 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-01</h4>
@@ -1643,12 +1643,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@94778c6d2</code> on 2026-09-02 19:55 UTC.
+  Every number on this page came straight out of the game, read at <code>game@a27f18658</code> on 2026-09-02 22:39 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">527 player-visible changes in the last 7 days, across 7 active days, 989 internal-only commits filtered out</div>
+  <div class="stat">537 player-visible changes in the last 7 days, across 7 active days, 1013 internal-only commits filtered out</div>
 </footer>
 
 
