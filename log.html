@@ -369,7 +369,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.18</b> · <code>a889073d</code></span></div>
+    Live <b>0.7.19</b> · <code>71523ced</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -421,16 +421,18 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">475 player-visible changes landed in the last 7 days, across 5 of them. 5 releases were cut across 3 of those days, and that is the part a player can already play.
+    <p class="lede">497 player-visible changes landed in the last 7 days, across 5 of them. 6 releases were cut across 3 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-01">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-01</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 17</span><span class="storyday-kind" style="background:var(--cyan)">New 3</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 27</span><span class="storyday-kind" style="background:var(--cyan)">New 15</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
       </div>
-      <p class="storyday-shape">21 changes landed: 17 fixed, 3 new, 1 balance.</p>
-      <a class="storyday-release" href="#release-0-7-18">
+      <p class="storyday-shape">43 changes landed: 27 fixed, 15 new, 1 balance.</p>
+      <a class="storyday-release" href="#release-0-7-19">
+        <b>v0.7.19</b><span>The evening train: a banked co-op run stays won, Orbital Mechanic gets his arms right, and the desktop app boots again.</span>
+      </a><a class="storyday-release" href="#release-0-7-18">
         <b>v0.7.18</b><span>The Tuesday train: the mystery diamonds are GONE gone, co-op finally swings its hammer, the farm wakes up, and the flickering stops.</span>
       </a>
 
@@ -515,6 +517,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-19">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-09-01</span>
+      <span class="notecard-version">v0.7.19</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The evening train: a banked co-op run stays won, Orbital Mechanic gets his arms right, and the desktop app boots again.</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>A BANKED CO-OP RUN STAYS WON: reach the bank, choose to keep going, and a full team wipe no longer counts as a loss - the win you already earned stands, exactly like solo.</li><li>ORBITAL MECHANIC'S ARMS: shorter and carried less splayed, measured against the cast's own proportions - his hands finally hang where everyone else's do.</li><li>THE DESKTOP APP BOOTS: every packaged build since late August would have crashed at launch on a missing module - fixed, and a test now walks the whole shell so it cannot happen again. Electron moves to 44 with zero known vulnerabilities.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Alt+F4 always closes the desktop game; Ctrl+W never can, since Control is your slide key - now asserted inside the menu itself.</li><li>The desktop shell and the game finally share one version number, checked at build and at publish.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-18">
     <div class="notecard-head">
       <span class="notecard-date">2026-09-01</span>
@@ -975,27 +997,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
   </div>
   </article>
-  <article class="notecard" id="release-0-6-3">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-08-06</span>
-      <span class="notecard-version">v0.6.3</span>
-      <span class="notecard-source">from the release notes</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">You can fish now. Also aboard: a minimap that reads the fight, a daily level everyone shares, a jump that belongs to your character, and something with a crest is stalking the Hollow Crown.</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The pond in the hub is real. Walk up, cast, and watch for the tug. A catch pays out, the receipt says what you earned, and the rig has an exact cost you can reason about.</li><li>A minimap arrives, built as a threat and opportunity readout rather than a map for its own sake. It tells you where the pressure is coming from and where the good stuff is.</li><li>A daily level rotates every day. Everyone gets the same one, and your run card knows when your run was a daily.</li><li>E is a jump, unique and flavoured per character. There is a perch in the hub that only a double jump reaches.</li></ul>
-    </div>
-
-    <div class="bucket">
-      <h4 style="color:var(--pink)">Fixed</h4>
-      <ul><li>Every menu that overflowed the viewport now fits it, and they all take their shape from one authority.</li><li>The title wordmark no longer draws squished letters with dark seams inside the strokes on some browsers.</li><li>Five clip reports and a boundary hole turned out to be one family of collision bugs, and the family is closed.</li><li>The crash reporter stops presenting other libraries' noise as WHOMP crashes.</li></ul><p class="bucket-more">2 more fixes shipped in this release. The full log has all of them.</p>
-    </div>
-  </div>
-  </article>
-      <p class="lede">8 earlier releases not shown here.</p>
+      <p class="lede">9 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1007,106 +1009,106 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-01</h4>
 
-    <div class="row" data-kind="fix" id="chg-a889073d7">
+    <div class="row" data-kind="fix" id="chg-71523cedb">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the ankle exception keys follow the display-names law in reverse - the roster speaks internal ids, so bonkrat and cragjaw carry the signed 21, and the budget assertion learns to name its rig <span class="scope">(gate)</span></span>
-      <span class="sha">a889073d7</span>
+      <span class="what">the 0.7.19 gate's five reds triaged by attribution - the electron lock stamped through desktop-version --stamp (the ritual's third path), the island digest printline-copied over Orbital Mechanic's re-hung arms with a zero vertex delta, the waiter suite scrubs the gate's own WHOMP_GATE_RUN before measuring the signpost, one studio name edited out of a verbatim director quote <span class="scope">(gate)</span></span>
+      <span class="sha">71523cedb</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-475bbf3e4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the Tuesday wave's five reds triaged by attribution - the island digest printline-copied over the statue re-bake, the ankle rigs' 21st draw signed into the exceptions table under the funded arc, tombWisp's retired burst machine re-pinned as chaser per the bolt ruling, and the walk-probe artifact regenerated over the new ankles <span class="scope">(gate)</span></span>
-      <span class="sha">475bbf3e4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1b498a8d6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the boot's top band becomes a collar - the same buried-detail mistake, caught by the same frame <span class="scope">(striker)</span></span>
-      <span class="sha">1b498a8d6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d03147e72">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the boot closes on the shin - two defects the frame found that no suite could <span class="scope">(groundwork)</span></span>
-      <span class="sha">d03147e72</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-06ce2df62">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the boot stops being four boxes - report 497's other half, with the sole plane held to the micron <span class="scope">(striker)</span></span>
-      <span class="sha">06ce2df62</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-d91442826">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">the blizzard's duel dial 14 -&gt; 15, because the ruling's 20m reach translated the whole curve +0.80s without changing its shape <span class="scope">(duel)</span></span>
-      <span class="sha">d91442826</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-70b8e706c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the work boot stops being a brick with a cap on it - report 497's blocky foot, and this file's own limb-loft callout finally answered <span class="scope">(groundwork)</span></span>
-      <span class="sha">70b8e706c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a092463fd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the arms stop leaning into the coat - report 503's clip is ruling 166's sign class, and the ledger had already measured it <span class="scope">(mirage)</span></span>
-      <span class="sha">a092463fd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-230176496">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">reports 513 and 515 - a flat tile on sloped ground, a scorch nobody wanted, and a draw budget under a real wildfire <span class="scope">(surfaces)</span></span>
-      <span class="sha">230176496</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e111297f3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">report 511 - the lake pad's stone top and its lit deck were the same plane, and the torches are gone <span class="scope">(pads)</span></span>
-      <span class="sha">e111297f3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-daa4b6228">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">he is wearing breeches now - report 501's 'naked' was the thigh painted 18 units off this rig's own skin hex, with a 30 mm bare gap at the knee <span class="scope">(mirage)</span></span>
-      <span class="sha">daa4b6228</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-17607343d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the free hand stops being a paddle - report 494's 'turned' is a 0.85 rad pronation past the slab's own width peak, with the fan spent down to 0.10 and a resting 0.46 curl <span class="scope">(striker)</span></span>
-      <span class="sha">17607343d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e6279fd0d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stale-chunk retry for the feedback and tester panels <span class="scope">(engine)</span></span>
-      <span class="sha">e6279fd0d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a3aef57d2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the five rigs stop drawing their own interiors - the cap fan swapped at four sites and a fifth the ledger had filed under the wrong file, and the open lofts the director could actually see through finally capped <span class="scope">(roster)</span></span>
-      <span class="sha">a3aef57d2</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3af7ee096">
+    <div class="row" data-kind="feat" id="chg-b4849fdc8">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the graze-and-look cycle - spend the head polygons that were pointed at the grass <span class="scope">(hub)</span></span>
-      <span class="sha">3af7ee096</span>
+      <span class="what">LAW 11 gets a mechanism - a refusing git wrapper that binds every actor, not one runtime's hook <span class="scope">(law)</span></span>
+      <span class="sha">b4849fdc8</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-8b2f205a0">
+    <div class="row" data-kind="fix" id="chg-b1c5d89fd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the battle build profile pins its own pace clock - the compression leaked into the duel kit and walked a sacred witness, and the plan said it could not <span class="scope">(duel)</span></span>
+      <span class="sha">b1c5d89fd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8f6a3799d">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the ratified natural amble - a leg is its own length at its species' own pace <span class="scope">(hub)</span></span>
-      <span class="sha">8b2f205a0</span>
+      <span class="what">the WHOMP's damage and stun land on the hammer's contact frame, not the press <span class="scope">(sim)</span></span>
+      <span class="sha">8f6a3799d</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-56e50ecc0">
+    <div class="row" data-kind="fix" id="chg-e06ee582f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a stated --chrome is used or refused, never quietly swapped for another browser <span class="scope">(wiki)</span></span>
-      <span class="sha">56e50ecc0</span>
+      <span class="what">the post-landing guard asks for ancestry, because the wrapper's own eyeball commit sits on top of the merge <span class="scope">(train)</span></span>
+      <span class="sha">e06ee582f</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-873035b9c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the party's mallets are drawn - every seat, local and remote <span class="scope">(coop)</span></span>
-      <span class="sha">873035b9c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8797b1fd0">
+    <div class="row" data-kind="feat" id="chg-b7718eff4">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">whompSlam names its own seat, so four co-op mallets are tellable apart <span class="scope">(events)</span></span>
-      <span class="sha">8797b1fd0</span>
+      <span class="what">bin/land-train.sh lands an operator-named list of lanes and stops dead at the first that is not landable <span class="scope">(train)</span></span>
+      <span class="sha">b7718eff4</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-c9cd4ad2d">
+    <div class="row" data-kind="fix" id="chg-a34b0849f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a capture photographs the script's own repo, never the cwd you fired it from <span class="scope">(shot)</span></span>
-      <span class="sha">c9cd4ad2d</span>
-    </div><div class="row more">+ 1 more that day, not shown</div>
+      <span class="what">the busy notice names the runner it stood down for, and the probe stops reading the environment as argv <span class="scope">(gate)</span></span>
+      <span class="sha">a34b0849f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-dfa75facf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Endless keeps its own cadence - the compression was silently running every recurring Endless system 33% faster, and star 3 is not a three-quarters beat <span class="scope">(schedule)</span></span>
+      <span class="sha">dfa75facf</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f36f8b84f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the close-key policy becomes one refusal the menu build cannot get past, and the ALLOW half finally has a test <span class="scope">(shell)</span></span>
+      <span class="sha">f36f8b84f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d39c58fc2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">package shellMenu.cjs - every installer built since 2026-08-26 throws MODULE_NOT_FOUND at boot, and the require graph is now walked so there is no third time <span class="scope">(desktop)</span></span>
+      <span class="sha">d39c58fc2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-83a9a9bd3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the green-line grader requires a runner-shaped command, so the signpost cannot drag it in - grading makes this script's exit non-zero, so applying the signpost's deliberately loose &quot;mentions a vitest run&quot; test would fail `echo vitest run --maxWorkers 1`, a command that ran no tests and never claimed to; measured as exit 76 on preGateChain's own signpost fixture, fixed by also requiring npx/npm/pnpm/yarn/bun or a basename containing vitest, and the false red is now a firing negative beside the false green <span class="scope">(waiter)</span></span>
+      <span class="sha">83a9a9bd3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-92805a1c3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the artifact pass refuses to render over an uncommitted fingerprint source - the wiki manifest fingerprints every src/data/**/*.ts including patchNotes.ts, so a pass taken while the release ritual sits in the working tree is staled by the ritual commit and the wave pays a second render (0.7.18 c7ebf13d, 0.7.17 c5c1ead8); bin/artifact-pass-guard.mjs names the file and the remedy, ship.sh stage 1 runs it hard ahead of every probe and generator, and the ordering state the brief asked to refuse - a committed ritual newer than the manifest - is REPORTED instead, because that is the state in which the wave's one render is due <span class="scope">(ship)</span></span>
+      <span class="sha">92805a1c3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f86901886">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one bounded settle-and-retry on a CONTENTION verdict, and the stamp says so - a red whose every file passes standalone is a proof the gate used to throw away (2026-09-01, tests/shotLock.test.mjs, load 6.78, one file, 22 minutes to re-gate the same tree green); the gate now settles until the load is back under REFUSAL 3's own ceiling, re-runs only those files once, and stamps on the original full run plus those passes, recording verdict.path=contention-retry in .suite-green.json; a REAL verdict never enters the path and a retry that reds again exits 1 and stamps nothing <span class="scope">(gate)</span></span>
+      <span class="sha">f86901886</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7e585adf1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the sanctioned waiter grades its own child instead of trusting an exit code - a dispatched vitest run whose output carries no passing `Test Files` line exits 76 with WAITER: NO GREEN LINE, closing the third false green this script has produced (ran-nothing, laundered timeout, killed-before-summary); the child's own non-zero code still outranks it, non-test commands are never graded, and WHOMP_WAITER_NO_GREEN_ASSERT waives it loudly for a summary-less reporter <span class="scope">(waiter)</span></span>
+      <span class="sha">7e585adf1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2186c40dd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">report #502, the Orbital Mechanic's arm comes back to the roster's own reach band <span class="scope">(cragjaw)</span></span>
+      <span class="sha">2186c40dd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-de6eed7fb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the bank moment stops firing three flourishes on one frame - star plate, then the portal call-out, then ENCORE, each on its own named offset <span class="scope">(bank)</span></span>
+      <span class="sha">de6eed7fb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ddd89d2c4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the reward clock retunes with the run - 28-over-20 becomes 28-over-15, so the full authored arc is still spent exactly at the bank <span class="scope">(reward)</span></span>
+      <span class="sha">ddd89d2c4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8b2a51066">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the first two signature slots ease to three quarters and the finale keeps its feel - derived from a measured share of the run, not from taste <span class="scope">(bosses)</span></span>
+      <span class="sha">8b2a51066</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-dc88a07be">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the run banks at 15:00 and the third star lands at 20:00 - one pace ratio carries every pre-bank beat to three quarters, and the rift family re-anchors to the bank it was always measured from <span class="scope">(schedule)</span></span>
+      <span class="sha">dc88a07be</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-38ada0f98">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the routing law reads the FIRE, not only the brief - an Agent call that would inherit the parent model is refused by name <span class="scope">(routing)</span></span>
+      <span class="sha">38ada0f98</span>
+    </div><div class="row more">+ 23 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-29</h4>
@@ -1658,12 +1660,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@a889073d7</code> on 2026-09-01 23:18 UTC.
+  Every number on this page came straight out of the game, read at <code>game@71523cedb</code> on 2026-09-02 04:05 UTC.
 
-  The game is serving <code>0.7.18</code>.
+  The game is serving <code>0.7.19</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">480 player-visible changes in the last 7 days, across 8 active days, 849 internal-only commits filtered out</div>
+  <div class="stat">502 player-visible changes in the last 7 days, across 8 active days, 924 internal-only commits filtered out</div>
 </footer>
 
 
