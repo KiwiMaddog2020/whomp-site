@@ -335,8 +335,13 @@ if (mainSha && mainSha !== headSha) {
  * derive-not-duplicate reasoning as arcs/bugs above: the strings are the
  * game's own authored copy, and a hand-copy is exactly the kind of thing that
  * goes stale the next time someone tunes a line in the game. */
+/* MOVED 2026-09-03: the game relocated the TAGLINES literal to the zero-import
+ * leaf src/data/taglines.ts, and src/ui/mainMenu.ts now only re-exports it, so
+ * this source-text scraper reads the leaf first and only falls back to the old
+ * title-screen path for checkouts from before the move. */
 function parseGameTaglines() {
-  const path = join(REPO, 'src/ui/mainMenu.ts');
+  const leaf = join(REPO, 'src/data/taglines.ts');
+  const path = existsSync(leaf) ? leaf : join(REPO, 'src/ui/mainMenu.ts');
   if (!existsSync(path)) return [];
   const raw = readFileSync(path, 'utf8');
   const block = raw.split(/export const TAGLINES: readonly string\[\] = \[/)[1]?.split(/\n\];/)[0] ?? '';
@@ -345,7 +350,7 @@ function parseGameTaglines() {
 }
 const gameTaglines = parseGameTaglines();
 if (gameTaglines.length === 0) {
-  throw new Error('No TAGLINES parsed from whomp/src/ui/mainMenu.ts. The title screen file moved or its export shape changed, fix parseGameTaglines rather than shipping an empty rotation.');
+  throw new Error('No TAGLINES parsed from whomp/src/data/taglines.ts (nor the legacy whomp/src/ui/mainMenu.ts). The taglines leaf moved or its export shape changed, fix parseGameTaglines rather than shipping an empty rotation.');
 }
 
 // ---------------------------------------------------------------- derive: the two release tracks
