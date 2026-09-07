@@ -1328,7 +1328,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
 
   // ---- boss variants ------------------------------------------------------
   const bossVariantEntries = ordered(BV);
-  const bvBaseName = (id) => EN.entries[id]?.name || id;
+  const bvBaseName = (id) => E.entries[id]?.name || id;
   const bossVariantsRoster = {
     section: 'World',
     slug: 'boss-variants',
@@ -1338,6 +1338,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     lede: 'A variant is a mid-run boss wearing the world it is fought on: the same fight underneath, re-dressed in that map\'s own growth, crust or rime so a glacier player never meets an undressed desert crab. Every portrait below is the game\'s own render of the dressed body, and every name was christened by hand.',
     omissions: '<b>The numbers live on the animal underneath.</b> A variant changes nothing about health, damage or timing - those belong to its base kind in the Bestiary, linked on every card.',
     entries: bossVariantEntries,
+    groups: [
+      { key: 'tidebound', title: 'The Colossus dressed', note: 'Tidebound underneath.', has: (e) => e.baseKind === 'tidebound' },
+      { key: 'oilfather', title: 'The Father dressed', note: 'Oilfather underneath.', has: (e) => e.baseKind === 'oilfather' },
+      { key: 'ramhorn', title: 'The Ram dressed', note: 'Ramhorn underneath.', has: (e) => e.baseKind === 'ramhorn' },
+      { key: 'thistlemaw', title: 'The Maw dressed', note: 'Thistlemaw underneath.', has: (e) => e.baseKind === 'thistlemaw' },
+      { key: 'kingbloom', title: 'The King dressed', note: 'Kingbloom underneath.', has: (e) => e.baseKind === 'kingbloom' },
+    ],
     facets: [
       { key: 'base', label: 'Base kind', of: (e) => bvBaseName(e.baseKind) },
     ],
@@ -2677,6 +2684,7 @@ export const SEARCH_TYPE = {
  * a new private/export-only field must not break the wiki, while deleting a
  * field the wiki actually presents must fail before HTML is written. */
 export const DISPLAY_FIELD_PATHS = Object.freeze({
+  bossVariants: ['baseKind', 'skin'],
   weapons: ['desc', 'pattern', 'element', 'shape', 'baseDamage', 'fireRateMs', 'maxLevel', 'perLevel', 'params', 'unlockedFromStart'],
   coreWeapons: ['desc', 'feel', 'cadence', 'cadenceLabel', 'meter', 'meterPips', 'color'],
   passives: ['desc', 'stat', 'perLevel', 'maxLevel', 'unlockedFromStart'],
