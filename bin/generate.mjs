@@ -1671,7 +1671,7 @@ ${script}
 </body>
 </html>`;
 
-const SEARCH_PLACEHOLDER = 'Search the wiki and the dev log';
+const SEARCH_PLACEHOLDER = 'Look up a weapon, a monster, a patch note';
 
 /* The wiki's own sidebar. It lives here rather than in wiki.mjs because it names
  * the pages that are NOT rosters too, and because "you are here" is page chrome.

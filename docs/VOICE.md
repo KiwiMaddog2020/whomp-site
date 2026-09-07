@@ -195,11 +195,19 @@ to say got buried.
 > presentation palette, fixed gallery lighting and bounds-fit front camera,
 > neutral frame, not an in-game screenshot or live-world lighting.
 
-> After: How it was made: the game drew this on its own, alone, on a plain
-> background with fixed light, seen from the front. It is not a screenshot, and
-> it is not how the thing looks in a live world.
+> After (2026-08-07): How it was made: the game drew this on its own, alone, on
+> a plain background with fixed light, seen from the front. It is not a
+> screenshot, and it is not how the thing looks in a live world.
 
-Every claim survives. None of them needs the word "presentation" three times.
+> After (2026-09-06): Posed by the game itself, not a screenshot.
+> Then a closed fold, "The fine print", holding the 2026-08-07 sentence, the
+> game's own limitation string and the source, word for word.
+
+Every claim survives. None of them needs the word "presentation" three times,
+and since the second pass a player reads one of them and can open the rest. The
+director's word for the wiki is "light hearted"; the honesty contract is that
+the not-a-screenshot fact stays visible on every posed render and the full
+provenance is never deleted, only folded. `bin/wiki-check.mjs` pins both.
 
 ## Applying this
 
