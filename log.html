@@ -369,7 +369,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>fd890dcd</code></span></div>
+    Live <b>0.7.20</b> · <code>621f2f6c</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -421,24 +421,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">535 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
+    <p class="lede">561 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-07">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 1</span><span class="storyday-kind" style="background:var(--pink)">Fixed 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
       </div>
-      <p class="storyday-shape">2 changes landed: 1 new, 1 fixed.</p>
+      <p class="storyday-shape">5 changes landed: 4 fixed, 1 new.</p>
 
 
     </article>
     <article class="storyday" id="day-2026-09-06">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-06</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 30</span><span class="storyday-kind" style="background:var(--pink)">Fixed 23</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 40</span><span class="storyday-kind" style="background:var(--cyan)">New 36</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">56 changes landed: 30 new, 23 fixed, 2 polish, 1 performance.</p>
+      <p class="storyday-shape">79 changes landed: 40 fixed, 36 new, 2 polish, 1 performance.</p>
 
 
     </article>
@@ -1003,6 +1003,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-07</h4>
 
+    <div class="row" data-kind="fix" id="chg-3373c2397">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the five deploy 17 gate reds, four of them bookkeeping the night's landings owed <span class="scope">(gate)</span></span>
+      <span class="sha">3373c2397</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5db0d98c0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the arms go back to the middle, armGirth 0.520 -&gt; 0.810 <span class="scope">(groundwork)</span></span>
+      <span class="sha">5db0d98c0</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-fd890dcdf">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the four deploy 16 gate reds, three of them mine <span class="scope">(gate)</span></span>
@@ -1013,110 +1023,115 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the 0.7.20 entry describes deploy 16 (close keys, portal height, boss placement, leap marker, shrine reveal and pause guard, legendary moments, Groundbreaker and Cold Snap, Boom Box, statue select cost and near detail, the GPU leak, minimap and shield copy, wire kit validation, Echo Revenant) <span class="scope">(notes)</span></span>
       <span class="sha">c7ce55749</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-b5559ccd8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close R4 and R5, two more fixture files off retired/misused weapon ids <span class="scope">(coop-pick-character-id-guard)</span></span>
+      <span class="sha">b5559ccd8</span>
+    </div>
   </div>
   <div class="day">
     <h4>2026-09-06</h4>
 
+    <div class="row" data-kind="fix" id="chg-6da955a57">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the wire relic list is validated, and the abort arm bounds the seat by the room <span class="scope">(coop-attestation-fix)</span></span>
+      <span class="sha">6da955a57</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-aef639aa5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the attestation verdict reaches the accused seat, and three wire fields get the guard their siblings already have <span class="scope">(coop-attestation-fix)</span></span>
+      <span class="sha">aef639aa5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-16dfa61a5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the sword arm stands off the cuirass, armZ -0.30 to 0.36 <span class="scope">(firstLight)</span></span>
+      <span class="sha">16dfa61a5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e1d829d47">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">re-point four fixtures off the retired 'shotgun' starting weapon, closes R1 <span class="scope">(coop-pick-character-id-guard)</span></span>
+      <span class="sha">e1d829d47</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d27f8e238">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the timeout tie gets its own beat, and a level match gets a line <span class="scope">(ui)</span></span>
+      <span class="sha">d27f8e238</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d5c723898">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a drawn round counts for both sides, and the best-of ends at its cap <span class="scope">(duel)</span></span>
+      <span class="sha">d5c723898</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c94d9fb55">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">review fix-up, negative test can now go red, comment names the full derived loss <span class="scope">(sync-receipt-payout)</span></span>
+      <span class="sha">c94d9fb55</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a2ff62168">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">PauseMenu.canOpen derives from modalPauseFactor, so the shrine cannot be forgotten <span class="scope">(engine)</span></span>
+      <span class="sha">a2ff62168</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2f2f1bdfd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">cache the baked plaza figures and free the outgoing plinth glow material <span class="scope">(statue-select-cost)</span></span>
+      <span class="sha">2f2f1bdfd</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-bcc96090a">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the landing stops eating hover, a banish costs 400ms not 1200, and the lock keeps its hands off the keyboard <span class="scope">(shrine)</span></span>
       <span class="sha">bcc96090a</span>
     </div>
-    <div class="row" data-kind="style" id="chg-dc6388151">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">drop the em dashes this lane authored <span class="scope">(boss-placement-blocked-588)</span></span>
-      <span class="sha">dc6388151</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b2ecd84bc">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the 0.7.20 entry describes deploy 15 in fullChanges (loading bar, evolved weapons unfrozen, Ring of Ruin and Deathray restated, Storm Cell bloom cap, passives clamp, crater bowl, Spectral Echo exposure, Blizzard cloud); wiki provenance re-stamped for the notes source <span class="scope">(notes)</span></span>
-      <span class="sha">b2ecd84bc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a7959df24">
+    <div class="row" data-kind="fix" id="chg-a6331d4da">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">refuse a blocked boss arrival instead of pinning it to the wall <span class="scope">(bosses)</span></span>
-      <span class="sha">a7959df24</span>
+      <span class="what">refuse a starting weapon the build cannot serve, on both co-op wire doors <span class="scope">(coop-pick-character-id-guard)</span></span>
+      <span class="sha">a6331d4da</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-f9a27132c">
+    <div class="row" data-kind="fix" id="chg-25fce0979">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">legalise the revenant arrival against navigation before it spawns <span class="scope">(echo)</span></span>
-      <span class="sha">f9a27132c</span>
+      <span class="what">open the sword arm off the cuirass, and pin it <span class="scope">(firstLight)</span></span>
+      <span class="sha">25fce0979</span>
     </div>
-    <div class="row" data-kind="perf" id="chg-71f4f9caf">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">warm the unlocked walk-plug grid at island build, and drop both grids together <span class="scope">(hub)</span></span>
-      <span class="sha">71f4f9caf</span>
+    <div class="row" data-kind="feat" id="chg-9bad1ec17">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report 591 facet pass on silhouette edges only, and the ceiling raise that pays for it <span class="scope">(paddock)</span></span>
+      <span class="sha">9bad1ec17</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-e225b0b5c">
+    <div class="row" data-kind="fix" id="chg-d89249a1e">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the publisher's entrypoint guard resolves both sides with realpathSync (binEntrypointGuards red at the posting-worker landing) <span class="scope">(social)</span></span>
-      <span class="sha">e225b0b5c</span>
+      <span class="what">bring the arm into proportion with the frame (audit row 582) <span class="scope">(groundwork)</span></span>
+      <span class="sha">d89249a1e</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-96d0d02fc">
+    <div class="row" data-kind="feat" id="chg-010b7e50d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">report 591 proportion pass, the cow stops being a drum and the pig stops being a loaf <span class="scope">(paddock)</span></span>
+      <span class="sha">010b7e50d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-e28ed2c46">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">take the metre of plume the camera actually moved <span class="scope">(starfall)</span></span>
+      <span class="sha">e28ed2c46</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fa7c7f4ba">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">split the kit ramp and grip onto two axes so the half life is exact <span class="scope">(player)</span></span>
-      <span class="sha">96d0d02fc</span>
+      <span class="what">shrink the Fallen Star's head, most where it was worst <span class="scope">(starfall)</span></span>
+      <span class="sha">fa7c7f4ba</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-cf029906b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the four legendary relics announce themselves in the world <span class="scope">(fx)</span></span>
-      <span class="sha">cf029906b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7efd94b76">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">one informational escalationDampened flag on chestOpened <span class="scope">(events)</span></span>
-      <span class="sha">7efd94b76</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c2f97162a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the posting worker and publish script, Bluesky and X post lint-clean drafts after a deploy behind WHOMP_SOCIAL_AUTOPOST, tokens only as Cloudflare secrets the director sets (marketing day one, director 1:24 pm) <span class="scope">(social)</span></span>
-      <span class="sha">c2f97162a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-24d9e4a23">
+    <div class="row" data-kind="fix" id="chg-76a93e395">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">validate every weapon entry of a wire kit <span class="scope">(net)</span></span>
-      <span class="sha">24d9e4a23</span>
+      <span class="what">an exact hp tie at round timeout is a draw, in both directors <span class="scope">(duel)</span></span>
+      <span class="sha">76a93e395</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-902d8d50e">
+    <div class="row" data-kind="feat" id="chg-e540ecec3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">optional once-only failure callback on guardStorageWithStatus <span class="scope">(save-write-warning)</span></span>
+      <span class="sha">e540ecec3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6533e7434">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">same vertical term, from the same shared constant (report 587) <span class="scope">(escapePortal)</span></span>
-      <span class="sha">902d8d50e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fa8559355">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">compose the three movement kits onto the real controller <span class="scope">(player)</span></span>
-      <span class="sha">fa8559355</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-bae25ca1d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">author the three movement kits as one frozen data table <span class="scope">(movementKits)</span></span>
-      <span class="sha">bae25ca1d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-efcec16ed">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">lay the leap marker rings on the ground and face the landing shape at the player <span class="scope">(render)</span></span>
-      <span class="sha">efcec16ed</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-cf3aa74bf">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">give the traversal trigger a vertical term so a jump clears it <span class="scope">(portals)</span></span>
-      <span class="sha">cf3aa74bf</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-876584a26">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">stage the volley, put the rim in proportion, mark a doubled body during formation <span class="scope">(cold-snap-glowup)</span></span>
-      <span class="sha">876584a26</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ab898a0d3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the cloud moves like weather; drift, swell, heave and rock, all off the ring's own age <span class="scope">(blizzard)</span></span>
-      <span class="sha">ab898a0d3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d05ab9529">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">thirteen smaller lobes, smooth normals kept, the ice material off flatShading (v36 board row 8) <span class="scope">(blizzard)</span></span>
-      <span class="sha">d05ab9529</span>
-    </div><div class="row more">+ 36 more that day, not shown</div>
+      <span class="what">seat the cloud and streak start on ground at cast <span class="scope">(blizzard-cast-height-570)</span></span>
+      <span class="sha">6533e7434</span>
+    </div><div class="row more">+ 59 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-05</h4>
@@ -1793,12 +1808,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@fd890dcdf</code> on 2026-09-07 09:01 UTC.
+  Every number on this page came straight out of the game, read at <code>game@621f2f6c5</code> on 2026-09-07 14:16 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">545 player-visible changes in the last 7 days, across 9 active days, 1442 internal-only commits filtered out</div>
+  <div class="stat">571 player-visible changes in the last 7 days, across 9 active days, 1521 internal-only commits filtered out</div>
 </footer>
 
 
