@@ -2136,7 +2136,7 @@ ${landingTopBar('index.html')}
 <section id="run">
   <div class="rule"></div>
   <h2 class="chroma">What a run does to you</h2>
-  <p class="lede">Twenty minutes, and every one of them wants you dead. The horde arrives from all sides at once,
+  <p class="lede">Fifteen minutes, and every one of them wants you dead. The horde arrives from all sides at once,
     gems spray everywhere, and your build snowballs from one shaky weapon into a rolling catastrophe with your name
     on it. By the end the screen is mostly explosions. You are in there somewhere, allegedly in charge.</p>
   <p class="lede">Nothing to download, nothing to install, and nobody here wants your email address. Click it and you
