@@ -523,7 +523,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>ee317290</code></span></div>
+    Live <b>0.7.20</b> · <code>fd890dcd</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -624,13 +624,13 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-heroes">Heroes</a><span aria-hidden="true">/</span><span aria-current="page">Characters</span></nav>
     <h2 class="chroma">Characters</h2>
-    <p class="lede">A character is a starting health number, a speed, a damage multiplier, one passive rule and one signature move. The three numbers are inputs the run multiplies, not the speed you travel at or the damage you land, and the weapon named on a card is a suggestion rather than something you walk in holding.</p>
+    <p class="lede">A character is three numbers, one passive rule and one signature move. None of the numbers is what it looks like: they season the run rather than set your speed or your damage, and the weapon named on the card is a suggestion, not something you start out holding.</p>
 
 
 
 
     <section class="wfeature" aria-labelledby="character-base-inputs">
-      <div><span class="eyebrow">Runtime interpretation</span><h3 id="character-base-inputs">Loadout suggestion and authored identity inputs</h3></div>
+      <div><span class="eyebrow">How the sheet reads</span><h3 id="character-base-inputs">A suggested weapon, and three numbers that are not what they sound like</h3></div>
       <p>startWeaponId is a character loadout suggestion and Battle/build identity, not an unconditional campaign starting pickup.</p><p>The standard solo campaign begins with the aimed core only; its first automatic weapon comes from the live draft.</p><p>Other synthetic and multiplayer contexts apply their own explicit loadout or world grant policy.</p>
       <details class="wraw"><summary>Suggested-weapon provenance <span>5</span></summary><dl><div><dt><code>registry</code></dt><dd>src/data/characters.ts#CHARACTERS[*].startWeaponId</dd></div><div><dt><code>soloConsumer</code></dt><dd>src/engine.ts#createRun</dd></div><div><dt><code>coopConsumer</code></dt><dd>src/coop/seatFactory.ts#createSeat</dd></div><div><dt><code>botConsumer</code></dt><dd>src/sim/botKit.ts#buildBotKit</dd></div><div><dt><code>progressionConsumer</code></dt><dd>src/sim/progression.ts#Progression.constructor</dd></div></dl></details>
       <div class="wmethod-row">
@@ -684,12 +684,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Lights the boosters and grins through the visor.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-boosterSchool">Booster School</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-megaDash">Mega-Dash</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> on the character sheet; the run turns it into a <b>&times;1</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -707,12 +707,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Made of glass. Hexes anyway.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-fireball">Fireball</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-fireball">Fireball</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-cruelFate">Cruel Fate</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-blink">The Debt</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>70 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.8</b> authored input; runtime identity multiplier <b>&times;1.13</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.1</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.8</b> on the character sheet; the run turns it into a <b>&times;1.13</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.1</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -730,12 +730,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Heavy boots. Comes down like a dropped wrench.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-loadBearing">Load Bearing</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-groundSlam">Crater</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>150 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5</b> authored input; runtime identity multiplier <b>&times;0.83</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.05</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5</b> on the character sheet; the run turns it into a <b>&times;0.83</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.05</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -753,12 +753,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Sealed in glass. Reels straight toward the fight.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-lineTension">Line Tension</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-grapple">Grapple</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>95 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.6</b> authored input; runtime identity multiplier <b>&times;1.1</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.6</b> on the character sheet; the run turns it into a <b>&times;1.1</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -776,12 +776,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">First week on the job. Never stops running.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-boomerang">Boomerang</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-boomerang">Boomerang</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-quickFeet">Quick Feet</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-momentumDrift">Miscast</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>85 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>7.2</b> authored input; runtime identity multiplier <b>&times;1.2</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>7.2</b> on the character sheet; the run turns it into a <b>&times;1.2</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -799,12 +799,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Casts twice. Once now, once a heartbeat later.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-iceShard">Ice Shards</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-iceShard">Ice Shards</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-lastingSpell">Lasting Spell</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-afterimage">Afterimage</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> on the character sheet; the run turns it into a <b>&times;1</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -822,12 +822,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">The horde falls inward. It was always going to.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-criticalMass">Critical Mass</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-eventHorizon">Event Horizon</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>135 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.4</b> authored input; runtime identity multiplier <b>&times;0.9</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.4</b> on the character sheet; the run turns it into a <b>&times;0.9</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -845,12 +845,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Plants the shield where the trouble is headed.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-reserveAegis">Reserve Aegis</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-sentinelGuard">Aegis</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> on the character sheet; the run turns it into a <b>&times;1</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -868,12 +868,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Counts to one, then runs through the answer.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-boomerang">Boomerang</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-boomerang">Boomerang</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-redline">Redline</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-berserkerRush">Redline</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>100 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> authored input; runtime identity multiplier <b>&times;1</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6</b> on the character sheet; the run turns it into a <b>&times;1</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -891,12 +891,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Drops a clinic wherever the panic gets loudest.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-bedsideManner">Bedside Manner</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-triageBeacon">Triage Beacon</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>110 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.8</b> authored input; runtime identity multiplier <b>&times;0.97</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.8</b> on the character sheet; the run turns it into a <b>&times;0.97</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -914,12 +914,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Walks the line with a lit torch and decides which way the fire goes.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-fireball">Fireball</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-fireball">Fireball</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-crownFire">Crown Fire</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-prescribedBurn">Prescribed Burn</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>110 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.4</b> authored input; runtime identity multiplier <b>&times;1.07</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.4</b> on the character sheet; the run turns it into a <b>&times;1.07</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -937,12 +937,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Says it once, out loud, and the room agrees.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-openingStatement">Opening Statement</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-verdict">Verdict</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>115 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.5</b> authored input; runtime identity multiplier <b>&times;0.92</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.08</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.5</b> on the character sheet; the run turns it into a <b>&times;0.92</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.08</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -960,12 +960,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Nobody clocks out. Not even them.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-frostlings">Frostlings</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-frostlings">Frostlings</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-piecework">Piecework</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-reveille">Reveille</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>95 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.9</b> authored input; runtime identity multiplier <b>&times;0.98</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.9</b> on the character sheet; the run turns it into a <b>&times;0.98</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.9</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -983,12 +983,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">The ground is finished when he says it is.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-stonePillar">Stone Pillar</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-stonePillar">Stone Pillar</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-wideLoad">Wide Load</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-rightOfWay">Right of Way</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>130 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.4</b> authored input; runtime identity multiplier <b>&times;1.07</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.4</b> on the character sheet; the run turns it into a <b>&times;1.07</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -1006,12 +1006,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Closes the gap, then is the gap.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-thunderhead">Storm Cell</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-thunderhead">Storm Cell</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-followThrough">Follow-Through</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-capacitor">Capacitor</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>90 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.7</b> authored input; runtime identity multiplier <b>&times;1.12</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.7</b> on the character sheet; the run turns it into a <b>&times;1.12</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -1029,12 +1029,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Does not kill anything. Waits.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-pulseMine">Pulse Mine</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-downwind">Downwind</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-wetRot">Wet Rot</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>90 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.2</b> authored input; runtime identity multiplier <b>&times;1.03</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.85</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.2</b> on the character sheet; the run turns it into a <b>&times;1.03</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.85</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -1052,12 +1052,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Sets up shop. Everything nearby gets hotter.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-fireball">Fireball</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-fireball">Fireball</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-heavyGauge">Heavy Gauge</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-anvil">The Anvil</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>120 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.5</b> authored input; runtime identity multiplier <b>&times;0.92</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.05</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.5</b> on the character sheet; the run turns it into a <b>&times;0.92</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.05</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -1075,12 +1075,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Builds first. Fights around it.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-cryoPrism">Cryo Prism</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-cryoPrism">Cryo Prism</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-deepCold">Deep Cold</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-stillLife">Ice Wall</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>105 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.6</b> authored input; runtime identity multiplier <b>&times;0.93</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>5.6</b> on the character sheet; the run turns it into a <b>&times;0.93</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;0.95</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -1098,12 +1098,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Mostly mouth. Arrives late and eats the room.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-plasmaOrbit">Plasma Shield</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-ultimateCooldown">Always Hungry</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-outbound">Outbound</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>190 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>4.8</b> authored input; runtime identity multiplier <b>&times;0.8</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.2</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>4.8</b> on the character sheet; the run turns it into a <b>&times;0.8</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.2</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article>
@@ -1121,12 +1121,12 @@ footer a{color:var(--cyan);text-decoration:none}
       <div class="wtags"><span class="wtag ink-cyan">From the start</span></div>
       <p class="wdesc">Fights at a distance. Sends the rest.</p>
       <div class="wfacts">
-        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span></span></div>
+        <div class="wfact"><span class="wfact-k">Suggested weapon</span><span class="wfact-v"><a href="wiki-weapons.html#e-energyBolt">Energy Bolt</a> <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span></span></div>
         <div class="wfact"><span class="wfact-k">Innate</span><span class="wfact-v"><a href="wiki-innates.html#e-longSight">Long Sight</a></span></div>
         <div class="wfact"><span class="wfact-k">Signature</span><span class="wfact-v"><a href="wiki-signatures.html#e-heatShimmer">Heat Shimmer</a></span></div>
         <div class="wfact"><span class="wfact-k">Run-start health base</span><span class="wfact-v"><b>85 hp</b>, before shop and other run-start bonuses</span></div>
-        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.2</b> authored input; runtime identity multiplier <b>&times;1.03</b>, not m/s</span></div>
-        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.15</b> in the multiplicative damage product, not final damage</span></div>
+        <div class="wfact"><span class="wfact-k">Speed identity input (relative to 6)</span><span class="wfact-v"><b>6.2</b> on the character sheet; the run turns it into a <b>&times;1.03</b> multiplier, not m/s</span></div>
+        <div class="wfact"><span class="wfact-k">Damage identity multiplier input</span><span class="wfact-v"><b>&times;1.15</b>, a multiplier the run applies elsewhere, not final damage</span></div>
       </div>
 
       </article></div>
@@ -1135,7 +1135,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@ee3172901</code> on 2026-09-07 07:06 UTC.
+  Every number on this page came straight out of the game, read at <code>game@fd890dcdf</code> on 2026-09-07 08:59 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>

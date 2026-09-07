@@ -369,7 +369,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>ee317290</code></span></div>
+    Live <b>0.7.20</b> · <code>fd890dcd</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -386,7 +386,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
 
 <div class="searchwrap" role="search">
-  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Look up a weapon, a monster, a patch note" autocomplete="off" spellcheck="false"
     aria-label="Search WHOMP"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
@@ -421,24 +421,33 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">509 player-visible changes landed in the last 7 days, across 6 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
+    <p class="lede">535 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-09-07">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-09-07</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 1</span><span class="storyday-kind" style="background:var(--pink)">Fixed 1</span></span>
+      </div>
+      <p class="storyday-shape">2 changes landed: 1 new, 1 fixed.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-09-06">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-06</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 18</span><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span><span class="storyday-kind" style="background:var(--gold)">Polish 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 30</span><span class="storyday-kind" style="background:var(--pink)">Fixed 23</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">33 changes landed: 18 new, 14 fixed, 1 polish.</p>
+      <p class="storyday-shape">56 changes landed: 30 new, 23 fixed, 2 polish, 1 performance.</p>
 
 
     </article>
     <article class="storyday" id="day-2026-09-05">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-05</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 37</span><span class="storyday-kind" style="background:var(--pink)">Fixed 22</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 38</span><span class="storyday-kind" style="background:var(--pink)">Fixed 22</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">60 changes landed: 37 new, 22 fixed, 1 performance.</p>
+      <p class="storyday-shape">61 changes landed: 38 new, 22 fixed, 1 performance.</p>
 
 
     </article>
@@ -482,15 +491,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </a><a class="storyday-release" href="#release-0-7-18">
         <b>v0.7.18</b><span>The Tuesday train: the mystery diamonds are GONE gone, co-op finally swings its hammer, the farm wakes up, and the flickering stops.</span>
       </a>
-
-    </article>
-    <article class="storyday is-quiet" id="day-2026-08-31">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-08-31</span>
-        <span class="storyday-kinds"></span>
-      </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
-
 
     </article></div>
   </section>
@@ -1001,22 +1001,111 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-09-07</h4>
+
+    <div class="row" data-kind="fix" id="chg-fd890dcdf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the four deploy 16 gate reds, three of them mine <span class="scope">(gate)</span></span>
+      <span class="sha">fd890dcdf</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c7ce55749">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the 0.7.20 entry describes deploy 16 (close keys, portal height, boss placement, leap marker, shrine reveal and pause guard, legendary moments, Groundbreaker and Cold Snap, Boom Box, statue select cost and near detail, the GPU leak, minimap and shield copy, wire kit validation, Echo Revenant) <span class="scope">(notes)</span></span>
+      <span class="sha">c7ce55749</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-09-06</h4>
 
+    <div class="row" data-kind="fix" id="chg-bcc96090a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the landing stops eating hover, a banish costs 400ms not 1200, and the lock keeps its hands off the keyboard <span class="scope">(shrine)</span></span>
+      <span class="sha">bcc96090a</span>
+    </div>
+    <div class="row" data-kind="style" id="chg-dc6388151">
+      <span class="kind" style="background:var(--gold)">Polish</span>
+      <span class="what">drop the em dashes this lane authored <span class="scope">(boss-placement-blocked-588)</span></span>
+      <span class="sha">dc6388151</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-b2ecd84bc">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the 0.7.20 entry describes deploy 15 in fullChanges (loading bar, evolved weapons unfrozen, Ring of Ruin and Deathray restated, Storm Cell bloom cap, passives clamp, crater bowl, Spectral Echo exposure, Blizzard cloud); wiki provenance re-stamped for the notes source <span class="scope">(notes)</span></span>
       <span class="sha">b2ecd84bc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a7959df24">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">refuse a blocked boss arrival instead of pinning it to the wall <span class="scope">(bosses)</span></span>
+      <span class="sha">a7959df24</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f9a27132c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">legalise the revenant arrival against navigation before it spawns <span class="scope">(echo)</span></span>
+      <span class="sha">f9a27132c</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-71f4f9caf">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">warm the unlocked walk-plug grid at island build, and drop both grids together <span class="scope">(hub)</span></span>
+      <span class="sha">71f4f9caf</span>
     </div>
     <div class="row" data-kind="fix" id="chg-e225b0b5c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the publisher's entrypoint guard resolves both sides with realpathSync (binEntrypointGuards red at the posting-worker landing) <span class="scope">(social)</span></span>
       <span class="sha">e225b0b5c</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-96d0d02fc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">split the kit ramp and grip onto two axes so the half life is exact <span class="scope">(player)</span></span>
+      <span class="sha">96d0d02fc</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf029906b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the four legendary relics announce themselves in the world <span class="scope">(fx)</span></span>
+      <span class="sha">cf029906b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7efd94b76">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one informational escalationDampened flag on chestOpened <span class="scope">(events)</span></span>
+      <span class="sha">7efd94b76</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-c2f97162a">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the posting worker and publish script, Bluesky and X post lint-clean drafts after a deploy behind WHOMP_SOCIAL_AUTOPOST, tokens only as Cloudflare secrets the director sets (marketing day one, director 1:24 pm) <span class="scope">(social)</span></span>
       <span class="sha">c2f97162a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-24d9e4a23">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">validate every weapon entry of a wire kit <span class="scope">(net)</span></span>
+      <span class="sha">24d9e4a23</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-902d8d50e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">same vertical term, from the same shared constant (report 587) <span class="scope">(escapePortal)</span></span>
+      <span class="sha">902d8d50e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fa8559355">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">compose the three movement kits onto the real controller <span class="scope">(player)</span></span>
+      <span class="sha">fa8559355</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-bae25ca1d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">author the three movement kits as one frozen data table <span class="scope">(movementKits)</span></span>
+      <span class="sha">bae25ca1d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-efcec16ed">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">lay the leap marker rings on the ground and face the landing shape at the player <span class="scope">(render)</span></span>
+      <span class="sha">efcec16ed</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cf3aa74bf">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">give the traversal trigger a vertical term so a jump clears it <span class="scope">(portals)</span></span>
+      <span class="sha">cf3aa74bf</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-876584a26">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">stage the volley, put the rim in proportion, mark a doubled body during formation <span class="scope">(cold-snap-glowup)</span></span>
+      <span class="sha">876584a26</span>
     </div>
     <div class="row" data-kind="feat" id="chg-ab898a0d3">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1027,82 +1116,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">thirteen smaller lobes, smooth normals kept, the ice material off flatShading (v36 board row 8) <span class="scope">(blizzard)</span></span>
       <span class="sha">d05ab9529</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7e9c79e74">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the level bar paints every stage it reports, so it climbs instead of jumping <span class="scope">(loading)</span></span>
-      <span class="sha">7e9c79e74</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5f2f5577e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stop the clamp gate swapping a level-up screen for mastery tomes, and cover the live wiring <span class="scope">(sim)</span></span>
-      <span class="sha">5f2f5577e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c7b9ca780">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">refuse to touch a draft that resolves outside the root, and prove it <span class="scope">(social)</span></span>
-      <span class="sha">c7b9ca780</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1b5fbd305">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">remove a test fixture that leaked into the real queue <span class="scope">(social)</span></span>
-      <span class="sha">1b5fbd305</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7b1b5889b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">record what is live, and let a lint-clean draft post itself after a deploy <span class="scope">(social)</span></span>
-      <span class="sha">7b1b5889b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8f5d3bd91">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">bin/social-publish.mjs, the half of automatic posting that holds no credential <span class="scope">(social)</span></span>
-      <span class="sha">8f5d3bd91</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-eb655c0d1">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Cloudflare worker that posts one draft to Bluesky and X <span class="scope">(social-worker)</span></span>
-      <span class="sha">eb655c0d1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ecfb0bb30">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">drop the two 0.7.20 lines whose lanes hold for the next deploy (hub rebuild refs, black-freeze beacon) <span class="scope">(notes)</span></span>
-      <span class="sha">ecfb0bb30</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-88de53c01">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a tome whose stat lane is already on its clamp stops being drafted <span class="scope">(progression)</span></span>
-      <span class="sha">88de53c01</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d12f49db8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">bound the Sacred Tome radiate at depth one, the way Combustion is bounded <span class="scope">(legendary)</span></span>
-      <span class="sha">d12f49db8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fb4ec5e56">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the legendary burn's duration comes from the wired burnMs, not a literal 3 <span class="scope">(combat)</span></span>
-      <span class="sha">fb4ec5e56</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-918aa179a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Spectral Echo pays the aimed-core exposure window exactly once <span class="scope">(combat)</span></span>
-      <span class="sha">918aa179a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f112a7e60">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the 0.7.20 entry describes deploy 13 (live) and deploy 14 in the house voice, keyChanges lint-clean; the two lines for lanes still held (hub rebuild refs, black-freeze beacon) are removed by the conductor at landing <span class="scope">(notes)</span></span>
-      <span class="sha">f112a7e60</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6d2e11aa2">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">add a weapons domain to SUBJECT_DOMAINS <span class="scope">(social-card)</span></span>
-      <span class="sha">6d2e11aa2</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-31b545756">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">render first four roster cards <span class="scope">(social-roster-cards)</span></span>
-      <span class="sha">31b545756</span>
-    </div><div class="row more">+ 13 more that day, not shown</div>
+    </div><div class="row more">+ 36 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-05</h4>
@@ -1206,7 +1220,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the first room gives up on the climb instead of holding the cue arrow <span class="scope">(hub)</span></span>
       <span class="sha">c9a69e119</span>
-    </div><div class="row more">+ 40 more that day, not shown</div>
+    </div><div class="row more">+ 41 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-04</h4>
@@ -1779,12 +1793,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@ee3172901</code> on 2026-09-07 03:39 UTC.
+  Every number on this page came straight out of the game, read at <code>game@fd890dcdf</code> on 2026-09-07 08:59 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">519 player-visible changes in the last 7 days, across 8 active days, 1372 internal-only commits filtered out</div>
+  <div class="stat">545 player-visible changes in the last 7 days, across 9 active days, 1442 internal-only commits filtered out</div>
 </footer>
 
 

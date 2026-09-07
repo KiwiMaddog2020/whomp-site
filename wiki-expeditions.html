@@ -523,7 +523,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>ee317290</code></span></div>
+    Live <b>0.7.20</b> · <code>fd890dcd</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -630,8 +630,8 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
     <section class="wfeature" aria-labelledby="expedition-encounter-schedule">
-      <div><span class="eyebrow">Cadence evidence</span><h3 id="expedition-encounter-schedule">Authored tables plus automatic-miniboss cadence context</h3></div>
-      <p>The exported interval is <b>150 seconds</b> on the Mode-profiled-cadence-seconds. In the unified profile that is <b>1:08</b> elapsed before the pacing bank and <b>1:30</b> in endless play. These are independently derived phase intervals, not exact encounter timestamps or miniboss identities.</p>
+      <div><span class="eyebrow">How often, not which one</span><h3 id="expedition-encounter-schedule">Authored tables plus automatic-miniboss cadence context</h3></div>
+      <p>Left alone, the game checks in every <b>150 seconds</b> on the mode's own clock and decides whether a miniboss is due right then. In the profile most runs use, that lands at <b>1:08</b> elapsed before the pacing bank and <b>1:30</b> in endless play. Those are check-in intervals, not exact encounter timestamps or miniboss identities.</p>
       <p>BossDirector advances the automatic miniboss cadence on the mode-profiled cadence clock.</p><p>Before the finite bank, real elapsed spacing derives from the run profile pace scale; after Keep Going, it derives independently from the endless cadence multiplier.</p><p>A cadence beat matching an authored or mode-profiled signature-boss slot is reserved for that signature and does not add an automatic miniboss.</p><p>Authored level bosses[] rows and spawnTable rows do not contain these automatic miniboss cadence beats.</p>
       <p class="womit">This is cadence evidence, not an exact at-time encounter schedule: automatic miniboss identity and actual spawn time are not exported.</p>
       <details class="wraw"><summary>Encounter-schedule provenance <span>4</span></summary><dl><div><dt><code>cadence</code></dt><dd>src/data/spawn.ts#SPAWN_DIRECTOR.minibossEverySec</dd></div><div><dt><code>cadenceClock</code></dt><dd>src/data/runModes.ts#cadenceSecForPace</dd></div><div><dt><code>consumer</code></dt><dd>src/sim/bosses.ts#BossDirector.schedule</dd></div><div><dt><code>signatureReservation</code></dt><dd>src/data/spawn.ts#signatureSlotReservesCadenceBeat</dd></div></dl></details>
@@ -712,7 +712,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@ee3172901</code> on 2026-09-07 07:06 UTC.
+  Every number on this page came straight out of the game, read at <code>game@fd890dcdf</code> on 2026-09-07 08:59 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>

@@ -523,7 +523,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>ee317290</code></span></div>
+    Live <b>0.7.20</b> · <code>fd890dcd</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -624,24 +624,24 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-world">World</a><span aria-hidden="true">/</span><span aria-current="page">Bestiary</span></nav>
     <h2 class="chroma">Bestiary</h2>
-    <p class="lede">What each kind does to you, and where you first run into it. Health, contact damage and kill XP are opening numbers that climb on three separate clocks while you play, so the sentence on a card outlives the bars underneath it.</p>
+    <p class="lede">What each kind does to you, and where you first meet it. Health, contact damage and kill XP are opening numbers, and each one keeps climbing on its own clock while you play, so the sentence on a card outlives the bars underneath it.</p>
 
-    <p class="womit"><b>Every time on this page is minutes of real play.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>4:30</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 15:00 mark where the pacing banks. For basic and special kinds, <b>the speed shown is a starting speed, not how fast the thing ends up chasing you</b>: the run keeps multiplying it, and single instances carry their own multipliers on top. <b>Bosses and minibosses carry no combat numbers here at all.</b> What they have, how hard they hit and how they move is decided while the fight is running, in stages, and differently by mode, so the leftover values sitting in their rows would be a guess wearing the clothes of a fact.</p>
+    <p class="womit"><b>Every time on this page is minutes of real play.</b> The game schedules on a clock that runs faster than the one you are watching, so these are converted: a slot written as 10:00 in the level tables lands about <b>4:30</b> into a real run. The conversion comes from the run mode’s own pace scale, and it holds up to the 15:00 mark where the pacing banks. For basic and special kinds, <b>the speed shown is a starting speed, not how fast the thing ends up chasing you</b>: the run keeps multiplying it, and single instances carry their own multipliers on top. <b>Bosses and minibosses carry no combat numbers here at all.</b> What they have, how hard they hit and how they move gets decided mid-fight, in stages, differently by mode, so the leftover numbers sitting in their rows would be a guess wearing the clothes of a fact.</p>
 
 
     <section class="wfeature" aria-labelledby="enemy-scaling-policy">
       <div><span class="eyebrow">Independent live-run clocks</span><h3 id="enemy-scaling-policy">Health, contact damage and kill XP scale separately</h3></div>
-      <p>These are three different runtime steps, not one shared enemy-level curve.</p>
+      <p>Three separate stopwatches, not one shared enemy-level curve. None of them wait for the others.</p>
       <div class="wmethod-grid">
         <div><b>Spawn health</b><span>Every 25 seconds</span><code>+ +7.5%</code></div>
         <div><b>Contact damage</b><span>Every 30 seconds</span><code>+ +10%</code></div>
         <div><b>Kill XP reward</b><span>Every 120 build-clock seconds</span><code>+ +50%</code></div>
       </div>
-      <p>Ordinary SpawnDirector wave health is resolved from its base before level/external multipliers and may also receive the mode-owned opening enemy HP bonus. Bosses, recurring minibosses, elites, set pieces and direct-spawn systems are excluded from that opening lever. Contact damage has its own elapsed-time step. Kill XP uses its separate build-clock step, then player and global XP multipliers apply.</p>
+      <p>An ordinary wave spawns at its base health, before level or external multipliers, and an early run can also get a one-time opening health bump. Bosses, recurring minibosses, elites, set pieces and anything spawned directly skip that opening bump entirely. Contact damage climbs on its own clock regardless. Kill XP climbs on its own separate build-clock, and player and global XP multipliers still apply on top of that.</p>
       <details class="wraw"><summary>Canonical scaling increments <span>4</span></summary><dl><div><dt><code>hpPer25s</code></dt><dd>0.075</dd></div><div><dt><code>damagePer30s</code></dt><dd>0.1</dd></div><div><dt><code>speedPer50s</code></dt><dd>0.05</dd></div><div><dt><code>xpPer120s</code></dt><dd>0.5</dd></div></dl></details>
     </section>
     <section class="wfeature" aria-labelledby="enemy-speed-policy">
-      <div><span class="eyebrow">Canonical speed policy</span><h3 id="enemy-speed-policy">Authored base and live-run base</h3></div>
+      <div><span class="eyebrow">How fast is fast</span><h3 id="enemy-speed-policy">Authored base and live-run base</h3></div>
       <p>entries.&lt;id&gt;.speed and refs.&lt;id&gt;.speedProfile.authoredBaseMps are the raw authored registry value. refs.&lt;id&gt;.speedProfile.liveRunBaseMps is the profile-gated base used by live-run consumers after src/data/enemies.ts#bandedEnemySpeed. Battle/Arena consumers retain the authored base; the registry is deliberately never rewritten by the band. liveRunBaseMps is before domains.enemies.scaling.speedPer50s and contextual/per-instance multipliers, so it is not an at-time chase speed. A null maxExclusiveMps with unbounded:true is the JSON-safe representation of the source table's Infinity ceiling.</p>
       <div class="wmethod-grid">
         <div>
@@ -2241,7 +2241,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2277,7 +2277,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2313,7 +2313,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2349,7 +2349,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2385,7 +2385,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2426,7 +2426,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2462,7 +2462,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2498,7 +2498,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2534,7 +2534,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2570,7 +2570,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2606,7 +2606,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2642,7 +2642,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2678,7 +2678,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2714,7 +2714,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2750,7 +2750,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2786,7 +2786,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2822,7 +2822,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2858,7 +2858,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2894,7 +2894,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2930,7 +2930,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 
 
-          <div class="wfact"><span class="wfact-k">Contextual mechanics</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
         </div>
         <div class="wmeters">
 
@@ -2945,7 +2945,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@ee3172901</code> on 2026-09-07 07:06 UTC.
+  Every number on this page came straight out of the game, read at <code>game@fd890dcdf</code> on 2026-09-07 08:59 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>
