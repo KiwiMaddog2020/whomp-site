@@ -356,22 +356,34 @@ test('the six cards are the six things, in the order a run hands them to you', (
 test('the relics card says found, not drafted, and never contradicts the draft', () => {
   const card = kitCards(kitShape(gameData(), SLOTS)).find((c) => c.id === 'relics');
   assert.equal(card.kind, 'Not drafted');
-  assert.match(card.body, /never|not one of/i);
-  assert.match(card.body, /chest/i);
-  assert.match(card.body, /level up/i);
-  // The tomes card already ends on what the rest of the build is worth. Two
-  // cards closing on one sentence is one card printed twice.
+  assert.match(card.line, /never|not one of/i);
+  assert.match(card.line, /chest/i);
+  assert.match(card.line, /level up/i);
+  // The tomes card already says what the rest of the build is worth. Two cards
+  // closing on one sentence is one card printed twice.
   const tomes = kitCards(kitShape(gameData(), SLOTS)).find((c) => c.id === 'tomes');
-  assert.match(tomes.body, /worth/);
-  assert.equal(/what the rest of your build is worth/.test(card.body), false,
+  assert.match(tomes.line, /worth/);
+  assert.equal(/set what the rest is worth/.test(card.line), false,
     'the relics card repeats the tomes card word for word');
+});
+
+/* ONE LINE A CARD, AND IT STAYS ONE LINE (director, 2026-09-06 23:25: "just the
+   general idea... without going into so much detail"). The cut is only worth
+   anything if the paragraph cannot come back, so the shape is pinned rather than
+   the wording: no card carries a body, and no line runs past the width that
+   renders as two lines in the card. A seventh sentence about the tomes now fails
+   here instead of shipping. */
+test('every card is one short line, and no card grew a paragraph back', () => {
+  for (const card of kitCards(kitShape(gameData(), SLOTS))) {
+    assert.equal(card.body, undefined, `${card.id} carries a body paragraph again`);
+    assert.ok(card.line.length <= 100, `${card.id} runs ${card.line.length} characters and is no longer one line`);
+  }
 });
 
 test('every card is finished sentences in the house voice, and no card shouts', () => {
   for (const card of kitCards(kitShape(gameData(), SLOTS))) {
     assert.equal(trailsOff(card.line), false, `${card.id} has a line that trails off`);
-    assert.equal(trailsOff(card.body), false, `${card.id} has a body that trails off`);
-    const all = `${card.count} ${card.kind} ${card.title} ${card.line} ${card.body}`;
+    const all = `${card.count} ${card.kind} ${card.title} ${card.line}`;
     assert.equal(/[—–!]/.test(all), false, `${card.id} breaks house law`);
     // Rule 12: the machinery has its own words and they are not these.
     assert.equal(/\b(registry|artifact|schema|field|contract|domain)\b/i.test(all), false,
@@ -397,7 +409,7 @@ test('not one number in the kit copy is typed, and moving the game moves the pag
     characters: 97,
     whomp: { slot: 'Z', seconds: 98, armedFromStart: true },
   });
-  const text = moved.map((c) => `${c.count} ${c.kind} ${c.line} ${c.body}`).join(' ');
+  const text = moved.map((c) => `${c.count} ${c.kind} ${c.line}`).join(' ');
   for (const stale of ['8', '33', '17', '11', '50', '29']) {
     assert.equal(new RegExp(`\\b${stale}\\b`).test(text), false, `the copy still carries ${stale} by hand`);
   }
@@ -410,11 +422,11 @@ test('not one number in the kit copy is typed, and moving the game moves the pag
 test('a WHOMP nobody has to earn says so, and one that must be earned does not', () => {
   const kit = kitShape(gameData(), SLOTS);
   const armed = kitCards(kit).find((c) => c.id === 'whomp');
-  assert.match(armed.body, /first second of the run/);
+  assert.match(armed.line, /first second of the run/);
   const earned = kitCards({ ...kit, whomp: { ...kit.whomp, armedFromStart: false } })
     .find((c) => c.id === 'whomp');
-  assert.equal(/first second of the run/.test(earned.body), false);
-  assert.match(earned.body, /50 seconds/);
+  assert.equal(/first second of the run/.test(earned.line), false);
+  assert.match(earned.line, /50 seconds/);
 });
 
 /* ----------------------------------------------------------- the release tracks */

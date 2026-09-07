@@ -1828,17 +1828,22 @@ const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(track.
 
 /* THE KIT CARD IS THE GAME'S OFFER CARD, in HTML and at rest. Every in-run
  * offer the player has ever taken rides one anatomy (whomp/src/ui/offerCard.ts):
- * a meta row of two small labels, a title, the line under it, and a footer that
- * says what changes. So the six cards that tell a stranger what they would be
- * holding wear that anatomy instead of a fourth kind of box invented here. The
- * words and the numbers both come from kitCards in bin/landing.mjs; nothing on
- * this side of the file may type a figure. */
+ * a meta row of two small labels, a title, and the line under it. So the six
+ * cards that tell a stranger what they would be holding wear that anatomy
+ * instead of a fourth kind of box invented here. The words and the numbers both
+ * come from kitCards in bin/landing.mjs; nothing on this side of the file may
+ * type a figure.
+ *
+ * THE BODY PARAGRAPH IS GONE (director, 2026-09-06 23:25: "just the general
+ * idea... without going into so much detail"). It was the second paragraph in
+ * every card and three quarters of the section's words. Each card is a meta
+ * row, a name and one line now, which is the whole of the change on this side:
+ * the copy that survives is in bin/landing.mjs and the reasoning with it. */
 const kitCard = (card) => `
     <div class="kit" id="kit-${esc(card.id)}">
       <div class="kit-meta"><span>${esc(card.count)}</span><span>${esc(card.kind)}</span></div>
       <h3>${esc(card.title)}</h3>
       <p class="kit-line">${esc(card.line)}</p>
-      <p>${esc(card.body)}</p>
     </div>`;
 
 /* The dev log, on the landing page, one line each. Same entries log.html renders
@@ -2005,7 +2010,15 @@ header{padding:64px 0 8px;text-align:center}
    loud one is the newest build that went green, which is what a visitor
    arriving today should press; in dual mode Stable keeps a real button rather
    than a text link, because it is a real choice and not a footnote. */
+/* TWO ROWS, NOT ONE (director, 2026-09-06 23:25, on a phone): Play alone and
+   centred, then Wiki and Dev log centred as a pair under it. One flex row that
+   wrapped put the pair wherever the width happened to break it, which on a
+   400px screen was three stacked buttons and on a laptop was a row of three
+   with Play no louder in the layout than the two beside it. Two rows say the
+   same thing at every width, and the second one still wraps on a narrow phone
+   rather than pushing the page sideways. */
 .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.cta-second{margin-top:14px}
 .play{display:inline-flex;align-items:center;gap:12px;padding:17px 34px;border-radius:14px;border:0;
   text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:clamp(.98rem,2vw,1.14rem);
   transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
@@ -2037,7 +2050,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 /* THE KIT GRID. min() rather than a bare minimum, so the cards land three across
    on a wide screen and still collapse to a single column on a phone without the
    track needing a media query of its own. The card itself is the game's offer
-   card at rest: meta row, title, the line under it, then what changes.
+   card at rest: meta row, title, and the one line under it.
    THREE ACROSS IS WHY THE SIXTH CARD READS AS EVEN (director, 2026-08-25:
    "another card here as well to make it present as an even 6"). Inside the 940px
    wrap the column is 892px, which fits three 260px tracks and their two gaps and
@@ -2052,8 +2065,11 @@ h2{font-size:1.65rem;margin:0 0 6px}
    air above and below. The padding goes even at the same time: an off-centre box
    inside a centred one is the centring undone by a 2px shorthand. The other half
    of the ask is the copy itself, and it lives in kitCards in bin/landing.mjs,
-   where the six bodies are held within a line of each other so the two rows sit
-   level before the centring has anything to correct. */
+   where the six lines are held within a rendered line of each other so the two
+   rows sit level before the centring has anything to correct.
+   ONE LINE A CARD (director, 2026-09-06 23:25). The body paragraph left, so the
+   kicker is the card's only prose and it carries the body's ink weight rather
+   than sitting over a quieter paragraph that is no longer there. */
 .kits{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
 .kit{display:flex;flex-direction:column;justify-content:center;border:var(--edge);border-radius:14px;
   padding:18px;background:rgba(255,243,207,.025)}
@@ -2062,8 +2078,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 .kit-meta span:first-child{color:var(--gold)}
 .kit-meta span:last-child{color:var(--dim)}
 .kit h3{margin:0 0 4px;color:var(--cream);font-size:1.05rem;font-weight:900;letter-spacing:-.01em}
-.kit .kit-line{margin:0 0 9px;color:var(--body);font-size:.92rem}
-.kit p{margin:0;color:var(--dim);font-size:.87rem}
+.kit .kit-line{margin:0;color:var(--body);font-size:.92rem}
 .kit:hover{border-color:rgba(255,243,207,.2);background:rgba(255,243,207,.045)}
 @media (prefers-reduced-motion:no-preference){
   .kit{transition:border-color .14s ease,background .14s ease,transform .14s ease}
@@ -2110,6 +2125,8 @@ ${landingTopBar('index.html')}
   <script>document.getElementById('hero-tagline').textContent=(${JSON.stringify(gameTaglines)})[Math.min(${gameTaglines.length}-1,Math.max(0,Math.floor(Math.random()*${gameTaglines.length})))];</script>
   <div class="cta">
     ${trackButton(tracks[0], 'loud')}
+  </div>
+  <div class="cta cta-second">
     <a class="play quiet" href="wiki.html">WIKI</a>
     <a class="play quiet" href="log.html">DEV LOG</a>
   </div>
@@ -2137,8 +2154,7 @@ ${landingTopBar('index.html')}
 <section id="kit">
   <div class="rule"></div>
   <h2 class="chroma">Your kit</h2>
-  <p class="lede">Five things go in with you, and you aim exactly one of them. Every level up offers ${kit.offer} more,
-    you keep one, and the other ${kit.offer - 1} are gone for good. The sixth is not yours until the run gives it to you.</p>
+  <p class="lede">Every level up offers ${kit.offer}. You keep one, the other ${kit.offer - 1} are gone for good.</p>
   <div class="kits">${kitCards(kit).map(kitCard).join('')}</div>
 </section>
 

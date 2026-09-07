@@ -134,6 +134,14 @@ test('the hero leads with the one play button, and no page names a track', optio
   assert.match(buttons[0].href, /^https:\/\/whomp-preview\.pages\.dev\//);
   assert.deepEqual(buttons.slice(1).map((b) => b.label), ['WIKI', 'DEV LOG']);
   assert.deepEqual(buttons.slice(1).map((b) => b.href), ['wiki.html', 'log.html']);
+  /* TWO ROWS (director, 2026-09-06 23:25, reading the page on a phone): Play on
+     its own row, Wiki and Dev log on a second one under it. One wrapping row put
+     the pair wherever the viewport happened to break it. Counted off the rendered
+     rows rather than off a class name, so a rewrite that keeps the class and
+     puts all three back in one row still fails here. */
+  const rows = [...index.matchAll(/<div class="cta[^"]*">([\s\S]*?)<\/div>/g)]
+    .map((m) => [...m[1].matchAll(/class="play (?:loud|quiet)"/g)].length);
+  assert.deepEqual(rows, [1, 2], 'the hero is not one play button over a pair');
   const chips = /<div class="chips">([\s\S]*?)<\/div>/.exec(index);
   assert.ok(chips, 'the hero has no live chips row');
   assert.match(chips[1], /Live/, 'the chip no longer says Live');

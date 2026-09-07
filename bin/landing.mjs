@@ -523,25 +523,33 @@ export function kitShape(gameData, slots) {
  *
  * It goes last because that is when a run gives it to you, and it is the only
  * card whose kicker says what it is NOT: everything above it arrives at the door
- * or at a level up, and this one arrives out of a chest or a machine. Its body
- * is deliberately not the tomes card's sentence about being worth more than a
- * weapon said twice; two cards that end on the same sentence are one card.
+ * or at a level up, and this one arrives out of a chest or a machine.
  *
- * SIX BODIES OF ONE WEIGHT (director, 2026-08-26 23:11: "about the same amount
- * of content in each card so they take up roughly the same amount of space").
- * The pass before this one left the arsenal at 226 characters and the relics at
- * 300 against a core of 154, which at the rendered column width is a nine-line
- * card sitting beside a four-line one and two rows that do not line up. The six
- * now run 175 to 196, inside one rendered line of each other, and the kicker
- * lines are all short enough to hold one line so the bodies start level too. A
- * seventh card, or a rewrite of one of these, holds that band or it puts the
- * hole back. The vertical centring in bin/generate.mjs is the other half of the
- * ask and it corrects the remainder; it does not excuse a wall of text.
+ * ONE LINE A CARD, AND THE BODIES ARE GONE (director, 2026-09-06 23:25, reading
+ * the live page on a phone: "our goal shouldn't be to get the full concepts
+ * across, just the general idea. we can make mention of all the same things
+ * without going into so much detail"). The six cards were carrying a meta row,
+ * a kicker AND a three-sentence body each, which is a 347-word section on a
+ * landing page that exists to be read in twenty seconds. The body field is
+ * removed rather than shortened: two paragraphs in a card is the shape that
+ * invites the prose back, and one line cannot grow into an essay without
+ * somebody noticing. Every concept the long version named is still named here.
+ * What went is the elaboration, not the content: the evolution recipe became
+ * "an end form to earn", the relic vendor became "trade machines", and the
+ * sentences that restated a kicker in longer words went entirely.
+ *
+ * SIX LINES OF ONE WEIGHT (director, 2026-08-26 23:11: "about the same amount of
+ * content in each card so they take up roughly the same amount of space"). That
+ * ask survives the cut and is easier to hold now: the six lines run 68 to 90
+ * characters, which is one or two rendered lines each at the column width, so
+ * the two rows sit level before the vertical centring in bin/generate.mjs has
+ * anything to correct. A seventh card, or a rewrite of one of these, holds that
+ * band or it puts the ragged row back.
  *
  * The voice is docs/VOICE.md read as a person rather than a style guide: this is
  * the first thing a stranger learns about what they would be holding, so it is
  * a friend explaining the game across a table. Blunt, concrete, uncontracted, no
- * dashes and no exclamations, and never more than two sentences a card. */
+ * dashes and no exclamations, and now never more than two short sentences. */
 export function kitCards(kit) {
   return [
     {
@@ -549,48 +557,42 @@ export function kitCards(kit) {
       count: `One of ${kit.cores}`,
       kind: 'Aimed',
       title: 'THE CORE',
-      line: 'The one you aim.',
-      body: 'You pick your core at the door, and it sits in a slot the draft can never touch. Everything else you carry fires on its own, and this is the one weapon that waits for you to point it.',
+      line: 'The one you aim. Picked at the door, and the draft never touches it.',
     },
     {
       id: 'arsenal',
       count: `${kit.weaponSlots} slots`,
       kind: 'Automatic',
       title: 'THE ARSENAL',
-      line: `${kit.weaponSlots} that fire themselves.`,
-      body: `Room for ${kit.weaponSlots}, pulled from ${kit.weapons} weapons that keep their own time and never ask permission. ${kit.evolutions} of them have an end form, and getting there takes a maxed weapon, its paired tome, and a boss chest.`,
+      line: `${kit.weaponSlots} of ${kit.weapons} weapons, all firing on their own. ${kit.evolutions} have an end form to earn.`,
     },
     {
       id: 'tomes',
       count: `${kit.tomeSlots} slots`,
       kind: 'Passive',
       title: 'THE TOMES',
-      line: `${kit.tomeSlots} that bend the math.`,
-      body: `${kit.tomeSlots} more slots, filled out of ${kit.tomes} tomes. None of them fires at anything. They decide how hard the rest of your build hits and how often, and the right stack is worth more than another weapon.`,
+      line: `${kit.tomeSlots} more from ${kit.tomes} tomes. They fire at nothing and set what the rest is worth.`,
     },
     {
       id: 'whomp',
       count: `Every ${kit.whomp.seconds} seconds`,
       kind: `On ${kit.whomp.slot}`,
       title: 'THE WHOMP',
-      line: 'The button the game is named after.',
-      body: `You come down on ${kit.whomp.slot} and the ground does the arguing. ${kit.whomp.armedFromStart ? 'It is yours from the first second of the run, it comes back' : 'It comes back'} every ${kit.whomp.seconds} seconds on a bare build, and plenty of what you pick up shortens that wait.`,
+      line: `A ground slam, ${kit.whomp.armedFromStart ? 'yours from the first second of the run' : 'handed to you mid run'}, back every ${kit.whomp.seconds} seconds or sooner.`,
     },
     {
       id: 'character',
       count: `One of ${kit.characters}`,
       kind: 'Picked first',
       title: 'YOUR CHARACTER',
-      line: 'Each one cheats differently.',
-      body: `All ${kit.characters} are open on a fresh save, so the first pick of the run is a real one. Every one of them carries a rule that is always on and a signature move nobody else gets to press.`,
+      line: `All ${kit.characters} unlocked from the start, each with a rule always on and a signature move.`,
     },
     {
       id: 'relics',
       count: `${kit.relics} to find`,
       kind: 'Not drafted',
       title: 'THE RELICS',
-      line: 'The run picks these, not you.',
-      body: `Not one of the ${kit.relics} ever shows up on a level up card. They come out of chests, and out of the machines that eat one relic and vend a better one, so a run can hand you a build you never drafted.`,
+      line: `Never on a level up card. All ${kit.relics} come out of chests and trade machines.`,
     },
   ];
 }
