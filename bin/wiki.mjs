@@ -364,6 +364,14 @@ const WIKI_CSS = `
 .wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
 .wempty b{display:block;color:var(--cream);margin-bottom:8px}
 .wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+/* THE COLOPHON'S FINE PRINT: which files the page was read from. A player
+   does not need a file name to trust the sentence above it, and the build
+   stamp stays visible on its own, so the paths fold. Same disclosure pattern
+   as the picture captions, centred because the footer is. */
+.wfine{margin-top:10px;font-size:.74rem}
+.wfine summary{cursor:pointer;color:var(--cyan);font-weight:700;list-style-position:inside}
+.wfine summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wfine div{margin-top:6px}
 
 .wgroup{margin-bottom:38px;scroll-margin-top:calc(var(--band) + 18px)}
 .wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px;padding-bottom:7px;border-bottom:var(--edge)}
@@ -399,6 +407,18 @@ const WIKI_CSS = `
 .wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
 .wvisual figcaption b{color:var(--cream);font-size:.74rem}
 .wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+/* THE FINE PRINT under a picture. It borrows .wraw's disclosure so it behaves
+   like every other "show me the workings" fold on the page, then sheds the
+   rule and the padding a card-level fold needs, because it is sitting inside a
+   caption that is already .7rem and already boxed. Closed, it is one short
+   cyan line under the lead sentence; open, the method, the game's limitation
+   and the source stack in that order, and at 400px the source symbol wraps at
+   any character rather than pushing the card wide. */
+.wvisual .wvisual-more{border-top:0;padding:0;margin-top:2px;font-size:.66rem;line-height:1.45;color:var(--dim)}
+.wvisual .wvisual-more summary{margin-left:14px;font-size:.68rem;font-weight:700}
+.wvisual .wvisual-more>span{display:block;margin-top:6px;overflow-wrap:anywhere}
+.wvisual .wvisual-more .wvisual-limit{margin-top:6px}
+.wvisual-source{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.6rem;color:var(--dim)}
 .wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
 .wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
 .wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
@@ -592,6 +612,24 @@ export const visualKindLabel = (kind) => (Object.hasOwn(VISUAL_KIND_LABEL, kind)
   ? VISUAL_KIND_LABEL[kind]
   : humanize(kind));
 
+/* THE ONE LINE A PLAYER READS under a captioned picture. Each is a fact about
+ * the picture in plain words, and each is the fact a stranger most needs: a
+ * posed render is not a screenshot, a palette strip is not a picture of the
+ * thing, a recipe strip is three parts and not one. The rear line exists for
+ * trailing wearables only; the game's own limitation string (in the fine
+ * print) is the authority for why the camera turned around. An unknown kind
+ * gets the honest default rather than a blank. */
+const VISUAL_LEAD = Object.freeze({
+  'runtime-render': (cameraView) => (cameraView === 'rear'
+    ? 'Posed by the game itself, not a screenshot. Seen from behind, because that is where it hangs.'
+    : 'Posed by the game itself, not a screenshot.'),
+  'palette-strip': () => 'The colors, laid flat. Not a picture of the thing itself.',
+  'evolution-strip': () => 'The weapon, the tome it wants, and what comes out.',
+});
+export const visualLead = (kind, cameraView = 'front') => (Object.hasOwn(VISUAL_LEAD, kind)
+  ? VISUAL_LEAD[kind](cameraView)
+  : 'Drawn by the game for this page, not a screenshot.');
+
 /* ── WHAT IS STILL PLAYER-FACING, and it curates itself ───────────────────────
  *
  * Director ruling 2026-08-26-wiki-curation: "i see some things on the wiki like
@@ -667,33 +705,44 @@ function renderWikiVisual(entry, esc, { primary = false, use = 'entry', compact 
     return `<span class="wvisual-compact" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">${image}</span>`;
   }
   const cameraView = entry.renderContext?.camera?.view || 'front';
-  /* THE SAME FOUR DISCLOSURES, in plain words. It still says: the render is
-   * isolated, the palette is a neutral stand-in or the subject's own, the
-   * camera view, and that none of this is a screenshot of live play. Those are
-   * the claims bin/wiki-check.mjs pins, because getting any of them wrong is
-   * how a wiki starts passing off a studio render as evidence of a world. */
-  const renderContext = entry.renderContext && typeof entry.renderContext === 'object'
-    ? `<span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the ${esc(cameraView)}, ${entry.renderContext.palette?.id === 'toyMeadow' ? 'in stand-in colors a live world may repaint' : 'in its own colors'}. It is not a screenshot, and it is not how it looks in a live world. Frame: ${esc(humanize(String(entry.renderContext.frame?.mode || 'neutral frame').replace(/[-_]+/g, ' ')))}.</span>`
-    : '';
+  const label = visualKindLabel(entry.kind);
   const limitation = entry.renderContext?.limitation || entry.limitation;
-  /* AN UNCAPTIONED KIND DROPS THE PROVENANCE LINE WITH ITS LABEL, not just the
-   * label. Removing "Card art, painted by the game" and leaving
+  /* THE SAME FOUR DISCLOSURES, now in two layers (director, 2026-09-06: the
+   * wiki "is meant to be fun and light hearted" and "should keep with our WHOMP
+   * voicing"). A player reads ONE light line under the picture, and that line
+   * still carries the one fact that matters: this is the game posing for its
+   * own portrait, not a screenshot. Everything else the caption used to say
+   * out loud, the isolated render, the fixed light, the stand-in or own colors,
+   * the camera view, the frame, the game's own limitation string and the
+   * source symbol, is still here word for word, one click away in the fine
+   * print. Nothing was deleted and nothing was paraphrased; it stopped being
+   * read aloud 138 times. bin/wiki-check.mjs pins both layers: the light line
+   * must be visible, and the full disclosure must still be in the card. */
+  const method = entry.renderContext && typeof entry.renderContext === 'object'
+    ? `<span>The game drew this on its own, alone, on a clear background under fixed light, seen from the ${esc(cameraView)}, ${entry.renderContext.palette?.id === 'toyMeadow' ? 'in stand-in colors a live world may repaint' : 'in its own colors'}. It is not a screenshot, and it is not how it looks in a live world. Frame: ${esc(humanize(String(entry.renderContext.frame?.mode || 'neutral frame').replace(/[-_]+/g, ' ')))}.</span>`
+    : '';
+  const limit = limitation ? `<span class="wvisual-limit">${esc(limitation)}</span>` : '';
+  /* AN UNCAPTIONED KIND PRINTS NO LABEL, NO LEAD AND NO SOURCE. Removing
+   * "Card art, painted by the game" and leaving
    * "Repo-runtime · src/ui/cardArt.ts#cardGlyphSpec+paintGlyphMedallion" under
-   * every small picture would be a worse version of the thing the ruling asked
-   * to remove: the same repetition, now in a file path a player has no use for.
-   * The kind, the provenance class and that exact symbol are all still in
-   * data/wiki-visuals.json and still contract-checked; `data-visual-key` still
-   * names the association in the markup. Nothing is being hidden, one answer
-   * has stopped being printed 138 times.
+   * every small picture would be a worse version of the thing the 2026-08-26
+   * ruling asked to remove: the same repetition, now in a file path a player
+   * has no use for. The kind, the provenance class and that exact symbol are
+   * all still in data/wiki-visuals.json and still contract-checked;
+   * `data-visual-key` still names the association in the markup.
    * A render context or a stated limitation is a real disclosure rather than a
    * designation, so if an uncaptioned kind ever carries one the caption comes
    * back with only that in it. */
-  const label = visualKindLabel(entry.kind);
-  const designation = label === null
-    ? ''
-    : `<b>${esc(label)}</b><span>${esc(humanize(entry.provenanceClass))} · ${esc(entry.source)}</span>`;
-  const limit = limitation ? `<span class="wvisual-limit">${esc(limitation)}</span>` : '';
-  const caption = `${designation}${renderContext}${limit}`;
+  if (label === null) {
+    const bare = `${method}${limit}`;
+    return `<figure class="wvisual wvisual-${esc(entry.kind)}" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">
+    ${image}${bare ? `
+    <figcaption>${bare}</figcaption>` : ''}
+  </figure>`;
+  }
+  const lead = visualLead(entry.kind, cameraView);
+  const source = `<span class="wvisual-source">Source: ${esc(humanize(entry.provenanceClass))} · ${esc(entry.source)}</span>`;
+  const caption = `<b>${esc(label)}</b><span>${esc(lead)}</span><details class="wraw wvisual-more"><summary>The fine print</summary>${method}${limit}${source}</details>`;
   return `<figure class="wvisual wvisual-${esc(entry.kind)}" data-visual-key="${esc(entry.assetKey)}" data-visual-use="${esc(use)}">
     ${image}${caption ? `
     <figcaption>${caption}</figcaption>` : ''}
@@ -1132,14 +1181,14 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     facets: [{ key: 'system', label: 'System', of: (e) => e.system }],
     sorts: [
       { key: 'roster', label: 'Source order', of: (e) => powerCeilingEntries.indexOf(e) },
-      { key: 'name', label: 'Field name', of: (e) => e.name, text: true },
+      { key: 'name', label: 'Dial name', of: (e) => e.name, text: true },
       { key: 'value', label: 'Source value', of: (e) => e.value, desc: true },
     ],
     searchText: (e) => `${e.id} ${e.system} permanent power soft knee factor source mechanic`,
     card: (e) => `
       <div class="wtags">${tag(esc(humanize(e.system)), 'cyan')}${tag('Unitless source dial', 'violet')}</div>
       <div class="wfacts">
-        ${fact('Field', `<code>${esc(e.id)}</code>`)}
+        ${fact('Dial', `<code>${esc(e.id)}</code>`)}
         ${fact('Source value', `<b>${num(e.value, 4)}</b>`)}
       </div>`,
   };
@@ -1160,7 +1209,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
 
   const speedPolicyFeature = `
     <section class="wfeature" aria-labelledby="enemy-speed-policy">
-      <div><span class="eyebrow">Canonical speed policy</span><h3 id="enemy-speed-policy">Authored base and live-run base</h3></div>
+      <div><span class="eyebrow">How fast is fast</span><h3 id="enemy-speed-policy">Authored base and live-run base</h3></div>
       <p>${(E.speedPolicy.semantics || []).map((line) => esc(line)).join(' ')}</p>
       <div class="wmethod-grid">
         ${(E.speedPolicy.bands || []).map((band) => `<div>
@@ -1173,13 +1222,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const enemyScalingFeature = `
     <section class="wfeature" aria-labelledby="enemy-scaling-policy">
       <div><span class="eyebrow">Independent live-run clocks</span><h3 id="enemy-scaling-policy">Health, contact damage and kill XP scale separately</h3></div>
-      <p>These are three different runtime steps, not one shared enemy-level curve.</p>
+      <p>Three separate stopwatches, not one shared enemy-level curve. None of them wait for the others.</p>
       <div class="wmethod-grid">
         <div><b>Spawn health</b><span>Every 25 seconds</span><code>+ ${pct(E.scaling.hpPer25s)}</code></div>
         <div><b>Contact damage</b><span>Every 30 seconds</span><code>+ ${pct(E.scaling.damagePer30s)}</code></div>
         <div><b>Kill XP reward</b><span>Every 120 build-clock seconds</span><code>+ ${pct(E.scaling.xpPer120s)}</code></div>
       </div>
-      <p>Ordinary SpawnDirector wave health is resolved from its base before level/external multipliers and may also receive the mode-owned opening enemy HP bonus. Bosses, recurring minibosses, elites, set pieces and direct-spawn systems are excluded from that opening lever. Contact damage has its own elapsed-time step. Kill XP uses its separate build-clock step, then player and global XP multipliers apply.</p>
+      <p>An ordinary wave spawns at its base health, before level or external multipliers, and an early run can also get a one-time opening health bump. Bosses, recurring minibosses, elites, set pieces and anything spawned directly skip that opening bump entirely. Contact damage climbs on its own clock regardless. Kill XP climbs on its own separate build-clock, and player and global XP multipliers still apply on top of that.</p>
       ${sourceParams(E.scaling, 'Canonical scaling increments')}
     </section>`;
 
@@ -1260,8 +1309,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
        sentence now says that outright instead of merely avoiding the wrong
        phrasing. Change it and change the equality with it. */
     tagline: 'Every kind in the game. Several of them never come near you.',
-    lede: 'What each kind does to you, and where you first run into it. Health, contact damage and kill XP are opening numbers that climb on three separate clocks while you play, so the sentence on a card outlives the bars underneath it.',
-    omissions: `<b>Every time on this page is minutes of real play.</b> ${clockNote} For basic and special kinds, <b>the speed shown is a starting speed, not how fast the thing ends up chasing you</b>: the run keeps multiplying it, and single instances carry their own multipliers on top. <b>Bosses and minibosses carry no combat numbers here at all.</b> What they have, how hard they hit and how they move is decided while the fight is running, in stages, and differently by mode, so the leftover values sitting in their rows would be a guess wearing the clothes of a fact.`,
+    lede: 'What each kind does to you, and where you first meet it. Health, contact damage and kill XP are opening numbers, and each one keeps climbing on its own clock while you play, so the sentence on a card outlives the bars underneath it.',
+    omissions: `<b>Every time on this page is minutes of real play.</b> ${clockNote} For basic and special kinds, <b>the speed shown is a starting speed, not how fast the thing ends up chasing you</b>: the run keeps multiplying it, and single instances carry their own multipliers on top. <b>Bosses and minibosses carry no combat numbers here at all.</b> What they have, how hard they hit and how they move gets decided mid-fight, in stages, differently by mode, so the leftover numbers sitting in their rows would be a guess wearing the clothes of a fact.`,
     featureHtml: `${enemyScalingFeature}${speedPolicyFeature}`,
     entries: enemyEntries,
     groups: [
@@ -1315,7 +1364,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
           ${arr(r.splitsInto).length ? fact('Leaves behind', `${e.onDeath?.split?.count > 1 ? `<b>${e.onDeath.split.count}</b> ` : ''}${list(arr(r.splitsInto).map((s) => cardLink('bestiary', s, esc(enemyName(s) + (e.onDeath?.split?.count > 1 ? 's' : '')))))} when it dies`) : ''}
           ${e.flying ? fact('Flying', 'Ignores the ground: pits and walls do not route it. It is still hit by everything a walker is.') : ''}
           ${speed ? fact('Speed profile', `<b>${num(speed.liveRunBaseMps)} ${esc(E.speedPolicy.unit)}</b> live-run base${speed.liveRunBandApplied ? `, from authored ${num(speed.authoredBaseMps)} ${esc(E.speedPolicy.unit)} at &times;${num(speed.liveRunMultiplier)}` : ', unchanged by the live-run band'}`) : ''}
-          ${!showStats ? fact('Contextual mechanics', '<b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.') : ''}
+          ${!showStats ? fact('What decides it', '<b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.') : ''}
         </div>
         <div class="wmeters">
           ${showStats ? meter('Health', e.hp, eMax.hp) : ''}
@@ -1328,7 +1377,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
 
   // ---- boss variants ------------------------------------------------------
   const bossVariantEntries = ordered(BV);
-  const bvBaseName = (id) => EN.entries[id]?.name || id;
+  const bvBaseName = (id) => E.entries[id]?.name || id;
   const bossVariantsRoster = {
     section: 'World',
     slug: 'boss-variants',
@@ -1336,8 +1385,15 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     title: 'Boss Variants',
     tagline: 'The same animal, dressed by the world that fields it.',
     lede: 'A variant is a mid-run boss wearing the world it is fought on: the same fight underneath, re-dressed in that map\'s own growth, crust or rime so a glacier player never meets an undressed desert crab. Every portrait below is the game\'s own render of the dressed body, and every name was christened by hand.',
-    omissions: '<b>The numbers live on the animal underneath.</b> A variant changes nothing about health, damage or timing - those belong to its base kind in the Bestiary, linked on every card.',
+    omissions: '<b>The numbers live on the animal underneath.</b> A variant changes nothing about health, damage or timing. Those belong to its base kind in the Bestiary, linked on every card.',
     entries: bossVariantEntries,
+    groups: [
+      { key: 'tidebound', title: 'The Colossus dressed', note: 'Tidebound underneath.', has: (e) => e.baseKind === 'tidebound' },
+      { key: 'oilfather', title: 'The Father dressed', note: 'Oilfather underneath.', has: (e) => e.baseKind === 'oilfather' },
+      { key: 'ramhorn', title: 'The Ram dressed', note: 'Ramhorn underneath.', has: (e) => e.baseKind === 'ramhorn' },
+      { key: 'thistlemaw', title: 'The Maw dressed', note: 'Thistlemaw underneath.', has: (e) => e.baseKind === 'thistlemaw' },
+      { key: 'kingbloom', title: 'The King dressed', note: 'Kingbloom underneath.', has: (e) => e.baseKind === 'kingbloom' },
+    ],
     facets: [
       { key: 'base', label: 'Base kind', of: (e) => bvBaseName(e.baseKind) },
     ],
@@ -1377,7 +1433,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     })),
     facets: [
       { key: 'rarity', label: 'Rarity', of: (e) => e.rarity },
-      { key: 'effect', label: 'Effect source', of: (e) => e.event ? 'runtime event' : 'stat payload' },
+      { key: 'effect', label: 'Effect source', of: (e) => e.event ? 'triggers itself' : 'raises a stat' },
       { key: 'arena', label: 'Arena draft', of: (e) => R.refs[e.id]?.inArenaPool ? 'included' : 'not included' },
     ],
     sorts: [
@@ -1388,7 +1444,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     searchText: (e) => `${e.desc} ${e.flavor} ${e.rarity} relic ${Object.keys(e.stats || {}).join(' ')}`,
     icon: (e) => e.icon,
     card: (e) => `
-      <div class="wtags">${tag(esc(humanize(e.rarity)), e.rarity === 'legendary' ? 'gold' : e.rarity === 'epic' ? 'pink' : e.rarity === 'rare' ? 'violet' : '')}${e.event ? tag('Runtime effect', 'cyan') : tag('Stat effect', 'cyan')}</div>
+      <div class="wtags">${tag(esc(humanize(e.rarity)), e.rarity === 'legendary' ? 'gold' : e.rarity === 'epic' ? 'pink' : e.rarity === 'rare' ? 'violet' : '')}${e.event ? tag('Triggers itself', 'cyan') : tag('Raises a stat', 'cyan')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
       ${e.flavor ? `<p class="wgloss">${esc(e.flavor)}</p>` : ''}
       <div class="wfacts">
@@ -1447,8 +1503,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         <div class="wtags">${tag(esc(humanize(e.stat)), 'cyan')}${tag(esc(humanize(passiveAccess(e))), e.unlockedFromStart ? '' : 'gold')}</div>
         <p class="wdesc">${esc(e.desc)}</p>
         <div class="wfacts">
-          ${fact('Levels', `<b>${e.maxLevel}</b> max, source payload <b>${num(e.perLevel)}</b> per level${e.shieldRegenPerLevel !== undefined ? `, shield regen <b>${num(e.shieldRegenPerLevel)}</b> per level` : ''}`)}
-          ${fact(runtimeUnlock ? 'Runtime unlock' : unlocks.length ? 'Unlocked by' : 'Availability', availability)}
+          ${fact('Levels', `<b>${e.maxLevel}</b> max, adds <b>${num(e.perLevel)}</b> per level${e.shieldRegenPerLevel !== undefined ? `, shield regen <b>${num(e.shieldRegenPerLevel)}</b> per level` : ''}`)}
+          ${fact(runtimeUnlock ? 'Milestone unlock' : unlocks.length ? 'Unlocked by' : 'Availability', availability)}
           ${recipes.length ? fact('Evolution key', list(recipes.map((row) => `${cardLink('weapons', row.baseId, esc(weaponName(row.baseId)))} into ${cardLink('weapons', row.evolvedId, esc(weaponName(row.evolvedId)))}`))) : ''}
         </div>
         ${runtimeUnlock ? sourceParams(runtimeUnlock.provenance, 'Runtime-unlock provenance') : ''}`;
@@ -1504,7 +1560,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     lede: `A shrine you activate offers three, drawn from these ${blessingEntries.length}. That trio is only part of what a shrine can do, because a legendary replacement can turn up ahead of the blessing menu and a way to move can follow it, so this page is not the complete set of shrine outcomes.`,
     featureHtml: shrineRuntimeFeature('blessing-shrine-runtime'),
     entries: blessingEntries,
-    groups: [{ key: 'all', title: 'Blessing registry', note: 'Every option the trio can be drawn from. The movement offering that can follow it has its own page.', has: () => true }],
+    groups: [{ key: 'all', title: 'Blessing pool', note: 'Every option the trio can be drawn from. The movement offering that can follow it has its own page.', has: () => true }],
     facets: [{ key: 'stat', label: 'Stat', of: (e) => e.stat }],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => blessingEntries.indexOf(e) },
@@ -1710,7 +1766,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const characterWeaponRuntime = CH.runtime.weaponIdentity;
   const characterBaseFeature = `
     <section class="wfeature" aria-labelledby="character-base-inputs">
-      <div><span class="eyebrow">Runtime interpretation</span><h3 id="character-base-inputs">Loadout suggestion and authored identity inputs</h3></div>
+      <div><span class="eyebrow">How the sheet reads</span><h3 id="character-base-inputs">A suggested weapon, and three numbers that are not what they sound like</h3></div>
       ${(characterWeaponRuntime.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
       ${sourceParams(characterWeaponRuntime.provenance, 'Suggested-weapon provenance')}
       ${Object.entries(characterBaseRuntime).map(([key, contract]) => `<div class="wmethod-row">
@@ -1730,7 +1786,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
        rather than metres per second, might is a multiplier rather than final
        damage, and the listed weapon is a suggestion the solo campaign does not
        actually hand you. Reword freely and keep all four true. */
-    lede: 'A character is a starting health number, a speed, a damage multiplier, one passive rule and one signature move. The three numbers are inputs the run multiplies, not the speed you travel at or the damage you land, and the weapon named on a card is a suggestion rather than something you walk in holding.',
+    lede: 'A character is three numbers, one passive rule and one signature move. None of the numbers is what it looks like: they season the run rather than set your speed or your damage, and the weapon named on the card is a suggestion, not something you start out holding.',
     featureHtml: characterBaseFeature,
     entries: characterEntries,
     groups: [
@@ -1752,12 +1808,12 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       <div class="wtags">${tag(e.unlockedFromStart ? 'From the start' : 'Unlockable', e.unlockedFromStart ? 'cyan' : 'gold')}</div>
       <p class="wdesc">${esc(e.desc)}</p>
       <div class="wfacts">
-        ${fact('Suggested weapon', `${cardLink('weapons', e.startWeaponId, esc(weaponName(e.startWeaponId)))} <span class="wsub">default-loadout identity; standard solo campaign grants the aimed core only</span>`)}
+        ${fact('Suggested weapon', `${cardLink('weapons', e.startWeaponId, esc(weaponName(e.startWeaponId)))} <span class="wsub">just a label; the standard solo campaign always starts you with the aimed core</span>`)}
         ${fact('Innate', cardLink('innates', e.innateId, esc(IN.entries[e.innateId]?.name || humanize(e.innateId))))}
         ${fact('Signature', cardLink('signatures', e.signatureId, esc(SG.entries[e.signatureId]?.name || humanize(e.signatureId))))}
         ${fact('Run-start health base', `<b>${num(e.baseStats?.maxHp)} ${esc(characterBaseRuntime.maxHp.unit)}</b>, before shop and other run-start bonuses`)}
-        ${fact(`Speed identity input (relative to ${characterBaseRuntime.speed.reference})`, `<b>${num(e.baseStats?.speed)}</b> authored input; runtime identity multiplier <b>&times;${num(e.baseStats?.speed / characterBaseRuntime.speed.reference)}</b>, not m/s`)}
-        ${fact('Damage identity multiplier input', `<b>&times;${num(e.baseStats?.might)}</b> in the multiplicative damage product, not final damage`)}
+        ${fact(`Speed identity input (relative to ${characterBaseRuntime.speed.reference})`, `<b>${num(e.baseStats?.speed)}</b> on the character sheet; the run turns it into a <b>&times;${num(e.baseStats?.speed / characterBaseRuntime.speed.reference)}</b> multiplier, not m/s`)}
+        ${fact('Damage identity multiplier input', `<b>&times;${num(e.baseStats?.might)}</b>, a multiplier the run applies elsewhere, not final damage`)}
       </div>`,
   };
 
@@ -1771,7 +1827,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     /* The tagline was already right: concrete, one turn, no machinery. Left
        alone on purpose rather than rewritten for the sake of a diff. */
     tagline: 'The passive rule each character brings.',
-    lede: 'An innate belongs to one character and arrives with them, and the sentence on each card is the one you are shown at character select. You do not pick it and you do not spend anything on it; the three numbers underneath are where it starts, what a level adds, and where it stops climbing.',
+    lede: 'An innate belongs to one character and shows up with them at character select. You do not pick it and you do not spend anything on it; the three numbers underneath are where it starts, what a level adds, and where it stops climbing.',
     entries: innateEntries,
     groups: [{ key: 'all', title: 'Innate roster', note: 'One for each character, in the order the characters are listed.', has: () => true }],
     facets: [
@@ -1837,21 +1893,29 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const encounterSchedule = D.world.encounterSchedule;
   const encounterScheduleFeature = (id) => `
     <section class="wfeature" aria-labelledby="${id}">
-      <div><span class="eyebrow">Cadence evidence</span><h3 id="${id}">Authored tables plus automatic-miniboss cadence context</h3></div>
-      <p>The exported interval is <b>${num(encounterSchedule.automaticMinibossCadenceSec)} seconds</b> on the ${esc(humanize(encounterSchedule.cadenceClock))}. In the unified profile that is <b>${mmss(encounterSchedule.unifiedProfilePreBankIntervalElapsedSec)}</b> elapsed before the pacing bank and <b>${mmss(encounterSchedule.unifiedProfileEndlessIntervalElapsedSec)}</b> in endless play. These are independently derived phase intervals, not exact encounter timestamps or miniboss identities.</p>
+      <div><span class="eyebrow">How often, not which one</span><h3 id="${id}">Authored tables plus automatic-miniboss cadence context</h3></div>
+      <p>Left alone, the game checks in every <b>${num(encounterSchedule.automaticMinibossCadenceSec)} seconds</b> on the mode's own clock and decides whether a miniboss is due right then. In the profile most runs use, that lands at <b>${mmss(encounterSchedule.unifiedProfilePreBankIntervalElapsedSec)}</b> elapsed before the pacing bank and <b>${mmss(encounterSchedule.unifiedProfileEndlessIntervalElapsedSec)}</b> in endless play. Those are check-in intervals, not exact encounter timestamps or miniboss identities.</p>
       ${(encounterSchedule.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
       ${(encounterSchedule.limits || []).map((line) => `<p class="womit">${esc(line)}</p>`).join('')}
       ${sourceParams(encounterSchedule.provenance, 'Encounter-schedule provenance')}
     </section>`;
+  const unlockTriggerCopy = (trigger) => {
+    if (!trigger) return '';
+    if (trigger.kind === 'districtGate') return `Unlocked by clearing the ${humanize(trigger.gateId).toLowerCase()}`;
+    if (trigger.kind === 'lifetimeClears') {
+      return `Unlocked after ${spell(trigger.minimum)} campaign clear${trigger.minimum === 1 ? '' : 's'}`;
+    }
+    return compactObject(trigger, (key, value) => `${humanize(key)} ${value}`);
+  };
   const worldCard = (e, refs) => {
     const surfaceNames = Object.entries(e.surfaces || {}).filter(([, enabled]) => enabled).map(([key]) => humanize(key));
     const unlockedById = refs?.unlockedBy;
-    const trigger = e.unlockTrigger ? compactObject(e.unlockTrigger, (key, value) => `${humanize(key)} ${value}`) : '';
+    const trigger = unlockTriggerCopy(e.unlockTrigger);
     return `
       <div class="wtags">${surfaceNames.map((name) => tag(esc(name), 'cyan')).join('')}${e.unlockedFromStart ? tag('From the start', 'gold') : ''}</div>
       <p class="wdesc">${esc(e.tagline)}</p>
       <div class="wfacts">
-        ${fact('Availability', e.unlockedFromStart ? 'From the start' : unlockedById ? `Unlocked after ${cardLink('worlds', unlockedById, esc(levelName(unlockedById)))}` : trigger ? esc(trigger) : 'The registry carries no simple predecessor')}
+        ${fact('Availability', e.unlockedFromStart ? 'From the start' : unlockedById ? `Unlocked after ${cardLink('worlds', unlockedById, esc(levelName(unlockedById)))}` : trigger ? esc(trigger) : 'No single unlock rule is recorded for this one')}
         ${refs?.unlocksName ? fact('Unlocks next', cardLink('worlds', e.unlocks, esc(refs.unlocksName))) : ''}
         ${refs?.shipCore ? fact('Ship core', cardLink('ship-cores', refs.shipCore, esc(refs.shipCoreName))) : ''}
         ${refs?.worldEvents?.length ? fact('Rare events', list(refs.worldEvents.map((id) => cardLink('world-events', id, esc(humanize(id)))))) : ''}
@@ -1932,9 +1996,9 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const openingEnemyHp = RM.openingEnemyHpBonus;
   const openingEnemyHpFeature = `
     <section class="wfeature" aria-labelledby="opening-enemy-hp-policy">
-      <div><span class="eyebrow">Spawn-health contract</span><h3 id="opening-enemy-hp-policy">Opening enemy HP bonus</h3></div>
-      <p>Each mode's <code>${esc(openingEnemyHp.field)}</code> applies only to <b>${esc(humanize(openingEnemyHp.appliesTo))}</b>. It fades <b>${esc(openingEnemyHp.fade)}</b> on the <b>${esc(humanize(openingEnemyHp.fadeClock))}</b> from ${mmss(openingEnemyHp.startsAtPaceSec)} to zero by <b>${mmss(openingEnemyHp.fadesToZeroAtPaceSec)}</b>. In the unified profile that threshold is <b>${mmss(openingEnemyHp.unifiedProfileElapsedSec)}</b> of real play.</p>
-      <details class="wraw"><summary>Excluded spawn authorities <span>${openingEnemyHp.excludes.length}</span></summary><ul>${openingEnemyHp.excludes.map((line) => `<li>${esc(line)}</li>`).join('')}</ul></details>
+      <div><span class="eyebrow">One bump, one fade</span><h3 id="opening-enemy-hp-policy">Opening enemy HP bonus</h3></div>
+      <p>Every mode also gives you a one-time opening health bump: ordinary wave spawns run hotter for the first stretch of a run, and nothing else does. Bosses, recurring minibosses, elites, set pieces and anything spawned directly skip it entirely. The bump fades in a straight line from ${mmss(openingEnemyHp.startsAtPaceSec)} down to zero by <b>${mmss(openingEnemyHp.fadesToZeroAtPaceSec)}</b> on the mode's own clock, which lands at <b>${mmss(openingEnemyHp.unifiedProfileElapsedSec)}</b> of real play in the profile most runs use.</p>
+      <details class="wraw"><summary>What skips the bump <span>${openingEnemyHp.excludes.length}</span></summary><ul>${openingEnemyHp.excludes.map((line) => `<li>${esc(line)}</li>`).join('')}</ul></details>
       ${(openingEnemyHp.semantics || []).map((line) => `<p>${esc(line)}</p>`).join('')}
       ${sourceParams(openingEnemyHp.provenance, 'Opening-HP provenance')}
     </section>`;
@@ -1962,7 +2026,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         ${fact('Pacing bank', `<b>${mmss(e.bankAtElapsedSec)}</b> real time`)}
         ${fact('Final horde', `<b>${playClock(e.finalHordeAtPaceSec) || `${e.finalHordeAtPaceSec} pace seconds`}</b>`)}
         ${fact('Victory choice', bool(e.offersVictoryChoice))}
-        ${fact('Opening enemy HP bonus', `<b>${pct(e[openingEnemyHp.field])}</b> on ordinary SpawnDirector wave health at run start; ${esc(openingEnemyHp.fade)} fade to <b>0%</b> by ${mmss(openingEnemyHp.fadesToZeroAtPaceSec)} on the mode-profiled pace clock <span class="wsub">(${mmss(openingEnemyHp.unifiedProfileElapsedSec)} real-play equivalent in the unified profile; excluded authorities are listed above)</span>`)}
+        ${fact('Opening enemy HP bonus', `<b>${pct(e[openingEnemyHp.field])}</b> on ordinary wave health at run start; ${esc(openingEnemyHp.fade)} fade to <b>0%</b> by ${mmss(openingEnemyHp.fadesToZeroAtPaceSec)} on the mode's own clock <span class="wsub">(${mmss(openingEnemyHp.unifiedProfileElapsedSec)} real-play equivalent in the unified profile; bosses, minibosses, elites, set pieces and anything spawned directly skip it, see above)</span>`)}
         ${fact('World events', `<b>${e.earthyWorldEventCount}</b> earthy, <b>${e.otherWorldEventCount}</b> other, ${esc(humanize(e.worldEventSelection))}`)}
       </div>
       ${sourceParams(Object.fromEntries(Object.entries(e).filter(([key]) => !['id', 'name'].includes(key))), 'Complete mode profile')}`,
@@ -1972,8 +2036,8 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const worldEventEntries = ordered(WE, (e) => ({ ...e, name: humanize(e.id) }));
   const worldEventFeature = `
     <section class="wfeature" aria-labelledby="world-event-policy">
-      <div><span class="eyebrow">Placement contract</span><h3 id="world-event-policy">Rare-event policy</h3></div>
-      <p>The values below are emitted by the same source contract as the event allow-lists.</p>
+      <div><span class="eyebrow">The rules behind the roll</span><h3 id="world-event-policy">How a placement gets decided</h3></div>
+      <p>These numbers come from the same rulebook that decides which worlds are allowed to host a given event in the first place.</p>
       ${sourceParams(WE.placementPolicy, 'Placement policy')}
       ${sourceParams(WE.provenance, 'Event provenance')}
     </section>`;
@@ -1992,7 +2056,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       { key: 'worlds', label: 'World coverage', of: (e) => e.allowedWorlds.length === WE.allEventWorlds.length ? 'all listed worlds' : `${e.allowedWorlds.length} listed worlds` },
     ],
     sorts: [
-      { key: 'roster', label: 'Registry order', of: (e) => worldEventEntries.indexOf(e) },
+      { key: 'roster', label: 'Roster order', of: (e) => worldEventEntries.indexOf(e) },
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
       { key: 'weight', label: 'Weight', of: (e) => e.weight, desc: true },
     ],
@@ -2018,11 +2082,11 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   }
   const ambientFeature = `
     <section class="wfeature" aria-labelledby="ambient-source-tuning">
-      <div><span class="eyebrow">World-keyed source table</span><h3 id="ambient-source-tuning">Observed event kinds and source tuning blocks</h3></div>
+      <div><span class="eyebrow">Sliced by event, not by world</span><h3 id="ambient-source-tuning">Every kind of ambient event, and how often it shows up</h3></div>
       <div class="wmethod-grid">
-        ${(AE.eventKinds || []).map((kind) => `<div><b>${esc(humanize(kind))}</b><span>World-table occurrences</span><code>${ambientKindCounts.get(kind) || 0}</code></div>`).join('')}
+        ${(AE.eventKinds || []).map((kind) => `<div><b>${esc(humanize(kind))}</b><span>Times listed across worlds</span><code>${ambientKindCounts.get(kind) || 0}</code></div>`).join('')}
       </div>
-      <p>The source contract exposes tuning blocks under their own keys. They are printed independently; this page does not invent aliases between a placement event id and a tuning-block id.</p>
+      <p>The tuning numbers further down are kept in their own separate settings, so this page never assumes a placement and a tuning block are the same thing just because their names look alike.</p>
       ${Object.entries(AE.config || {}).map(([key, value]) => sourceParams(value, `${humanize(key)} tuning block`)).join('')}
       ${sourceParams({ seedSalt: AE.seedSalt, ...AE.provenance }, 'Ambient provenance')}
     </section>`;
@@ -2041,7 +2105,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     ],
     facets: [{ key: 'event', label: 'Includes event', of: (e) => e.events.map((row) => row.event), multi: true }],
     sorts: [
-      { key: 'roster', label: 'Source order', of: (e) => ambientEntries.indexOf(e) },
+      { key: 'roster', label: 'Roster order', of: (e) => ambientEntries.indexOf(e) },
       { key: 'name', label: 'World name', of: (e) => e.name, text: true },
       { key: 'count', label: 'Event count', of: (e) => e.events.length, desc: true },
     ],
@@ -2053,7 +2117,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         <div class="wtags">${e.events.map((row) => tag(esc(humanize(row.event)), 'cyan')).join('')}</div>
         <div class="wfacts">
           ${fact('World', cardLink(page, e.id, esc(e.name)))}
-          ${fact('Placements', e.events.map((row) => `<code>${esc(row.event)}</code> with theme <code>${esc(row.themeId)}</code>`).join('<br>'))}
+          ${fact('Placements', e.events.map((row) => `${esc(humanize(row.event))}<span class="wsub"> &middot; ${esc(humanize(row.themeId))} theme</span>`).join('<br>'))}
         </div>`;
     },
   };
@@ -2065,9 +2129,9 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'ship-cores',
     domain: 'shipCores',
     title: 'Ship cores',
-    tagline: `${shipCoreEntries.length} pieces of your ship, and a world is sitting on each one.`,
-    lede: 'A core is one of your own ship systems, carried back off the boss that closes a world. Each one is awarded once and never again, and each one comes home with a memory in it.',
-    omissions: '<b>There is no bonus column here, because a core does not have one.</b> Bringing one home changes the ship and the ground it stands on, and it does nothing at all to the numbers in your next run.',
+    tagline: `${shipCoreEntries.length} pieces of your ship. Clearing a world hands over one.`,
+    lede: 'A core is one of your own ship systems, carried back off the boss that closes out a world. It arrives exactly once, and it always comes home carrying a memory.',
+    omissions: '<b>There is no bonus column here, because a core does not have one.</b> Bringing one home changes the ship and the ground it stands on. It does nothing at all to the numbers in your next run.',
     entries: shipCoreEntries,
     groups: [{ key: 'all', title: 'Recovered systems', note: `All ${shipCoreEntries.length}, in the order the campaign hands them over.`, has: () => true }],
     facets: [{ key: 'system', label: 'System', of: (e) => e.system }],
@@ -2136,13 +2200,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     domain: 'shipSystems',
     title: 'Ship systems',
     tagline: 'One socket per core, and what the ship looks like as they fill.',
-    lede: `There is one socket per core, laid out in the order the campaign fills them, with the memory archive at the centre of the ring instead of out on it. As the cores come back the wreck stops looking like a wreck, in ${SS.rebuildTierCount} stages. Every count of cores you could be holding${rebuildCoreRange} is written down against the stage it puts you at.`,
+    lede: `There is one socket per core, laid out in the order the campaign fills them, with the memory archive at the center of the ring instead of out on it. As the cores come back, the wreck stops looking like a wreck, in ${SS.rebuildTierCount} stages. Every count of cores you could be holding${rebuildCoreRange} is written down against the stage it puts you at.`,
     omissions: '<b>Fragments do not seat in these sockets.</b> A fragment names a system, and a socket names a system, and the game never says the one goes into the other.',
     featureHtml: shipSystemFeature,
     countLabel: `${SS.count} sockets · ${SS.rebuildTierCount} rebuild tiers`,
     entries: shipSystemEntries,
     groups: [
-      { key: 'heart', title: 'Heart socket', note: 'The one socket at the centre of the ring rather than out on it. The whole story is about this one.', has: (e) => e.heart },
+      { key: 'heart', title: 'Heart socket', note: 'The one socket at the center of the ring rather than out on it. The whole story is about this one.', has: (e) => e.heart },
       { key: 'systems', title: 'System sockets', note: 'The rest of the ring, in the order the campaign fills it.', has: (e) => !e.heart },
     ],
     facets: [{ key: 'heart', label: 'Heart socket', of: (e) => e.heart ? 'yes' : 'no' }],
@@ -2208,7 +2272,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       <div class="wfacts">
         ${e.stat ? fact('Counter', `<code>${esc(e.stat)}</code>${e.target !== undefined ? `, target <b>${num(e.target)}</b>` : ''}`) : ''}
         ${e.levelId ? fact('World', cardLink('worlds', e.levelId, esc(levelName(e.levelId)))) : ''}
-        ${Object.keys(e.unlocks || {}).length ? fact('Unlocks', list(Object.entries(e.unlocks).map(([kind, id]) => unlockLink(kind, id)))) : fact('Unlock payload', 'None')}
+        ${Object.keys(e.unlocks || {}).length ? fact('Unlocks', list(Object.entries(e.unlocks).map(([kind, id]) => unlockLink(kind, id)))) : fact('Unlocks', 'None')}
       </div>`,
   };
 
@@ -2277,7 +2341,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         <div class="wfacts">
           ${fact('Giver', `<b>${esc(refs.giverName)}</b>`)}
           ${fact('Request', (e.ask || []).map((line) => esc(line)).join('<br>'))}
-          ${fact('Target', `<code>${esc(e.target.kind)}</code>, count <b>${num(e.target.count)}</b>${e.unit ? ` ${esc(e.unit)}` : ''}`)}
+          ${fact('What it takes', `<code>${esc(e.target.kind)}</code>, count <b>${num(e.target.count)}</b>${e.unit ? ` ${esc(e.unit)}` : ''}`)}
           ${fact('Reward', questReward(e))}
           ${fact('Reaction', (e.reaction || []).map((line) => esc(line)).join('<br>'))}
           ${refs.previousQuest ? fact('Previous', cardLink('quests', refs.previousQuest, esc(questName(refs.previousQuest)))) : ''}
@@ -2343,7 +2407,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         <div class="wtags">${tag(esc(humanize(e.lane)), 'cyan')}${tag(esc(SH.pricing.bandLabels[e.band] || humanize(e.band)), 'violet')}${tag(`${e.ranks} ranks`, 'gold')}</div>
         <p class="wdesc">${esc(e.desc)}</p>
         <div class="wfacts">
-          ${fact('Per-rank value', `<b>${num(e.perRank, 4)}</b> <span class="wsub">source value</span>`)}
+          ${fact('Per-rank value', `<b>${num(e.perRank, 4)}</b> <span class="wsub">raw number</span>`)}
           ${fact('Full rank cost', `<b>${num(refs.totalCost)}g</b>`)}
         </div>
         <details class="wraw wschedule"><summary>Purchase ladder <span>${refs.ranks.length}</span></summary><ol>
@@ -2359,7 +2423,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     slug: 'wearables',
     domain: 'wearables',
     title: 'Wearables',
-    tagline: 'What the village hands you for doing it a favour.',
+    tagline: 'What the village hands you for doing it a favor.',
     lede: 'A wearable is what a quest pays you: somebody wanted something specific, you brought it back, and this is what they handed over. It bolts onto whichever hero you are playing, and it does nothing else.',
     omissions: '<b>An anchor is where a piece mounts, not a slot you fill.</b> A hero wears one of these at a time, so eyes, head and back are not three things you can have on at once.',
     entries: wearableEntries,
@@ -2384,7 +2448,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       <p class="wdesc">${esc(e.blurb)}</p>
       <div class="wfacts">
         ${fact('Colors', `<span class="wswatch" style="background:${esc(colorHex(e.color))}"></span><code>${esc(colorHex(e.color))}</code> <span class="wswatch" style="background:${esc(colorHex(e.accent))}"></span><code>${esc(colorHex(e.accent))}</code>`)}
-        ${WR.refs[e.id]?.rewardedByQuests?.length ? fact('Quest rewards', list(WR.refs[e.id].rewardedByQuests.map((id) => cardLink('quests', id, esc(questName(id)))))) : ''}
+        ${WR.refs[e.id]?.rewardedByQuests?.length ? fact('Comes from', list(WR.refs[e.id].rewardedByQuests.map((id) => cardLink('quests', id, esc(questName(id)))))) : ''}
       </div>`,
   };
 
@@ -2677,6 +2741,7 @@ export const SEARCH_TYPE = {
  * a new private/export-only field must not break the wiki, while deleting a
  * field the wiki actually presents must fail before HTML is written. */
 export const DISPLAY_FIELD_PATHS = Object.freeze({
+  bossVariants: ['baseKind', 'skin'],
   weapons: ['desc', 'pattern', 'element', 'shape', 'baseDamage', 'fireRateMs', 'maxLevel', 'perLevel', 'params', 'unlockedFromStart'],
   coreWeapons: ['desc', 'feel', 'cadence', 'cadenceLabel', 'meter', 'meterPips', 'color'],
   passives: ['desc', 'stat', 'perLevel', 'maxLevel', 'unlockedFromStart'],
@@ -2887,6 +2952,23 @@ const NONEMPTY_DISPLAY_ARRAYS = new Set([
   'worldEvents.allowedWorlds', 'ambientEvents.events', 'quests.ask', 'quests.reaction',
 ]);
 
+/* THE COLOPHON, once, for every wiki page. One visible sentence says where the
+ * numbers came from and which build they were read at, because that sentence
+ * is the whole reason to trust the page. The file names underneath it are the
+ * fine print: still printed, still in the DOM for bin/wiki-check.mjs (the
+ * measured pages carry their fixture fingerprints here), folded so a player
+ * who came to look up a weapon is not handed a path. */
+function colophon({ esc, chrome }, { scope, sources = [], links }) {
+  const fine = sources.length
+    ? `
+  <details class="wfine"><summary>The fine print</summary><div>Read from ${list(sources.map((s) => `<code>${esc(s)}</code>`))}.</div></details>`
+    : '';
+  return `<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
+  Every number ${scope} came straight out of the game, read at <code>game@${esc(chrome.headSha)}</code> on ${esc(chrome.buildStamp)}.
+  ${links}${fine}
+</footer>`;
+}
+
 function renderRosterPage(roster, ctx) {
   const { esc, chrome, D, V } = ctx;
   const qualifiedTitle = /^WHOMP\b/i.test(roster.title) ? roster.title : `WHOMP ${roster.title.toLowerCase()}`;
@@ -3011,20 +3093,19 @@ function renderRosterPage(roster, ctx) {
     <div class="wbar">${facetBar}${sortBar}</div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>Nothing here matches all of that at once.</b>
-      <button type="button" id="wreset">Reset filters</button>
+      <b>Nothing survives all of those filters at once.</b>
+      <button type="button" id="wreset">Clear the filters</button>
     </div>
 
     <div id="wiki-groups">${groupsHtml}</div>
   </main>
 </div>
 
-<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@${esc(chrome.headSha)}</code> on ${esc(chrome.buildStamp)}
-  from <code>${esc(roster.sourceLabel || 'data/game-data.json')}</code> and <code>data/wiki-visuals.json</code>.
-  <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a>
-  &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
-</footer>`;
+${colophon(ctx, {
+    scope: 'on this page',
+    sources: [roster.sourceLabel || 'data/game-data.json', 'data/wiki-visuals.json'],
+    links: `<a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>`,
+  })}`;
 
   const script = `
 // ---- facets ----
@@ -3143,7 +3224,7 @@ function renderHub(rosters, ctx) {
       ${chrome.wikiBrand}
       <span>
         <h1 class="chroma">WHOMP wiki</h1>
-        <p class="subtag">Everything that can kill you, and everything that can help.</p>
+        <p class="subtag">Everything that can kill you. Everything that can help.</p>
       </span>
     </span>
     <div class="wtopbar-aside">
@@ -3169,8 +3250,8 @@ function renderHub(rosters, ctx) {
       sat still for.</p>
 
     <p class="womit">Where the game has no answer, these pages say so rather than guess. A few numbers an ordinary wiki
-      would print are missing on purpose, and every page names its own gaps at the top. A gap here means the number
-      the game runs on is not the number the page could show you, and half a truth about damage is worse than none.</p>
+      would print are missing on purpose, and every page names its own gaps at the top: the number the game runs on
+      is not the number the page could show you, and half a truth about damage is worse than none.</p>
 
     ${sections.map((section) => {
       const pages = rosters.filter((r) => r.section === section);
@@ -3187,11 +3268,11 @@ function renderHub(rosters, ctx) {
   </main>
 </div>
 
-<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number in this wiki came straight out of the game, read at <code>game@${esc(chrome.headSha)}</code> on ${esc(chrome.buildStamp)}
-  from <code>data/game-data.json</code>, <code>data/tier-rankings.json</code>, and <code>data/wiki-visuals.json</code>.
-  <a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a> &middot; <a href="log.html#views">Dev log</a>
-</footer>`;
+${colophon(ctx, {
+    scope: 'in this wiki',
+    sources: ['data/game-data.json', 'data/tier-rankings.json', 'data/wiki-visuals.json'],
+    links: `<a href="${EXPLAINER_FILE}">${EXPLAINER_LINK_TEXT}</a> &middot; <a href="log.html#views">Dev log</a>`,
+  })}`;
 
   return {
     file: 'wiki.html',
@@ -3249,7 +3330,7 @@ function renderExplainer(rosters, ctx) {
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><span aria-current="page">${esc(EXPLAINER_TITLE)}</span></nav>
     <h2 class="chroma">${esc(EXPLAINER_TITLE)}</h2>
-    <p class="lede">Fair question. Nobody sat down and typed these numbers in, which is the only reason they are still right.</p>
+    <p class="lede">Fair question. Nobody sat down and typed these numbers in. That is the only reason they are still right.</p>
 
     ${section('The short version', 'Nothing here is a copy', 'not-a-copy', [
     'An ordinary wiki is a copy. Somebody reads a damage number, types it onto a page, and the page stays right until the next balance pass, which nobody tells it about.',
@@ -3269,6 +3350,7 @@ function renderExplainer(rosters, ctx) {
     ${section('The pictures', 'The game drew them, alone', 'the-pictures', [
     `The <b>${shownPictures}</b> images on these pages are not screenshots, and nobody drew them for the site. The game rendered each one itself, on a clear background under fixed light, and the build redraws all of them to compare against what it is about to publish.`,
     'A live world lights and repaints the same thing differently. Treat a picture here as the shape of a thing rather than the sight of it.',
+    'Every picture says so in one line underneath. The fine print under that line holds the whole method, the game\'s own caveats and where the picture was read from, for anyone who wants it.',
   ])}
 
     ${section('Who wrote what', 'The game speaks for itself', 'who-wrote-what', [
@@ -3276,21 +3358,21 @@ function renderExplainer(rosters, ctx) {
     'So if a description reads oddly, it reads that way in the game too, and this is not the place it gets fixed.',
   ])}
 
-    <p class="womit">Some numbers exist in the game and are still kept off these pages. Damage per second is the loud one: your might and
-      your crit multiply it, your attack speed divides the interval, and half the weapons here do not have "damage times shots per second"
-      behavior in the first place, so a single column would be wrong on most cards. Every page names its own gaps at the top, and the
-      reason has the same shape every time. <b>The number the game runs on is not the number the page could show you</b>, and half a truth
-      about damage is worse than an obvious hole.</p>
+    <p class="womit">Some numbers exist in the game and still do not appear here. Damage per second is the loud one: your might and
+      your crit multiply it, your attack speed divides the interval, and half the weapons here do not work like "damage times shots
+      per second" at all, so one column would be wrong on most cards. Every page names its own gaps at the top for the same reason:
+      <b>the number the game runs on is not the number the page could show you</b>, and half a truth about damage is worse than an
+      obvious hole.</p>
 
     <p class="wcount">Coverage right now: <b>${D.coverage.domains}</b> catalogs, <b>${catalogEntries}</b> entries, <b>${T?.coverage?.rows || 0}</b> measured weapon rows,
       <b>${T?.measuredBuilds?.pairs?.length || 0}</b> measured pairs, <b>${shownPictures}</b> pictures.</p>
   </main>
 </div>
 
-<footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number in this wiki came straight out of the game, read at <code>game@${esc(chrome.headSha)}</code> on ${esc(chrome.buildStamp)}.
-  <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
-</footer>`;
+${colophon(ctx, {
+    scope: 'in this wiki',
+    links: `<a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>`,
+  })}`;
 
   return {
     file: EXPLAINER_FILE,
@@ -4130,7 +4212,7 @@ export function buildWiki(ctx) {
   const pages = [renderHub(rosters, ctx), renderExplainer(rosters, ctx), ...rosters.map((r) => renderRosterPage(r, ctx))];
 
   const searchEntries = [];
-  searchEntries.push({ type: 'wiki', title: 'WHOMP wiki', text: `All ${D.coverage.domains} source catalogs and controlled-simulation evidence guides`, anchor: '', href: 'wiki.html' });
+  searchEntries.push({ type: 'wiki', title: 'WHOMP wiki', text: `All ${D.coverage.domains} source catalogs and lab-measured evidence guides`, anchor: '', href: 'wiki.html' });
   searchEntries.push({
     type: 'wiki',
     title: EXPLAINER_TITLE,

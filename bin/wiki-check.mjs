@@ -705,6 +705,10 @@ for (const roster of rosters) {
       if (captioned) {
         requireThat(card.includes(esc(visual.source)) && card.toLocaleLowerCase().includes(visual.provenanceClass.toLocaleLowerCase()),
           `${file}#e-${entry.id} does not expose visual source/provenance`);
+        // Every captioned kind reads one plain line before the fold, never a
+        // bare label over a closed disclosure.
+        requireThat(new RegExp(`<figcaption><b>${esc(visualKindLabel(visual.kind)).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</b><span>[^<]{12,}</span><details class="wraw wvisual-more">`).test(card),
+          `${file}#e-${entry.id} caption has no plain lead line between its label and its fine print`);
       } else {
         const figureStart = card.indexOf(marker);
         const figure = card.slice(figureStart, card.indexOf('</figure>', figureStart));
@@ -718,15 +722,28 @@ for (const roster of rosters) {
           requireThat(card.includes(`${esc(visualOutputPath(variant.path))} ${variant.width}w`),
             `${file}#e-${entry.id} omits responsive variant ${variant.label}`);
         }
-        // Same four disclosures as before the voice pass, in plain words: the
+        // Same four disclosures as before the voice passes, in plain words: the
         // render is isolated, it is not live play, and the artifact's own
         // limitation string is reproduced verbatim rather than paraphrased.
+        // Since 2026-09-06 they live in the caption's fine print (a closed
+        // <details>), which is why this is a substring test on the card and not
+        // a visibility test: the disclosure must be in the DOM, one click away.
         requireThat(/\bsizes="[^"]+"/.test(card) && card.includes('The game drew this on its own, alone')
           && card.includes('It is not a screenshot, and it is not how it looks in a live world')
           && card.includes(esc(visual.renderContext.limitation)),
         `${file}#e-${entry.id} does not disclose its isolated neutral render context and limitation`);
         requireThat(card.includes('<b>Drawn by the game</b>') && !/<b>[^<]*(?:sprite|screenshot)/i.test(card),
           `${file}#e-${entry.id} mislabels a deterministic runtime render as a sprite or screenshot`);
+        // THE VISIBLE HALF. Folding the method into the fine print is only
+        // honest if the one fact that matters is still read without a click:
+        // the picture is the game posing for its own portrait, not a
+        // screenshot. That sentence must sit in the figcaption BEFORE the fold
+        // opens, and the fold itself must exist so the rest is reachable.
+        const figcaption = card.match(/<figcaption>([\s\S]*?)<\/figcaption>/)?.[1] || '';
+        const visibleLead = figcaption.split('<details')[0];
+        requireThat(visibleLead.includes('Posed by the game itself, not a screenshot.')
+          && /<details class="wraw wvisual-more"><summary>[^<]+<\/summary>/.test(figcaption),
+        `${file}#e-${entry.id} does not keep the not-a-screenshot line visible above its folded provenance`);
         const expectedCameraView = roster.domain === 'wearables' && D.domains.wearables.entries[entry.id]?.trails === true ? 'rear' : 'front';
         requireThat(card.includes(`seen from the ${expectedCameraView}`),
           `${file}#e-${entry.id} hides or mislabels its ${expectedCameraView} presentation camera`);

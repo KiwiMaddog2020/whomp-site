@@ -285,6 +285,14 @@ html,body{max-width:100%;overflow-x:clip}
 .wempty{border:var(--edge);border-radius:12px;padding:18px;margin:0 0 24px;color:var(--dim);background:rgba(255,243,207,.025)}
 .wempty b{display:block;color:var(--cream);margin-bottom:8px}
 .wempty button{font:inherit;color:var(--cyan);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+/* THE COLOPHON'S FINE PRINT: which files the page was read from. A player
+   does not need a file name to trust the sentence above it, and the build
+   stamp stays visible on its own, so the paths fold. Same disclosure pattern
+   as the picture captions, centred because the footer is. */
+.wfine{margin-top:10px;font-size:.74rem}
+.wfine summary{cursor:pointer;color:var(--cyan);font-weight:700;list-style-position:inside}
+.wfine summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wfine div{margin-top:6px}
 
 .wgroup{margin-bottom:38px;scroll-margin-top:calc(var(--band) + 18px)}
 .wgroup-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px;padding-bottom:7px;border-bottom:var(--edge)}
@@ -320,6 +328,18 @@ html,body{max-width:100%;overflow-x:clip}
 .wvisual figcaption{display:flex;flex-direction:column;gap:2px;margin-top:8px;color:var(--dim);font-size:.7rem;line-height:1.4;overflow-wrap:anywhere}
 .wvisual figcaption b{color:var(--cream);font-size:.74rem}
 .wvisual-limit{border-left:2px solid var(--gold);padding-left:8px;color:var(--body)}
+/* THE FINE PRINT under a picture. It borrows .wraw's disclosure so it behaves
+   like every other "show me the workings" fold on the page, then sheds the
+   rule and the padding a card-level fold needs, because it is sitting inside a
+   caption that is already .7rem and already boxed. Closed, it is one short
+   cyan line under the lead sentence; open, the method, the game's limitation
+   and the source stack in that order, and at 400px the source symbol wraps at
+   any character rather than pushing the card wide. */
+.wvisual .wvisual-more{border-top:0;padding:0;margin-top:2px;font-size:.66rem;line-height:1.45;color:var(--dim)}
+.wvisual .wvisual-more summary{margin-left:14px;font-size:.68rem;font-weight:700}
+.wvisual .wvisual-more>span{display:block;margin-top:6px;overflow-wrap:anywhere}
+.wvisual .wvisual-more .wvisual-limit{margin-top:6px}
+.wvisual-source{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.6rem;color:var(--dim)}
 .wvisual-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0 12px;padding:8px;border:var(--edge);border-radius:10px;background:rgba(255,243,207,.02)}
 .wvisual-compact{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,243,207,.035)}
 .wvisual-compact img{display:block;max-width:50px;max-height:50px;width:auto;height:auto;object-fit:contain;image-rendering:auto}
@@ -520,7 +540,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <div class="wsearchband">
 <div class="searchwrap" role="search">
-  <input class="searchbox" id="search" type="search" placeholder="Search the wiki and the dev log" autocomplete="off" spellcheck="false"
+  <input class="searchbox" id="search" type="search" placeholder="Look up a weapon, a monster, a patch note" autocomplete="off" spellcheck="false"
     aria-label="Search WHOMP"
     role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false"
     aria-controls="sr-panel" aria-describedby="sr-status">
@@ -633,8 +653,8 @@ footer a{color:var(--cyan);text-decoration:none}
       </div></div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
-      <b>Nothing here matches all of that at once.</b>
-      <button type="button" id="wreset">Reset filters</button>
+      <b>Nothing survives all of those filters at once.</b>
+      <button type="button" id="wreset">Clear the filters</button>
     </div>
 
     <div id="wiki-groups">
@@ -650,7 +670,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:thornShades" data-visual-use="entry">
     <img src="wiki-assets/wearables/thorn-shades-256w.png" srcset="wiki-assets/wearables/thorn-shades-256w.png 256w, wiki-assets/wearables/thorn-shades-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Thorn Shades worn by Capsule Signal." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Eyes</span></div>
@@ -669,7 +689,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:readingSpecs" data-visual-use="entry">
     <img src="wiki-assets/wearables/reading-specs-256w.png" srcset="wiki-assets/wearables/reading-specs-256w.png 256w, wiki-assets/wearables/reading-specs-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Reading Spectacles worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Eyes</span></div>
@@ -693,7 +713,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:knitCap" data-visual-use="entry">
     <img src="wiki-assets/wearables/knit-cap-256w.png" srcset="wiki-assets/wearables/knit-cap-256w.png 256w, wiki-assets/wearables/knit-cap-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Knit Cap worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
@@ -712,7 +732,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:paperCrown" data-visual-use="entry">
     <img src="wiki-assets/wearables/paper-crown-256w.png" srcset="wiki-assets/wearables/paper-crown-256w.png 256w, wiki-assets/wearables/paper-crown-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Paper Crown worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
@@ -731,7 +751,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:eggCap" data-visual-use="entry">
     <img src="wiki-assets/wearables/egg-cap-256w.png" srcset="wiki-assets/wearables/egg-cap-256w.png 256w, wiki-assets/wearables/egg-cap-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Egg Cap worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
@@ -750,7 +770,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:panHat" data-visual-use="entry">
     <img src="wiki-assets/wearables/pan-hat-256w.png" srcset="wiki-assets/wearables/pan-hat-256w.png 256w, wiki-assets/wearables/pan-hat-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Pan Hat worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Head</span></div>
@@ -774,7 +794,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:halfCape" data-visual-use="entry">
     <img src="wiki-assets/wearables/half-cape-256w.png" srcset="wiki-assets/wearables/half-cape-256w.png 256w, wiki-assets/wearables/half-cape-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Half Cape worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Back</span></div>
@@ -798,7 +818,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:longScarf" data-visual-use="entry">
     <img src="wiki-assets/wearables/long-scarf-256w.png" srcset="wiki-assets/wearables/long-scarf-256w.png 256w, wiki-assets/wearables/long-scarf-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Long Scarf worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
@@ -817,7 +837,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:ribbonTail" data-visual-use="entry">
     <img src="wiki-assets/wearables/ribbon-tail-256w.png" srcset="wiki-assets/wearables/ribbon-tail-256w.png 256w, wiki-assets/wearables/ribbon-tail-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Rear presentation view of the canonical in-game Ribbon Tail worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the rear, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. The rear presentation view is used because this wearable's canonical trail is mounted behind the reference avatar.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot. Seen from behind, because that is where it hangs.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the rear, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. The rear presentation view is used because this wearable's canonical trail is mounted behind the reference avatar.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span><span class="wtag ink-violet">Trails</span></div>
@@ -836,7 +856,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:brambleRuff" data-visual-use="entry">
     <img src="wiki-assets/wearables/bramble-ruff-256w.png" srcset="wiki-assets/wearables/bramble-ruff-256w.png 256w, wiki-assets/wearables/bramble-ruff-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Bramble Ruff worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
@@ -855,7 +875,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:dareMedal" data-visual-use="entry">
     <img src="wiki-assets/wearables/dare-medal-256w.png" srcset="wiki-assets/wearables/dare-medal-256w.png 256w, wiki-assets/wearables/dare-medal-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Dare Medal worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
@@ -874,7 +894,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:flourApron" data-visual-use="entry">
     <img src="wiki-assets/wearables/flour-apron-256w.png" srcset="wiki-assets/wearables/flour-apron-256w.png 256w, wiki-assets/wearables/flour-apron-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Flour Apron worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Hip</span></div>
@@ -893,7 +913,7 @@ footer a{color:var(--cyan);text-decoration:none}
         </div>
         <figure class="wvisual wvisual-runtime-render" data-visual-key="wearables:pupBandana" data-visual-use="entry">
     <img src="wiki-assets/wearables/pup-bandana-256w.png" srcset="wiki-assets/wearables/pup-bandana-256w.png 256w, wiki-assets/wearables/pup-bandana-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game preview of Pup Bandana worn by Capsule Signal." loading="lazy" decoding="async" data-pixelated="false">
-    <figcaption><b>Drawn by the game</b><span>Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span><span><b>How it was made:</b> The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span></figcaption>
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in stand-in colors a live world may repaint. It is not a screenshot, and it is not how it looks in a live world. Frame: Classic base with canonical wearable neutral pose.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world.</span><span class="wvisual-source">Source: Repo-runtime · src/data/wearables.ts#WEARABLES + src/render/wearables.ts#BUILDERS + src/render/playerAvatar.ts#buildAvatar(wearableId)</span></details></figcaption>
   </figure>
 
       <div class="wtags"><span class="wtag ink-cyan">Neck</span></div>
@@ -909,10 +929,9 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@ee3172901</code> on 2026-09-07 03:39 UTC
-  from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.
-  <a href="wiki-how-it-is-built.html">Where the numbers come from</a>
-  &middot; <a href="wiki.html">All rosters</a> &middot; <a href="log.html#views">Dev log</a>
+  Every number on this page came straight out of the game, read at <code>game@ee3172901</code> on 2026-09-07 07:06 UTC.
+  <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
+  <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>
 
 <script type="module">
