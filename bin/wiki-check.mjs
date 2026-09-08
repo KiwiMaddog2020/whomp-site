@@ -20,6 +20,7 @@ import {
   EXPLAINER_FILE,
   isLiveVisualEntry,
   liveDomainIds,
+  parseRelicRarityInk,
   retiredDomainIds,
   rosterSpecs,
   SEARCH_TYPE,
@@ -78,6 +79,12 @@ const pngDimensions = (bytes, label) => {
 const D = readJson(join(REPO, 'data/game-data.json'));
 const T = readJson(join(REPO, 'data/tier-rankings.json'));
 const V = readJson(join(REPO, 'data/wiki-visuals.json'));
+/* The relic rarity ladder, read out of the game's own src/data/relics.ts with
+   the same parser bin/generate.mjs uses, so this checker models the wiki the
+   generator will actually write rather than one with no colours in it. Without
+   it every buildWiki call below would trip the relic ink contract and the
+   checker would only ever be able to report that one failure. */
+const rarityInk = parseRelicRarityInk(readFileSync(join(REPO, 'src/data/relics.ts'), 'utf8'));
 const generatorSource = readFileSync(join(SITE_ROOT, 'bin/generate.mjs'), 'utf8');
 const generatedOutputGitSource = readFileSync(join(SITE_ROOT, 'bin/generated-output-git.mjs'), 'utf8');
 const liveVersionSource = readFileSync(join(SITE_ROOT, 'bin/live-version.mjs'), 'utf8');
@@ -141,7 +148,7 @@ const chrome = {
 
 // Positive model check. buildWiki validates before rendering and returns the
 // same route declaration the real generator consumes.
-const model = buildWiki({ D, T, V, esc, chrome, page: ({ body }) => body });
+const model = buildWiki({ D, T, V, esc, chrome, rarityInk, page: ({ body }) => body });
 const rosters = model.rosters;
 // The hub and the build explainer are the two non-roster routes.
 requireThat(model.pages.length === rosters.length + 2, `model emitted ${model.pages.length} pages for ${rosters.length} guides`);
@@ -236,7 +243,7 @@ function expectModelFailure(label, mutate, pattern) {
   mutate(d, t, v);
   let error = null;
   try {
-    buildWiki({ D: d, T: t, V: v, esc, chrome, page: ({ body }) => body });
+    buildWiki({ D: d, T: t, V: v, esc, chrome, rarityInk, page: ({ body }) => body });
   } catch (caught) {
     error = caught;
   }
@@ -255,6 +262,33 @@ expectModelFailure('unknown group classification', (d) => {
   const id = d.domains.relics.order[0];
   d.domains.relics.entries[id].rarity = '__contractProbe';
 }, /group classification|__contractProbe/);
+
+/* THE RARITY LADDER'S COLOURS COME FROM THE GAME, broken on purpose, three
+   ways. Director ruling 2026-09-07: where the site and the game disagreed
+   about a rarity colour the game wins, so the ladder is now read out of the
+   game's own RELIC_RARITY_COLOR rather than kept as site colours here. That
+   trade buys accuracy and takes on one new failure, and the new failure is a
+   quiet one: a rung the palette cannot colour renders as a plain pill, which
+   is exactly what a bare Common looked like before this change and so reads as
+   somebody's decision rather than as a hole.
+   The PALETTE is mutated here rather than the artifact, because a rarity with
+   no ink is also a rarity with no group and the probe above already owns that
+   half. */
+for (const [label, ink, pattern] of [
+  ['the game palette never arrived', {}, /no relic rarity palette was supplied/],
+  ['a rung the game ships has no colour', { ...rarityInk, common: undefined }, /relic rarity "common" has no usable colour/],
+  ['a rung whose colour is not a hex colour', { ...rarityInk, epic: 'rebeccapurple' }, /relic rarity "epic" has no usable colour/],
+]) {
+  let inkError = null;
+  try {
+    buildWiki({ D, T, V, esc, chrome, rarityInk: ink, page: ({ body }) => body });
+  } catch (caught) {
+    inkError = caught;
+  }
+  requireThat(inkError, `relic ink mutation "${label}" did not fail`);
+  requireThat(pattern.test(String(inkError.message)),
+    `relic ink mutation "${label}" failed without naming the contract: ${inkError.message}`);
+}
 
 /* THE THREE SHAPES A RELIC EFFECT COMES IN, broken one at a time. On
    2026-09-07 the v40 wave shipped 60 relics carrying `effects`, a shape the
@@ -490,7 +524,7 @@ const injectionId = injectionData.domains.weapons.order[0];
 const injectionProbe = '\"><img src=x onerror="contractProbe()">';
 injectionData.domains.weapons.entries[injectionId].name = injectionProbe;
 injectionData.domains.weapons.entries[injectionId].desc = injectionProbe;
-const injectionModel = buildWiki({ D: injectionData, T, V, esc, chrome, page: ({ body }) => body });
+const injectionModel = buildWiki({ D: injectionData, T, V, esc, chrome, rarityInk, page: ({ body }) => body });
 const injectionHtml = injectionModel.pages.find((page) => page.file === 'wiki-weapons.html')?.html || '';
 requireThat(!injectionHtml.includes(injectionProbe), 'source text reaches generated wiki markup without escaping');
 requireThat(injectionHtml.includes(esc(injectionProbe)), 'escaped source-text mutation is missing from its generated card');
@@ -505,7 +539,7 @@ countDomain.entries[countProbeId] = { ...clone(countSeed), id: countProbeId, nam
 countDomain.order.push(countProbeId);
 countDomain.count += 1;
 countData.coverage.entries += 1;
-const countModel = buildWiki({ D: countData, T, V, esc, chrome, page: ({ body }) => body });
+const countModel = buildWiki({ D: countData, T, V, esc, chrome, rarityInk, page: ({ body }) => body });
 const countHtml = countModel.pages.find((page) => page.file === 'wiki-achievements.html')?.html || '';
 requireThat(countHtml.includes(`${countDomain.count} entries`), 'displayed achievement count does not follow the canonical roster');
 requireThat(countHtml.includes(`id="e-${countProbeId}"`), 'expanded achievement roster does not emit its source-id anchor');

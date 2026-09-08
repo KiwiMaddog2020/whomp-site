@@ -65,7 +65,8 @@ import { pinWarning, trainScale, verifyPins } from './pitch.mjs';
 import { fetchLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
 import { KEY_CHANGE_CAP, readPatchReleases } from './patch-notes.mjs';
 import {
-  buildWiki, EXPLAINER_FILE, EXPLAINER_SLUG, EXPLAINER_TITLE, rosterSpecs, visualOutputPath, WIKI_CSS,
+  buildWiki, EXPLAINER_FILE, EXPLAINER_SLUG, EXPLAINER_TITLE, parseRelicRarityInk, relicRarityInkCss,
+  rosterSpecs, visualOutputPath, WIKI_CSS,
 } from './wiki.mjs';
 
 const SITE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -352,6 +353,45 @@ const gameTaglines = parseGameTaglines();
 if (gameTaglines.length === 0) {
   throw new Error('No TAGLINES parsed from whomp/src/data/taglines.ts (nor the legacy whomp/src/ui/mainMenu.ts). The taglines leaf moved or its export shape changed, fix parseGameTaglines rather than shipping an empty rotation.');
 }
+
+// ---------------------------------------------------------------- derive: the rarity ladder's colours
+/* THE RARITY LADDER IS THE GAME'S, READ RATHER THAN COPIED. Director ruling
+ * 2026-09-07: the site and the game had disagreed about rarity colours for a
+ * while, and the game wins, because the game is the surface a player reads
+ * rarity off for hours and this one is the surface they check for a minute.
+ *
+ * The disagreement was a whole rung of drift. bin/wiki.mjs held site token
+ * names (`rare: 'violet', epic: 'pink'`, and Common uncoloured) while
+ * RELIC_RARITY_COLOR paints common pale cyan, rare blue and epic violet, so
+ * the page was one rung out of step from Rare upwards.
+ *
+ * PARSED, NOT PASTED, exactly like TAGLINES above and the release channel
+ * table below. Five hexes are small enough to hand-copy and that is precisely
+ * the trap: a hand-copy of a five-line table is a cache with no invalidation,
+ * and its only symptom when it goes stale is a colour, which nobody diffs.
+ * Read at build time, a director re-pointing a rung in the game moves this
+ * page on the next regenerate, and a sixth rung arrives with its own colour
+ * and its own CSS rule and no edit anywhere in this repo.
+ *
+ * NOTE FOR WHOEVER READS THIS NEXT: the game currently has TWO rarity palettes
+ * and they disagree. This one, RELIC_RARITY_COLOR, is the relic ladder, and it
+ * is the right one here because relics are the only domain this wiki paints by
+ * rarity at all. The other, WHOMP_RARITY_INK in src/ui/whompOfferTheme.ts, is
+ * the weapon and passive ladder; it agrees with this one on uncommon and on
+ * nothing else. That split is a game-side question and is deliberately not
+ * settled from this repo. If the game ever unifies them, nothing here changes:
+ * this scraper follows whatever RELIC_RARITY_COLOR becomes.
+ *
+ * LOUD ON MISSING, same law as parseGameTaglines: an unparseable table stops
+ * the run rather than shipping a ladder the site invented for itself. */
+const RELICS_SOURCE_PATH = join(REPO, 'src/data/relics.ts');
+const relicRarityInk = existsSync(RELICS_SOURCE_PATH)
+  ? parseRelicRarityInk(readFileSync(RELICS_SOURCE_PATH, 'utf8'))
+  : {};
+if (Object.keys(relicRarityInk).length === 0) {
+  throw new Error("No RELIC_RARITY_COLOR parsed from whomp/src/data/relics.ts. The relic rarity ladder is read from the game rather than kept here, so fix parseRelicRarityInk rather than shipping a wiki whose rarity colours are the site's own invention.");
+}
+const RELIC_RARITY_CSS = relicRarityInkCss(relicRarityInk);
 
 // ---------------------------------------------------------------- derive: the two release tracks
 /* BOTH PLAY BUTTONS POINT WHERE THE GAME SAYS. src/core/releaseChannel.ts holds
@@ -1131,11 +1171,15 @@ const SHARED_CSS = `
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
-  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
-     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
-     src/data/relics.ts, so the green on a wiki card is the green on the offer
-     card the player is actually looking at. */
-  --green:#3ff08a;
+  /* THERE IS NO --green HERE ANY MORE, and its absence is the point. It was
+     added on 2026-09-07 as the uncommon rung's ink, hand-copied from the
+     game's RELIC_RARITY_COLOR.uncommon, and it was the only rung of five that
+     had been sourced from the game at all. Later the same day the director
+     ruled that the whole ladder follows the game, so all five rungs are now
+     read out of that table at build time and emitted as their own rules (see
+     parseRelicRarityInk above). This token's single consumer went with them,
+     and a palette entry nothing reads is a colour somebody will eventually
+     use for something unrelated on the strength of its name. */
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -1619,6 +1663,12 @@ ${socialTags({ title, description, path: file || 'wiki.html' })}
 ${SHARED_CSS}
 ${SEARCH_CSS}
 ${WIKI_CSS}
+/* The relic rarity ladder, generated one rule per rung from the game's own
+   RELIC_RARITY_COLOR. It sits after WIKI_CSS rather than inside it because
+   WIKI_CSS is a static string and this is the one block on the page whose
+   colours are read out of the game repo at build time. See the long note on
+   parseRelicRarityInk above, and relicRarityInkCss in bin/wiki.mjs. */
+${RELIC_RARITY_CSS}
 .wside-section{border-top:1px solid rgba(255,243,207,.06)}
 .wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
   font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
@@ -1789,6 +1839,9 @@ const wiki = buildWiki({
   D: gameData,
   T: tierData,
   V: visualData,
+  /* The game's relic ladder, so buildWiki can refuse a rung it cannot colour
+     rather than render a bare pill that looks like a decision. */
+  rarityInk: relicRarityInk,
   esc,
   page: wikiPage,
   chrome: {

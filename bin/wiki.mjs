@@ -273,14 +273,87 @@ const FEEL_NOTE = {
   nerve: 'standing in it one beat longer than feels wise',
 };
 
-/** ONE INK PER RUNG. Was a nested ternary inside the card template, which is
- *  why the fifth rung arrived colourless: `uncommon` fell through to the same
- *  bare pill Common wears, and two rungs of a five-rung ladder looked alike.
- *  A table instead, so the next rung is one line here and is visibly missing
- *  rather than silently plain. */
-const RELIC_RARITY_INK = {
-  uncommon: 'green', rare: 'violet', epic: 'pink', legendary: 'gold',
-};
+/** ONE INK PER RUNG, AND THE RUNG'S INK IS THE GAME'S.
+ *
+ *  Director ruling 2026-09-07: where the site and the game disagreed about a
+ *  rarity colour, the game wins. The reasoning is player-hours. The game is
+ *  what somebody reads rarity off for hours at a time, on an offer card, at
+ *  speed; this page is what they check for a minute afterwards. The authority
+ *  belongs to the surface that trained the reflex.
+ *
+ *  They disagreed on four rungs of five. This table used to hold site token
+ *  NAMES, and the only rung that matched the game was `uncommon`, because the
+ *  previous lane had sourced that one hex from the game by hand when it added
+ *  the rung. The other four:
+ *
+ *    common     no ink at all here, a plain grey pill. The game paints it
+ *               #8fd6e6.
+ *    rare       'violet' #b14bff here, #4a9eff blue in the game.
+ *    epic       'pink' #ff2f7e here, #b060ff violet in the game.
+ *    legendary  'gold' #ffcf3f here, #ffd700 in the game. A near miss rather
+ *               than a wrong hue, and still a different colour.
+ *
+ *  So the ladder was one rung out of step from Rare upwards: this page called
+ *  a game blue "violet" and a game violet "pink", and left the bottom rung
+ *  uncoloured. Worth naming plainly, because it is the tell that a hand-kept
+ *  copy was always going to end here: nobody chose any of that.
+ *
+ *  DERIVED, NOT TRANSCRIBED. The colours are no longer written down here at
+ *  all. They are read at build time out of the game's own
+ *  `RELIC_RARITY_COLOR` in `src/data/relics.ts` by `parseRelicRarityInk` in
+ *  bin/generate.mjs, and `relicRarityInkCss` below turns that table into one
+ *  rule per rung. Two things follow, and both are the point:
+ *
+ *    a sixth rung self-installs. It arrives with its own colour on the next
+ *    regenerate, no edit here, exactly as the relic GROUPS already
+ *    self-install off the game's draw table (see the groups block below, the
+ *    previous lane's work). The inks now ride the same road as the groups.
+ *
+ *    a director re-pointing a rung in the game moves this page with it. That
+ *    is the ruling's actual content, mechanised rather than remembered, so
+ *    the next disagreement cannot open silently the way this one did.
+ *
+ *  FAIL CLOSED, same law as the rest of this file: a rung the game ships and
+ *  this table cannot colour is a build failure, not a colourless pill. The
+ *  relic-ink contract in buildWiki is what refuses it. That is the bug the
+ *  previous lane hit from the other side, where `uncommon` fell through a
+ *  nested ternary and two rungs of a five-rung ladder rendered alike. */
+const relicRarityInkClass = (rarity) => `rarity-${String(rarity).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
+/** Read the game's rarity ladder out of the text of its own
+ *  `src/data/relics.ts`. Takes the SOURCE STRING rather than a path so this
+ *  module stays what it has always been, a pure function from data to markup:
+ *  the two callers that have a game checkout to read (bin/generate.mjs and
+ *  bin/wiki-check.mjs) do the reading, and share this one parser so the wiki
+ *  and the checker can never disagree about what the game's ladder says.
+ *
+ *  Deliberately narrow. It matches `key: '#rrggbb'` pairs inside that one
+ *  object literal and nothing else, so a shorthand, a computed key or a colour
+ *  expressed as a constant reference yields no entry for that rung, and the
+ *  relic ink contract below turns that into a refused build rather than a
+ *  colourless pill. Better to stop on a shape this cannot read than to guess. */
+export function parseRelicRarityInk(source) {
+  const block = String(source || '').split(/export const RELIC_RARITY_COLOR\b[^=]*=\s*\{/)[1]?.split(/\n?\};/)[0] ?? '';
+  return Object.fromEntries(
+    [...block.matchAll(/([A-Za-z_$][\w$]*)\s*:\s*'(#[0-9a-fA-F]{6})'/g)].map((m) => [m[1], m[2].toLowerCase()]),
+  );
+}
+
+/** The generated half of the rule set above: one `.wtag.ink-rarity-<rung>` per
+ *  rung the game ships, colour verbatim from the game and the pill's border
+ *  the same hue at .35 alpha, which is the alpha every hand-written ink rule
+ *  in WIKI_CSS already uses. Generated rather than hand-written so the border
+ *  cannot drift from the colour it is supposed to be a faint copy of, which is
+ *  a thing that can only be noticed by looking and so never gets noticed. */
+export function relicRarityInkCss(inkTable) {
+  return Object.entries(inkTable || {})
+    .map(([rarity, hex]) => {
+      const border = rgba(hex, 0.35);
+      return border ? `.wtag.ink-${relicRarityInkClass(rarity)}{color:${hex};border-color:${border}}` : '';
+    })
+    .filter(Boolean)
+    .join('\n');
+}
 
 /** RELIC DOORS, in the game's own display words. src/ui/shopPanel.ts holds a
  *  `describeRelicUnlock` that writes the line a player reads on the locked
@@ -493,13 +566,26 @@ const WIKI_CSS = `
 .wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
 .wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
 .wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
-.wtag.ink-green{color:var(--green);border-color:rgba(63,240,138,.35)}
+/* The four above are the SITE's inks and they still dress site facts: an
+   element, a chain, a tier. The RARITY inks are not here. They are generated
+   one rule per rung from the game's own RELIC_RARITY_COLOR and injected after
+   this block by bin/generate.mjs, because a rarity colour is the game's to
+   decide and this file is not allowed to hold a second opinion about one.
+   (An .ink-green rule used to sit on this line, as the uncommon rung's ink and
+   the only rung sourced from the game. It left with the rest of the ladder.) */
 /* THE CURSE PILL IS FILLED, NOT OUTLINED. It is the only warning on a relic
-   card, and it has to sit beside a rarity pill without being mistaken for one:
-   an Epic curse would otherwise show two identical outlined pink pills in a
-   row, which reads as a bug rather than a warning. The game marks the same
-   thing with a dark rim and the word Curse in the card's rarity ribbon; this
-   is that idea in the pill vocabulary this page already has. */
+   card, and it has to sit beside a rarity pill without being mistaken for one.
+   It was filled because Epic was pink here and an Epic curse showed two
+   identical outlined pink pills in a row, which reads as a bug rather than as
+   a warning. Epic is violet now and no rung is pink, so that particular
+   collision is gone and the fill is no longer load-bearing against it.
+   IT STAYS FILLED ANYWAY, and not out of caution. Filled is the right shape
+   for this pill on its own merits: it is the one thing on a relic card that
+   is a warning rather than a label, the rarity inks are the game's and can be
+   re-pointed at any rung including a pink one without anybody here being
+   asked, and the game marks the same fact with a dark rim and the word Curse
+   in the card's rarity ribbon. An outline would be one director ruling away
+   from the same bug. */
 .wtag.ink-curse{color:var(--ink);background:var(--pink);border-color:var(--pink)}
 
 .wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
@@ -1533,8 +1619,23 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       + ` ${relicUnlockLine(e.unlock) || ''} ${R.refs[e.id]?.curse ? 'curse cursed downside' : ''}`
       + ` ${e.telegraph || ''} ${e.lineage || ''}`,
     icon: (e) => e.icon,
+    /* THE RARITY PILL IS THE ONLY COLOURED ONE NOW, and the "what it does"
+       pill beside it went neutral to make room. Not a taste edit, a collision:
+       the game's common is #8fd6e6 and this page's cyan is #24f0ff, seven
+       degrees of hue apart, so adopting the game's ladder would have put a
+       pale cyan Common pill immediately left of a bright cyan "Raises a stat"
+       pill on all sixty-odd common cards. Two cyan pills in a row read as one
+       pill rendered twice, which is the same bug the curse pill was filled
+       rather than outlined to avoid (see .wtag.ink-curse in WIKI_CSS), arriving
+       from the other end of the ladder.
+       Demoting the category pill rather than nudging the rarity colour is the
+       ruling: the ladder is the thing the game owns, and it is also the better
+       hierarchy. Rarity is the fact a reader scans for; whether a relic raises
+       a stat or does something in the run is a fact they read. Colour belongs
+       to the first one. Curse stays filled pink, and now collides with no rung
+       at all, because pink left the ladder with this change. */
     card: (e) => `
-      <div class="wtags">${tag(esc(humanize(e.rarity)), RELIC_RARITY_INK[e.rarity] || '')}${tag(relicIsStatCard(e) ? 'Raises a stat' : 'Does something in the run', 'cyan')}${R.refs[e.id]?.curse ? tag('Curse', 'curse') : ''}</div>
+      <div class="wtags">${tag(esc(humanize(e.rarity)), relicRarityInkClass(e.rarity))}${tag(relicIsStatCard(e) ? 'Raises a stat' : 'Does something in the run', '')}${R.refs[e.id]?.curse ? tag('Curse', 'curse') : ''}</div>
       <p class="wdesc">${esc(e.desc)}</p>
       ${e.flavor ? `<p class="wgloss">${esc(e.flavor)}</p>` : ''}
       <div class="wfacts">
@@ -4032,6 +4133,26 @@ function tierEvidenceViolations(D, T) {
   return violations;
 }
 
+/** The relic ink contract, kept beside the other contract functions rather
+ *  than inline in buildWiki so it can be read and tested on its own. Returns
+ *  the rungs the game paints relics with that the parsed game palette cannot
+ *  colour, plus the case where the palette did not arrive at all. */
+export function relicRarityInkViolations(D, inkTable) {
+  const entries = Object.values(D?.domains?.relics?.entries || {});
+  if (!entries.length) return [];
+  const ink = inkTable || {};
+  if (!Object.keys(ink).length) {
+    return ['no relic rarity palette was supplied; the wiki reads RELIC_RARITY_COLOR out of the game and will not fall back to colours of its own'];
+  }
+  const violations = [];
+  for (const rarity of [...new Set(entries.map((e) => e.rarity).filter(Boolean))].sort()) {
+    if (!rgba(ink[rarity], 0.35)) {
+      violations.push(`relic rarity "${rarity}" has no usable colour in the game's RELIC_RARITY_COLOR (received ${JSON.stringify(ink[rarity] ?? null)})`);
+    }
+  }
+  return violations;
+}
+
 // ================================================================ entry point
 export function buildWiki(ctx) {
   const { D, T, V } = ctx;
@@ -4041,6 +4162,20 @@ export function buildWiki(ctx) {
   if (visualViolations.length) throw new Error(`Wiki visual contract failed (${visualViolations.length}):\n  ${visualViolations.join('\n  ')}`);
   const rosters = rosterSpecs(D, ctx.esc, T, V);
   const violations = [];
+  /* THE RELIC INK CONTRACT. Every rung the game actually ships a relic on has
+     to have a colour in the game's own RELIC_RARITY_COLOR, because that table
+     is now the only place this page gets one. A rung with no ink used to be a
+     bare pill that looked deliberate; here it refuses the build, which is the
+     whole reason the ladder moved onto derived data instead of a hand-kept
+     list. Checked against the LIVE rarities on the relic entries rather than
+     against the draw table, so a rung that is weighted but unpopulated is not
+     made to carry an ink it would never paint anything with.
+     POOLED WITH THE OTHER SOURCE VIOLATIONS, NOT THROWN AHEAD OF THEM, and
+     that placement is deliberate: bin/wiki-check.mjs proves the group
+     classification guard by setting a relic's rarity to "__contractProbe",
+     which is also a rarity with no ink. Throwing early would have let this
+     contract answer for that one and quietly retire a working guard. */
+  violations.push(...relicRarityInkViolations(D, ctx.rarityInk));
   if (D.schema !== 9) violations.push(`game-data.json schema 9 is required, received ${D.schema}`);
   for (const path of DISPLAY_ROOT_FIELD_PATHS) {
     const field = displayPathValue(D, path);
