@@ -378,7 +378,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>9d427a77</code></span></div>
+    Live <b>0.7.20</b> · <code>ac702f48</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -430,15 +430,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">607 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
+    <p class="lede">500 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-09-08">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-09-08</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 4</span><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span></span>
+      </div>
+      <p class="storyday-shape">8 changes landed: 4 new, 4 fixed.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-09-07">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 36</span><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 37</span><span class="storyday-kind" style="background:var(--pink)">Fixed 15</span></span>
       </div>
-      <p class="storyday-shape">50 changes landed: 36 new, 14 fixed.</p>
+      <p class="storyday-shape">52 changes landed: 37 new, 15 fixed.</p>
 
 
     </article>
@@ -486,19 +495,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">141 changes landed: 79 fixed, 62 new.</p>
       <a class="storyday-release" href="#release-0-7-20">
         <b>v0.7.20</b><span>The shorter game lands: three bosses at 4:30, 9:00 and 13:30, the bank at 15:00, the hammer hits when it hits, and the world keeps its shape in the distance.</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-09-01">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-09-01</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 59</span><span class="storyday-kind" style="background:var(--pink)">Fixed 57</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
-      </div>
-      <p class="storyday-shape">117 changes landed: 59 new, 57 fixed, 1 balance.</p>
-      <a class="storyday-release" href="#release-0-7-19">
-        <b>v0.7.19</b><span>The evening train: a banked co-op run stays won, Orbital Mechanic gets his arms right, and the desktop app boots again.</span>
-      </a><a class="storyday-release" href="#release-0-7-18">
-        <b>v0.7.18</b><span>The Tuesday train: the mystery diamonds are GONE gone, co-op finally swings its hammer, the farm wakes up, and the flickering stops.</span>
       </a>
 
     </article></div>
@@ -1010,8 +1006,62 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-09-08</h4>
+
+    <div class="row" data-kind="fix" id="chg-1fe9d6ef4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a receipt, so a foreign dist cannot be measured as ours <span class="scope">(dist-build)</span></span>
+      <span class="sha">1fe9d6ef4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2ed5209d9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the deploy 19 provenance re-stamped, fingerprints only <span class="scope">(wiki)</span></span>
+      <span class="sha">2ed5209d9</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c72192b6d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">1.5x reach on the four swing classes, arcs held (ruling 2026-09-08) <span class="scope">(melee)</span></span>
+      <span class="sha">c72192b6d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d06345278">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">relic and roster cards, and the brief's tell premise was wrong <span class="scope">(social-card)</span></span>
+      <span class="sha">d06345278</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b33cf80ab">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">allow the playwhomp.com origin, or the whole channel 403s <span class="scope">(feedback-worker)</span></span>
+      <span class="sha">b33cf80ab</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-09e20c7eb">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the entrypoint guard compares real paths, not resolved ones <span class="scope">(social-preflight)</span></span>
+      <span class="sha">09e20c7eb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-49afc7fb4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">an offline preflight that proves a post before a credential exists <span class="scope">(social)</span></span>
+      <span class="sha">49afc7fb4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2632df3de">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the whole Court stands at full detail, permanently <span class="scope">(hub)</span></span>
+      <span class="sha">2632df3de</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-09-07</h4>
 
+    <div class="row" data-kind="fix" id="chg-b56d027b8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the base weapon card goes back to being a number card <span class="scope">(offers)</span></span>
+      <span class="sha">b56d027b8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b787b23fd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the end-of-run breakdown counts health removed, not damage requested <span class="scope">(damage)</span></span>
+      <span class="sha">b787b23fd</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-7e51df53f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">a dormant board stops writing to the avatar every other avatar shares <span class="scope">(hoverboard)</span></span>
@@ -1101,17 +1151,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">wire relicShopCost and readiness fields into the data layer <span class="scope">(relic-rows)</span></span>
       <span class="sha">7b442f613</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-82adaa752">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">author the 60 sixty catalogue rows <span class="scope">(relic-rows)</span></span>
-      <span class="sha">82adaa752</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6dce3a580">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a run's relic pool comes from the profile, set once <span class="scope">(relic-run-wiring)</span></span>
-      <span class="sha">6dce3a580</span>
-    </div><div class="row more">+ 30 more that day, not shown</div>
+    </div><div class="row more">+ 32 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-06</h4>
@@ -1711,31 +1751,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">an abort no longer wins a duel on its sender's word alone <span class="scope">(net)</span></span>
       <span class="sha">9bcdc3865</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-b403eb85c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the beginner tutorial card displays - the authored three-step card was gated behind a flag no path ever set on a fresh profile; it now shows after the intro, advances on its triggers, and never returns once dismissed (v30 ruling 2, the top leverage item on the fresh-eyes board) <span class="scope">(ui)</span></span>
-      <span class="sha">b403eb85c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0a4c7b268">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">every offer card in every family carries one line that says what the thing does, derived from the data tables and held under the card text-fit ceiling (v30 ruling 7) <span class="scope">(ui)</span></span>
-      <span class="sha">0a4c7b268</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-bba6356fd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a recoverMul seam so a variant keeps its cadence identity through the ramhorn tighten <span class="scope">(sim)</span></span>
-      <span class="sha">bba6356fd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d190ddb2c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the first-frame speech bubble no longer sits on the hub meta chips - both register with a HUD safe band, measured at every asserted viewport (v30 ruling 10) <span class="scope">(hud)</span></span>
-      <span class="sha">d190ddb2c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-53674e27b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">keep stone-balls shipped; hero-cast waits on triangles <span class="scope">(hub)</span></span>
-      <span class="sha">53674e27b</span>
-    </div><div class="row more">+ 97 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-29</h4>
@@ -1759,40 +1774,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the gate ids come true - #402/#403's 'locked' terrain was built from 'frost'/'ember'/'void' through an as-unknown cast, none of them HubGateIds, so hubSealBlocks matched nothing and every locked pin in those clauses was a landmass-only number wearing a locked label; the perimeter-ramp-clean re-pin named the defect and deferred the cure to its own change with its own measurement, and this is it - locked now built from HUB_GATE_IDS itself, cast gone so the compiler holds the ids, both pins re-measured from the suite's own printlines on the fixed tree (#402 locked 27 -&gt; 108, #403 locked 67 -&gt; 88, both opens untouched at 5 and 18), the extra refusals being the seals consulted for the first time in these clauses' history; swept the rest of tests/ for the same cast and there is no second copy <span class="scope">(tests)</span></span>
       <span class="sha">445a15309</span>
-    </div>
-  </div>
-  <div class="day">
-    <h4>2026-08-28</h4>
-
-    <div class="row" data-kind="feat" id="chg-764b80d89">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">an anchored frame can widen - spanM multiplies the anchor pose's span so a whole walked row stays in shot (the bed-row strip clipped its far planters at the default) <span class="scope">(grumboview)</span></span>
-      <span class="sha">764b80d89</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a297cb23b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">ground mode gains a camera anchor - a subject-framed camera moves WITH a position cut (this lane's first teleport pair came out indistinguishable); anchorT pins floor and camera to a stated tick so a pair shares one fixed camera and a 1.2 m jump photographs as one <span class="scope">(grumboview)</span></span>
-      <span class="sha">a297cb23b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7d6ac01f3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the potter hold is walked, not teleported - all five single-frame position jumps in his day were this station's (2.4 m on arrival, 1.2 m between beds x3, 1.2 m on departure); a seventeen-phase continuous program walks the row over the PROP TABLE'S OWN beds (grumboBedX - the old row bent 1.45 m wide of the fourth planter), faces each bed to work it, and rides the walk's stride/bob/rock off his own speed; the wall strip's clock gains a smoothstep so he sets off and settles at zero speed (the raw sine stepped the rock 0.038 rad in one frame at the walk boundary). Day sweep after, 240 Hz single-eval: 0 teleports, 0 posture snaps, 0 frozen-stride glide; worst rates yaw 1.065, roll 0.714, spine 0.236 rad/s, all physical. Lean-suite census re-pinned to five rocking verbs with the glide measurement cited <span class="scope">(hub)</span></span>
-      <span class="sha">7d6ac01f3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3327b0e93">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the wall strip is walked, not ice-skated - 'backwards' drove 12 m a hold (55.7 s/day, peak 0.325 m/s) with walkBlend pinned at zero, a figure translating under a rigid pose; his gait now rides the SIGNED metres of the strip (legs genuinely reverse coming home, which is the verb's whole joke), the blend follows his own speed, and the 7-bobs-per-hold |sin(14 pi u)| clock is replaced by the walk's own phase-locked bob and rock. The stands-still and carry-collapse pins re-state their relationship as the feet's, with the frozen-glide measurement cited <span class="scope">(hub)</span></span>
-      <span class="sha">3327b0e93</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9fe045e62">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the wizard's legs pace by metres, not by equal-time segments - speed is continuous through every waypoint (the west-strip corner jumped 2.5x in one frame), the mid-leg peak drops 1.27 to 0.79 m/s and the sewing-machine 4.1 steps/s to 2.6, walkDist becomes u*L exactly, and the turn windows anchor at each corner's own fraction of the leg's metres; the overlap pin re-derives windows from the table and tolerates overlap only on arcless turns. Substitution flagged: the equal-time corner slowdown dies with the lurch it caused <span class="scope">(hub)</span></span>
-      <span class="sha">9fe045e62</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-01e7a7535">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the wizard straightens up before he walks off, and the walk finally writes his neck - stargaze and sulk end in one-frame posture cuts no more (0.62 and 0.52 rad snaps at 31-37 rad/s become 5.4 s mirrored exits), and the walk branch stops inheriting the previous station's stale neck (58 s/day walked with a station's head cranked on, measured on the day sweep) <span class="scope">(hub)</span></span>
-      <span class="sha">01e7a7535</span>
     </div>
   </div>
 
@@ -1892,12 +1873,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 04:00 UTC.
+  Every number on this page came straight out of the game, read at <code>game@ac702f486</code> on 2026-09-08 10:37 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">617 player-visible changes in the last 7 days, across 9 active days, 1622 internal-only commits filtered out</div>
+  <div class="stat">519 player-visible changes in the last 7 days, across 9 active days, 1419 internal-only commits filtered out</div>
 </footer>
 
 
