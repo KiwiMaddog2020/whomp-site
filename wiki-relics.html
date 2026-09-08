@@ -25,6 +25,11 @@
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
+     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
+     src/data/relics.ts, so the green on a wiki card is the green on the offer
+     card the player is actually looking at. */
+  --green:#3ff08a;
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -364,6 +369,14 @@ html,body{max-width:100%;overflow-x:clip}
 .wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
 .wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
 .wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
+.wtag.ink-green{color:var(--green);border-color:rgba(63,240,138,.35)}
+/* THE CURSE PILL IS FILLED, NOT OUTLINED. It is the only warning on a relic
+   card, and it has to sit beside a rarity pill without being mistaken for one:
+   an Epic curse would otherwise show two identical outlined pink pills in a
+   row, which reads as a bug rather than a warning. The game marks the same
+   thing with a dark rim and the word Curse in the card's rarity ribbon; this
+   is that idea in the pill vocabulary this page already has. */
+.wtag.ink-curse{color:var(--ink);background:var(--pink);border-color:var(--pink)}
 
 .wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
 .wfact{display:flex;gap:10px;font-size:.85rem;align-items:baseline}
@@ -523,7 +536,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>621f2f6c</code></span></div>
+    Live <b>0.7.20</b> · <code>9d427a77</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -618,13 +631,13 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>
-    <div class="stat">34 entries</div>
+    <div class="stat">94 entries</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-buildcraft">Buildcraft</a><span aria-hidden="true">/</span><span aria-current="page">Relics</span></nav>
     <h2 class="chroma">Relics</h2>
-    <p class="lede">A relic is a find you can take again and again until it hits its ceiling. Most of them are one small number in your favor, a few of them are one small number in your favor and a smaller one against you, and the rare ones are rare because the game says so.</p>
+    <p class="lede">A relic is a find you can take again and again until it hits its ceiling. Of the 94 here, 34 are in your pool from the first run, and the other 60 sit behind two doors: playing enough puts one on the shop shelf, and gold is what takes it off.</p>
 
     <p class="womit"><b>No relic has a letter grade here.</b> Grading one would mean first deciding which build it is sitting in and what the chests cost that run, and neither of those has been measured, so a ladder would be a guess said with a straight face. Every relic in the game is on this page. The order they sit in is not a ranking.</p>
 
@@ -635,21 +648,35 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-relics-rarity">Rarity</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-relics-rarity" data-facet="rarity" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="common" aria-pressed="false" aria-controls="wiki-groups">Common <span style="opacity:.5">11</span></button><button class="wf" type="button" data-value="rare" aria-pressed="false" aria-controls="wiki-groups">Rare <span style="opacity:.5">11</span></button><button class="wf" type="button" data-value="epic" aria-pressed="false" aria-controls="wiki-groups">Epic <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="legendary" aria-pressed="false" aria-controls="wiki-groups">Legendary <span style="opacity:.5">4</span></button>
+          <button class="wf" type="button" data-value="rare" aria-pressed="false" aria-controls="wiki-groups">Rare <span style="opacity:.5">29</span></button><button class="wf" type="button" data-value="epic" aria-pressed="false" aria-controls="wiki-groups">Epic <span style="opacity:.5">20</span></button><button class="wf" type="button" data-value="common" aria-pressed="false" aria-controls="wiki-groups">Common <span style="opacity:.5">19</span></button><button class="wf" type="button" data-value="legendary" aria-pressed="false" aria-controls="wiki-groups">Legendary <span style="opacity:.5">13</span></button><button class="wf" type="button" data-value="uncommon" aria-pressed="false" aria-controls="wiki-groups">Uncommon <span style="opacity:.5">13</span></button>
         </div>
       </div>
       <div class="wfacet">
-        <span class="wfacet-h" id="facet-relics-effect">Effect source</span>
+        <span class="wfacet-h" id="facet-relics-access">How to get it</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-relics-access" data-facet="access" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="earned, then bought" aria-pressed="false" aria-controls="wiki-groups">Earned, then bought <span style="opacity:.5">60</span></button><button class="wf" type="button" data-value="yours from the start" aria-pressed="false" aria-controls="wiki-groups">Yours from the start <span style="opacity:.5">34</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h" id="facet-relics-effect">What it does</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-relics-effect" data-facet="effect" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="raises a stat" aria-pressed="false" aria-controls="wiki-groups">Raises a stat <span style="opacity:.5">17</span></button><button class="wf" type="button" data-value="triggers itself" aria-pressed="false" aria-controls="wiki-groups">Triggers itself <span style="opacity:.5">17</span></button>
+          <button class="wf" type="button" data-value="does something in the run" aria-pressed="false" aria-controls="wiki-groups">Does something in the run <span style="opacity:.5">73</span></button><button class="wf" type="button" data-value="raises a stat" aria-pressed="false" aria-controls="wiki-groups">Raises a stat <span style="opacity:.5">21</span></button>
+        </div>
+      </div>
+      <div class="wfacet">
+        <span class="wfacet-h" id="facet-relics-curse">Downside</span>
+        <div class="wfacet-row" role="group" aria-labelledby="facet-relics-curse" data-facet="curse" data-multi="0">
+          <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
+          <button class="wf" type="button" data-value="no downside" aria-pressed="false" aria-controls="wiki-groups">No downside <span style="opacity:.5">81</span></button><button class="wf" type="button" data-value="carries a curse" aria-pressed="false" aria-controls="wiki-groups">Carries a curse <span style="opacity:.5">13</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h" id="facet-relics-arena">Arena draft</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-relics-arena" data-facet="arena" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="included" aria-pressed="false" aria-controls="wiki-groups">Included <span style="opacity:.5">18</span></button><button class="wf" type="button" data-value="not included" aria-pressed="false" aria-controls="wiki-groups">Not included <span style="opacity:.5">16</span></button>
+          <button class="wf" type="button" data-value="not included" aria-pressed="false" aria-controls="wiki-groups">Not included <span style="opacity:.5">76</span></button><button class="wf" type="button" data-value="included" aria-pressed="false" aria-controls="wiki-groups">Included <span style="opacity:.5">18</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -666,10 +693,10 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <div id="wiki-groups">
     <section class="wgroup" data-group="common" id="g-common">
-      <div class="wgroup-h"><h3>Common</h3><span class="wgroup-n">11</span></div>
-      <p class="wgroup-note">Drawn with weight 58 out of 100.</p>
+      <div class="wgroup-h"><h3>Common</h3><span class="wgroup-n">19</span></div>
+      <p class="wgroup-note">Drawn with weight 44 out of 100.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-moldySandwich" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="0" data-s-name="forager's ration" data-s-stacks="8">
+      <article class="wcard" id="e-moldySandwich" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="0" data-s-name="forager's ration" data-s-stacks="8">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🥪</span>
           <h4>Forager's Ration</h4>
@@ -683,13 +710,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+6 Max HP</p>
       <p class="wgloss">It survived the ruins. You probably will too.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>8</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>maxHp</code></dt><dd>6</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-crackedDrumstick" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="1" data-s-name="someone else's wand" data-s-stacks="6">
+      <article class="wcard" id="e-crackedDrumstick" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="1" data-s-name="someone else's wand" data-s-stacks="6">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🪄</span>
           <h4>Someone Else's Wand</h4>
@@ -703,13 +735,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+2% Attack Speed</p>
       <p class="wgloss">It works. It has not agreed to work for you.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>6</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>atkSpeed</code></dt><dd>0.02</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-blownAmp" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="2" data-s-name="cracked power core" data-s-stacks="6">
+      <article class="wcard" id="e-blownAmp" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="2" data-s-name="cracked power core" data-s-stacks="6">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">💥</span>
           <h4>Cracked Power Core</h4>
@@ -723,13 +760,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+3% Damage</p>
       <p class="wgloss">Unstable means enthusiastic.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>6</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>damage</code></dt><dd>0.03</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-frayedCable" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="3" data-s-name="frayed conduit" data-s-stacks="6">
+      <article class="wcard" id="e-frayedCable" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="3" data-s-name="frayed conduit" data-s-stacks="6">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🔌</span>
           <h4>Frayed Conduit</h4>
@@ -743,13 +785,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+4% Projectile Speed</p>
       <p class="wgloss">It sparks in the useful direction.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>6</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>projSpeed</code></dt><dd>0.04</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-setlistScrap" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="not included" data-s-roster="4" data-s-name="scout's notes" data-s-stacks="5">
+      <article class="wcard" id="e-setlistScrap" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="not included" data-s-roster="4" data-s-name="scout's notes" data-s-stacks="5">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">📝</span>
           <h4>Scout's Notes</h4>
@@ -763,13 +810,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+3% XP Gain</p>
       <p class="wgloss">Most of the warnings are underlined twice.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>5</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>xpGain</code></dt><dd>0.03</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-guitarPick" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="5" data-s-name="lucky fang" data-s-stacks="6">
+      <article class="wcard" id="e-guitarPick" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="5" data-s-name="lucky fang" data-s-stacks="6">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🦷</span>
           <h4>Lucky Fang</h4>
@@ -783,13 +835,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+2% Crit Chance</p>
       <p class="wgloss">The previous owner was less lucky.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>6</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>critChance</code></dt><dd>0.02</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-ductTape" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="6" data-s-name="field repair kit" data-s-stacks="5">
+      <article class="wcard" id="e-ductTape" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="6" data-s-name="field repair kit" data-s-stacks="5">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🩹</span>
           <h4>Field Repair Kit</h4>
@@ -803,13 +860,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">3% less damage taken (diminishing)</p>
       <p class="wgloss">A permanent solution until it falls off.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>5</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>armor</code></dt><dd>0.04</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-merchCoin" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="not included" data-s-roster="7" data-s-name="legal tender (disputed)" data-s-stacks="6">
+      <article class="wcard" id="e-merchCoin" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="not included" data-s-roster="7" data-s-name="legal tender (disputed)" data-s-stacks="6">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🪙</span>
           <h4>Legal Tender (Disputed)</h4>
@@ -823,13 +885,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+4% Gold Gain</p>
       <p class="wgloss">Accepted everywhere. Disputed everywhere. Spent everywhere.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>6</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>goldGain</code></dt><dd>0.04</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-stageLightGel" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="not included" data-s-roster="8" data-s-name="the lost-and-found lens" data-s-stacks="6">
+      <article class="wcard" id="e-stageLightGel" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="not included" data-s-roster="8" data-s-name="the lost-and-found lens" data-s-stacks="6">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🔍</span>
           <h4>The Lost-and-Found Lens</h4>
@@ -843,13 +910,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+4% Pickup Range</p>
       <p class="wgloss">Items within its glow are considered found. This is a legal position, not a physical one.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>6</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>pickup</code></dt><dd>0.04</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-wornTourShirt" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="9" data-s-name="weathered cloak" data-s-stacks="5">
+      <article class="wcard" id="e-wornTourShirt" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="9" data-s-name="weathered cloak" data-s-stacks="5">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🧥</span>
           <h4>Weathered Cloak</h4>
@@ -863,13 +935,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+0.2/s Regen</p>
       <p class="wgloss">Patched often. Abandoned never.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>5</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>regen</code></dt><dd>0.2</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-popFilter" tabindex="-1" data-rarity="common" data-effect="raises a stat" data-arena="included" data-s-roster="10" data-s-name="ward mesh" data-s-stacks="5">
+      <article class="wcard" id="e-popFilter" tabindex="-1" data-rarity="common" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="10" data-s-name="ward mesh" data-s-stacks="5">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🕸️</span>
           <h4>Ward Mesh</h4>
@@ -883,18 +960,553 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+4 Shield Capacity</p>
       <p class="wgloss">Catches trouble before trouble catches you.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>5</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>shieldCap</code></dt><dd>4</dd></div></dl></details>
+
+
+      </article>
+      <article class="wcard" id="e-warrantyVoidSticker" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="34" data-s-name="the warranty void sticker" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🏷️</span>
+          <h4>The Warranty Void Sticker</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:warrantyVoidSticker" data-visual-use="entry">
+    <img src="wiki-assets/relics/warranty-void-sticker.png" width="128" height="128" alt="Canonical in-game relic glyph for The Warranty Void Sticker." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+25% Damage; your weapons can never evolve this run</p>
+      <p class="wgloss">Big damage now. Your weapons can never evolve this run.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">250 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+      <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>damage</code></dt><dd>0.25</dd></div></dl></details>
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{&quot;evolutionLocked&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-loadBearingAnxiety" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="35" data-s-name="load-bearing anxiety" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">😰</span>
+          <h4>Load-Bearing Anxiety</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:loadBearingAnxiety" data-visual-use="entry">
+    <img src="wiki-assets/relics/load-bearing-anxiety.png" width="128" height="128" alt="Canonical in-game relic glyph for Load-Bearing Anxiety." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+0.10 armor rating while your shield is full</p>
+      <p class="wgloss">While your shield is full you take much less damage. Only kills refill it.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">500 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>condStats</code></dt><dd>{&quot;when&quot;:&quot;fullShield&quot;,&quot;stats&quot;:{&quot;armor&quot;:0.1}}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-loyaltyPunchCard" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="36" data-s-name="the loyalty punch card" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎟️</span>
+          <h4>The Loyalty Punch Card</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:loyaltyPunchCard" data-visual-use="entry">
+    <img src="wiki-assets/relics/loyalty-punch-card.png" width="128" height="128" alt="Canonical in-game relic glyph for The Loyalty Punch Card." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Every 10th chest refunds its price</p>
+      <p class="wgloss">Every tenth chest gives you your money back.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">750 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>perChest</code></dt><dd>{&quot;refundEvery&quot;:10}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-kickbackClause" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="37" data-s-name="the kickback clause" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💢</span>
+          <h4>The Kickback Clause</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:kickbackClause" data-visual-use="entry">
+    <img src="wiki-assets/relics/kickback-clause.png" width="128" height="128" alt="Canonical in-game relic glyph for The Kickback Clause." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">4m self-impulse on slam</p>
+      <p class="wgloss">Your Whomp throws you backwards, which is occasionally what you wanted.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">1000 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>slamMod</code></dt><dd>{&quot;selfImpulse&quot;:4}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-longScarf" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="38" data-s-name="the long scarf" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧣</span>
+          <h4>The Long Scarf</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:longScarf" data-visual-use="entry">
+    <img src="wiki-assets/relics/long-scarf.png" width="128" height="128" alt="Canonical in-game relic glyph for The Long Scarf." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+20% Damage while airborne</p>
+      <p class="wgloss">You hit harder while your feet are off the ground.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">1250 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>condStats</code></dt><dd>{&quot;when&quot;:&quot;airborne&quot;,&quot;stats&quot;:{&quot;damage&quot;:0.2}}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-elbowRoom" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="39" data-s-name="elbow room" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🫸</span>
+          <h4>Elbow Room</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:elbowRoom" data-visual-use="entry">
+    <img src="wiki-assets/relics/elbow-room.png" width="128" height="128" alt="Canonical in-game relic glyph for Elbow Room." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+12% Damage inside 3m</p>
+      <p class="wgloss">Things standing right next to you take more.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">1500 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>hitScalar</code></dt><dd>{&quot;on&quot;:&quot;proximity&quot;,&quot;mult&quot;:0.12,&quot;nearMetres&quot;:3}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-firstWeek" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="raises a stat" data-curse="carries a curse" data-arena="not included" data-s-roster="40" data-s-name="first week" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📛</span>
+          <h4>First Week</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:firstWeek" data-visual-use="entry">
+    <img src="wiki-assets/relics/first-week.png" width="128" height="128" alt="Canonical in-game relic glyph for First Week." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+10% Move Speed, -12% Max HP</p>
+      <p class="wgloss">You are faster. You are also new here.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">1750 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+      <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>moveSpeed</code></dt><dd>0.1</dd></div><div><dt><code>maxHpMult</code></dt><dd>-0.12</dd></div></dl></details>
+
+
+      </article>
+      <article class="wcard" id="e-hazardPay" tabindex="-1" data-rarity="common" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="41" data-s-name="hazard pay" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💸</span>
+          <h4>Hazard Pay</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:hazardPay" data-visual-use="entry">
+    <img src="wiki-assets/relics/hazard-pay.png" width="128" height="128" alt="Canonical in-game relic glyph for Hazard Pay." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">6 gold per hit taken</p>
+      <p class="wgloss">Getting hit is billable.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">2000 kills, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>20</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>onDamaged</code></dt><dd>{&quot;gold&quot;:6}</dd></div></dl></details>
+
+      </article></div>
+    </section>
+    <section class="wgroup" data-group="uncommon" id="g-uncommon">
+      <div class="wgroup-h"><h3>Uncommon</h3><span class="wgroup-n">13</span></div>
+      <p class="wgroup-note">Drawn with weight 14 out of 100.</p>
+      <div class="wgrid">
+      <article class="wcard" id="e-backstepCharm" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="42" data-s-name="backstep charm" data-s-stacks="3">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🪢</span>
+          <h4>Backstep Charm</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:backstepCharm" data-visual-use="entry">
+    <img src="wiki-assets/relics/backstep-charm.png" width="128" height="128" alt="Canonical in-game relic glyph for Backstep Charm." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">A window after a hit refunds your next Boost charge (1.5s / 2.5s / 4s by stack)</p>
+      <p class="wgloss">Your first Boost after taking a hit costs no charge.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">10 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>3</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>onDamaged</code></dt><dd>{&quot;boostRefundSec&quot;:1.5}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-fieldNotesAnnotated" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="43" data-s-name="field notes, annotated" data-s-stacks="3">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📔</span>
+          <h4>Field Notes, Annotated</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:fieldNotesAnnotated" data-visual-use="entry">
+    <img src="wiki-assets/relics/field-notes-annotated.png" width="128" height="128" alt="Canonical in-game relic glyph for Field Notes, Annotated." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Every 10th kill drops a second gem (8th / 6th by stack)</p>
+      <p class="wgloss">Every tenth enemy you kill drops a second gem.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">20 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>3</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>everyNthKill</code></dt><dd>{&quot;every&quot;:10,&quot;gems&quot;:1}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-beckoningChime" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="44" data-s-name="beckoning chime" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🔔</span>
+          <h4>Beckoning Chime</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:beckoningChime" data-visual-use="entry">
+    <img src="wiki-assets/relics/beckoning-chime.png" width="128" height="128" alt="Canonical in-game relic glyph for Beckoning Chime." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Uncollected pickups drift to you after a 3s dwell</p>
+      <p class="wgloss">Gold and gems you leave behind start drifting toward you after a few seconds.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">30 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-wardRebound" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="45" data-s-name="ward rebound" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💠</span>
+          <h4>Ward Rebound</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:wardRebound" data-visual-use="entry">
+    <img src="wiki-assets/relics/ward-rebound.png" width="128" height="128" alt="Canonical in-game relic glyph for Ward Rebound." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">A shield break radially shoves nearby enemies</p>
+      <p class="wgloss">When your shield breaks it bursts, and shoves back whatever broke it.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">40 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{&quot;shieldBurst&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-splitwickCandle" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="46" data-s-name="splitwick candle" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🕯️</span>
+          <h4>Splitwick Candle</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:splitwickCandle" data-visual-use="entry">
+    <img src="wiki-assets/relics/splitwick-candle.png" width="128" height="128" alt="Canonical in-game relic glyph for Splitwick Candle." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Burn spreads to 1 neighbour</p>
+      <p class="wgloss">Your Burn spreads to one enemy standing beside the one that is burning.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">50 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-theNotch" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="47" data-s-name="the notch" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🔪</span>
+          <h4>The Notch</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:theNotch" data-visual-use="entry">
+    <img src="wiki-assets/relics/the-notch.png" width="128" height="128" alt="Canonical in-game relic glyph for The Notch." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">3 crits on one target staggers it</p>
+      <p class="wgloss">Three crits on the same enemy stagger it.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">60 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>critTally</code></dt><dd>{&quot;at&quot;:3,&quot;grants&quot;:&quot;shield&quot;}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-smoulderSoles" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="48" data-s-name="smoulder soles" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">👣</span>
+          <h4>Smoulder Soles</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:smoulderSoles" data-visual-use="entry">
+    <img src="wiki-assets/relics/smoulder-soles.png" width="128" height="128" alt="Canonical in-game relic glyph for Smoulder Soles." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">A smouldering trail follows you</p>
+      <p class="wgloss">The ground behind you smoulders while you run.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">70 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>groundField</code></dt><dd>{&quot;shape&quot;:&quot;trail&quot;,&quot;damagePerSec&quot;:4,&quot;durationSec&quot;:2}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-whistleForThePack" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="49" data-s-name="whistle for the pack" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📯</span>
+          <h4>Whistle for the Pack</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:whistleForThePack" data-visual-use="entry">
+    <img src="wiki-assets/relics/whistle-for-the-pack.png" width="128" height="128" alt="Canonical in-game relic glyph for Whistle for the Pack." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Summoned helpers retarget to your last hit</p>
+      <p class="wgloss">Your summoned helpers chase whatever you hit last.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">80 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-warmBrick" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="50" data-s-name="the warm brick" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧱</span>
+          <h4>The Warm Brick</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:warmBrick" data-visual-use="entry">
+    <img src="wiki-assets/relics/warm-brick.png" width="128" height="128" alt="Canonical in-game relic glyph for The Warm Brick." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">1.5 HP/s after standing still 2s</p>
+      <p class="wgloss">Stand still and you start to heal. Move and it cools.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">90 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>condStats</code></dt><dd>{&quot;when&quot;:&quot;still&quot;,&quot;stats&quot;:{&quot;regen&quot;:1.5}}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-mileage" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="51" data-s-name="mileage" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">👟</span>
+          <h4>Mileage</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:mileage" data-visual-use="entry">
+    <img src="wiki-assets/relics/mileage.png" width="128" height="128" alt="Canonical in-game relic glyph for Mileage." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">1 gold per 40m travelled</p>
+      <p class="wgloss">You are paid by the metre. Someone is keeping count.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">100 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>economyTick</code></dt><dd>{&quot;goldPerMetre&quot;:0.025}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-spareKey" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="52" data-s-name="the spare key" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🗝️</span>
+          <h4>The Spare Key</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:spareKey" data-visual-use="entry">
+    <img src="wiki-assets/relics/spare-key.png" width="128" height="128" alt="Canonical in-game relic glyph for The Spare Key." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">The first chest on every floor costs nothing</p>
+      <p class="wgloss">The first chest on every floor is free.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">110 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>perChest</code></dt><dd>{&quot;firstFloorFree&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-shortFuse" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="raises a stat" data-curse="carries a curse" data-arena="not included" data-s-roster="53" data-s-name="the short fuse" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💣</span>
+          <h4>The Short Fuse</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:shortFuse" data-visual-use="entry">
+    <img src="wiki-assets/relics/short-fuse.png" width="128" height="128" alt="Canonical in-game relic glyph for The Short Fuse." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+50% affliction strength, -50% duration</p>
+      <p class="wgloss">Your Burn, Freeze and Shock hit harder and end sooner.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">120 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+      <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>statusPower</code></dt><dd>0.5</dd></div><div><dt><code>effectDuration</code></dt><dd>-0.5</dd></div></dl></details>
+
+
+      </article>
+      <article class="wcard" id="e-droppedWrench" tabindex="-1" data-rarity="uncommon" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="54" data-s-name="the dropped wrench" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🔧</span>
+          <h4>The Dropped Wrench</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:droppedWrench" data-visual-use="entry">
+    <img src="wiki-assets/relics/dropped-wrench.png" width="128" height="128" alt="Canonical in-game relic glyph for The Dropped Wrench." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+40% slam damage, 1.0s Boost lockout after landing</p>
+      <p class="wgloss">Your Whomp lands much harder. You cannot Boost for a moment after.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">130 chests opened, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>35</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>slamMod</code></dt><dd>{&quot;damageMult&quot;:0.4,&quot;boostLockoutSec&quot;:1}</dd></div></dl></details>
 
       </article></div>
     </section>
     <section class="wgroup" data-group="rare" id="g-rare">
-      <div class="wgroup-h"><h3>Rare</h3><span class="wgroup-n">11</span></div>
+      <div class="wgroup-h"><h3>Rare</h3><span class="wgroup-n">29</span></div>
       <p class="wgroup-note">Drawn with weight 27 out of 100.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-reverbPedal" tabindex="-1" data-rarity="rare" data-effect="raises a stat" data-arena="included" data-s-roster="11" data-s-name="echo stone" data-s-stacks="4">
+      <article class="wcard" id="e-reverbPedal" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="11" data-s-name="echo stone" data-s-stacks="4">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🔮</span>
           <h4>Echo Stone</h4>
@@ -908,13 +1520,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+6% Effect Duration; a Slow/Freeze that expires on an enemy reapplies itself once, free</p>
       <p class="wgloss">A moment lingers inside long after it ends.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>4</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>effectDuration</code></dt><dd>0.06</dd></div><div><dt><code>statusEcho</code></dt><dd>1</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-spareStrings" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="included" data-s-roster="12" data-s-name="giant's thread" data-s-stacks="4">
+      <article class="wcard" id="e-spareStrings" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="included" data-s-roster="12" data-s-name="giant's thread" data-s-stacks="4">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🧵</span>
           <h4>Giant's Thread</h4>
@@ -924,17 +1541,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/spare-strings.png" width="128" height="128" alt="Canonical in-game relic glyph for Giant's Thread." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+5% Weapon Size (stacking); at 4 stacks, every hit knocks back</p>
       <p class="wgloss">Everything tied with it grows ambitious.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>4</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>weaponSize</code></dt><dd>0.05</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-roadieGloves" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="included" data-s-roster="13" data-s-name="pathfinder gloves" data-s-stacks="5">
+      <article class="wcard" id="e-roadieGloves" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="included" data-s-roster="13" data-s-name="pathfinder gloves" data-s-stacks="5">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🧤</span>
           <h4>Pathfinder Gloves</h4>
@@ -944,17 +1566,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/roadie-gloves.png" width="128" height="128" alt="Canonical in-game relic glyph for Pathfinder Gloves." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">-6% Boost Cooldown; a kill while boosting fully refunds the charge</p>
       <p class="wgloss">Grip the world. Push off sooner.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>5</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>boostCd</code></dt><dd>0.06</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-energyDrink" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="included" data-s-roster="14" data-s-name="energy drink case" data-s-stacks="5">
+      <article class="wcard" id="e-energyDrink" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="included" data-s-roster="14" data-s-name="energy drink case" data-s-stacks="5">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🥫</span>
           <h4>Energy Drink Case</h4>
@@ -964,17 +1591,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/energy-drink.png" width="128" height="128" alt="Canonical in-game relic glyph for Energy Drink Case." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+3% Move Speed; climbs the longer you go unhit (resets on a hit)</p>
       <p class="wgloss">Sponsored. Definitely not FDA approved.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>5</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>moveSpeed</code></dt><dd>0.03</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-backstagePass" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="not included" data-s-roster="15" data-s-name="merchant's seal" data-s-stacks="3">
+      <article class="wcard" id="e-backstagePass" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="15" data-s-name="merchant's seal" data-s-stacks="3">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🎫</span>
           <h4>Merchant's Seal</h4>
@@ -984,17 +1616,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/backstage-pass.png" width="128" height="128" alt="Canonical in-game relic glyph for Merchant's Seal." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">-8% Merchant Prices (cap -24%)</p>
       <p class="wgloss">The mark of a customer worth keeping.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>3</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-feedbackLoop" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="not included" data-s-roster="16" data-s-name="resonance loop" data-s-stacks="3">
+      <article class="wcard" id="e-feedbackLoop" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="16" data-s-name="resonance loop" data-s-stacks="3">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🌀</span>
           <h4>Resonance Loop</h4>
@@ -1004,17 +1641,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/feedback-loop.png" width="128" height="128" alt="Canonical in-game relic glyph for Resonance Loop." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">Burn/Freeze/Shock +10% duration</p>
       <p class="wgloss">Every affliction leaves an echo.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>3</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-fogMachine" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="not included" data-s-roster="17" data-s-name="fog machine" data-s-stacks="2">
+      <article class="wcard" id="e-fogMachine" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="17" data-s-name="fog machine" data-s-stacks="2">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🌫️</span>
           <h4>Fog Machine</h4>
@@ -1024,17 +1666,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/fog-machine.png" width="128" height="128" alt="Canonical in-game relic glyph for Fog Machine." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">Enemy projectiles 6% slower</p>
       <p class="wgloss">Half atmosphere, half fire hazard.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>2</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-extraVerse" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="not included" data-s-roster="18" data-s-name="scholar's echo" data-s-stacks="4">
+      <article class="wcard" id="e-extraVerse" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="18" data-s-name="scholar's echo" data-s-stacks="4">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">📖</span>
           <h4>Scholar's Echo</h4>
@@ -1044,17 +1691,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/extra-verse.png" width="128" height="128" alt="Canonical in-game relic glyph for Scholar's Echo." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+5% double XP-gem chance</p>
       <p class="wgloss">One lesson, occasionally learned twice.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>4</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-cursedSetlist" tabindex="-1" data-rarity="rare" data-effect="raises a stat" data-arena="not included" data-s-roster="19" data-s-name="cursed ledger" data-s-stacks="3">
+      <article class="wcard" id="e-cursedSetlist" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="not included" data-s-roster="19" data-s-name="cursed ledger" data-s-stacks="3">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">📜</span>
           <h4>Cursed Ledger</h4>
@@ -1068,13 +1720,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+8% XP / -4% Gold gain</p>
       <p class="wgloss">Knowledge accrues. So does debt.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>3</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>xpGain</code></dt><dd>0.08</dd></div><div><dt><code>goldGain</code></dt><dd>-0.04</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-feedbackScreamer" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="not included" data-s-roster="20" data-s-name="bossbane sigil" data-s-stacks="2">
+      <article class="wcard" id="e-feedbackScreamer" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="20" data-s-name="bossbane sigil" data-s-stacks="2">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">⚔️</span>
           <h4>Bossbane Sigil</h4>
@@ -1084,17 +1741,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/feedback-screamer.png" width="128" height="128" alt="Canonical in-game relic glyph for Bossbane Sigil." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+12% dmg to bosses / +8% dmg from them</p>
       <p class="wgloss">It makes powerful enemies take you personally.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>2</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-evpRecorder" tabindex="-1" data-rarity="rare" data-effect="triggers itself" data-arena="not included" data-s-roster="21" data-s-name="spirit vessel" data-s-stacks="2">
+      <article class="wcard" id="e-evpRecorder" tabindex="-1" data-rarity="rare" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="21" data-s-name="spirit vessel" data-s-stacks="2">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">👻</span>
           <h4>Spirit Vessel</h4>
@@ -1104,22 +1766,477 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/evp-recorder.png" width="128" height="128" alt="Canonical in-game relic glyph for Spirit Vessel." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+1 ghost soft-cap</p>
       <p class="wgloss">There is always room for one more ghost.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>2</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
+
+
+      </article>
+      <article class="wcard" id="e-unrefrigeratedWheel" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="55" data-s-name="the unrefrigerated wheel" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧀</span>
+          <h4>The Unrefrigerated Wheel</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:unrefrigeratedWheel" data-visual-use="entry">
+    <img src="wiki-assets/relics/unrefrigerated-wheel.png" width="128" height="128" alt="Canonical in-game relic glyph for The Unrefrigerated Wheel." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">Aggro radius up, kills drop 2x gold and gems</p>
+      <p class="wgloss">It smells. Everything comes. Everything that dies pays double.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">2 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{&quot;aggroRadiusMult&quot;:1.5,&quot;killDropMult&quot;:2}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-emotionalSupportAnvil" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="56" data-s-name="the emotional support anvil" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⚓</span>
+          <h4>The Emotional Support Anvil</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:emotionalSupportAnvil" data-visual-use="entry">
+    <img src="wiki-assets/relics/emotional-support-anvil.png" width="128" height="128" alt="Canonical in-game relic glyph for The Emotional Support Anvil." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">-12% Move Speed; immune to knockback and stagger</p>
+      <p class="wgloss">You are slower. Nothing can move you. Nothing.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">4 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+      <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>moveSpeed</code></dt><dd>-0.12</dd></div></dl></details>
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{&quot;knockbackImmune&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-spiteClause" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="57" data-s-name="the spite clause" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">😤</span>
+          <h4>The Spite Clause</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:spiteClause" data-visual-use="entry">
+    <img src="wiki-assets/relics/spite-clause.png" width="128" height="128" alt="Canonical in-game relic glyph for The Spite Clause." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">60% of damage taken is stored (capped) and returned on your next hit</p>
+      <p class="wgloss">Damage you take is stored, and your next hit gives it back.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">6 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>2</span></summary><dl><div><dt><code>onDamaged</code></dt><dd>{}</dd></div><div><dt><code>critExtra</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-surveyorsChain" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="58" data-s-name="surveyor's chain" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⛓️</span>
+          <h4>Surveyor's Chain</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:surveyorsChain" data-visual-use="entry">
+    <img src="wiki-assets/relics/surveyors-chain.png" width="128" height="128" alt="Canonical in-game relic glyph for Surveyor's Chain." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+1% Damage per metre of range, capped at +30%</p>
+      <p class="wgloss">The further away the target, the harder you hit it.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">8 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>hitScalar</code></dt><dd>{&quot;on&quot;:&quot;distance&quot;,&quot;mult&quot;:0.01,&quot;farMetres&quot;:30}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-deductible" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="59" data-s-name="the deductible" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧾</span>
+          <h4>The Deductible</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:deductible" data-visual-use="entry">
+    <img src="wiki-assets/relics/deductible.png" width="128" height="128" alt="Canonical in-game relic glyph for The Deductible." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">The first 4 HP of a hit lands in full; the rest at 30%</p>
+      <p class="wgloss">The first slice of every hit gets through. The rest barely does.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">10 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>onDamaged</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-compoundInterest" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="60" data-s-name="compound interest" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📈</span>
+          <h4>Compound Interest</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:compoundInterest" data-visual-use="entry">
+    <img src="wiki-assets/relics/compound-interest.png" width="128" height="128" alt="Canonical in-game relic glyph for Compound Interest." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+1% Gold Gain per 10s held, resets on spend</p>
+      <p class="wgloss">Gold you don't spend grows. Spending resets it to nothing.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">12 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>economyTick</code></dt><dd>{&quot;holdGrowthPerSec&quot;:0.001}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-nonstandardAmmunition" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="61" data-s-name="nonstandard ammunition" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎲</span>
+          <h4>Nonstandard Ammunition</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:nonstandardAmmunition" data-visual-use="entry">
+    <img src="wiki-assets/relics/nonstandard-ammunition.png" width="128" height="128" alt="Canonical in-game relic glyph for Nonstandard Ammunition." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Every 7th shot fires from a different weapon</p>
+      <p class="wgloss">Every seventh shot comes out of a different weapon.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">14 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-evictionNotice" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="62" data-s-name="the eviction notice" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📄</span>
+          <h4>The Eviction Notice</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:evictionNotice" data-visual-use="entry">
+    <img src="wiki-assets/relics/eviction-notice.png" width="128" height="128" alt="Canonical in-game relic glyph for The Eviction Notice." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+15% Damage while moving; 3s standing still triggers a shove and 5 damage</p>
+      <p class="wgloss">Stand still and the ground turns on you. Keep moving and you hit harder.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">16 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>2</span></summary><dl><div><dt><code>condStats</code></dt><dd>{&quot;when&quot;:&quot;moving&quot;,&quot;stats&quot;:{&quot;damage&quot;:0.15}}</dd></div><div><dt><code>condStats 2</code></dt><dd>{&quot;when&quot;:&quot;still&quot;,&quot;stats&quot;:{}}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-rematchChit" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="63" data-s-name="the rematch chit" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🥊</span>
+          <h4>The Rematch Chit</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:rematchChit" data-visual-use="entry">
+    <img src="wiki-assets/relics/rematch-chit.png" width="128" height="128" alt="Canonical in-game relic glyph for The Rematch Chit." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Once per run, a boss-only lethal hit sends you back to the door instead</p>
+      <p class="wgloss">Fall to a boss and you get one more go from the door, the boss keeping the health it had left.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">18 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>lethalSave</code></dt><dd>{&quot;save&quot;:&quot;bossRematch&quot;,&quot;oncePerRun&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-preferredCustomer" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="64" data-s-name="preferred customer" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💳</span>
+          <h4>Preferred Customer</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:preferredCustomer" data-visual-use="entry">
+    <img src="wiki-assets/relics/preferred-customer.png" width="128" height="128" alt="Canonical in-game relic glyph for Preferred Customer." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+2% Luck per chest opened, for the run</p>
+      <p class="wgloss">Every chest you open makes you luckier, for the rest of the run.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">20 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>perChest</code></dt><dd>{&quot;luck&quot;:0.02}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-bigSpender" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="65" data-s-name="big spender" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧺</span>
+          <h4>Big Spender</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:bigSpender" data-visual-use="entry">
+    <img src="wiki-assets/relics/big-spender.png" width="128" height="128" alt="Canonical in-game relic glyph for Big Spender." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+2.5% Damage per chest opened, for the run</p>
+      <p class="wgloss">Every chest you open makes you hit harder, for the rest of the run.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">22 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>perChest</code></dt><dd>{&quot;damage&quot;:0.025}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-longMemory" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="66" data-s-name="long memory" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">😠</span>
+          <h4>Long Memory</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:longMemory" data-visual-use="entry">
+    <img src="wiki-assets/relics/long-memory.png" width="128" height="128" alt="Canonical in-game relic glyph for Long Memory." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+0.1% Damage per kill, capped at +100%</p>
+      <p class="wgloss">Every kill makes you angrier. It does not wear off.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">24 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>killRamp</code></dt><dd>{&quot;per&quot;:1,&quot;stat&quot;:&quot;damage&quot;,&quot;amount&quot;:0.001,&quot;max&quot;:1}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-secondHelping" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="67" data-s-name="second helping" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🩸</span>
+          <h4>Second Helping</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:secondHelping" data-visual-use="entry">
+    <img src="wiki-assets/relics/second-helping.png" width="128" height="128" alt="Canonical in-game relic glyph for Second Helping." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">25% of crits heal you for 10% of the hit</p>
+      <p class="wgloss">Your crits sometimes give the wound back to you.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">26 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>critExtra</code></dt><dd>{&quot;heal&quot;:0.1}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-lateRabbit" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="68" data-s-name="the late rabbit" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🐇</span>
+          <h4>The Late Rabbit</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:lateRabbit" data-visual-use="entry">
+    <img src="wiki-assets/relics/late-rabbit.png" width="128" height="128" alt="Canonical in-game relic glyph for The Late Rabbit." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">One rabbit every 200m runs ahead for 8s, slowing what it crosses</p>
+      <p class="wgloss">Walk far enough and a see-through rabbit catches up, then runs ahead tripping what it passes.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">28 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>groundField</code></dt><dd>{&quot;shape&quot;:&quot;trail&quot;,&quot;durationSec&quot;:8}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-spareLantern" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="69" data-s-name="the spare lantern" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🏮</span>
+          <h4>The Spare Lantern</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:spareLantern" data-visual-use="entry">
+    <img src="wiki-assets/relics/spare-lantern.png" width="128" height="128" alt="Canonical in-game relic glyph for The Spare Lantern." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Absorbs one hit, relights after 30s</p>
+      <p class="wgloss">A lantern floats at your shoulder. One hit goes out on it instead of you.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">30 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>lethalSave</code></dt><dd>{&quot;save&quot;:&quot;lantern&quot;,&quot;durationSec&quot;:30}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-rightOfWay" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="70" data-s-name="right of way" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🛤️</span>
+          <h4>Right of Way</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:rightOfWay" data-visual-use="entry">
+    <img src="wiki-assets/relics/right-of-way.png" width="128" height="128" alt="Canonical in-game relic glyph for Right of Way." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">The first hit within 0.6s of a Boost deals 2.5x and staggers</p>
+      <p class="wgloss">Come out of a Boost and the first thing you touch regrets it.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">32 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>hitScalar</code></dt><dd>{&quot;on&quot;:&quot;afterBoost&quot;,&quot;mult&quot;:2.5,&quot;windowSec&quot;:0.6,&quot;stagger&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-madeOfGlass" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="raises a stat" data-curse="carries a curse" data-arena="not included" data-s-roster="71" data-s-name="made of glass" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🥃</span>
+          <h4>Made of Glass</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:madeOfGlass" data-visual-use="entry">
+    <img src="wiki-assets/relics/made-of-glass.png" width="128" height="128" alt="Canonical in-game relic glyph for Made of Glass." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+35% Damage, -40% Max HP</p>
+      <p class="wgloss">You hit much harder. You should not be hit.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">34 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+      <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>damage</code></dt><dd>0.35</dd></div><div><dt><code>maxHpMult</code></dt><dd>-0.4</dd></div></dl></details>
+
+
+      </article>
+      <article class="wcard" id="e-theAdvance" tabindex="-1" data-rarity="rare" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="72" data-s-name="the advance" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💰</span>
+          <h4>The Advance</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:theAdvance" data-visual-use="entry">
+    <img src="wiki-assets/relics/the-advance.png" width="128" height="128" alt="Canonical in-game relic glyph for The Advance." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+80 gold on pickup; chest prices +15% for the run</p>
+      <p class="wgloss">A bag of gold now. Every chest after costs more.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">36 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>70</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>perChest</code></dt><dd>{&quot;goldOnPickup&quot;:80,&quot;priceMult&quot;:1.15}</dd></div></dl></details>
 
       </article></div>
     </section>
     <section class="wgroup" data-group="epic" id="g-epic">
-      <div class="wgroup-h"><h3>Epic</h3><span class="wgroup-n">8</span></div>
+      <div class="wgroup-h"><h3>Epic</h3><span class="wgroup-n">20</span></div>
       <p class="wgroup-note">Drawn with weight 12 out of 100.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-overdrivenAmp" tabindex="-1" data-rarity="epic" data-effect="raises a stat" data-arena="included" data-s-roster="22" data-s-name="overcharged core" data-s-stacks="2">
+      <article class="wcard" id="e-overdrivenAmp" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="22" data-s-name="overcharged core" data-s-stacks="2">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">⚡</span>
           <h4>Overcharged Core</h4>
@@ -1133,13 +2250,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+10% Damage / -5% Max HP</p>
       <p class="wgloss">Power has borrowed space from safety.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>2</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>damage</code></dt><dd>0.1</dd></div><div><dt><code>maxHpMult</code></dt><dd>-0.05</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-pyroRig" tabindex="-1" data-rarity="epic" data-effect="triggers itself" data-arena="not included" data-s-roster="23" data-s-name="volatile furnace" data-s-stacks="1">
+      <article class="wcard" id="e-pyroRig" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="23" data-s-name="volatile furnace" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🧨</span>
           <h4>Volatile Furnace</h4>
@@ -1149,17 +2271,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/pyro-rig.png" width="128" height="128" alt="Canonical in-game relic glyph for Volatile Furnace." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">Burn ticks +30% / +10% contact dmg taken</p>
       <p class="wgloss">The heat is excellent. The shielding is decorative.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-bassDrop" tabindex="-1" data-rarity="epic" data-effect="triggers itself" data-arena="not included" data-s-roster="24" data-s-name="quake heart" data-s-stacks="1">
+      <article class="wcard" id="e-bassDrop" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="24" data-s-name="quake heart" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🌋</span>
           <h4>Quake Heart</h4>
@@ -1169,17 +2296,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/bass-drop.png" width="128" height="128" alt="Canonical in-game relic glyph for Quake Heart." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">Shockwave knockback every 12s</p>
       <p class="wgloss">It beats once. The ground answers.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-crowdSurfPads" tabindex="-1" data-rarity="epic" data-effect="triggers itself" data-arena="not included" data-s-roster="25" data-s-name="momentum greaves" data-s-stacks="1">
+      <article class="wcard" id="e-crowdSurfPads" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="25" data-s-name="momentum greaves" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">👢</span>
           <h4>Momentum Greaves</h4>
@@ -1189,17 +2321,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/crowd-surf-pads.png" width="128" height="128" alt="Canonical in-game relic glyph for Momentum Greaves." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+20% Move Speed 2s after a hit</p>
       <p class="wgloss">Pain becomes distance.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-goldenKazoo" tabindex="-1" data-rarity="epic" data-effect="triggers itself" data-arena="not included" data-s-roster="26" data-s-name="golden idol" data-s-stacks="1">
+      <article class="wcard" id="e-goldenKazoo" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="26" data-s-name="golden idol" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🗿</span>
           <h4>Golden Idol</h4>
@@ -1209,17 +2346,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/golden-kazoo.png" width="128" height="128" alt="Canonical in-game relic glyph for Golden Idol." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">10% of gold pickups also drop XP</p>
       <p class="wgloss">It values wealth almost as much as wisdom.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-heavyCab" tabindex="-1" data-rarity="epic" data-effect="raises a stat" data-arena="included" data-s-roster="27" data-s-name="bastion plate" data-s-stacks="1">
+      <article class="wcard" id="e-heavyCab" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="27" data-s-name="bastion plate" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🛡️</span>
           <h4>Bastion Plate</h4>
@@ -1233,13 +2375,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">7% less damage taken (diminishing), +10% Weapon Size / -5% Move Speed</p>
       <p class="wgloss">Subtlety was removed to save weight.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>3</span></summary><dl><div><dt><code>armor</code></dt><dd>0.1</dd></div><div><dt><code>weaponSize</code></dt><dd>0.1</dd></div><div><dt><code>moveSpeed</code></dt><dd>-0.05</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-strobeRig" tabindex="-1" data-rarity="epic" data-effect="raises a stat" data-arena="included" data-s-roster="28" data-s-name="blink engine" data-s-stacks="1">
+      <article class="wcard" id="e-strobeRig" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="28" data-s-name="blink engine" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">💡</span>
           <h4>Blink Engine</h4>
@@ -1253,13 +2400,18 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">+18% Attack Speed / -10% Move Speed</p>
       <p class="wgloss">Fast hands. Narrow focus.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>atkSpeed</code></dt><dd>0.18</dd></div><div><dt><code>moveSpeed</code></dt><dd>-0.1</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-signatureSolo" tabindex="-1" data-rarity="epic" data-effect="raises a stat" data-arena="included" data-s-roster="29" data-s-name="duelist's crest" data-s-stacks="1">
+      <article class="wcard" id="e-signatureSolo" tabindex="-1" data-rarity="epic" data-access="yours from the start" data-effect="raises a stat" data-curse="no downside" data-arena="included" data-s-roster="29" data-s-name="duelist's crest" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🎯</span>
           <h4>Duelist's Crest</h4>
@@ -1273,18 +2425,323 @@ footer a{color:var(--cyan);text-decoration:none}
       <p class="wdesc">Every 5th crit roll on your weapons is a guaranteed crit (the aimed core rolls its own); +8% Crit Damage</p>
       <p class="wgloss">One perfect strike settles most arguments.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>2</span></summary><dl><div><dt><code>critDamage</code></dt><dd>0.08</dd></div><div><dt><code>guaranteedCritEvery</code></dt><dd>5</dd></div></dl></details>
+
+
+      </article>
+      <article class="wcard" id="e-understudy" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="73" data-s-name="the understudy" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎭</span>
+          <h4>The Understudy</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:understudy" data-visual-use="entry">
+    <img src="wiki-assets/relics/understudy.png" width="128" height="128" alt="Canonical in-game relic glyph for The Understudy." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Your weakest weapon fights at your strongest weapon's rank</p>
+      <p class="wgloss">Your worst weapon fights like your best one.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">2 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-committeeApproval" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="74" data-s-name="committee approval" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🗳️</span>
+          <h4>Committee Approval</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:committeeApproval" data-visual-use="entry">
+    <img src="wiki-assets/relics/committee-approval.png" width="128" height="128" alt="Canonical in-game relic glyph for Committee Approval." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">All weapons fire together on the slowest cadence; +20% volley damage</p>
+      <p class="wgloss">All four weapons fire at once, on the slowest one's clock.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">4 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-companyCard" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="75" data-s-name="the company card" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🏦</span>
+          <h4>The Company Card</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:companyCard" data-visual-use="entry">
+    <img src="wiki-assets/relics/company-card.png" width="128" height="128" alt="Canonical in-game relic glyph for The Company Card." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">100% off prices; billed every 60s, shortfall taken from HP</p>
+      <p class="wgloss">Everything is free. The bill arrives every minute, and it is not optional.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">6 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>economyTick</code></dt><dd>{&quot;hpBillPerSec&quot;:0}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-illAdvisedFireworks" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="carries a curse" data-arena="not included" data-s-roster="76" data-s-name="ill-advised fireworks" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎆</span>
+          <h4>Ill-Advised Fireworks</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:illAdvisedFireworks" data-visual-use="entry">
+    <img src="wiki-assets/relics/ill-advised-fireworks.png" width="128" height="128" alt="Canonical in-game relic glyph for Ill-Advised Fireworks." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">15% of kills explode in a 4m blast that also hurts you</p>
+      <p class="wgloss">Some of the things you kill go off. It does not check who is nearby.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">8 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>everyNthKill</code></dt><dd>{&quot;every&quot;:7,&quot;gold&quot;:0}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-gracePeriod" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="77" data-s-name="the grace period" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⏱️</span>
+          <h4>The Grace Period</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:gracePeriod" data-visual-use="entry">
+    <img src="wiki-assets/relics/grace-period.png" width="128" height="128" alt="Canonical in-game relic glyph for The Grace Period." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">5s to land 8 kills and stay up, once per run</p>
+      <p class="wgloss">The hit that kills you gives you five seconds to argue.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">10 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>lethalSave</code></dt><dd>{&quot;save&quot;:&quot;gracePeriod&quot;,&quot;durationSec&quot;:5,&quot;oncePerRun&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-doubleOrNothingChit" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="78" data-s-name="the double-or-nothing chit" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎰</span>
+          <h4>The Double-or-Nothing Chit</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:doubleOrNothingChit" data-visual-use="entry">
+    <img src="wiki-assets/relics/double-or-nothing-chit.png" width="128" height="128" alt="Canonical in-game relic glyph for The Double-or-Nothing Chit." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">On a chest, a coin flip trades a relic one rung up or takes it</p>
+      <p class="wgloss">Seen your relic? Flip for a better one, or lose it entirely.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">12 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>perChest</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-souvenir" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="79" data-s-name="the souvenir" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🎁</span>
+          <h4>The Souvenir</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:souvenir" data-visual-use="entry">
+    <img src="wiki-assets/relics/souvenir.png" width="128" height="128" alt="Canonical in-game relic glyph for The Souvenir." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">On run end, unlock one held relic in the shop (still costs its rung price)</p>
+      <p class="wgloss">When the run ends, one relic you held is unlocked in the shop, earned or not.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">14 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-starCinder" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="80" data-s-name="the star cinder" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">☄️</span>
+          <h4>The Star Cinder</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:starCinder" data-visual-use="entry">
+    <img src="wiki-assets/relics/star-cinder.png" width="128" height="128" alt="Canonical in-game relic glyph for The Star Cinder." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Every 20s, a 1.5m crater lands and burns for 6s</p>
+      <p class="wgloss">A piece of the sky that is still warm. Every so often it falls where you are aiming.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Claim a cinder crater where one comes down.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">WHOMP's own</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>timedStrike</code></dt><dd>{&quot;strike&quot;:&quot;cinder&quot;,&quot;everySec&quot;:20,&quot;radius&quot;:1.5}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-overbuilt" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="raises a stat" data-curse="carries a curse" data-arena="not included" data-s-roster="81" data-s-name="overbuilt" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🛠️</span>
+          <h4>Overbuilt</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:overbuilt" data-visual-use="entry">
+    <img src="wiki-assets/relics/overbuilt.png" width="128" height="128" alt="Canonical in-game relic glyph for Overbuilt." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <p class="wdesc">+0.25 armor rating, +40 Max HP, -18% Move Speed</p>
+      <p class="wgloss">Much tougher. Much slower.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">18 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+      <details class="wraw"><summary>Canonical stat payload <span>3</span></summary><dl><div><dt><code>armor</code></dt><dd>0.25</dd></div><div><dt><code>maxHp</code></dt><dd>40</dd></div><div><dt><code>moveSpeed</code></dt><dd>-0.18</dd></div></dl></details>
+
+
+      </article>
+      <article class="wcard" id="e-underlinedTwice" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="82" data-s-name="underlined twice" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">✏️</span>
+          <h4>Underlined Twice</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:underlinedTwice" data-visual-use="entry">
+    <img src="wiki-assets/relics/underlined-twice.png" width="128" height="128" alt="Canonical in-game relic glyph for Underlined Twice." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">15% of crits also hit again at 2.5x</p>
+      <p class="wgloss">Sometimes a crit crits again.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">20 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>critExtra</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-looseWire" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="83" data-s-name="the loose wire" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧿</span>
+          <h4>The Loose Wire</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:looseWire" data-visual-use="entry">
+    <img src="wiki-assets/relics/loose-wire.png" width="128" height="128" alt="Canonical in-game relic glyph for The Loose Wire." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">One orbiter arcs to a target within 4m every 1.2s, chaining to 3</p>
+      <p class="wgloss">A live wire orbits you and arcs to whatever comes close.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">22 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>groundField</code></dt><dd>{&quot;shape&quot;:&quot;orbiter&quot;,&quot;radius&quot;:4,&quot;durationSec&quot;:1.2}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-whompusWeighsIn" tabindex="-1" data-rarity="epic" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="84" data-s-name="whompus weighs in" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🐾</span>
+          <h4>Whompus Weighs In</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:whompusWeighsIn" data-visual-use="entry">
+    <img src="wiki-assets/relics/whompus-weighs-in.png" width="128" height="128" alt="Canonical in-game relic glyph for Whompus Weighs In." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Every 45s the Whompus slams the biggest enemy within 12m for 8x weapon damage and staggers it</p>
+      <p class="wgloss">Every so often the Whompus drops out of the sky onto the biggest thing nearby. It has been asked to look first.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">24 full clears, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>120</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>timedStrike</code></dt><dd>{&quot;strike&quot;:&quot;whompus&quot;,&quot;everySec&quot;:45,&quot;radius&quot;:12,&quot;damage&quot;:8}</dd></div></dl></details>
 
       </article></div>
     </section>
     <section class="wgroup" data-group="legendary" id="g-legendary">
-      <div class="wgroup-h"><h3>Legendary</h3><span class="wgroup-n">4</span></div>
+      <div class="wgroup-h"><h3>Legendary</h3><span class="wgroup-n">13</span></div>
       <p class="wgroup-note">Drawn with weight 3 out of 100.</p>
       <div class="wgrid">
-      <article class="wcard" id="e-encoreFlare" tabindex="-1" data-rarity="legendary" data-effect="triggers itself" data-arena="not included" data-s-roster="30" data-s-name="phoenix flare" data-s-stacks="1">
+      <article class="wcard" id="e-encoreFlare" tabindex="-1" data-rarity="legendary" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="30" data-s-name="phoenix flare" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🎇</span>
           <h4>Phoenix Flare</h4>
@@ -1294,17 +2751,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/encore-flare.png" width="128" height="128" alt="Canonical in-game relic glyph for Phoenix Flare." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">Revive once per run at 50% HP</p>
       <p class="wgloss">Death gets one objection.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
 
 
+
       </article>
-      <article class="wcard" id="e-masterTape" tabindex="-1" data-rarity="legendary" data-effect="triggers itself" data-arena="included" data-s-roster="31" data-s-name="the retrofit" data-s-stacks="1">
+      <article class="wcard" id="e-masterTape" tabindex="-1" data-rarity="legendary" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="included" data-s-roster="31" data-s-name="the retrofit" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">📐</span>
           <h4>The Retrofit</h4>
@@ -1314,17 +2776,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/master-tape.png" width="128" height="128" alt="Canonical in-game relic glyph for The Retrofit." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+2% Damage; Evolved weapons a further +10%, un-evolved weapons a further +5%</p>
       <p class="wgloss">Every final form remembers this design. The design has notes.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>damage</code></dt><dd>0.02</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-tourBus" tabindex="-1" data-rarity="legendary" data-effect="triggers itself" data-arena="included" data-s-roster="32" data-s-name="wayfarer's compass" data-s-stacks="1">
+      <article class="wcard" id="e-tourBus" tabindex="-1" data-rarity="legendary" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="included" data-s-roster="32" data-s-name="wayfarer's compass" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">🧭</span>
           <h4>Wayfarer's Compass</h4>
@@ -1334,17 +2801,22 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/tour-bus.png" width="128" height="128" alt="Canonical in-game relic glyph for Wayfarer's Compass." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+12% Move Speed, +1 Boost Charge</p>
       <p class="wgloss">It points toward somewhere worth reaching quickly.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>moveSpeed</code></dt><dd>0.12</dd></div></dl></details>
 
+
       </article>
-      <article class="wcard" id="e-goldMasterDisc" tabindex="-1" data-rarity="legendary" data-effect="triggers itself" data-arena="not included" data-s-roster="33" data-s-name="the grandfathered rate" data-s-stacks="1">
+      <article class="wcard" id="e-goldMasterDisc" tabindex="-1" data-rarity="legendary" data-access="yours from the start" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="33" data-s-name="the grandfathered rate" data-s-stacks="1">
         <div class="wcard-h">
           <span class="wcard-glyph" aria-hidden="true">⏳</span>
           <h4>The Grandfathered Rate</h4>
@@ -1354,14 +2826,244 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/gold-master-disc.png" width="128" height="128" alt="Canonical in-game relic glyph for The Grandfathered Rate." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Triggers itself</span></div>
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
       <p class="wdesc">+25% Gold, chest costs escalate 25% slower</p>
       <p class="wgloss">Your prices were agreed a long time ago. Nobody has been able to locate the agreement.</p>
       <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Nothing to earn. It is in the pool from your first run.</span></div>
+
         <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+
         <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+
       </div>
       <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>goldGain</code></dt><dd>0.25</dd></div></dl></details>
+
+
+      </article>
+      <article class="wcard" id="e-fullWhomp" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="85" data-s-name="the full whomp" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">👑</span>
+          <h4>The Full Whomp</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:fullWhomp" data-visual-use="entry">
+    <img src="wiki-assets/relics/full-whomp.png" width="128" height="128" alt="Canonical in-game relic glyph for The Full Whomp." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Slam radius x2, slam damage x2.5, camera kick</p>
+      <p class="wgloss">Your Whomp becomes absurd.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">10 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">The Long Shadow. The wind-up hangs a beat, your shadow spreads wide across the ground before you land, the impact ring cracks twice.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from big bonk</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>slamMod</code></dt><dd>{&quot;radiusMult&quot;:2,&quot;damageMult&quot;:1.5,&quot;cameraKick&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-stoppageTime" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="86" data-s-name="stoppage time" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⏸️</span>
+          <h4>Stoppage Time</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:stoppageTime" data-visual-use="entry">
+    <img src="wiki-assets/relics/stoppage-time.png" width="128" height="128" alt="Canonical in-game relic glyph for Stoppage Time." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">4s world-stop, you keep 1 HP, once per run</p>
+      <p class="wgloss">The blow that would kill you stops the world instead.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">20 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">The Grey. Colour drains, every enemy freezes mid-swing, only your trail keeps its colour, then it all resumes at once.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from za warudo</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>lethalSave</code></dt><dd>{&quot;save&quot;:&quot;stopTime&quot;,&quot;durationSec&quot;:4,&quot;healTo&quot;:1,&quot;oncePerRun&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-carbonCopy" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="87" data-s-name="the carbon copy" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📑</span>
+          <h4>The Carbon Copy</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:carbonCopy" data-visual-use="entry">
+    <img src="wiki-assets/relics/carbon-copy.png" width="128" height="128" alt="Canonical in-game relic glyph for The Carbon Copy." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Every proc chance rolls a second time</p>
+      <p class="wgloss">Every chance you have rolls twice.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">30 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">The Copy. Every proc plays twice, the second a shade paler and a beat behind.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from overpowered lamp</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{&quot;procTwice&quot;:true}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-theSweep" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="88" data-s-name="the sweep" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🧹</span>
+          <h4>The Sweep</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:theSweep" data-visual-use="entry">
+    <img src="wiki-assets/relics/the-sweep.png" width="128" height="128" alt="Canonical in-game relic glyph for The Sweep." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">A slow whole-floor pull on gold and gems</p>
+      <p class="wgloss">Everything worth having on the floor gets up and comes to you.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">40 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">Leaves in a Gutter. Long arcs of coins and gems bend across the whole floor toward you.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from sucky magnet</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>flags</code></dt><dd>{}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-nightShift" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="89" data-s-name="the night shift" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">⚰️</span>
+          <h4>The Night Shift</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:nightShift" data-visual-use="entry">
+    <img src="wiki-assets/relics/night-shift.png" width="128" height="128" alt="Canonical in-game relic glyph for The Night Shift." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+0.5% Damage per soul, staged at 40 / 120 / 250 kills, never decays</p>
+      <p class="wgloss">Everything that dies near you is put to work, and your weapon remembers.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">50 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">Clocking In. A thread runs from each corpse into the weapon, which brightens through three stages and holds the brightest.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from soul harvester</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>killRamp</code></dt><dd>{&quot;per&quot;:1,&quot;stat&quot;:&quot;damage&quot;,&quot;amount&quot;:0.005,&quot;stages&quot;:[40,120,250]}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-standingOrders" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="90" data-s-name="standing orders" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">📋</span>
+          <h4>Standing Orders</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:standingOrders" data-visual-use="entry">
+    <img src="wiki-assets/relics/standing-orders.png" width="128" height="128" alt="Canonical in-game relic glyph for Standing Orders." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+0.20 armor rating; a 3m ring deals 20 damage per second</p>
+      <p class="wgloss">You are much harder to kill, and standing near you is a mistake.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">60 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">The Ring. A slow pale ring on the ground, one pulse per tick of the aura.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from holy book</span></div>
+      </div>
+      <details class="wraw"><summary>Canonical stat payload <span>1</span></summary><dl><div><dt><code>armor</code></dt><dd>0.2</dd></div></dl></details>
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>groundField</code></dt><dd>{&quot;shape&quot;:&quot;ring&quot;,&quot;radius&quot;:3,&quot;damagePerSec&quot;:20}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-lastLegs" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="91" data-s-name="last legs" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">💓</span>
+          <h4>Last Legs</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:lastLegs" data-visual-use="entry">
+    <img src="wiki-assets/relics/last-legs.png" width="128" height="128" alt="Canonical in-game relic glyph for Last Legs." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">+25% Move Speed, 2x Damage under 50% HP</p>
+      <p class="wgloss">Below half health you are faster and you hit twice as hard.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">70 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">Heartbeat. Motion blur on your trail and a vignette that beats from the instant it arms.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from speedy boi</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>condStats</code></dt><dd>{&quot;when&quot;:&quot;belowHalfHp&quot;,&quot;stats&quot;:{&quot;moveSpeed&quot;:0.25,&quot;damage&quot;:1}}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-fireLine" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="92" data-s-name="the fire line" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🔥</span>
+          <h4>The Fire Line</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:fireLine" data-visual-use="entry">
+    <img src="wiki-assets/relics/fire-line.png" width="128" height="128" alt="Canonical in-game relic glyph for The Fire Line." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">10% of hits draw an 8m line that burns for 5s</p>
+      <p class="wgloss">Your hits sometimes draw a line of fire across the world, and it stays lit.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">80 bosses beaten, counted across every run you have played.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">The Draw. A gout runs along the ground away from the impact point and stays.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">adapted from dragonfire</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>groundField</code></dt><dd>{&quot;shape&quot;:&quot;line&quot;,&quot;radius&quot;:8,&quot;durationSec&quot;:5}</dd></div></dl></details>
+
+      </article>
+      <article class="wcard" id="e-fallenStar" tabindex="-1" data-rarity="legendary" data-access="earned, then bought" data-effect="does something in the run" data-curse="no downside" data-arena="not included" data-s-roster="93" data-s-name="the fallen star" data-s-stacks="1">
+        <div class="wcard-h">
+          <span class="wcard-glyph" aria-hidden="true">🌠</span>
+          <h4>The Fallen Star</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="relics:fallenStar" data-visual-use="entry">
+    <img src="wiki-assets/relics/fallen-star.png" width="128" height="128" alt="Canonical in-game relic glyph for The Fallen Star." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <p class="wdesc">Every 40s, a 4.6s arc lands a 5.5m crater that burns and slows for 30s</p>
+      <p class="wgloss">Now and then a star crosses the sky and comes down on the thickest part of the crowd. The crater stays hot.</p>
+      <div class="wfacts">
+        <div class="wfact"><span class="wfact-k">How to get it</span><span class="wfact-v">Claim a star crater where one comes down.</span></div>
+        <div class="wfact"><span class="wfact-k">Then it costs</span><span class="wfact-v"><b>190</b> gold at the shop, once. Buying it adds the relic to your pool for good.</span></div>
+        <div class="wfact"><span class="wfact-k">Stack ceiling</span><span class="wfact-v"><b>1</b></span></div>
+        <div class="wfact"><span class="wfact-k">The tell</span><span class="wfact-v">The Long Arc. The streak crosses the whole sky first, so you have time to herd under it.</span></div>
+        <div class="wfact"><span class="wfact-k">Arena draft</span><span class="wfact-v">Not included</span></div>
+        <div class="wfact"><span class="wfact-k">Lineage</span><span class="wfact-v">WHOMP's own</span></div>
+      </div>
+
+      <details class="wraw"><summary>Canonical behaviour payload <span>1</span></summary><dl><div><dt><code>timedStrike</code></dt><dd>{&quot;strike&quot;:&quot;star&quot;,&quot;everySec&quot;:40,&quot;radius&quot;:5.5,&quot;damage&quot;:0}</dd></div></dl></details>
 
       </article></div>
     </section></div>
@@ -1369,7 +3071,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@621f2f6c5</code> on 2026-09-07 14:16 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 01:56 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>

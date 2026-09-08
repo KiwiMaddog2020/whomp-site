@@ -25,6 +25,11 @@
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
+     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
+     src/data/relics.ts, so the green on a wiki card is the green on the offer
+     card the player is actually looking at. */
+  --green:#3ff08a;
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -395,7 +400,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
   </div>
   <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>621f2f6c</code></span></div>
+    Live <b>0.7.20</b> · <code>9d427a77</code></span></div>
 </header>
 
 <section id="run">
@@ -447,9 +452,9 @@ h2{font-size:1.65rem;margin:0 0 6px}
       <p class="kit-line">All 20 unlocked from the start, each with a rule always on and a signature move.</p>
     </div>
     <div class="kit" id="kit-relics">
-      <div class="kit-meta"><span>34 to find</span><span>Not drafted</span></div>
+      <div class="kit-meta"><span>94 to find</span><span>Not drafted</span></div>
       <h3>THE RELICS</h3>
-      <p class="kit-line">Never on a level up card. All 34 come out of chests and trade machines.</p>
+      <p class="kit-line">Never on a level up card. All 94 come out of chests and trade machines.</p>
     </div></div>
 </section>
 
@@ -573,7 +578,7 @@ h2{font-size:1.65rem;margin:0 0 6px}
 </section>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@621f2f6c5</code> on 2026-09-07 14:16 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 01:56 UTC.
   The game is serving <code>0.7.20</code>.
 </footer>
 

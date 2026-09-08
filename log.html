@@ -25,6 +25,11 @@
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
+     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
+     src/data/relics.ts, so the green on a wiki card is the green on the offer
+     card the player is actually looking at. */
+  --green:#3ff08a;
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -369,7 +374,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>621f2f6c</code></span></div>
+    Live <b>0.7.20</b> · <code>9d427a77</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -421,24 +426,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">561 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
+    <p class="lede">607 player-visible changes landed in the last 7 days, across 7 of them. 3 releases were cut across 2 of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-07">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 36</span><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span></span>
       </div>
-      <p class="storyday-shape">5 changes landed: 4 fixed, 1 new.</p>
+      <p class="storyday-shape">50 changes landed: 36 new, 14 fixed.</p>
 
 
     </article>
     <article class="storyday" id="day-2026-09-06">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-06</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 40</span><span class="storyday-kind" style="background:var(--cyan)">New 36</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 40</span><span class="storyday-kind" style="background:var(--cyan)">New 37</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">79 changes landed: 40 fixed, 36 new, 2 polish, 1 performance.</p>
+      <p class="storyday-shape">80 changes landed: 40 fixed, 37 new, 2 polish, 1 performance.</p>
 
 
     </article>
@@ -1003,35 +1008,115 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-07</h4>
 
-    <div class="row" data-kind="fix" id="chg-3373c2397">
+    <div class="row" data-kind="fix" id="chg-7e51df53f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the five deploy 17 gate reds, four of them bookkeeping the night's landings owed <span class="scope">(gate)</span></span>
-      <span class="sha">3373c2397</span>
+      <span class="what">a dormant board stops writing to the avatar every other avatar shares <span class="scope">(hoverboard)</span></span>
+      <span class="sha">7e51df53f</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-5db0d98c0">
+    <div class="row" data-kind="fix" id="chg-0f50caf3b">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the arms go back to the middle, armGirth 0.520 -&gt; 0.810 <span class="scope">(groundwork)</span></span>
-      <span class="sha">5db0d98c0</span>
+      <span class="what">the report stops re-committing the banned name it is about <span class="scope">(deploy18-gate-reds)</span></span>
+      <span class="sha">0f50caf3b</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-fd890dcdf">
+    <div class="row" data-kind="fix" id="chg-e5f88896e">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the four deploy 16 gate reds, three of them mine <span class="scope">(gate)</span></span>
-      <span class="sha">fd890dcdf</span>
+      <span class="what">the key sweep stops reading a CSS keyframe as a storage key, and the night's two save leaves are classified <span class="scope">(fresh-eyes)</span></span>
+      <span class="sha">e5f88896e</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-c7ce55749">
+    <div class="row" data-kind="fix" id="chg-5459ec8cb">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the relic wave's two draws leave the shared stream, so L7's split holds again <span class="scope">(duel-core-rng)</span></span>
+      <span class="sha">5459ec8cb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-502a19d83">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the 0.7.20 entry describes deploy 16 (close keys, portal height, boss placement, leap marker, shrine reveal and pause guard, legendary moments, Groundbreaker and Cold Snap, Boom Box, statue select cost and near detail, the GPU leak, minimap and shield copy, wire kit validation, Echo Revenant) <span class="scope">(notes)</span></span>
-      <span class="sha">c7ce55749</span>
+      <span class="what">the movement station's raising and its post-and-canopy silhouette <span class="scope">(render)</span></span>
+      <span class="sha">502a19d83</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-b5559ccd8">
+    <div class="row" data-kind="feat" id="chg-31546d70f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">feed the station's kit into the live run, and stand the pickup down <span class="scope">(engine)</span></span>
+      <span class="sha">31546d70f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4ce7ef45c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the movement station arrives at 7:00, far from the live player <span class="scope">(sim)</span></span>
+      <span class="sha">4ce7ef45c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-39aff0953">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the placeholder slab becomes a fitted, lit, self-driving board <span class="scope">(hoverboard)</span></span>
+      <span class="sha">39aff0953</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-07ae1b834">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close R4 and R5, two more fixture files off retired/misused weapon ids <span class="scope">(coop-pick-character-id-guard)</span></span>
-      <span class="sha">b5559ccd8</span>
+      <span class="what">the vendor walks only the rungs the run pool can actually roll <span class="scope">(relic-vending)</span></span>
+      <span class="sha">07ae1b834</span>
     </div>
+    <div class="row" data-kind="feat" id="chg-e31215697">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the shrine reveal keeps its answer until the reel stops, and lands on the level-up draft's own animation <span class="scope">(shrines)</span></span>
+      <span class="sha">e31215697</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-699152762">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the relic shelf, grouped by rung, with curse ink <span class="scope">(relic-ui-shelf-and-ink)</span></span>
+      <span class="sha">699152762</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0794c051f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">uncommon relics read their own colour (P3) <span class="scope">(relic-ui-shelf-and-ink)</span></span>
+      <span class="sha">0794c051f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-38325b00d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">curse ink on the run sheet's relic rows <span class="scope">(relic-ui-shelf-and-ink)</span></span>
+      <span class="sha">38325b00d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-54fc3af2f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire curse ink at the three call sites <span class="scope">(relic-ui-shelf-and-ink)</span></span>
+      <span class="sha">54fc3af2f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-96fc8e742">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">curse field on the shared offer card <span class="scope">(relic-ui-shelf-and-ink)</span></span>
+      <span class="sha">96fc8e742</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fe0c840b5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">every near tier carved behind the loading screen, held for the session, and swapped as a cut <span class="scope">(hub)</span></span>
+      <span class="sha">fe0c840b5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6f941164d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the statue residency band exists now, so an 0.8 m wobble stops rebuilding the plaza <span class="scope">(hub)</span></span>
+      <span class="sha">6f941164d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7b442f613">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire relicShopCost and readiness fields into the data layer <span class="scope">(relic-rows)</span></span>
+      <span class="sha">7b442f613</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-82adaa752">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">author the 60 sixty catalogue rows <span class="scope">(relic-rows)</span></span>
+      <span class="sha">82adaa752</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6dce3a580">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a run's relic pool comes from the profile, set once <span class="scope">(relic-run-wiring)</span></span>
+      <span class="sha">6dce3a580</span>
+    </div><div class="row more">+ 30 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-06</h4>
 
+    <div class="row" data-kind="feat" id="chg-382b8a25c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">movementKit leaf, derived ownership, and the fixture's registration (ritual steps 3, part 1) <span class="scope">(meta)</span></span>
+      <span class="sha">382b8a25c</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-6da955a57">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the wire relic list is validated, and the abort arm bounds the seat by the room <span class="scope">(coop-attestation-fix)</span></span>
@@ -1126,12 +1211,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">optional once-only failure callback on guardStorageWithStatus <span class="scope">(save-write-warning)</span></span>
       <span class="sha">e540ecec3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6533e7434">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">seat the cloud and streak start on ground at cast <span class="scope">(blizzard-cast-height-570)</span></span>
-      <span class="sha">6533e7434</span>
-    </div><div class="row more">+ 59 more that day, not shown</div>
+    </div><div class="row more">+ 60 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-05</h4>
@@ -1808,12 +1888,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@621f2f6c5</code> on 2026-09-07 14:16 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 01:56 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">571 player-visible changes in the last 7 days, across 9 active days, 1521 internal-only commits filtered out</div>
+  <div class="stat">617 player-visible changes in the last 7 days, across 9 active days, 1622 internal-only commits filtered out</div>
 </footer>
 
 

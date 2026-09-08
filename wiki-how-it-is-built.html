@@ -25,6 +25,11 @@
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
+  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
+     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
+     src/data/relics.ts, so the green on a wiki card is the green on the offer
+     card the player is actually looking at. */
+  --green:#3ff08a;
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -364,6 +369,14 @@ html,body{max-width:100%;overflow-x:clip}
 .wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
 .wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
 .wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
+.wtag.ink-green{color:var(--green);border-color:rgba(63,240,138,.35)}
+/* THE CURSE PILL IS FILLED, NOT OUTLINED. It is the only warning on a relic
+   card, and it has to sit beside a rarity pill without being mistaken for one:
+   an Epic curse would otherwise show two identical outlined pink pills in a
+   row, which reads as a bug rather than a warning. The game marks the same
+   thing with a dark rim and the word Curse in the card's rarity ribbon; this
+   is that idea in the pill vocabulary this page already has. */
+.wtag.ink-curse{color:var(--ink);background:var(--pink);border-color:var(--pink)}
 
 .wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
 .wfact{display:flex;gap:10px;font-size:.85rem;align-items:baseline}
@@ -523,7 +536,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>621f2f6c</code></span></div>
+    Live <b>0.7.20</b> · <code>9d427a77</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -646,7 +659,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
     <section class="wfeature" aria-labelledby="the-pictures">
       <div><span class="eyebrow">The pictures</span><h3 id="the-pictures">The game drew them, alone</h3></div>
-      <p>The <b>286</b> images on these pages are not screenshots, and nobody drew them for the site. The game rendered each one itself, on a clear background under fixed light, and the build redraws all of them to compare against what it is about to publish.</p><p>A live world lights and repaints the same thing differently. Treat a picture here as the shape of a thing rather than the sight of it.</p><p>Every picture says so in one line underneath. The fine print under that line holds the whole method, the game's own caveats and where the picture was read from, for anyone who wants it.</p>
+      <p>The <b>346</b> images on these pages are not screenshots, and nobody drew them for the site. The game rendered each one itself, on a clear background under fixed light, and the build redraws all of them to compare against what it is about to publish.</p><p>A live world lights and repaints the same thing differently. Treat a picture here as the shape of a thing rather than the sight of it.</p><p>Every picture says so in one line underneath. The fine print under that line holds the whole method, the game's own caveats and where the picture was read from, for anyone who wants it.</p>
     </section>
 
 
@@ -661,13 +674,13 @@ footer a{color:var(--cyan);text-decoration:none}
       <b>the number the game runs on is not the number the page could show you</b>, and half a truth about damage is worse than an
       obvious hole.</p>
 
-    <p class="wcount">Coverage right now: <b>29</b> catalogs, <b>509</b> entries, <b>96</b> measured weapon rows,
-      <b>435</b> measured pairs, <b>286</b> pictures.</p>
+    <p class="wcount">Coverage right now: <b>29</b> catalogs, <b>569</b> entries, <b>96</b> measured weapon rows,
+      <b>435</b> measured pairs, <b>346</b> pictures.</p>
   </main>
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number in this wiki came straight out of the game, read at <code>game@621f2f6c5</code> on 2026-09-07 14:16 UTC.
+  Every number in this wiki came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 01:56 UTC.
   <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
