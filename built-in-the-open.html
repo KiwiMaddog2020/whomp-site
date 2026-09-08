@@ -25,11 +25,15 @@
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
-  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
-     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
-     src/data/relics.ts, so the green on a wiki card is the green on the offer
-     card the player is actually looking at. */
-  --green:#3ff08a;
+  /* THERE IS NO --green HERE ANY MORE, and its absence is the point. It was
+     added on 2026-09-07 as the uncommon rung's ink, hand-copied from the
+     game's RELIC_RARITY_COLOR.uncommon, and it was the only rung of five that
+     had been sourced from the game at all. Later the same day the director
+     ruled that the whole ladder follows the game, so all five rungs are now
+     read out of that table at build time and emitted as their own rules (see
+     parseRelicRarityInk above). This token's single consumer went with them,
+     and a palette entry nothing reads is a colour somebody will eventually
+     use for something unrelated on the strength of its name. */
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -315,7 +319,7 @@ h2{font-size:1.5rem;margin:6px 0 14px;max-width:48ch}
 </div>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 02:53 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 03:20 UTC.
   The game is serving <code>0.7.20</code>.
 </footer>
 

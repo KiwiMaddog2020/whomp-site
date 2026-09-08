@@ -25,11 +25,15 @@
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
-  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
-     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
-     src/data/relics.ts, so the green on a wiki card is the green on the offer
-     card the player is actually looking at. */
-  --green:#3ff08a;
+  /* THERE IS NO --green HERE ANY MORE, and its absence is the point. It was
+     added on 2026-09-07 as the uncommon rung's ink, hand-copied from the
+     game's RELIC_RARITY_COLOR.uncommon, and it was the only rung of five that
+     had been sourced from the game at all. Later the same day the director
+     ruled that the whole ladder follows the game, so all five rungs are now
+     read out of that table at build time and emitted as their own rules (see
+     parseRelicRarityInk above). This token's single consumer went with them,
+     and a palette entry nothing reads is a colour somebody will eventually
+     use for something unrelated on the strength of its name. */
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -369,13 +373,26 @@ html,body{max-width:100%;overflow-x:clip}
 .wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
 .wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
 .wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
-.wtag.ink-green{color:var(--green);border-color:rgba(63,240,138,.35)}
+/* The four above are the SITE's inks and they still dress site facts: an
+   element, a chain, a tier. The RARITY inks are not here. They are generated
+   one rule per rung from the game's own RELIC_RARITY_COLOR and injected after
+   this block by bin/generate.mjs, because a rarity colour is the game's to
+   decide and this file is not allowed to hold a second opinion about one.
+   (An .ink-green rule used to sit on this line, as the uncommon rung's ink and
+   the only rung sourced from the game. It left with the rest of the ladder.) */
 /* THE CURSE PILL IS FILLED, NOT OUTLINED. It is the only warning on a relic
-   card, and it has to sit beside a rarity pill without being mistaken for one:
-   an Epic curse would otherwise show two identical outlined pink pills in a
-   row, which reads as a bug rather than a warning. The game marks the same
-   thing with a dark rim and the word Curse in the card's rarity ribbon; this
-   is that idea in the pill vocabulary this page already has. */
+   card, and it has to sit beside a rarity pill without being mistaken for one.
+   It was filled because Epic was pink here and an Epic curse showed two
+   identical outlined pink pills in a row, which reads as a bug rather than as
+   a warning. Epic is violet now and no rung is pink, so that particular
+   collision is gone and the fill is no longer load-bearing against it.
+   IT STAYS FILLED ANYWAY, and not out of caution. Filled is the right shape
+   for this pill on its own merits: it is the one thing on a relic card that
+   is a warning rather than a label, the rarity inks are the game's and can be
+   re-pointed at any rung including a pink one without anybody here being
+   asked, and the game marks the same fact with a dark rim and the word Curse
+   in the card's rarity ribbon. An outline would be one director ruling away
+   from the same bug. */
 .wtag.ink-curse{color:var(--ink);background:var(--pink);border-color:var(--pink)}
 
 .wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
@@ -471,6 +488,16 @@ html,body{max-width:100%;overflow-x:clip}
 @media (prefers-reduced-motion:reduce){.whubcard{transition:none}}
 .wf:focus-visible,.wsort:focus-visible,.wside a:focus-visible,.wraw summary:focus-visible,.wempty button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
+/* The relic rarity ladder, generated one rule per rung from the game's own
+   RELIC_RARITY_COLOR. It sits after WIKI_CSS rather than inside it because
+   WIKI_CSS is a static string and this is the one block on the page whose
+   colours are read out of the game repo at build time. See the long note on
+   parseRelicRarityInk above, and relicRarityInkCss in bin/wiki.mjs. */
+.wtag.ink-rarity-common{color:#8fd6e6;border-color:rgba(143,214,230,0.35)}
+.wtag.ink-rarity-uncommon{color:#3ff08a;border-color:rgba(63,240,138,0.35)}
+.wtag.ink-rarity-rare{color:#4a9eff;border-color:rgba(74,158,255,0.35)}
+.wtag.ink-rarity-epic{color:#b060ff;border-color:rgba(176,96,255,0.35)}
+.wtag.ink-rarity-legendary{color:#ffd700;border-color:rgba(255,215,0,0.35)}
 .wside-section{border-top:1px solid rgba(255,243,207,.06)}
 .wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
   font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
@@ -706,7 +733,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/moldy-sandwich.png" width="128" height="128" alt="Canonical in-game relic glyph for Forager's Ration." loading="eager" decoding="async" fetchpriority="high" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+6 Max HP</p>
       <p class="wgloss">It survived the ruins. You probably will too.</p>
       <div class="wfacts">
@@ -731,7 +758,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/cracked-drumstick.png" width="128" height="128" alt="Canonical in-game relic glyph for Someone Else's Wand." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+2% Attack Speed</p>
       <p class="wgloss">It works. It has not agreed to work for you.</p>
       <div class="wfacts">
@@ -756,7 +783,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/blown-amp.png" width="128" height="128" alt="Canonical in-game relic glyph for Cracked Power Core." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+3% Damage</p>
       <p class="wgloss">Unstable means enthusiastic.</p>
       <div class="wfacts">
@@ -781,7 +808,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/frayed-cable.png" width="128" height="128" alt="Canonical in-game relic glyph for Frayed Conduit." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+4% Projectile Speed</p>
       <p class="wgloss">It sparks in the useful direction.</p>
       <div class="wfacts">
@@ -806,7 +833,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/setlist-scrap.png" width="128" height="128" alt="Canonical in-game relic glyph for Scout's Notes." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+3% XP Gain</p>
       <p class="wgloss">Most of the warnings are underlined twice.</p>
       <div class="wfacts">
@@ -831,7 +858,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/guitar-pick.png" width="128" height="128" alt="Canonical in-game relic glyph for Lucky Fang." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+2% Crit Chance</p>
       <p class="wgloss">The previous owner was less lucky.</p>
       <div class="wfacts">
@@ -856,7 +883,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/duct-tape.png" width="128" height="128" alt="Canonical in-game relic glyph for Field Repair Kit." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">3% less damage taken (diminishing)</p>
       <p class="wgloss">A permanent solution until it falls off.</p>
       <div class="wfacts">
@@ -881,7 +908,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/merch-coin.png" width="128" height="128" alt="Canonical in-game relic glyph for Legal Tender (Disputed)." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+4% Gold Gain</p>
       <p class="wgloss">Accepted everywhere. Disputed everywhere. Spent everywhere.</p>
       <div class="wfacts">
@@ -906,7 +933,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/stage-light-gel.png" width="128" height="128" alt="Canonical in-game relic glyph for The Lost-and-Found Lens." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+4% Pickup Range</p>
       <p class="wgloss">Items within its glow are considered found. This is a legal position, not a physical one.</p>
       <div class="wfacts">
@@ -931,7 +958,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/worn-tour-shirt.png" width="128" height="128" alt="Canonical in-game relic glyph for Weathered Cloak." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+0.2/s Regen</p>
       <p class="wgloss">Patched often. Abandoned never.</p>
       <div class="wfacts">
@@ -956,7 +983,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/pop-filter.png" width="128" height="128" alt="Canonical in-game relic glyph for Ward Mesh." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+4 Shield Capacity</p>
       <p class="wgloss">Catches trouble before trouble catches you.</p>
       <div class="wfacts">
@@ -981,7 +1008,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/warranty-void-sticker.png" width="128" height="128" alt="Canonical in-game relic glyph for The Warranty Void Sticker." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+25% Damage; your weapons can never evolve this run</p>
       <p class="wgloss">Big damage now. Your weapons can never evolve this run.</p>
       <div class="wfacts">
@@ -1006,7 +1033,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/load-bearing-anxiety.png" width="128" height="128" alt="Canonical in-game relic glyph for Load-Bearing Anxiety." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+0.10 armor rating while your shield is full</p>
       <p class="wgloss">While your shield is full you take much less damage. Only kills refill it.</p>
       <div class="wfacts">
@@ -1031,7 +1058,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/loyalty-punch-card.png" width="128" height="128" alt="Canonical in-game relic glyph for The Loyalty Punch Card." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Every 10th chest refunds its price</p>
       <p class="wgloss">Every tenth chest gives you your money back.</p>
       <div class="wfacts">
@@ -1056,7 +1083,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/kickback-clause.png" width="128" height="128" alt="Canonical in-game relic glyph for The Kickback Clause." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">4m self-impulse on slam</p>
       <p class="wgloss">Your Whomp throws you backwards, which is occasionally what you wanted.</p>
       <div class="wfacts">
@@ -1081,7 +1108,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/long-scarf.png" width="128" height="128" alt="Canonical in-game relic glyph for The Long Scarf." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+20% Damage while airborne</p>
       <p class="wgloss">You hit harder while your feet are off the ground.</p>
       <div class="wfacts">
@@ -1106,7 +1133,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/elbow-room.png" width="128" height="128" alt="Canonical in-game relic glyph for Elbow Room." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+12% Damage inside 3m</p>
       <p class="wgloss">Things standing right next to you take more.</p>
       <div class="wfacts">
@@ -1131,7 +1158,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/first-week.png" width="128" height="128" alt="Canonical in-game relic glyph for First Week." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+10% Move Speed, -12% Max HP</p>
       <p class="wgloss">You are faster. You are also new here.</p>
       <div class="wfacts">
@@ -1156,7 +1183,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/hazard-pay.png" width="128" height="128" alt="Canonical in-game relic glyph for Hazard Pay." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag">Common</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-common">Common</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">6 gold per hit taken</p>
       <p class="wgloss">Getting hit is billable.</p>
       <div class="wfacts">
@@ -1186,7 +1213,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/backstep-charm.png" width="128" height="128" alt="Canonical in-game relic glyph for Backstep Charm." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">A window after a hit refunds your next Boost charge (1.5s / 2.5s / 4s by stack)</p>
       <p class="wgloss">Your first Boost after taking a hit costs no charge.</p>
       <div class="wfacts">
@@ -1211,7 +1238,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/field-notes-annotated.png" width="128" height="128" alt="Canonical in-game relic glyph for Field Notes, Annotated." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Every 10th kill drops a second gem (8th / 6th by stack)</p>
       <p class="wgloss">Every tenth enemy you kill drops a second gem.</p>
       <div class="wfacts">
@@ -1236,7 +1263,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/beckoning-chime.png" width="128" height="128" alt="Canonical in-game relic glyph for Beckoning Chime." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Uncollected pickups drift to you after a 3s dwell</p>
       <p class="wgloss">Gold and gems you leave behind start drifting toward you after a few seconds.</p>
       <div class="wfacts">
@@ -1261,7 +1288,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/ward-rebound.png" width="128" height="128" alt="Canonical in-game relic glyph for Ward Rebound." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">A shield break radially shoves nearby enemies</p>
       <p class="wgloss">When your shield breaks it bursts, and shoves back whatever broke it.</p>
       <div class="wfacts">
@@ -1286,7 +1313,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/splitwick-candle.png" width="128" height="128" alt="Canonical in-game relic glyph for Splitwick Candle." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Burn spreads to 1 neighbour</p>
       <p class="wgloss">Your Burn spreads to one enemy standing beside the one that is burning.</p>
       <div class="wfacts">
@@ -1311,7 +1338,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/the-notch.png" width="128" height="128" alt="Canonical in-game relic glyph for The Notch." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">3 crits on one target staggers it</p>
       <p class="wgloss">Three crits on the same enemy stagger it.</p>
       <div class="wfacts">
@@ -1336,7 +1363,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/smoulder-soles.png" width="128" height="128" alt="Canonical in-game relic glyph for Smoulder Soles." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">A smouldering trail follows you</p>
       <p class="wgloss">The ground behind you smoulders while you run.</p>
       <div class="wfacts">
@@ -1361,7 +1388,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/whistle-for-the-pack.png" width="128" height="128" alt="Canonical in-game relic glyph for Whistle for the Pack." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Summoned helpers retarget to your last hit</p>
       <p class="wgloss">Your summoned helpers chase whatever you hit last.</p>
       <div class="wfacts">
@@ -1386,7 +1413,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/warm-brick.png" width="128" height="128" alt="Canonical in-game relic glyph for The Warm Brick." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">1.5 HP/s after standing still 2s</p>
       <p class="wgloss">Stand still and you start to heal. Move and it cools.</p>
       <div class="wfacts">
@@ -1411,7 +1438,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/mileage.png" width="128" height="128" alt="Canonical in-game relic glyph for Mileage." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">1 gold per 40m travelled</p>
       <p class="wgloss">You are paid by the metre. Someone is keeping count.</p>
       <div class="wfacts">
@@ -1436,7 +1463,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/spare-key.png" width="128" height="128" alt="Canonical in-game relic glyph for The Spare Key." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">The first chest on every floor costs nothing</p>
       <p class="wgloss">The first chest on every floor is free.</p>
       <div class="wfacts">
@@ -1461,7 +1488,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/short-fuse.png" width="128" height="128" alt="Canonical in-game relic glyph for The Short Fuse." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+50% affliction strength, -50% duration</p>
       <p class="wgloss">Your Burn, Freeze and Shock hit harder and end sooner.</p>
       <div class="wfacts">
@@ -1486,7 +1513,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/dropped-wrench.png" width="128" height="128" alt="Canonical in-game relic glyph for The Dropped Wrench." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-green">Uncommon</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-uncommon">Uncommon</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+40% slam damage, 1.0s Boost lockout after landing</p>
       <p class="wgloss">Your Whomp lands much harder. You cannot Boost for a moment after.</p>
       <div class="wfacts">
@@ -1516,7 +1543,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/reverb-pedal.png" width="128" height="128" alt="Canonical in-game relic glyph for Echo Stone." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+6% Effect Duration; a Slow/Freeze that expires on an enemy reapplies itself once, free</p>
       <p class="wgloss">A moment lingers inside long after it ends.</p>
       <div class="wfacts">
@@ -1541,7 +1568,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/spare-strings.png" width="128" height="128" alt="Canonical in-game relic glyph for Giant's Thread." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+5% Weapon Size (stacking); at 4 stacks, every hit knocks back</p>
       <p class="wgloss">Everything tied with it grows ambitious.</p>
       <div class="wfacts">
@@ -1566,7 +1593,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/roadie-gloves.png" width="128" height="128" alt="Canonical in-game relic glyph for Pathfinder Gloves." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">-6% Boost Cooldown; a kill while boosting fully refunds the charge</p>
       <p class="wgloss">Grip the world. Push off sooner.</p>
       <div class="wfacts">
@@ -1591,7 +1618,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/energy-drink.png" width="128" height="128" alt="Canonical in-game relic glyph for Energy Drink Case." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+3% Move Speed; climbs the longer you go unhit (resets on a hit)</p>
       <p class="wgloss">Sponsored. Definitely not FDA approved.</p>
       <div class="wfacts">
@@ -1616,7 +1643,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/backstage-pass.png" width="128" height="128" alt="Canonical in-game relic glyph for Merchant's Seal." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">-8% Merchant Prices (cap -24%)</p>
       <p class="wgloss">The mark of a customer worth keeping.</p>
       <div class="wfacts">
@@ -1641,7 +1668,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/feedback-loop.png" width="128" height="128" alt="Canonical in-game relic glyph for Resonance Loop." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Burn/Freeze/Shock +10% duration</p>
       <p class="wgloss">Every affliction leaves an echo.</p>
       <div class="wfacts">
@@ -1666,7 +1693,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/fog-machine.png" width="128" height="128" alt="Canonical in-game relic glyph for Fog Machine." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Enemy projectiles 6% slower</p>
       <p class="wgloss">Half atmosphere, half fire hazard.</p>
       <div class="wfacts">
@@ -1691,7 +1718,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/extra-verse.png" width="128" height="128" alt="Canonical in-game relic glyph for Scholar's Echo." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+5% double XP-gem chance</p>
       <p class="wgloss">One lesson, occasionally learned twice.</p>
       <div class="wfacts">
@@ -1716,7 +1743,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/cursed-setlist.png" width="128" height="128" alt="Canonical in-game relic glyph for Cursed Ledger." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+8% XP / -4% Gold gain</p>
       <p class="wgloss">Knowledge accrues. So does debt.</p>
       <div class="wfacts">
@@ -1741,7 +1768,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/feedback-screamer.png" width="128" height="128" alt="Canonical in-game relic glyph for Bossbane Sigil." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+12% dmg to bosses / +8% dmg from them</p>
       <p class="wgloss">It makes powerful enemies take you personally.</p>
       <div class="wfacts">
@@ -1766,7 +1793,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/evp-recorder.png" width="128" height="128" alt="Canonical in-game relic glyph for Spirit Vessel." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+1 ghost soft-cap</p>
       <p class="wgloss">There is always room for one more ghost.</p>
       <div class="wfacts">
@@ -1791,7 +1818,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/unrefrigerated-wheel.png" width="128" height="128" alt="Canonical in-game relic glyph for The Unrefrigerated Wheel." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">Aggro radius up, kills drop 2x gold and gems</p>
       <p class="wgloss">It smells. Everything comes. Everything that dies pays double.</p>
       <div class="wfacts">
@@ -1816,7 +1843,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/emotional-support-anvil.png" width="128" height="128" alt="Canonical in-game relic glyph for The Emotional Support Anvil." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">-12% Move Speed; immune to knockback and stagger</p>
       <p class="wgloss">You are slower. Nothing can move you. Nothing.</p>
       <div class="wfacts">
@@ -1841,7 +1868,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/spite-clause.png" width="128" height="128" alt="Canonical in-game relic glyph for The Spite Clause." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">60% of damage taken is stored (capped) and returned on your next hit</p>
       <p class="wgloss">Damage you take is stored, and your next hit gives it back.</p>
       <div class="wfacts">
@@ -1866,7 +1893,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/surveyors-chain.png" width="128" height="128" alt="Canonical in-game relic glyph for Surveyor's Chain." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+1% Damage per metre of range, capped at +30%</p>
       <p class="wgloss">The further away the target, the harder you hit it.</p>
       <div class="wfacts">
@@ -1891,7 +1918,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/deductible.png" width="128" height="128" alt="Canonical in-game relic glyph for The Deductible." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">The first 4 HP of a hit lands in full; the rest at 30%</p>
       <p class="wgloss">The first slice of every hit gets through. The rest barely does.</p>
       <div class="wfacts">
@@ -1916,7 +1943,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/compound-interest.png" width="128" height="128" alt="Canonical in-game relic glyph for Compound Interest." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+1% Gold Gain per 10s held, resets on spend</p>
       <p class="wgloss">Gold you don't spend grows. Spending resets it to nothing.</p>
       <div class="wfacts">
@@ -1941,7 +1968,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/nonstandard-ammunition.png" width="128" height="128" alt="Canonical in-game relic glyph for Nonstandard Ammunition." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Every 7th shot fires from a different weapon</p>
       <p class="wgloss">Every seventh shot comes out of a different weapon.</p>
       <div class="wfacts">
@@ -1966,7 +1993,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/eviction-notice.png" width="128" height="128" alt="Canonical in-game relic glyph for The Eviction Notice." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+15% Damage while moving; 3s standing still triggers a shove and 5 damage</p>
       <p class="wgloss">Stand still and the ground turns on you. Keep moving and you hit harder.</p>
       <div class="wfacts">
@@ -1991,7 +2018,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/rematch-chit.png" width="128" height="128" alt="Canonical in-game relic glyph for The Rematch Chit." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Once per run, a boss-only lethal hit sends you back to the door instead</p>
       <p class="wgloss">Fall to a boss and you get one more go from the door, the boss keeping the health it had left.</p>
       <div class="wfacts">
@@ -2016,7 +2043,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/preferred-customer.png" width="128" height="128" alt="Canonical in-game relic glyph for Preferred Customer." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+2% Luck per chest opened, for the run</p>
       <p class="wgloss">Every chest you open makes you luckier, for the rest of the run.</p>
       <div class="wfacts">
@@ -2041,7 +2068,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/big-spender.png" width="128" height="128" alt="Canonical in-game relic glyph for Big Spender." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+2.5% Damage per chest opened, for the run</p>
       <p class="wgloss">Every chest you open makes you hit harder, for the rest of the run.</p>
       <div class="wfacts">
@@ -2066,7 +2093,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/long-memory.png" width="128" height="128" alt="Canonical in-game relic glyph for Long Memory." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+0.1% Damage per kill, capped at +100%</p>
       <p class="wgloss">Every kill makes you angrier. It does not wear off.</p>
       <div class="wfacts">
@@ -2091,7 +2118,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/second-helping.png" width="128" height="128" alt="Canonical in-game relic glyph for Second Helping." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">25% of crits heal you for 10% of the hit</p>
       <p class="wgloss">Your crits sometimes give the wound back to you.</p>
       <div class="wfacts">
@@ -2116,7 +2143,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/late-rabbit.png" width="128" height="128" alt="Canonical in-game relic glyph for The Late Rabbit." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">One rabbit every 200m runs ahead for 8s, slowing what it crosses</p>
       <p class="wgloss">Walk far enough and a see-through rabbit catches up, then runs ahead tripping what it passes.</p>
       <div class="wfacts">
@@ -2141,7 +2168,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/spare-lantern.png" width="128" height="128" alt="Canonical in-game relic glyph for The Spare Lantern." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Absorbs one hit, relights after 30s</p>
       <p class="wgloss">A lantern floats at your shoulder. One hit goes out on it instead of you.</p>
       <div class="wfacts">
@@ -2166,7 +2193,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/right-of-way.png" width="128" height="128" alt="Canonical in-game relic glyph for Right of Way." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">The first hit within 0.6s of a Boost deals 2.5x and staggers</p>
       <p class="wgloss">Come out of a Boost and the first thing you touch regrets it.</p>
       <div class="wfacts">
@@ -2191,7 +2218,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/made-of-glass.png" width="128" height="128" alt="Canonical in-game relic glyph for Made of Glass." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+35% Damage, -40% Max HP</p>
       <p class="wgloss">You hit much harder. You should not be hit.</p>
       <div class="wfacts">
@@ -2216,7 +2243,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/the-advance.png" width="128" height="128" alt="Canonical in-game relic glyph for The Advance." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-violet">Rare</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-rare">Rare</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+80 gold on pickup; chest prices +15% for the run</p>
       <p class="wgloss">A bag of gold now. Every chest after costs more.</p>
       <div class="wfacts">
@@ -2246,7 +2273,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/overdriven-amp.png" width="128" height="128" alt="Canonical in-game relic glyph for Overcharged Core." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+10% Damage / -5% Max HP</p>
       <p class="wgloss">Power has borrowed space from safety.</p>
       <div class="wfacts">
@@ -2271,7 +2298,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/pyro-rig.png" width="128" height="128" alt="Canonical in-game relic glyph for Volatile Furnace." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Burn ticks +30% / +10% contact dmg taken</p>
       <p class="wgloss">The heat is excellent. The shielding is decorative.</p>
       <div class="wfacts">
@@ -2296,7 +2323,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/bass-drop.png" width="128" height="128" alt="Canonical in-game relic glyph for Quake Heart." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Shockwave knockback every 12s</p>
       <p class="wgloss">It beats once. The ground answers.</p>
       <div class="wfacts">
@@ -2321,7 +2348,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/crowd-surf-pads.png" width="128" height="128" alt="Canonical in-game relic glyph for Momentum Greaves." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+20% Move Speed 2s after a hit</p>
       <p class="wgloss">Pain becomes distance.</p>
       <div class="wfacts">
@@ -2346,7 +2373,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/golden-kazoo.png" width="128" height="128" alt="Canonical in-game relic glyph for Golden Idol." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">10% of gold pickups also drop XP</p>
       <p class="wgloss">It values wealth almost as much as wisdom.</p>
       <div class="wfacts">
@@ -2371,7 +2398,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/heavy-cab.png" width="128" height="128" alt="Canonical in-game relic glyph for Bastion Plate." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">7% less damage taken (diminishing), +10% Weapon Size / -5% Move Speed</p>
       <p class="wgloss">Subtlety was removed to save weight.</p>
       <div class="wfacts">
@@ -2396,7 +2423,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/strobe-rig.png" width="128" height="128" alt="Canonical in-game relic glyph for Blink Engine." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">+18% Attack Speed / -10% Move Speed</p>
       <p class="wgloss">Fast hands. Narrow focus.</p>
       <div class="wfacts">
@@ -2421,7 +2448,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/signature-solo.png" width="128" height="128" alt="Canonical in-game relic glyph for Duelist's Crest." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Raises a stat</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Raises a stat</span></div>
       <p class="wdesc">Every 5th crit roll on your weapons is a guaranteed crit (the aimed core rolls its own); +8% Crit Damage</p>
       <p class="wgloss">One perfect strike settles most arguments.</p>
       <div class="wfacts">
@@ -2446,7 +2473,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/understudy.png" width="128" height="128" alt="Canonical in-game relic glyph for The Understudy." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Your weakest weapon fights at your strongest weapon's rank</p>
       <p class="wgloss">Your worst weapon fights like your best one.</p>
       <div class="wfacts">
@@ -2471,7 +2498,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/committee-approval.png" width="128" height="128" alt="Canonical in-game relic glyph for Committee Approval." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">All weapons fire together on the slowest cadence; +20% volley damage</p>
       <p class="wgloss">All four weapons fire at once, on the slowest one's clock.</p>
       <div class="wfacts">
@@ -2496,7 +2523,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/company-card.png" width="128" height="128" alt="Canonical in-game relic glyph for The Company Card." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">100% off prices; billed every 60s, shortfall taken from HP</p>
       <p class="wgloss">Everything is free. The bill arrives every minute, and it is not optional.</p>
       <div class="wfacts">
@@ -2521,7 +2548,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/ill-advised-fireworks.png" width="128" height="128" alt="Canonical in-game relic glyph for Ill-Advised Fireworks." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">15% of kills explode in a 4m blast that also hurts you</p>
       <p class="wgloss">Some of the things you kill go off. It does not check who is nearby.</p>
       <div class="wfacts">
@@ -2546,7 +2573,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/grace-period.png" width="128" height="128" alt="Canonical in-game relic glyph for The Grace Period." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">5s to land 8 kills and stay up, once per run</p>
       <p class="wgloss">The hit that kills you gives you five seconds to argue.</p>
       <div class="wfacts">
@@ -2571,7 +2598,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/double-or-nothing-chit.png" width="128" height="128" alt="Canonical in-game relic glyph for The Double-or-Nothing Chit." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">On a chest, a coin flip trades a relic one rung up or takes it</p>
       <p class="wgloss">Seen your relic? Flip for a better one, or lose it entirely.</p>
       <div class="wfacts">
@@ -2596,7 +2623,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/souvenir.png" width="128" height="128" alt="Canonical in-game relic glyph for The Souvenir." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">On run end, unlock one held relic in the shop (still costs its rung price)</p>
       <p class="wgloss">When the run ends, one relic you held is unlocked in the shop, earned or not.</p>
       <div class="wfacts">
@@ -2621,7 +2648,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/star-cinder.png" width="128" height="128" alt="Canonical in-game relic glyph for The Star Cinder." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Every 20s, a 1.5m crater lands and burns for 6s</p>
       <p class="wgloss">A piece of the sky that is still warm. Every so often it falls where you are aiming.</p>
       <div class="wfacts">
@@ -2646,7 +2673,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/overbuilt.png" width="128" height="128" alt="Canonical in-game relic glyph for Overbuilt." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Raises a stat</span><span class="wtag ink-curse">Curse</span></div>
       <p class="wdesc">+0.25 armor rating, +40 Max HP, -18% Move Speed</p>
       <p class="wgloss">Much tougher. Much slower.</p>
       <div class="wfacts">
@@ -2671,7 +2698,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/underlined-twice.png" width="128" height="128" alt="Canonical in-game relic glyph for Underlined Twice." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">15% of crits also hit again at 2.5x</p>
       <p class="wgloss">Sometimes a crit crits again.</p>
       <div class="wfacts">
@@ -2696,7 +2723,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/loose-wire.png" width="128" height="128" alt="Canonical in-game relic glyph for The Loose Wire." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">One orbiter arcs to a target within 4m every 1.2s, chaining to 3</p>
       <p class="wgloss">A live wire orbits you and arcs to whatever comes close.</p>
       <div class="wfacts">
@@ -2721,7 +2748,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/whompus-weighs-in.png" width="128" height="128" alt="Canonical in-game relic glyph for Whompus Weighs In." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-pink">Epic</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-epic">Epic</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Every 45s the Whompus slams the biggest enemy within 12m for 8x weapon damage and staggers it</p>
       <p class="wgloss">Every so often the Whompus drops out of the sky onto the biggest thing nearby. It has been asked to look first.</p>
       <div class="wfacts">
@@ -2751,7 +2778,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/encore-flare.png" width="128" height="128" alt="Canonical in-game relic glyph for Phoenix Flare." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Revive once per run at 50% HP</p>
       <p class="wgloss">Death gets one objection.</p>
       <div class="wfacts">
@@ -2776,7 +2803,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/master-tape.png" width="128" height="128" alt="Canonical in-game relic glyph for The Retrofit." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+2% Damage; Evolved weapons a further +10%, un-evolved weapons a further +5%</p>
       <p class="wgloss">Every final form remembers this design. The design has notes.</p>
       <div class="wfacts">
@@ -2801,7 +2828,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/tour-bus.png" width="128" height="128" alt="Canonical in-game relic glyph for Wayfarer's Compass." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+12% Move Speed, +1 Boost Charge</p>
       <p class="wgloss">It points toward somewhere worth reaching quickly.</p>
       <div class="wfacts">
@@ -2826,7 +2853,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/gold-master-disc.png" width="128" height="128" alt="Canonical in-game relic glyph for The Grandfathered Rate." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+25% Gold, chest costs escalate 25% slower</p>
       <p class="wgloss">Your prices were agreed a long time ago. Nobody has been able to locate the agreement.</p>
       <div class="wfacts">
@@ -2851,7 +2878,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/full-whomp.png" width="128" height="128" alt="Canonical in-game relic glyph for The Full Whomp." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Slam radius x2, slam damage x2.5, camera kick</p>
       <p class="wgloss">Your Whomp becomes absurd.</p>
       <div class="wfacts">
@@ -2876,7 +2903,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/stoppage-time.png" width="128" height="128" alt="Canonical in-game relic glyph for Stoppage Time." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">4s world-stop, you keep 1 HP, once per run</p>
       <p class="wgloss">The blow that would kill you stops the world instead.</p>
       <div class="wfacts">
@@ -2901,7 +2928,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/carbon-copy.png" width="128" height="128" alt="Canonical in-game relic glyph for The Carbon Copy." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Every proc chance rolls a second time</p>
       <p class="wgloss">Every chance you have rolls twice.</p>
       <div class="wfacts">
@@ -2926,7 +2953,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/the-sweep.png" width="128" height="128" alt="Canonical in-game relic glyph for The Sweep." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">A slow whole-floor pull on gold and gems</p>
       <p class="wgloss">Everything worth having on the floor gets up and comes to you.</p>
       <div class="wfacts">
@@ -2951,7 +2978,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/night-shift.png" width="128" height="128" alt="Canonical in-game relic glyph for The Night Shift." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+0.5% Damage per soul, staged at 40 / 120 / 250 kills, never decays</p>
       <p class="wgloss">Everything that dies near you is put to work, and your weapon remembers.</p>
       <div class="wfacts">
@@ -2976,7 +3003,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/standing-orders.png" width="128" height="128" alt="Canonical in-game relic glyph for Standing Orders." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+0.20 armor rating; a 3m ring deals 20 damage per second</p>
       <p class="wgloss">You are much harder to kill, and standing near you is a mistake.</p>
       <div class="wfacts">
@@ -3001,7 +3028,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/last-legs.png" width="128" height="128" alt="Canonical in-game relic glyph for Last Legs." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">+25% Move Speed, 2x Damage under 50% HP</p>
       <p class="wgloss">Below half health you are faster and you hit twice as hard.</p>
       <div class="wfacts">
@@ -3026,7 +3053,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/fire-line.png" width="128" height="128" alt="Canonical in-game relic glyph for The Fire Line." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">10% of hits draw an 8m line that burns for 5s</p>
       <p class="wgloss">Your hits sometimes draw a line of fire across the world, and it stays lit.</p>
       <div class="wfacts">
@@ -3051,7 +3078,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <img src="wiki-assets/relics/fallen-star.png" width="128" height="128" alt="Canonical in-game relic glyph for The Fallen Star." loading="lazy" decoding="async" data-pixelated="false">
   </figure>
 
-      <div class="wtags"><span class="wtag ink-gold">Legendary</span><span class="wtag ink-cyan">Does something in the run</span></div>
+      <div class="wtags"><span class="wtag ink-rarity-legendary">Legendary</span><span class="wtag">Does something in the run</span></div>
       <p class="wdesc">Every 40s, a 4.6s arc lands a 5.5m crater that burns and slows for 30s</p>
       <p class="wgloss">Now and then a star crosses the sky and comes down on the thickest part of the crowd. The crater stays hot.</p>
       <div class="wfacts">
@@ -3071,7 +3098,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 02:53 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 03:20 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>

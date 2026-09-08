@@ -25,11 +25,15 @@
 :root{
   --ink:#06040e; --lift:#1e0e2a; --outline:#151023;
   --pink:#ff2f7e; --cyan:#24f0ff; --violet:#b14bff; --gold:#ffcf3f;
-  /* The relic ladder's fifth rung, added 2026-09-07 with the uncommon tier.
-     Verbatim from the game's own RELIC_RARITY_COLOR.uncommon in
-     src/data/relics.ts, so the green on a wiki card is the green on the offer
-     card the player is actually looking at. */
-  --green:#3ff08a;
+  /* THERE IS NO --green HERE ANY MORE, and its absence is the point. It was
+     added on 2026-09-07 as the uncommon rung's ink, hand-copied from the
+     game's RELIC_RARITY_COLOR.uncommon, and it was the only rung of five that
+     had been sourced from the game at all. Later the same day the director
+     ruled that the whole ladder follows the game, so all five rungs are now
+     read out of that table at build time and emitted as their own rules (see
+     parseRelicRarityInk above). This token's single consumer went with them,
+     and a palette entry nothing reads is a colour somebody will eventually
+     use for something unrelated on the strength of its name. */
   --cream:#fff3cf; --body:#cfc6dd; --dim:#8d84a1;
   --sweep:linear-gradient(90deg,var(--pink),var(--cyan));
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
@@ -369,13 +373,26 @@ html,body{max-width:100%;overflow-x:clip}
 .wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
 .wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
 .wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
-.wtag.ink-green{color:var(--green);border-color:rgba(63,240,138,.35)}
+/* The four above are the SITE's inks and they still dress site facts: an
+   element, a chain, a tier. The RARITY inks are not here. They are generated
+   one rule per rung from the game's own RELIC_RARITY_COLOR and injected after
+   this block by bin/generate.mjs, because a rarity colour is the game's to
+   decide and this file is not allowed to hold a second opinion about one.
+   (An .ink-green rule used to sit on this line, as the uncommon rung's ink and
+   the only rung sourced from the game. It left with the rest of the ladder.) */
 /* THE CURSE PILL IS FILLED, NOT OUTLINED. It is the only warning on a relic
-   card, and it has to sit beside a rarity pill without being mistaken for one:
-   an Epic curse would otherwise show two identical outlined pink pills in a
-   row, which reads as a bug rather than a warning. The game marks the same
-   thing with a dark rim and the word Curse in the card's rarity ribbon; this
-   is that idea in the pill vocabulary this page already has. */
+   card, and it has to sit beside a rarity pill without being mistaken for one.
+   It was filled because Epic was pink here and an Epic curse showed two
+   identical outlined pink pills in a row, which reads as a bug rather than as
+   a warning. Epic is violet now and no rung is pink, so that particular
+   collision is gone and the fill is no longer load-bearing against it.
+   IT STAYS FILLED ANYWAY, and not out of caution. Filled is the right shape
+   for this pill on its own merits: it is the one thing on a relic card that
+   is a warning rather than a label, the rarity inks are the game's and can be
+   re-pointed at any rung including a pink one without anybody here being
+   asked, and the game marks the same fact with a dark rim and the word Curse
+   in the card's rarity ribbon. An outline would be one director ruling away
+   from the same bug. */
 .wtag.ink-curse{color:var(--ink);background:var(--pink);border-color:var(--pink)}
 
 .wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
@@ -471,6 +488,16 @@ html,body{max-width:100%;overflow-x:clip}
 @media (prefers-reduced-motion:reduce){.whubcard{transition:none}}
 .wf:focus-visible,.wsort:focus-visible,.wside a:focus-visible,.wraw summary:focus-visible,.wempty button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
+/* The relic rarity ladder, generated one rule per rung from the game's own
+   RELIC_RARITY_COLOR. It sits after WIKI_CSS rather than inside it because
+   WIKI_CSS is a static string and this is the one block on the page whose
+   colours are read out of the game repo at build time. See the long note on
+   parseRelicRarityInk above, and relicRarityInkCss in bin/wiki.mjs. */
+.wtag.ink-rarity-common{color:#8fd6e6;border-color:rgba(143,214,230,0.35)}
+.wtag.ink-rarity-uncommon{color:#3ff08a;border-color:rgba(63,240,138,0.35)}
+.wtag.ink-rarity-rare{color:#4a9eff;border-color:rgba(74,158,255,0.35)}
+.wtag.ink-rarity-epic{color:#b060ff;border-color:rgba(176,96,255,0.35)}
+.wtag.ink-rarity-legendary{color:#ffd700;border-color:rgba(255,215,0,0.35)}
 .wside-section{border-top:1px solid rgba(255,243,207,.06)}
 .wside-section summary{display:list-item;list-style-position:inside;padding:10px 12px;color:var(--gold);cursor:pointer;
   font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:8px}
@@ -680,7 +707,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number in this wiki came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 02:53 UTC.
+  Every number in this wiki came straight out of the game, read at <code>game@9d427a77d</code> on 2026-09-08 03:20 UTC.
   <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
 </footer>
 
