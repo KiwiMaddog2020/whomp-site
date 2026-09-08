@@ -256,6 +256,34 @@ expectModelFailure('unknown group classification', (d) => {
   d.domains.relics.entries[id].rarity = '__contractProbe';
 }, /group classification|__contractProbe/);
 
+/* THE THREE SHAPES A RELIC EFFECT COMES IN, broken one at a time. On
+   2026-09-07 the v40 wave shipped 60 relics carrying `effects`, a shape the
+   conditional contract did not know, and the deploy refused 106 times over
+   with no page written. That refusal was correct and this pins that it stays:
+   a card whose behaviour the page cannot read is not quietly published. */
+expectModelFailure('a relic that says nothing about what it does', (d) => {
+  const id = d.domains.relics.order[0];
+  const entry = d.domains.relics.entries[id];
+  delete entry.stats;
+  delete entry.event;
+  delete entry.effects;
+}, /conditional displayed field (stats|event|effects)/);
+
+/* THE DOOR HAS WORDS, or the build stops. This is the half the field contract
+   above cannot see: an unlock rule can carry every field its kind needs and
+   still reach a reader as a blank fact row, because having the data and having
+   a sentence for it are different things. A gated relic on a public page that
+   never says how it is earned is the failure this refuses. */
+expectModelFailure('a relic door this page has no words for', (d) => {
+  const id = d.domains.relics.order.find((key) => d.domains.relics.entries[key].unlock);
+  d.domains.relics.entries[id].unlock = { kind: '__contractProbe', at: 1 };
+}, /has no sentence for|__contractProbe/);
+
+expectModelFailure('a lifetime counter this page cannot name', (d) => {
+  const id = d.domains.relics.order.find((key) => d.domains.relics.entries[key].unlock?.kind === 'lifetime');
+  d.domains.relics.entries[id].unlock = { kind: 'lifetime', stat: '__contractProbe', at: 1 };
+}, /has no sentence for|__contractProbe/);
+
 expectModelFailure('expanded public domain disappears', (d) => {
   // Leave the table present but remove it from the canonical public order. A
   // model that silently keeps rendering this dangling domain is also stale.

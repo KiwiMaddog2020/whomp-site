@@ -273,6 +273,56 @@ const FEEL_NOTE = {
   nerve: 'standing in it one beat longer than feels wise',
 };
 
+/** ONE INK PER RUNG. Was a nested ternary inside the card template, which is
+ *  why the fifth rung arrived colourless: `uncommon` fell through to the same
+ *  bare pill Common wears, and two rungs of a five-rung ladder looked alike.
+ *  A table instead, so the next rung is one line here and is visibly missing
+ *  rather than silently plain. */
+const RELIC_RARITY_INK = {
+  uncommon: 'green', rare: 'violet', epic: 'pink', legendary: 'gold',
+};
+
+/** RELIC DOORS, in the game's own display words. src/ui/shopPanel.ts holds a
+ *  `describeRelicUnlock` that writes the line a player reads on the locked
+ *  shelf, and these are its nouns copied across rather than reworded, so the
+ *  shop and this page cannot describe the same door two ways. If the game adds
+ *  a counter, the contract below refuses the build instead of printing a card
+ *  whose door is blank.
+ *
+ *  UNCOPIED ON PURPOSE: the word "Unlocks". The shop says it because a shelf
+ *  row has no label above it; here the fact's own label is the verb. */
+const RELIC_LIFETIME_NOUN = {
+  kills: 'kills',
+  runs: 'runs',
+  bosses: 'bosses beaten',
+  chests: 'chests opened',
+  deaths: 'deaths',
+  gold: 'gold earned',
+  shrines: 'shrines visited',
+};
+
+/** The two starfall doors. `tier` is the size of the thing that came down, and
+ *  the game's own claim prompt calls them the cinder and the fallen star. */
+const RELIC_STARFALL_TIER = { cinder: 'a cinder crater', star: 'a star crater' };
+
+/** The sentence under "How to get it". Returns null for a door this page has
+ *  no words for, which the source contract turns into a refused build. */
+const relicUnlockLine = (unlock) => {
+  if (!unlock) return 'Nothing to earn. It is in the pool from your first run.';
+  if (unlock.kind === 'lifetime') {
+    const noun = RELIC_LIFETIME_NOUN[unlock.stat];
+    return noun ? `${unlock.at} ${noun}, counted across every run you have played.` : null;
+  }
+  if (unlock.kind === 'clears') {
+    return `${unlock.at} full clears, counted across every run you have played.`;
+  }
+  if (unlock.kind === 'event') {
+    const tier = RELIC_STARFALL_TIER[unlock.tier];
+    return tier ? `Claim ${tier} where one comes down.` : null;
+  }
+  return null;
+};
+
 // ---------------------------------------------------------------- CSS
 const WIKI_CSS = `
 /* One number, because four things depend on the height of the sticky search
@@ -443,6 +493,14 @@ const WIKI_CSS = `
 .wtag.ink-pink{color:var(--pink);border-color:rgba(255,47,126,.35)}
 .wtag.ink-gold{color:var(--gold);border-color:rgba(255,207,63,.35)}
 .wtag.ink-violet{color:var(--violet);border-color:rgba(177,75,255,.35)}
+.wtag.ink-green{color:var(--green);border-color:rgba(63,240,138,.35)}
+/* THE CURSE PILL IS FILLED, NOT OUTLINED. It is the only warning on a relic
+   card, and it has to sit beside a rarity pill without being mistaken for one:
+   an Epic curse would otherwise show two identical outlined pink pills in a
+   row, which reads as a bug rather than a warning. The game marks the same
+   thing with a dark rim and the word Curse in the card's rarity ribbon; this
+   is that idea in the pill vocabulary this page already has. */
+.wtag.ink-curse{color:var(--ink);background:var(--pink);border-color:var(--pink)}
 
 .wfacts{display:flex;flex-direction:column;gap:6px;margin:0}
 .wfact{display:flex;gap:10px;font-size:.85rem;align-items:baseline}
@@ -1414,16 +1472,44 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   // ---- relics -------------------------------------------------------------
   const relicEntries = ordered(R);
   const relicWeightTotal = Object.values(R.baseWeights || {}).reduce((sum, weight) => sum + weight, 0);
+  const relicGated = relicEntries.filter((e) => R.refs[e.id]?.gated);
+  /* A stat card is a card that is NOTHING BUT its stat payload. The moment it
+     carries a bespoke handler or a behaviour row it is doing something a stat
+     line cannot say, and which of those two the game used to build it is not
+     the player's business (see rule 12 in docs/VOICE.md). Two values, not
+     three, and the description under the tag says the specifics. */
+  const relicIsStatCard = (e) => !e.event && !e.effects;
+  /* The behaviour rows, folded into the fine print by their own kind rather
+     than by array index, so a reader who opens it sees "timedStrike" and not
+     "0". Two rows of one kind is possible (one card has it today), hence the
+     count suffix. */
+  const relicEffectPayload = (effects) => {
+    const seen = new Map();
+    const out = {};
+    for (const { kind, ...rest } of effects || []) {
+      const n = (seen.get(kind) || 0) + 1;
+      seen.set(kind, n);
+      out[n > 1 ? `${kind} ${n}` : kind] = rest;
+    }
+    return out;
+  };
   const relicsRoster = {
     section: 'Buildcraft',
     slug: 'relics',
     domain: 'relics',
     title: 'Relics',
     tagline: 'Small things you pick up, and keep picking up.',
-    lede: 'A relic is a find you can take again and again until it hits its ceiling. Most of them are one small number in your favor, a few of them are one small number in your favor and a smaller one against you, and the rare ones are rare because the game says so.',
+    lede: `A relic is a find you can take again and again until it hits its ceiling. Of the ${relicEntries.length} here, ${relicEntries.length - relicGated.length} are in your pool from the first run, and the other ${relicGated.length} sit behind two doors: playing enough puts one on the shop shelf, and gold is what takes it off.`,
     omissions: '<b>No relic has a letter grade here.</b> Grading one would mean first deciding which build it is sitting in and what the chests cost that run, and neither of those has been measured, so a ladder would be a guess said with a straight face. Every relic in the game is on this page. The order they sit in is not a ranking.',
     entries: relicEntries,
-    groups: ['common', 'rare', 'epic', 'legendary'].map((rarity) => ({
+    /* THE RUNGS, READ FROM THE DRAW TABLE rather than typed here. This list was
+       four hand-written rarities, and when the v40 wave opened a fifth rung the
+       thirteen cards standing on it belonged to no group and the build refused.
+       R.baseWeights is the game's own draw table and its key order is the
+       ladder, so a sixth rung arrives on this page by itself.
+       Still fail-closed: a rarity that is NOT in the draw table matches no
+       group and refuses, which is what bin/wiki-check.mjs probes for. */
+    groups: Object.keys(R.baseWeights || {}).map((rarity) => ({
       key: rarity,
       title: humanize(rarity),
       note: R.baseWeights?.[rarity] !== undefined
@@ -1433,7 +1519,9 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     })),
     facets: [
       { key: 'rarity', label: 'Rarity', of: (e) => e.rarity },
-      { key: 'effect', label: 'Effect source', of: (e) => e.event ? 'triggers itself' : 'raises a stat' },
+      { key: 'access', label: 'How to get it', of: (e) => R.refs[e.id]?.gated ? 'earned, then bought' : 'yours from the start' },
+      { key: 'effect', label: 'What it does', of: (e) => relicIsStatCard(e) ? 'raises a stat' : 'does something in the run' },
+      { key: 'curse', label: 'Downside', of: (e) => R.refs[e.id]?.curse ? 'carries a curse' : 'no downside' },
       { key: 'arena', label: 'Arena draft', of: (e) => R.refs[e.id]?.inArenaPool ? 'included' : 'not included' },
     ],
     sorts: [
@@ -1441,17 +1529,24 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
       { key: 'stacks', label: 'Max stacks', of: (e) => e.maxStacks, desc: true },
     ],
-    searchText: (e) => `${e.desc} ${e.flavor} ${e.rarity} relic ${Object.keys(e.stats || {}).join(' ')}`,
+    searchText: (e) => `${e.desc} ${e.flavor} ${e.rarity} relic ${Object.keys(e.stats || {}).join(' ')}`
+      + ` ${relicUnlockLine(e.unlock) || ''} ${R.refs[e.id]?.curse ? 'curse cursed downside' : ''}`
+      + ` ${e.telegraph || ''} ${e.lineage || ''}`,
     icon: (e) => e.icon,
     card: (e) => `
-      <div class="wtags">${tag(esc(humanize(e.rarity)), e.rarity === 'legendary' ? 'gold' : e.rarity === 'epic' ? 'pink' : e.rarity === 'rare' ? 'violet' : '')}${e.event ? tag('Triggers itself', 'cyan') : tag('Raises a stat', 'cyan')}</div>
+      <div class="wtags">${tag(esc(humanize(e.rarity)), RELIC_RARITY_INK[e.rarity] || '')}${tag(relicIsStatCard(e) ? 'Raises a stat' : 'Does something in the run', 'cyan')}${R.refs[e.id]?.curse ? tag('Curse', 'curse') : ''}</div>
       <p class="wdesc">${esc(e.desc)}</p>
       ${e.flavor ? `<p class="wgloss">${esc(e.flavor)}</p>` : ''}
       <div class="wfacts">
+        ${fact('How to get it', esc(relicUnlockLine(e.unlock)))}
+        ${R.refs[e.id]?.gated ? fact('Then it costs', `<b>${num(R.refs[e.id].shopCost)}</b> gold at the shop, once. Buying it adds the relic to your pool for good.`) : ''}
         ${fact('Stack ceiling', `<b>${e.maxStacks}</b>`)}
+        ${e.telegraph ? fact('The tell', esc(e.telegraph)) : ''}
         ${fact('Arena draft', R.refs[e.id]?.inArenaPool ? 'Included' : 'Not included')}
+        ${e.lineage ? fact('Lineage', esc(e.lineage)) : ''}
       </div>
-      ${sourceParams(e.stats, 'Canonical stat payload')}`,
+      ${sourceParams(e.stats, 'Canonical stat payload')}
+      ${sourceParams(relicEffectPayload(e.effects), 'Canonical behaviour payload')}`,
   };
 
   // ---- tomes --------------------------------------------------------------
@@ -2793,7 +2888,11 @@ export const DISPLAY_REF_FIELD_PATHS = Object.freeze({
     { path: 'splitsInto', when: (entry) => !!entry.onDeath?.split?.kindId },
     { path: 'splitsFrom', when: (entry, D) => Object.values(D.domains.enemies.entries).some((row) => row.onDeath?.split?.kindId === entry.id) },
   ],
-  relics: ['inArenaPool'],
+  /* `gated`, `shopCost` and `curse` are computed in bin/data-layer.mjs rather
+     than copied, and the game repo landed them there for this page. Reading
+     them here is what lets a card say how it is earned and what it costs
+     without the site minting a number of its own. */
+  relics: ['inArenaPool', 'gated', 'shopCost', 'curse'],
   passives: [
     { path: 'requiredByEvolutions', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.passiveId === entry.id) },
     { path: 'unlockedByAchievements', when: (entry, D) => Object.values(D.domains.achievements.entries).some((row) => row.unlocks?.passive === entry.id) },
@@ -2896,9 +2995,27 @@ export const DISPLAY_CONDITIONAL_FIELD_PATHS = Object.freeze({
     { path: 'evolved', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id) },
   ],
   passives: [{ path: 'shieldRegenPerLevel', when: (entry) => entry.id === 'aegisTome' }],
+  /* THREE WAYS A RELIC SAYS WHAT IT DOES, and the game names all three itself:
+     src/sim/relicSupport.ts counts a card supported when it is stats-only, when
+     every one of its `effects` rows has a registered kind, or when its id has a
+     bespoke handler (the `event` flag). This was written here as a two-way
+     exclusive-or, stats against event, and on 2026-09-07 the v40 wave added 60
+     relics carrying `effects` and neither of the other two. Both arms fired on
+     every one of them, the deploy refused 106 times over, and it was right to:
+     the page had no way to say what those cards do. One arm per shape now. A
+     relic carrying none of the three still trips all three, which is the
+     fail-closed half worth keeping.
+
+     The unlock rows underneath are the other half of the same lesson. A door
+     the page cannot describe is worse than a refused build, because it ships a
+     card that quietly never says how you get it. */
   relics: [
-    { path: 'stats', when: (entry) => !entry.event },
-    { path: 'event', when: (entry) => !entry.stats },
+    { path: 'stats', when: (entry) => !entry.event && !entry.effects },
+    { path: 'event', when: (entry) => !entry.stats && !entry.effects },
+    { path: 'effects', when: (entry) => !entry.stats && !entry.event },
+    { path: 'unlock.at', when: (entry) => ['lifetime', 'clears'].includes(entry.unlock?.kind) },
+    { path: 'unlock.stat', when: (entry) => entry.unlock?.kind === 'lifetime' },
+    { path: 'unlock.tier', when: (entry) => entry.unlock?.kind === 'event' },
   ],
   shrineMovement: [{ path: 'maxStacks', when: (entry) => entry.id !== 'extraJump' }],
   jumpAugments: [{ path: 'maxLevel', when: (entry) => entry.id === 'jumpPower' }],
@@ -4048,6 +4165,19 @@ export function buildWiki(ctx) {
     || !ultimateRoster.entries.some((entry) => entry.id === 'whomp')) {
     violations.push('WHOMP Ultimate taxonomy or stable ultimates/#e-whomp route contract has drifted');
   }
+  /* EVERY RELIC DOOR HAS A SENTENCE, or this build does not ship.
+     The conditional rows above prove the unlock rule carries the fields its
+     kind needs. They cannot prove this page has words for that kind, and a
+     kind with no words is the quiet failure: the card renders, the fact row
+     goes missing, and a locked relic sits on a public page never saying how
+     it is earned. `relicUnlockLine` returns null exactly there, so asking it
+     is the check. 2026-09-07: `event` doors arrived with the v40 wave. */
+  for (const entry of Object.values(D.domains.relics?.entries || {})) {
+    if (relicUnlockLine(entry.unlock) === null) {
+      violations.push(`relic ${entry.id} is unlocked by ${JSON.stringify(entry.unlock)}, which this page has no sentence for`);
+    }
+  }
+
   const enemyScaling = D.domains.enemies?.scaling;
   if (!['hpPer25s', 'damagePer30s', 'speedPer50s', 'xpPer120s'].every((field) => Number.isFinite(enemyScaling?.[field]) && enemyScaling[field] >= 0)) {
     violations.push('enemy scaling does not expose separate finite health, damage, speed and XP clocks');
