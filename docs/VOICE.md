@@ -16,6 +16,12 @@ The locked tone, `docs/GAME_SPEC.md` (Tone bullet):
 
 The wiki is the straight man. The announcer is not on this site.
 
+**Single-slogan rule** (director's word, 2026-09-09): wherever a surface on
+this site shows exactly one fixed, non-rotating slogan for the game, that
+slogan is "Politely Violent." A surface that rotates through a pool (like the
+title-screen taglines below, which already carry "Politely violent." as one of
+eight) is left alone.
+
 **Title screen taglines**, `src/ui/mainMenu.ts` (`TAGLINES`):
 "It's a hammer." / "The horde is a physics object." / "The ghosts started it." /
 "Cardio, with consequences." / "Politely violent." / "The ghosts are unionizing.
