@@ -378,7 +378,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>b5edf522</code></span></div>
+    Live <b>0.7.20</b> · <code>821c75a4</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -430,15 +430,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">550 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">460 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-09-09">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-09-09</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span></span>
+      </div>
+      <p class="storyday-shape">5 changes landed, all of them fixes.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-09-08">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-08</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 31</span><span class="storyday-kind" style="background:var(--pink)">Fixed 27</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 57</span><span class="storyday-kind" style="background:var(--pink)">Fixed 45</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">58 changes landed: 31 new, 27 fixed.</p>
+      <p class="storyday-shape">103 changes landed: 57 new, 45 fixed, 1 performance.</p>
 
 
     </article>
@@ -454,9 +463,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-06">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-06</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 40</span><span class="storyday-kind" style="background:var(--cyan)">New 37</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 41</span><span class="storyday-kind" style="background:var(--cyan)">New 37</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">80 changes landed: 40 fixed, 37 new, 2 polish, 1 performance.</p>
+      <p class="storyday-shape">81 changes landed: 41 fixed, 37 new, 2 polish, 1 performance.</p>
 
 
     </article>
@@ -485,17 +494,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
       <p class="storyday-shape">92 changes landed: 48 fixed, 39 new, 5 performance.</p>
 
-
-    </article>
-    <article class="storyday" id="day-2026-09-02">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-09-02</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 79</span><span class="storyday-kind" style="background:var(--cyan)">New 62</span></span>
-      </div>
-      <p class="storyday-shape">141 changes landed: 79 fixed, 62 new.</p>
-      <a class="storyday-release" href="#release-0-7-20">
-        <b>v0.7.20</b><span>The shorter game lands: three bosses at 4:30, 9:00 and 13:30, the bank at 15:00, the hammer hits when it hits, and the world keeps its shape in the distance.</span>
-      </a>
 
     </article></div>
   </section>
@@ -1006,108 +1004,137 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-09-09</h4>
+
+    <div class="row" data-kind="fix" id="chg-fc5bb10b9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">re-point the plaque and roster pins onto the statue-boss repoint <span class="scope">(gate-reds-d21)</span></span>
+      <span class="sha">fc5bb10b9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fc76b8c2d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">read the interact prompt's clearance from the bottom-centre owner, not a literal in toasts.ts <span class="scope">(gate-reds-d21)</span></span>
+      <span class="sha">fc76b8c2d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bb010bca9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">re-point the crossorigin suite to where modulepreload actually lives now <span class="scope">(gate-reds-d21)</span></span>
+      <span class="sha">bb010bca9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3b537a320">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the banned company name out of tonight's cutscene docs, and the pruned tagline off the landing <span class="scope">(gate-reds-d21)</span></span>
+      <span class="sha">3b537a320</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-832815103">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the deferred re-date, the landing's audio decision, and its type back on the ramp <span class="scope">(gate-reds-d21)</span></span>
+      <span class="sha">832815103</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-09-08</h4>
 
-    <div class="row" data-kind="fix" id="chg-b5edf5229">
+    <div class="row" data-kind="fix" id="chg-32a197201">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the six deploy 20 gate reds, each a cross-lane miss the scoped checks could not see <span class="scope">(gate)</span></span>
-      <span class="sha">b5edf5229</span>
+      <span class="what">the engine chunk's RAW ceiling moves 6075 -&gt; 6093 in both suites that read it; the loft is the arrival at +4.65 KiB and there was nothing cheaper to take first <span class="scope">(pins)</span></span>
+      <span class="sha">32a197201</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-f4bc1d891">
+    <div class="row" data-kind="fix" id="chg-38a7f7d40">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the hub's two exact triangle pins move by -632 for the lofted cow and pig, by printline copy from this lane's own run <span class="scope">(pins)</span></span>
+      <span class="sha">38a7f7d40</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f59cf9a88">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">loft() closes each end with a pole fan wound WITH its body quads, so no normal on the cow or the pig faces inward; the r3 pin was measuring the cow's shape and now carries its own counterfactual <span class="scope">(paddock)</span></span>
+      <span class="sha">f59cf9a88</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4a411616c">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">The Deductible and Splitwick Candle land as combat behaviour <span class="scope">(relics)</span></span>
-      <span class="sha">f4bc1d891</span>
+      <span class="what">the cow and the pig are one lofted skin each with authored smooth normals the update turns, the material is smooth, the cow wears a patterned coat on the mesh and the hen keeps her flat look by name (report 617) <span class="scope">(paddock)</span></span>
+      <span class="sha">4a411616c</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-a409702bc">
+    <div class="row" data-kind="fix" id="chg-a241d8466">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">correct leg C's ledge to 11 m so it measures jump, and pin the corrected band verdict <span class="scope">(movement-course)</span></span>
-      <span class="sha">a409702bc</span>
+      <span class="what">seven cross-lane reds after the evening's landings, each with its reason; coreAura reads the bottom-centre owner instead of CSS literals, engine gzip 1845 -&gt; 1855, first paint raw 1065 -&gt; 1070, chunk total 8070 -&gt; 8090, the firstMinutes roster 13 -&gt; 18 for the six hub teaching beats <span class="scope">(pins)</span></span>
+      <span class="sha">a241d8466</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-778a03f57">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the placeholder census fails closed on new placeholders and reports retired ones <span class="scope">(tests)</span></span>
-      <span class="sha">778a03f57</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d2d043a6b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">supportsRelic requires a real payload, not just a registered kind <span class="scope">(relic-readiness-tighten)</span></span>
-      <span class="sha">d2d043a6b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7bcdffea6">
+    <div class="row" data-kind="feat" id="chg-b98ab17c4">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire Whistle for the Pack retarget seam <span class="scope">(relic-whistle-seam)</span></span>
-      <span class="sha">7bcdffea6</span>
+      <span class="what">the cow and the pig are one lofted skin each with authored smooth normals the update turns, the material is smooth, the cow wears a patterned coat on the mesh and the hen keeps her flat look by name (report 617) <span class="scope">(paddock)</span></span>
+      <span class="sha">b98ab17c4</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-0514d5235">
+    <div class="row" data-kind="fix" id="chg-b91ba0f4d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the E rung refuses the two display-only interactable kinds <span class="scope">(hub)</span></span>
+      <span class="sha">b91ba0f4d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3b2beb35a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">RGBA vertex colour so the morph-colour vertex shader compiles (three r185 adds a vec3 into the vec4 vColor under plain USE_COLOR; found live by bin/shot.sh, the hub behind the crash overlay, invisible to every suite); the station turn at 4.5 rad/s over 0.75 s; the paw lift on the raw swing fraction; ?catHold=1 pins the cat clock for a capture; the slide law measures between two settled stance frames <span class="scope">(cats)</span></span>
+      <span class="sha">3b2beb35a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-4889de8e8">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">The Understudy, Nonstandard Ammunition and The Spite Clause ride the weapon hit funnel <span class="scope">(relics)</span></span>
-      <span class="sha">0514d5235</span>
+      <span class="what">the replacement first post staged, the hammer landed at 700 ms with the director's text; held by today's cadence until he deletes the first post and says so <span class="scope">(social)</span></span>
+      <span class="sha">4889de8e8</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-c87569c2b">
+    <div class="row" data-kind="fix" id="chg-d90dd2801">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the station's term fits the two window scans that guard this file <span class="scope">(engine)</span></span>
-      <span class="sha">c87569c2b</span>
+      <span class="what">five cross-lane pins moved with provenance after tonight's landings; achievements roster 63 -&gt; 77 (fourteen statue deeds), hubRegions doc-index fence 50 -&gt; 52 (lava docs), engine chunk raw 6060 -&gt; 6075 (lava fragment pass), first paint raw 1060 -&gt; 1065 (mobile gate in first paint), total chunks 8050 -&gt; 8070 <span class="scope">(pins)</span></span>
+      <span class="sha">d90dd2801</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-dd366c437">
+    <div class="row" data-kind="feat" id="chg-53ef30acb">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the station's rack is presented, so chooseMovementKit finally has a caller <span class="scope">(engine)</span></span>
-      <span class="sha">dd366c437</span>
+      <span class="what">add WHOMP_SHOT_GPU door and take the capture lock only after floors pass <span class="scope">(shot)</span></span>
+      <span class="sha">53ef30acb</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-7531ef6a4">
+    <div class="row" data-kind="feat" id="chg-fa7c3eaa8">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the walk-up policy, per seat, so the co-op ruling is measurable <span class="scope">(sim)</span></span>
-      <span class="sha">7531ef6a4</span>
+      <span class="what">split the four-ask teaching prompt into six sequenced beats <span class="scope">(hub)</span></span>
+      <span class="sha">fa7c3eaa8</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-5a420eabf">
+    <div class="row" data-kind="feat" id="chg-48777273e">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the movement station's rack, three cards on the shared offer surface <span class="scope">(ui)</span></span>
-      <span class="sha">5a420eabf</span>
+      <span class="what">a panel beat draws its shipped illustration when one exists, and its code-drawn painting when one does not <span class="scope">(cutscene)</span></span>
+      <span class="sha">48777273e</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-f46831e61">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the calibration ratio derives the container's reading from the baseline it scales <span class="scope">(tests)</span></span>
-      <span class="sha">f46831e61</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-bde642776">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">deployTrain no longer reads the operator's live process table, and its fixtures cover the other four review items <span class="scope">(test)</span></span>
-      <span class="sha">bde642776</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8fda4dbb1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">deploy-train carries the halt, the porcelain check and the sha-bound stamp wait the review named <span class="scope">(deploy)</span></span>
-      <span class="sha">8fda4dbb1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2e6903f4b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the reachability table learns the relic strike's voice, so main is green after the strike landed <span class="scope">(tests)</span></span>
-      <span class="sha">2e6903f4b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-78efc4582">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the poster's palette stripe shows the world's authored colours, not the exposed ones <span class="scope">(loading)</span></span>
-      <span class="sha">78efc4582</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6c703a159">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">build the band window from composed matrices, re-baseline the four signed rows <span class="scope">(robe-containment)</span></span>
-      <span class="sha">6c703a159</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-600ef2bb9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stop the daemon on a failed push instead of advancing past it <span class="scope">(land-queue)</span></span>
-      <span class="sha">600ef2bb9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6694ec3ca">
+    <div class="row" data-kind="feat" id="chg-f0d88aede">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">voice the relic timed strike on its landed onset <span class="scope">(relic-strike-voice)</span></span>
-      <span class="sha">6694ec3ca</span>
+      <span class="what">the hammer reshoot set, ten pre-impact frames on a true mid-swing vantage, eight post-impact, a run-camera control and two contact sheets <span class="scope">(shots)</span></span>
+      <span class="sha">f0d88aede</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-e7e85975b">
+    <div class="row" data-kind="feat" id="chg-1abb6cf67">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Double-or-Nothing Chit, Beckoning Chime and The Sweep <span class="scope">(relics)</span></span>
-      <span class="sha">e7e85975b</span>
-    </div><div class="row more">+ 38 more that day, not shown</div>
+      <span class="what">the cats face their travel and their paws stay planted, and the model is a cat (reports 561, 569, 622, 623) <span class="scope">(cats)</span></span>
+      <span class="sha">1abb6cf67</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1b4e98f15">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">one owner for the bottom-centre stack, so the hint card cannot sit under the power-up timers <span class="scope">(hud)</span></span>
+      <span class="sha">1b4e98f15</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8a13003b3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the hub greeter answers and prints its keys <span class="scope">(greeter)</span></span>
+      <span class="sha">8a13003b3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1bbb503fd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">drop the Bluesky link from the phone screen, director's word 2026-09-08 6:27pm; the quiet row keeps Dev log and Wiki <span class="scope">(mobile-landing-notice)</span></span>
+      <span class="sha">1bbb503fd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0c3f17cbb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the landing screen, measured in a real browser, and the report <span class="scope">(mobile-landing-notice)</span></span>
+      <span class="sha">0c3f17cbb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1705a0486">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">five WHOMP-hammer candidates for the first post's replacement still, plus 1:1 and 4:5 crops of the leader <span class="scope">(shots)</span></span>
+      <span class="sha">1705a0486</span>
+    </div><div class="row more">+ 83 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-07</h4>
@@ -1315,7 +1342,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">optional once-only failure callback on guardStorageWithStatus <span class="scope">(save-write-warning)</span></span>
       <span class="sha">e540ecec3</span>
-    </div><div class="row more">+ 60 more that day, not shown</div>
+    </div><div class="row more">+ 61 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-05</h4>
@@ -1629,213 +1656,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">2482345b8</span>
     </div><div class="row more">+ 72 more that day, not shown</div>
   </div>
-  <div class="day">
-    <h4>2026-09-02</h4>
-
-    <div class="row" data-kind="fix" id="chg-220314095">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Event Horizon legs stay inside his robe - the director ruled widen the taper just enough (v31 ruling 40) and the lane measured what just enough costs: standing, 107.4 mm of leg outside the robe becomes 0.0; walking, the worst frame 185.1 mm becomes 82.6, under Elder Star own 90.6 on the identical legs; the taper doubles, which is +10.5 cm at the knee and +27.4 cm at the hem, four times the brief budget, with the surge flare and lean re-derived so the wider robe stays inside its own bell (report #529; lane robe-taper-529) <span class="scope">(wizards)</span></span>
-      <span class="sha">220314095</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cbc10b941">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the forge road step and the Court west wedge stop hanging players up - the director's two hub reports (#523 the invisible walls and the step to flatten, #524 the weird ridge of land players get hung up on), each located by coordinate, measured column by column at one-metre steps and cured at the cause: every reachable column drawn, every stop visible, the wedge smoothed into the grass; walk tests in the bluff lane's pattern with the censuses re-pinned, seventeen suites green. At the landing the conductor resolved the baseline conflict to main and re-measured by printline on the merged tree (live triangles 1,518,651, island work 729,685, the island digest re-derived), and the claim retired into the merge. FRAME DEBT: the before-and-after frames at the three vantages are owed, their commands in the report's section 8 (reports #523 and #524; lane hub-ground-523-524) <span class="scope">(hub)</span></span>
-      <span class="sha">cbc10b941</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2bb9efebe">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-derive Event Horizon's surge flare and lean for the ruling-40 bell, so the wider robe stays inside the cast's one shield capsule <span class="scope">(wizards)</span></span>
-      <span class="sha">2bb9efebe</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-32330a2ca">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the hub collision ceiling 174 to 176 was the sampler re-phasing, not a collider coming unhooked - the brief said the coplanar landing leaked through its omitEdge predicate and the lane disproved it (the predicate reaches nothing it should not, no src file needed to change); the census subsamples on a stride and the seam-band removal re-phased which hits it sees, proven by the same sweep with no subsampling; the ceiling is honest at 176 and the DEBT is withdrawn with its reason at the line (a correct negative; lane bluff-coplanar-r2) <span class="scope">(census)</span></span>
-      <span class="sha">32330a2ca</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a9011f65e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hero mass outline ships as a renderer pass - the director picked the bolder silhouette from the sheet (v31 ruling 36): a 2 px screen-constant outline on nineteen of twenty rigs, Whompus off with the sheet reason, tier-gated (toaster off), installed on the run player avatar and deliberately not in the hub (not play distance, and the plaza is the tightest draw surface in the game), cost measured on all twenty rigs with a draw ceiling two above the worst case, both draw ledgers correctly unmoved (v31 ruling 36; lane silhouette-outline-build) <span class="scope">(render)</span></span>
-      <span class="sha">a9011f65e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6116581d6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the silhouette floor dial is gone - measured invisible at its ratified value on Meadowfall, Shiverpeak and Hellmouth (the frames lane: switching it off moves fewer pixels than rendering the same frame twice), so it leaves the curve, the rungs, the settings and the pixel pin lever list; the clear band stays because the same measurement shows it doing real work, and the ladder wording now says what a rung actually trades (haze distance, not frame time) since the far plane clips but never culls (v31 ruling 39; lane fog-floor-drop) <span class="scope">(fog)</span></span>
-      <span class="sha">6116581d6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-512736b65">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">install the hero mass outline on the run's player avatar <span class="scope">(engine)</span></span>
-      <span class="sha">512736b65</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0ae8ce4a6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">widen Event Horizon's `d` taper by ruling 40 - 107.4 mm of leg outside his robe standing becomes 0.0, and the walking clip lands under the control rig's own <span class="scope">(wizards)</span></span>
-      <span class="sha">0ae8ce4a6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f9d5edbf8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">174 -&gt; 176 was the sampler re-phasing, not a collider coming unhooked - the DEBT charged to bluff-coplanar is withdrawn and the family gets a count that cannot be re-phased <span class="scope">(census)</span></span>
-      <span class="sha">f9d5edbf8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-26497cacd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hero mass outline as a real renderer pass, per-rig flagged and tier-gated <span class="scope">(render)</span></span>
-      <span class="sha">26497cacd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-670e51c7c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">remove the silhouette floor, measured invisible on every world <span class="scope">(fog)</span></span>
-      <span class="sha">670e51c7c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4a68ce8f2">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Ember seam's cap floor and the Frost foot's toe (#523), the court's north shore eased to the plaza's plane (#524) - two director reports on hub landform, executed as ground moves <span class="scope">(hub)</span></span>
-      <span class="sha">4a68ce8f2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b62731023">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Groundwork arms stop clipping into his chest - the director report #528 measured (185 mm standing, 198 mm walking, the left forearm into the chest plate), the cause one character (the splay sign on his rest pose, the abduction ledger retired for his two rows), the plate own width named as the two thirds no dial reaches; at the landing the conductor re-pointed the island digest, the carved Court count (+40 at 40 mm) and the hub baselines by printline on the merged tree and regenerated the cast-walk metrics; the claim retired into the merge (report #528; lane groundwork-arm-clip-528) <span class="scope">(rig)</span></span>
-      <span class="sha">b62731023</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c5c9ffc8d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Court meets in the middle - the statue carve 50 mm to 40 mm (report #531, the director at 5:34 pm): the ladder measured (205,108 to 268,082 to 359,013 Court triangles at 50, 40 and 30 mm; 40 mm is the last rung inside the 1.55M ceiling, 31,375 under on the rebased tree), the worst silhouette loss 24.9 to 19.7 mm, the island work ceiling raised by the measured cost, two carve findings fixed, every conflicting pin re-measured on the rebased tree with the island digest re-derived (v31 ruling 4 and #531; lanes court-statues-mid and court-statues-mid-rebase) <span class="scope">(hub)</span></span>
-      <span class="sha">c5c9ffc8d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7e6e754cf">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">fauna-restage stages on site #2 STATION 2, not station 1 - the site's own resident sat sunning on station 1 at every clock the sheet uses (sink 0, node run of the same day), so every first-pass cell was two animals superimposed and the buried burrow beats were invisible under it; the burrow beats fix the clock, so the resident is dodged in space; the contact-sheet composer lands with the station-2 ground checks <span class="scope">(lane)</span></span>
-      <span class="sha">7e6e754cf</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-afc6efa4b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-measure every conflicting pin on the rebased tree (report #531) <span class="scope">(hub)</span></span>
-      <span class="sha">afc6efa4b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2becb469c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a placed Blizzard seats where the cursor points on relief - the director report #525 measured to its cause (the aimed-core ground pick used a flat plane, sliding the placement 1.4 m on slopes; the hit volume never sank, pinned false), the terrain-following pick wired at three sites (the aimed core, the training yard, the Leap reticle), 41 suites green (report #525; lane blizzard-ground-clip) <span class="scope">(aim)</span></span>
-      <span class="sha">2becb469c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-72d5c31af">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Groundwork's arms stop clipping into his own chest - the splay sign (#528) <span class="scope">(rig)</span></span>
-      <span class="sha">72d5c31af</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cdbc2e92a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the statue carve drops collinear survivors, and the numbers move with it <span class="scope">(hub)</span></span>
-      <span class="sha">cdbc2e92a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-5761e30f9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Court meets in the middle - statue carve 50 mm -&gt; 40 mm (report #531) <span class="scope">(hub)</span></span>
-      <span class="sha">5761e30f9</span>
-    </div><div class="row more">+ 121 more that day, not shown</div>
-  </div>
-  <div class="day">
-    <h4>2026-09-01</h4>
-
-    <div class="row" data-kind="fix" id="chg-1002817d8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the two reds the gate found - a reversed seam in the pack frame, and a back-mass pin that could not tell a carried torch from a chest <span class="scope">(blackline)</span></span>
-      <span class="sha">1002817d8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-acb6b2944">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the shield envelope re-measured over the rebuilt body, and maxZ was holding by six tenths of a millimetre <span class="scope">(blackline)</span></span>
-      <span class="sha">acb6b2944</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-564722177">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the clip sweep's three worst pairs, and the worst of them was older than this lane <span class="scope">(blackline)</span></span>
-      <span class="sha">564722177</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a2601539a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the back becomes a system - pack frame, the filter hose from the respirator to the tank, a rolled shelter and a belt radio, and the chest strap grows the shoulder half it never had <span class="scope">(blackline)</span></span>
-      <span class="sha">a2601539a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6c0b41a41">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the legs get a quad, a calf, a knee pad and a real boot - and the sole plane does not move, with the arithmetic for why no re-point was needed <span class="scope">(blackline)</span></span>
-      <span class="sha">6c0b41a41</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f7e834ea6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">he holds the torch - the fist wraps a real arc round the shaft and the torch is a child of the right forearm, with the ratified diagonal solved rather than retyped <span class="scope">(blackline)</span></span>
-      <span class="sha">f7e834ea6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b659ff8f6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the arms belong to the body - the deltoid seated inside the coat, a leather pad over the seam, and the lean flipped so the shoulder can come in without burying the glove <span class="scope">(blackline)</span></span>
-      <span class="sha">b659ff8f6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-649a85ab7">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the torso is a V, the collar has a bib, and the coat closes behind him - report #507's cavity is gone because the skirt is two lapping halves rather than two thigh flaps <span class="scope">(blackline)</span></span>
-      <span class="sha">649a85ab7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2d5b6d22c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the double-support pelvis - both feet solved against one body, and the two shared values that were never about the leg they were written on <span class="scope">(gait)</span></span>
-      <span class="sha">2d5b6d22c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-64d3101ca">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the aim point learns altitude - every beam, chain, zap and sentry stopped pointing at the ground column under a flying boss <span class="scope">(sim)</span></span>
-      <span class="sha">64d3101ca</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-65ab4929c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the leave-and-return latch retired game-wide - E acts on what is in range, every time <span class="scope">(sim)</span></span>
-      <span class="sha">65ab4929c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c7df802f1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">every surface that names a boss reads the dress - results, share card, run summary, co-op board <span class="scope">(ui)</span></span>
-      <span class="sha">c7df802f1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f67ca9578">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the boss plate announces the DRESS, not the donor - one display-name authority reading the resolved variant <span class="scope">(sim)</span></span>
-      <span class="sha">f67ca9578</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-645a991aa">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the state witness is mandatory, and an unproven run banks nothing <span class="scope">(coop)</span></span>
-      <span class="sha">645a991aa</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9bcdc3865">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">an abort no longer wins a duel on its sender's word alone <span class="scope">(net)</span></span>
-      <span class="sha">9bcdc3865</span>
-    </div>
-  </div>
-  <div class="day">
-    <h4>2026-08-29</h4>
-
-    <div class="row" data-kind="fix" id="chg-c4c8e6ef8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the fitness ceiling learns to see memory - the load pair passed 9.37/11.48 against 12.00 while six captures died at 0.2-0.4 fps (photo-pass, 2026-08-29), because a SwiftShader thrashing swap is blocked on page-ins and barely moves the number it dies under; free+inactive and free swap now carry floors (2048MB/1024MB, zero swap total passes) in the same loop, same --load-wait poll, same announcing override, with WHOMP_FAKE_MEM beside the shared fake seams and the shot suites pinned to healthy paper memory so the box's own starvation cannot flip them <span class="scope">(shot)</span></span>
-      <span class="sha">c4c8e6ef8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-274d96c83">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">an --eval exception is the caller's bug, never a transport failure - Chrome answering promptly with the script's own TypeError no longer wears the CDP_TIMEOUT_MS caption that sent the photo-pass lane auditing GPU flags over a typo in its own argument; the timeout rejection alone carries that advice (tagged where send() gives up), a thrown --eval is refused at its call site with the bad-caller-input code, the line and column, and the page's own exception text, and an injected-script throw names itself as the tool's page-side bug; pinned end to end by a fake devtools endpoint that answers the --eval with exceptionDetails in one test and goes quiet in the other <span class="scope">(shot)</span></span>
-      <span class="sha">274d96c83</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-30b2a56a4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the LV chip hears a run it was born after - Progression's constructor seeds the Opening Loadout by emitting 'levelUp' thousands of lines before createRun builds the Hud, so a maxed ?unlockAll profile photographed at boot read LV 1 and was diagnosed as unbought (summit-opener-sequence, 2026-08-29); the chip now seeds from live progression state on the line after its construction, no announce, and the regression suite pins the miss, the truth, and the wiring <span class="scope">(hud)</span></span>
-      <span class="sha">30b2a56a4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-445a15309">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the gate ids come true - #402/#403's 'locked' terrain was built from 'frost'/'ember'/'void' through an as-unknown cast, none of them HubGateIds, so hubSealBlocks matched nothing and every locked pin in those clauses was a landmass-only number wearing a locked label; the perimeter-ramp-clean re-pin named the defect and deferred the cure to its own change with its own measurement, and this is it - locked now built from HUB_GATE_IDS itself, cast gone so the compiler holds the ids, both pins re-measured from the suite's own printlines on the fixed tree (#402 locked 27 -&gt; 108, #403 locked 67 -&gt; 88, both opens untouched at 5 and 18), the extra refusals being the seals consulted for the first time in these clauses' history; swept the rest of tests/ for the same cast and there is no second copy <span class="scope">(tests)</span></span>
-      <span class="sha">445a15309</span>
-    </div>
-  </div>
 
     </div>
   </section>
@@ -1933,12 +1753,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@b5edf5229</code> on 2026-09-08 22:34 UTC.
+  Every number on this page came straight out of the game, read at <code>game@821c75a49</code> on 2026-09-09 11:09 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">569 player-visible changes in the last 7 days, across 9 active days, 1524 internal-only commits filtered out</div>
+  <div class="stat">460 player-visible changes in the last 7 days, across 7 active days, 1332 internal-only commits filtered out</div>
 </footer>
 
 
