@@ -378,7 +378,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>821c75a4</code></span></div>
+    Live <b>0.7.20</b> · <code>bebdb80f</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -430,24 +430,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">460 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
+    <p class="lede">484 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-09">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-09</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 18</span><span class="storyday-kind" style="background:var(--cyan)">New 8</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">5 changes landed, all of them fixes.</p>
+      <p class="storyday-shape">27 changes landed: 18 fixed, 8 new, 1 performance.</p>
 
 
     </article>
     <article class="storyday" id="day-2026-09-08">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-08</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 57</span><span class="storyday-kind" style="background:var(--pink)">Fixed 45</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 57</span><span class="storyday-kind" style="background:var(--pink)">Fixed 47</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">103 changes landed: 57 new, 45 fixed, 1 performance.</p>
+      <p class="storyday-shape">105 changes landed: 57 new, 47 fixed, 1 performance.</p>
 
 
     </article>
@@ -1006,35 +1006,115 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-09</h4>
 
-    <div class="row" data-kind="fix" id="chg-fc5bb10b9">
+    <div class="row" data-kind="fix" id="chg-57a5fdce0">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-point the plaque and roster pins onto the statue-boss repoint <span class="scope">(gate-reds-d21)</span></span>
-      <span class="sha">fc5bb10b9</span>
+      <span class="what">the patch-notes header comment no longer spells a quoted version literal; bin/release-channel.mjs greps the first one in the file and refused deploy 22 after a green gate <span class="scope">(notes)</span></span>
+      <span class="sha">57a5fdce0</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-fc76b8c2d">
+    <div class="row" data-kind="fix" id="chg-829e38430">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">read the interact prompt's clearance from the bottom-centre owner, not a literal in toasts.ts <span class="scope">(gate-reds-d21)</span></span>
-      <span class="sha">fc76b8c2d</span>
+      <span class="what">Whompus's wall envelope takes the crown-mass and mirrored-hand widening <span class="scope">(data)</span></span>
+      <span class="sha">829e38430</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-bb010bca9">
+    <div class="row" data-kind="fix" id="chg-db3ec9fba">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-point the crossorigin suite to where modulepreload actually lives now <span class="scope">(gate-reds-d21)</span></span>
-      <span class="sha">bb010bca9</span>
+      <span class="what">the live draw ceiling takes the ramp fence's +1 its baseline already took <span class="scope">(hub)</span></span>
+      <span class="sha">db3ec9fba</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-3b537a320">
+    <div class="row" data-kind="fix" id="chg-eca5c5b05">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the banned company name out of tonight's cutscene docs, and the pruned tagline off the landing <span class="scope">(gate-reds-d21)</span></span>
-      <span class="sha">3b537a320</span>
+      <span class="what">the void ramp's flank fence is declared solid and classified grounded <span class="scope">(hub)</span></span>
+      <span class="sha">eca5c5b05</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-832815103">
+    <div class="row" data-kind="fix" id="chg-6351b5b56">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the deferred re-date, the landing's audio decision, and its type back on the ramp <span class="scope">(gate-reds-d21)</span></span>
-      <span class="sha">832815103</span>
+      <span class="what">the second-seat firstMinutes roster pin counts the jump nudge <span class="scope">(data)</span></span>
+      <span class="sha">6351b5b56</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-71d7581ed">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">derive the hub-boot calibration from the median of several probe reads</span>
+      <span class="sha">71d7581ed</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c09da7de2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the crown becomes a mass of its own, so the outline reaches the top of the figure <span class="scope">(whompus)</span></span>
+      <span class="sha">c09da7de2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-86e9a9818">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bin/social-cut.mjs, trim, centre-crop and poster a director-recorded clip <span class="scope">(social-clip-inbox)</span></span>
+      <span class="sha">86e9a9818</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-802e72098">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the inbox convention, docs/social/inbox/, gitignored except its README <span class="scope">(social-clip-inbox)</span></span>
+      <span class="sha">802e72098</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-d76d0c5cb">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">split the patch-notes digest into a zero-import leaf, -58.84 KiB of first-paint gzip <span class="scope">(boot)</span></span>
+      <span class="sha">d76d0c5cb</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-19ec979b6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">swap a slot this file owns, not the canvas via replaceWith <span class="scope">(station-offer-icons)</span></span>
+      <span class="sha">19ec979b6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-df7219086">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">each kit's headline ceiling up ten percent, and the six pins that moved with it <span class="scope">(movement-kit-weight)</span></span>
+      <span class="sha">df7219086</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b02b95e04">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the rack becomes the caller that loads the kit art <span class="scope">(station-offer-icons)</span></span>
+      <span class="sha">b02b95e04</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-01bf5d2b4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">drop the greeter's GET MOVING step (director ruling 2026-09-09)</span>
+      <span class="sha">01bf5d2b4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-322088aa2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a jump nudge for the first run's non-jumper <span class="scope">(first-run-jump-reminders)</span></span>
+      <span class="sha">322088aa2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-df29b3aff">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">lift seated villagers onto the plank, legs straight and dangling <span class="scope">(hub)</span></span>
+      <span class="sha">df29b3aff</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6c56288ba">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the coat halves swing as one garment and the flame tip moves <span class="scope">(rig-blackline-585)</span></span>
+      <span class="sha">6c56288ba</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bfe601372">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">occlusion gate measures painted coverage, not clicks <span class="scope">(shot-harness)</span></span>
+      <span class="sha">bfe601372</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-0688c67ee">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">fence the void ramp's east flank, director report 620 <span class="scope">(hub-ramp-fence-and-cove-ground)</span></span>
+      <span class="sha">0688c67ee</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-50963feda">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">give Gloom Marsh the Reedback ridgeline (director report 572) <span class="scope">(terrain)</span></span>
+      <span class="sha">50963feda</span>
+    </div><div class="row more">+ 7 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-08</h4>
 
+    <div class="row" data-kind="fix" id="chg-5e5fabce3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the two arms are one arm mirrored, and both shoulder ruffs close <span class="scope">(whompus)</span></span>
+      <span class="sha">5e5fabce3</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-32a197201">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the engine chunk's RAW ceiling moves 6075 -&gt; 6093 in both suites that read it; the loft is the arrival at +4.65 KiB and there was nothing cheaper to take first <span class="scope">(pins)</span></span>
@@ -1044,6 +1124,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the hub's two exact triangle pins move by -632 for the lofted cow and pig, by printline copy from this lane's own run <span class="scope">(pins)</span></span>
       <span class="sha">38a7f7d40</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5be6ce4cd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the two arms are one arm mirrored, and both shoulder ruffs close <span class="scope">(whompus)</span></span>
+      <span class="sha">5be6ce4cd</span>
     </div>
     <div class="row" data-kind="fix" id="chg-f59cf9a88">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1124,17 +1209,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">drop the Bluesky link from the phone screen, director's word 2026-09-08 6:27pm; the quiet row keeps Dev log and Wiki <span class="scope">(mobile-landing-notice)</span></span>
       <span class="sha">1bbb503fd</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0c3f17cbb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the landing screen, measured in a real browser, and the report <span class="scope">(mobile-landing-notice)</span></span>
-      <span class="sha">0c3f17cbb</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1705a0486">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">five WHOMP-hammer candidates for the first post's replacement still, plus 1:1 and 4:5 crops of the leader <span class="scope">(shots)</span></span>
-      <span class="sha">1705a0486</span>
-    </div><div class="row more">+ 83 more that day, not shown</div>
+    </div><div class="row more">+ 85 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-07</h4>
@@ -1753,12 +1828,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@821c75a49</code> on 2026-09-09 11:10 UTC.
+  Every number on this page came straight out of the game, read at <code>game@bebdb80fc</code> on 2026-09-10 00:47 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">460 player-visible changes in the last 7 days, across 7 active days, 1332 internal-only commits filtered out</div>
+  <div class="stat">484 player-visible changes in the last 7 days, across 7 active days, 1422 internal-only commits filtered out</div>
 </footer>
 
 
