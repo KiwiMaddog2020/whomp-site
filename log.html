@@ -378,7 +378,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>8d4d88f4</code></span></div>
+    Live <b>0.7.20</b> · <code>a59302a3</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -430,15 +430,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">446 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
+    <p class="lede">462 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-10">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-10</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 8</span><span class="storyday-kind" style="background:var(--cyan)">New 3</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 15</span><span class="storyday-kind" style="background:var(--cyan)">New 10</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
       </div>
-      <p class="storyday-shape">12 changes landed: 8 fixed, 3 new, 1 performance.</p>
+      <p class="storyday-shape">28 changes landed: 15 fixed, 10 new, 3 performance.</p>
 
 
     </article>
@@ -1006,10 +1006,90 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-10</h4>
 
+    <div class="row" data-kind="fix" id="chg-394681bb8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the snow shrine module authors the three site names its rows carry, so a named site is still a name a builder says <span class="scope">(statues)</span></span>
+      <span class="sha">394681bb8</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0c69f86d3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the statue shrine pad is cleared after the scatter, not inside it, so the shared scenery stream is left where it was found <span class="scope">(terrain)</span></span>
+      <span class="sha">0c69f86d3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-73dddf075">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">validate envelope shape before the epoch guard <span class="scope">(save-sync)</span></span>
+      <span class="sha">73dddf075</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-48fbe763e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">refuse a pre-epoch cloud save on both sync paths <span class="scope">(epoch-cloud-keys)</span></span>
+      <span class="sha">48fbe763e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8342941e0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">build statue shrines for the four desert-family worlds <span class="scope">(world)</span></span>
+      <span class="sha">8342941e0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a7f95aa1f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the three snow statues stand at a landmark, in a shrine built from the tier's own vocabulary <span class="scope">(statue-shrines-snow)</span></span>
+      <span class="sha">a7f95aa1f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f7455d00c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Jump Kit gains a held-Space jet pack, and drops the ground clause <span class="scope">(station-jetpack)</span></span>
+      <span class="sha">f7455d00c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-02a6316eb">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">draw the slippers when the station card is the earn path <span class="scope">(slippers)</span></span>
+      <span class="sha">02a6316eb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9c2ac56b1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the packaging ritual, and the proof a dmg carries the sha it names <span class="scope">(desktop-update-banner)</span></span>
+      <span class="sha">9c2ac56b1</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-987a17819">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the statue boss fights with the character's kit <span class="scope">(statue-boss-kit-brain)</span></span>
+      <span class="sha">987a17819</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-91174f187">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the desktop shell notices a new web build and says so <span class="scope">(desktop-update-banner)</span></span>
+      <span class="sha">91174f187</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-2b92cda86">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">SAVE_EPOCH 0 to 1, the one approved reset (director 2026-09-10 8:14am): every tester's save is backed up and progression restarts on the fifteen-level path with bundles on clears; settings and the anonymous id carry; chest codes still work; the warning card shows once. The migration witness now states the new truth: a pre-epoch save resets exactly once, an at-epoch save is a byte-identical no-op <span class="scope">(save)</span></span>
       <span class="sha">2b92cda86</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-959a2ffa0">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">ratchet the engine ceiling DOWN 6105-&gt;5190, and add the ceiling it stopped being <span class="scope">(boot)</span></span>
+      <span class="sha">959a2ffa0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5f83e8c81">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">stop Gloom Marsh's line naming Stillwater, keep every epithet on one line <span class="scope">(loading)</span></span>
+      <span class="sha">5f83e8c81</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fc0ffa32d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">correct Stillwater's tagline, it is an archipelago, not one island <span class="scope">(levels)</span></span>
+      <span class="sha">fc0ffa32d</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-1cf677ddc">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">move the smart bot's brain behind the dynamic boundary engine.ts already uses <span class="scope">(boot)</span></span>
+      <span class="sha">1cf677ddc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5b041b5ce">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">one flow frame, one speed for the level lava (#639) <span class="scope">(render)</span></span>
+      <span class="sha">5b041b5ce</span>
     </div>
     <div class="row" data-kind="feat" id="chg-abeed0552">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1025,47 +1105,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the hub surfaces and the data layer follow the re-authored spine <span class="scope">(hub,data)</span></span>
       <span class="sha">6bfc72ef7</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d1fcb7be0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Sunken Sands gets its first scene budget and residue, and three fixtures re-read the moved entry <span class="scope">(world)</span></span>
-      <span class="sha">d1fcb7be0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-588ec57e1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the ambience audit sees the promoted world, and Sunken Sands is coreless for Stillwater's reason <span class="scope">(data)</span></span>
-      <span class="sha">588ec57e1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ee8018581">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">deploy 25 residue after the progression revert: the engine chunk ceiling 6095 to 6105 by printline copy (seated arms, the save notice), the save epoch notice's font size routed through the text scale, and the data layer regenerated on the reverted tree <span class="scope">(gate)</span></span>
-      <span class="sha">ee8018581</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-66d5d9943">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">an animal standing still is not new geometry, 0.541 ms to 0.013 ms <span class="scope">(paddock)</span></span>
-      <span class="sha">66d5d9943</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-5ab51f90e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire the statue boss seam into the run engine <span class="scope">(statue-boss)</span></span>
-      <span class="sha">5ab51f90e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-26810162a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">catch a notes-version mismatch before the gate, not after it <span class="scope">(deploy-train)</span></span>
-      <span class="sha">26810162a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-42adcef4b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">load the witness through Vite's SSR runner, not bare node <span class="scope">(hub-frame-baseline)</span></span>
-      <span class="sha">42adcef4b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6997f5a83">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">land-lane undoes its own merge commit on a FAIL verdict <span class="scope">(landing)</span></span>
-      <span class="sha">6997f5a83</span>
-    </div>
+    </div><div class="row more">+ 8 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-09</h4>
@@ -1856,12 +1896,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@8d4d88f45</code> on 2026-09-10 17:59 UTC.
+  Every number on this page came straight out of the game, read at <code>game@a59302a37</code> on 2026-09-11 02:07 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">458 player-visible changes in the last 7 days, across 9 active days, 1319 internal-only commits filtered out</div>
+  <div class="stat">474 player-visible changes in the last 7 days, across 9 active days, 1359 internal-only commits filtered out</div>
 </footer>
 
 
