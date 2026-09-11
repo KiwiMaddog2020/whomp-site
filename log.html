@@ -378,7 +378,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>bf2147a2</code></span></div>
+    Live <b>0.7.20</b> · <code>98925423</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -430,24 +430,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">411 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
+    <p class="lede">415 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-11">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-11</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
       </div>
-      <p class="storyday-shape">3 changes landed, all of them fixes.</p>
+      <p class="storyday-shape">4 changes landed: 3 fixed, 1 new.</p>
 
 
     </article>
     <article class="storyday" id="day-2026-09-10">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-10</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 19</span><span class="storyday-kind" style="background:var(--pink)">Fixed 18</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 22</span><span class="storyday-kind" style="background:var(--pink)">Fixed 18</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
       </div>
-      <p class="storyday-shape">40 changes landed: 19 new, 18 fixed, 3 performance.</p>
+      <p class="storyday-shape">43 changes landed: 22 new, 18 fixed, 3 performance.</p>
 
 
     </article>
@@ -1021,10 +1021,30 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">--hide-chrome hides the statue offer card's fixed root <span class="scope">(shot)</span></span>
       <span class="sha">80fe39727</span>
     </div>
+    <div class="row" data-kind="feat" id="chg-31a28aa33">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">MainMenu's three sub-overlays are navigable, and the title screen takes the shared decoder <span class="scope">(pad)</span></span>
+      <span class="sha">31a28aa33</span>
+    </div>
   </div>
   <div class="day">
     <h4>2026-09-10</h4>
 
+    <div class="row" data-kind="feat" id="chg-78255b305">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the arena picker, battle lobby, settings and co-op bank window answer a controller, and all seven are polled <span class="scope">(pad)</span></span>
+      <span class="sha">78255b305</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-111027345">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the arsenal forge, the shop and the relic vendor answer a controller <span class="scope">(pad)</span></span>
+      <span class="sha">111027345</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9a75d1c6e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one menu-pad decoder, stick digitised and focus roved <span class="scope">(padNav)</span></span>
+      <span class="sha">9a75d1c6e</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-21f6d045c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the woken statue boss draws as the character, because BossRenderer is now told to stand down <span class="scope">(statue-boss)</span></span>
@@ -1109,22 +1129,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">build statue shrines for the four desert-family worlds <span class="scope">(world)</span></span>
       <span class="sha">8342941e0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a7f95aa1f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the three snow statues stand at a landmark, in a shrine built from the tier's own vocabulary <span class="scope">(statue-shrines-snow)</span></span>
-      <span class="sha">a7f95aa1f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f7455d00c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Jump Kit gains a held-Space jet pack, and drops the ground clause <span class="scope">(station-jetpack)</span></span>
-      <span class="sha">f7455d00c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-02a6316eb">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">draw the slippers when the station card is the earn path <span class="scope">(slippers)</span></span>
-      <span class="sha">02a6316eb</span>
-    </div><div class="row more">+ 20 more that day, not shown</div>
+    </div><div class="row more">+ 23 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-09</h4>
@@ -1795,12 +1800,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@bf2147a2a</code> on 2026-09-11 10:40 UTC.
+  Every number on this page came straight out of the game, read at <code>game@989254235</code> on 2026-09-11 21:20 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">419 player-visible changes in the last 7 days, across 10 active days, 1160 internal-only commits filtered out</div>
+  <div class="stat">423 player-visible changes in the last 7 days, across 10 active days, 1168 internal-only commits filtered out</div>
 </footer>
 
 
