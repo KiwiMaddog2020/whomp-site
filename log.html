@@ -378,7 +378,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>a59302a3</code></span></div>
+    Live <b>0.7.20</b> · <code>bf2147a2</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -430,15 +430,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">462 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
+    <p class="lede">411 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-09-11">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-09-11</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span></span>
+      </div>
+      <p class="storyday-shape">3 changes landed, all of them fixes.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-09-10">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-10</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 15</span><span class="storyday-kind" style="background:var(--cyan)">New 10</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 19</span><span class="storyday-kind" style="background:var(--pink)">Fixed 18</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
       </div>
-      <p class="storyday-shape">28 changes landed: 15 fixed, 10 new, 3 performance.</p>
+      <p class="storyday-shape">40 changes landed: 19 new, 18 fixed, 3 performance.</p>
 
 
     </article>
@@ -484,15 +493,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 38</span><span class="storyday-kind" style="background:var(--pink)">Fixed 22</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
       <p class="storyday-shape">61 changes landed: 38 new, 22 fixed, 1 performance.</p>
-
-
-    </article>
-    <article class="storyday" id="day-2026-09-04">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-09-04</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 35</span><span class="storyday-kind" style="background:var(--pink)">Fixed 30</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
-      </div>
-      <p class="storyday-shape">66 changes landed: 35 new, 30 fixed, 1 performance.</p>
 
 
     </article></div>
@@ -1004,8 +1004,87 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-09-11</h4>
+
+    <div class="row" data-kind="fix" id="chg-edf6e3272">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the READY twinkle joins the plaza's part list, and the rename is reverted <span class="scope">(hub)</span></span>
+      <span class="sha">edf6e3272</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9e203209d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the Court twinkle leaves the per-hero statue namespace <span class="scope">(hub)</span></span>
+      <span class="sha">9e203209d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-80fe39727">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">--hide-chrome hides the statue offer card's fixed root <span class="scope">(shot)</span></span>
+      <span class="sha">80fe39727</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-09-10</h4>
 
+    <div class="row" data-kind="fix" id="chg-21f6d045c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the woken statue boss draws as the character, because BossRenderer is now told to stand down <span class="scope">(statue-boss)</span></span>
+      <span class="sha">21f6d045c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a7e716a41">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the void family's shrine is a sibling of the statue spot, not a child <span class="scope">(render)</span></span>
+      <span class="sha">a7e716a41</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3f3ca5f58">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one pad seam for all four statue families, and no new scenery predicate <span class="scope">(sim)</span></span>
+      <span class="sha">3f3ca5f58</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8acb7dbb3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mount the statue boss offer card in the run</span>
+      <span class="sha">8acb7dbb3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fb81b0c76">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">add the statue boss offer card <span class="scope">(ui)</span></span>
+      <span class="sha">fb81b0c76</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-580ba5d06">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">rebase statueBossCoopSeats' host mock onto the kit-spawner body interface <span class="scope">(test)</span></span>
+      <span class="sha">580ba5d06</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-93f6124e0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">route the statue boss off the live seat roster, and the deed to the accepting seat <span class="scope">(sim)</span></span>
+      <span class="sha">93f6124e0</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-36c7281a6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mount the plaza READY twinkle into the Court of Heroes <span class="scope">(hub)</span></span>
+      <span class="sha">36c7281a6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5ad41224b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire the statue boss's dust sink to a reclaimed pool <span class="scope">(render)</span></span>
+      <span class="sha">5ad41224b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fc7aaa9bb">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">build the void/lava statue shrines and mount them <span class="scope">(world)</span></span>
+      <span class="sha">fc7aaa9bb</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-cfd799f53">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">site the void/lava statue bosses on their levels' own landmarks <span class="scope">(world)</span></span>
+      <span class="sha">cfd799f53</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5c70ae4e0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the four village statues stand at landmarks, in shrines <span class="scope">(statue-shrines-village)</span></span>
+      <span class="sha">5c70ae4e0</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-394681bb8">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the snow shrine module authors the three site names its rows carry, so a named site is still a name a builder says <span class="scope">(statues)</span></span>
@@ -1045,67 +1124,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">draw the slippers when the station card is the earn path <span class="scope">(slippers)</span></span>
       <span class="sha">02a6316eb</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9c2ac56b1">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the packaging ritual, and the proof a dmg carries the sha it names <span class="scope">(desktop-update-banner)</span></span>
-      <span class="sha">9c2ac56b1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-987a17819">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the statue boss fights with the character's kit <span class="scope">(statue-boss-kit-brain)</span></span>
-      <span class="sha">987a17819</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-91174f187">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the desktop shell notices a new web build and says so <span class="scope">(desktop-update-banner)</span></span>
-      <span class="sha">91174f187</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2b92cda86">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">SAVE_EPOCH 0 to 1, the one approved reset (director 2026-09-10 8:14am): every tester's save is backed up and progression restarts on the fifteen-level path with bundles on clears; settings and the anonymous id carry; chest codes still work; the warning card shows once. The migration witness now states the new truth: a pre-epoch save resets exactly once, an at-epoch save is a byte-identical no-op <span class="scope">(save)</span></span>
-      <span class="sha">2b92cda86</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-959a2ffa0">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">ratchet the engine ceiling DOWN 6105-&gt;5190, and add the ceiling it stopped being <span class="scope">(boot)</span></span>
-      <span class="sha">959a2ffa0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5f83e8c81">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stop Gloom Marsh's line naming Stillwater, keep every epithet on one line <span class="scope">(loading)</span></span>
-      <span class="sha">5f83e8c81</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fc0ffa32d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">correct Stillwater's tagline, it is an archipelago, not one island <span class="scope">(levels)</span></span>
-      <span class="sha">fc0ffa32d</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-1cf677ddc">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">move the smart bot's brain behind the dynamic boundary engine.ts already uses <span class="scope">(boot)</span></span>
-      <span class="sha">1cf677ddc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5b041b5ce">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">one flow frame, one speed for the level lava (#639) <span class="scope">(render)</span></span>
-      <span class="sha">5b041b5ce</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-abeed0552">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the woken statue boss IS the character <span class="scope">(statue-boss-kit-spawner)</span></span>
-      <span class="sha">abeed0552</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3cdc1fb69">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the clear log's audio decision, the notice's text scale, the chrome roots and the engine ceilings <span class="scope">(ui,bin,tests)</span></span>
-      <span class="sha">3cdc1fb69</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6bfc72ef7">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the hub surfaces and the data layer follow the re-authored spine <span class="scope">(hub,data)</span></span>
-      <span class="sha">6bfc72ef7</span>
-    </div><div class="row more">+ 8 more that day, not shown</div>
+    </div><div class="row more">+ 20 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-09</h4>
@@ -1645,91 +1664,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the statue carve takes a per-vertex cell, one lattice per pitch <span class="scope">(hub)</span></span>
       <span class="sha">7dcb7ff84</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-e8e10caa6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">read source through the house import.meta.url idiom, __dirname is untyped under this ESM tsconfig and turned tsc -b red <span class="scope">(signal-lever2-wire)</span></span>
-      <span class="sha">e8e10caa6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-87d9ec056">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the oasis kit, date palms, reeds, rock lip, the shaded bank; tufts and crust down a third <span class="scope">(mirage-flats-oasis)</span></span>
-      <span class="sha">87d9ec056</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-0a5c15529">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">four water holes, one of them the oasis; the grove pass and the clutter dials (director reports #545 / #546) <span class="scope">(mirage-flats-oasis)</span></span>
-      <span class="sha">0a5c15529</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-03be351b1">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">sync the wind-up pose at all four seats, run, hub yard, duel and co-op <span class="scope">(signal-lever2-wire)</span></span>
-      <span class="sha">03be351b1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-97619e552">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the rig stacks post-authors in a declared order, and the wind-up pose installs into it <span class="scope">(signal-lever2-wire)</span></span>
-      <span class="sha">97619e552</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c2c6e5a14">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">calibrate report-blocker readers against the two landed false positives <span class="scope">(verify-lane)</span></span>
-      <span class="sha">c2c6e5a14</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c66abe485">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">add path-witness ALWAYS_RUN tier for hub pins and shader compile <span class="scope">(merge-check)</span></span>
-      <span class="sha">c66abe485</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fd0ddf5d3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">invert the stagger's eased fall-off, caught by mutation testing <span class="scope">(hub)</span></span>
-      <span class="sha">fd0ddf5d3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e09b3575c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">per-source byte attribution for one built chunk, from its own sourcemap <span class="scope">(tools)</span></span>
-      <span class="sha">e09b3575c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fb14f87eb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">dummy hit flash and stagger, render-only (V35 row 11) <span class="scope">(hub)</span></span>
-      <span class="sha">fb14f87eb</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-54861ce05">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Capsule Signal Mega Dash wind-up pose, lever 2 of report #209 <span class="scope">(render)</span></span>
-      <span class="sha">54861ce05</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-68a074c07">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">declare uTime in the ghost fragment stage; every horde ghost material failed to compile since status-tells <span class="scope">(horde)</span></span>
-      <span class="sha">68a074c07</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-b98abf5dc">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">reclaim 44,724 live triangles from hub-kennel-pup-shells, pixel-neutral <span class="scope">(hub)</span></span>
-      <span class="sha">b98abf5dc</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-02ef0aee8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">raise the plaza draw and triangle ceilings for the hub hero outline <span class="scope">(hub)</span></span>
-      <span class="sha">02ef0aee8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-feed8f2e6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hero mass outline installs on the hub avatar <span class="scope">(hub)</span></span>
-      <span class="sha">feed8f2e6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-eaa271b7d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the perimeter wall as a modelled kit, layered behind the collision plane so nothing on it can flicker at any distance <span class="scope">(wall-kit)</span></span>
-      <span class="sha">eaa271b7d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-bdc11f3be">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">resolve symlinks on both sides of the entrypoint guard <span class="scope">(social)</span></span>
-      <span class="sha">bdc11f3be</span>
-    </div><div class="row more">+ 46 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-03</h4>
@@ -1738,41 +1672,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the personal shield's cap fraction, feedback #10 <span class="scope">(rig)</span></span>
       <span class="sha">c301a5cb9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fdb8c4da1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">bring the Orbital Mechanic's base in, feedback #203 <span class="scope">(rig)</span></span>
-      <span class="sha">fdb8c4da1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a063af467">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the district plate lattice reads as one ground, reports 81/82/83 <span class="scope">(hub)</span></span>
-      <span class="sha">a063af467</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-43809d9f3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a per-instance STATUS channel on the horde, and the three tells it drives <span class="scope">(render)</span></span>
-      <span class="sha">43809d9f3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-761abafd1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">place the fourth training station at the mid/far midpoint <span class="scope">(hub)</span></span>
-      <span class="sha">761abafd1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e55fda831">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">add a fourth training-yard target station (report #474) <span class="scope">(hub)</span></span>
-      <span class="sha">e55fda831</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a98116d84">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Text Size (Normal, Large) row in Access, beside Reduced Flashes <span class="scope">(settings)</span></span>
-      <span class="sha">a98116d84</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-eebf5ea50">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cut frost-lamp-0 per report #456 (director confirmed) <span class="scope">(hub)</span></span>
-      <span class="sha">eebf5ea50</span>
     </div>
   </div>
   <div class="day">
@@ -1896,12 +1795,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@a59302a37</code> on 2026-09-11 02:09 UTC.
+  Every number on this page came straight out of the game, read at <code>game@bf2147a2a</code> on 2026-09-11 10:38 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">474 player-visible changes in the last 7 days, across 9 active days, 1359 internal-only commits filtered out</div>
+  <div class="stat">419 player-visible changes in the last 7 days, across 10 active days, 1160 internal-only commits filtered out</div>
 </footer>
 
 
