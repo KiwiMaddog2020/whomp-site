@@ -378,7 +378,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>98925423</code></span></div>
+    Live <b>0.7.20</b> · <code>1bb7ddfa</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -430,15 +430,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">415 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
+    <p class="lede">426 player-visible changes landed in the last 7 days, across 7 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-11">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-11</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 8</span><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span></span>
       </div>
-      <p class="storyday-shape">4 changes landed: 3 fixed, 1 new.</p>
+      <p class="storyday-shape">15 changes landed: 8 new, 7 fixed.</p>
 
 
     </article>
@@ -1006,6 +1006,61 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-11</h4>
 
+    <div class="row" data-kind="feat" id="chg-6c2cc9400">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the hover stance and its thrust wash <span class="scope">(render)</span></span>
+      <span class="sha">6c2cc9400</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-88f7d5a34">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the hover is smooth - ramp hysteresis, a damped target, a taper <span class="scope">(sim)</span></span>
+      <span class="sha">88f7d5a34</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-98955327e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">author the fourteen health levers and add a phase-one damage lever <span class="scope">(statueBosses)</span></span>
+      <span class="sha">98955327e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-192ae5fe3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Jump Kit is the Hover Kit everywhere a player reads it <span class="scope">(movement)</span></span>
+      <span class="sha">192ae5fe3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cf857462a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">statue bosses are shot at the centre of the rig that is drawn <span class="scope">(aim)</span></span>
+      <span class="sha">cf857462a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e2fd871cc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">training-yard combat no longer auto-fires on a stale hub-walk hold <span class="scope">(input)</span></span>
+      <span class="sha">e2fd871cc</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-32cb86497">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">mirror ref-content-mismatch onto the fetch side of the shard transport <span class="scope">(gate-shard-ref)</span></span>
+      <span class="sha">32cb86497</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-14757e5cd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a run witness, so a shard that ran nothing can no longer compose green <span class="scope">(gate-shard-compose)</span></span>
+      <span class="sha">14757e5cd</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-557901d70">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">gate the gameplay pad merge on the in-hand latch <span class="scope">(input)</span></span>
+      <span class="sha">557901d70</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-9642d1f3f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">call the save-epoch migration at boot and hand the production Meta both path keys <span class="scope">(save-epoch-boot-wire)</span></span>
+      <span class="sha">9642d1f3f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-95de23708">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">a runner name is a label, refused in the writer both stamp channels use <span class="scope">(green-stamp)</span></span>
+      <span class="sha">95de23708</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-edf6e3272">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the READY twinkle joins the plaza's part list, and the rename is reverted <span class="scope">(hub)</span></span>
@@ -1800,12 +1855,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@989254235</code> on 2026-09-11 21:20 UTC.
+  Every number on this page came straight out of the game, read at <code>game@1bb7ddfa1</code> on 2026-09-12 00:35 UTC.
 
   The game is serving <code>0.7.20</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">423 player-visible changes in the last 7 days, across 10 active days, 1168 internal-only commits filtered out</div>
+  <div class="stat">434 player-visible changes in the last 7 days, across 10 active days, 1196 internal-only commits filtered out</div>
 </footer>
 
 
