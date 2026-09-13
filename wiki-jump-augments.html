@@ -6,6 +6,7 @@
 <title>WHOMP legacy jump augment aliases</title>
 <meta name="description" content="Legacy jump augment aliases: Two old names for offerings that live somewhere else now. The full list, with the numbers the game actually runs on.">
 <link rel="icon" href="whomp-icon.svg">
+<link rel="preload" href="brand/whomp-display.woff2" as="font" type="font/woff2" crossorigin>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="WHOMP">
 <meta property="og:title" content="WHOMP legacy jump augment aliases">
@@ -39,6 +40,53 @@
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --edge:1px solid rgba(255,243,207,.10);
+  /* THE WORDMARK'S FACE, and the ONE place this repo writes the stack down.
+     Copied from the game's WHOMP_WORDMARK_FONT (src/ui/whompOfferTheme.ts), and
+     the tail is load-bearing rather than decorative: it is what paints on the
+     one load where font-display:optional loses its race, so the worst case is
+     the rendering that shipped before this lane and never a face nobody chose.
+     Note 'system-ui' and '-apple-system' are ABSENT, and that is the game's
+     2026-07-30 fix rather than an omission: Chromium mis-interpolates its
+     variable system font at weight 900 and produces overlapping outlines from
+     their mere PRESENCE in the list, at any position, so they cannot sit here
+     as a safety net. bin/brand-parity.mjs pins this string to the game's. */
+  --wordmark-font:'WHOMP Display','Segoe UI','.AppleSystemUIFontBlack','Roboto Black','sans-serif-black',sans-serif;
+  /* ONE RADIUS FOR THE CHROME TILE, named once. The canonical icon
+     (whomp/public/icons/icon.svg) is SQUARE, so every drawing of the mark here
+     is square too and the rounding is the site's own chrome, applied in CSS
+     where it can be seen and changed in one place instead of being baked into
+     an inline rect's rx where it silently disagreed with this for months. */
+  --tile-radius:8px;
+}
+
+/* THE WORDMARK'S FACE: ARCHIVO BLACK, the director's 2026-09-12 11:30pm pick,
+   self-hosted from brand/whomp-display.woff2 -- the SAME 18,604-byte file the
+   game ships at public/brand/whomp-display.woff2, byte-for-byte, so both
+   origins paint identical letterforms. This declaration is copied from the
+   game's index.html head and must stay copied; bin/brand-parity.mjs fails the
+   build if either half drifts.
+
+   The two values are not boilerplate and the game's lane report argues both:
+     font-weight:900   Archivo Black is a SINGLE-WEIGHT file. A face that does
+                       not claim 900 is taken for a 400 and the browser
+                       SYNTHESIZES the bold, smearing the outlines -- the exact
+                       squish the director reported on 2026-07-20 and 07-30.
+     font-display:optional  A logo may not flash. optional gives the file ~100ms
+                       and then never swaps for the life of the document, so the
+                       mark is either right at first paint or is the fallback
+                       tail for that load. swap would re-cut the logo under the
+                       reader; block would hide it for a UA-chosen ~3s, and
+                       because the period is the UA's, "block but briefly" is not
+                       something CSS can ask for. optional's worst case is the
+                       rendering this site already shipped; the other two have a
+                       worse-than-today failure mode.
+   The <link rel=preload crossorigin> in every head is what wins the ordinary
+   case: without it the fetch would not start until the rule is first used.
+   crossorigin is REQUIRED even same-origin or the file is fetched twice. */
+@font-face {
+  font-family: 'WHOMP Display';
+  src: url(brand/whomp-display.woff2) format('woff2');
+  font-weight: 900; font-style: normal; font-display: optional;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -58,26 +106,34 @@ button{font-family:var(--font)}
   text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
 }
 
-/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
-   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
-   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
-   comment explains 1000 exceeds the heaviest real weight of the system
-   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
-   The retro chromatic layering is two ::before/::after copies of the word
-   via content:attr(data-wordmark), every offset and shadow expressed in em
-   rather than px so the layering scales WITH the clamped font-size and holds
-   together at every viewport width instead of drifting apart. SACRED, same
-   as the game's own comment on this block: a frozen copy, not a reference,
-   do not tokenize.
+/* THE WORDMARK, lifted from whomp/src/ui/mainMenu.ts's .whomp-mainmenu__wordmark
+   rule (the title screen): same face, same clamp(60px,12vw,150px), same weight
+   900 (NEVER 1000 -- the game's own comment explains 1000 exceeds the heaviest
+   real weight of the fallback, so Mac Safari's SF substitution synthesizes a
+   squished bold). The retro chromatic layering is two ::before/::after copies of
+   the word via content:attr(data-wordmark), every offset and shadow expressed in
+   em rather than px so the layering scales WITH the font-size and holds together
+   at every width instead of drifting apart.
 
-   NOTE 2026-07-30: a Chromium variable-font interpolation fix briefly replaced
-   this stack with a static Black face. The director judged the resulting face
-   worse and it was reverted, here and in the game together, so both surfaces
-   stay identical. The squish and seam report on narrow Android is therefore
-   still OPEN, and any future fix must preserve this face rather than swap it. */
-.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
-  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+   2026-09-13, lane site-wordmark-and-rarity. This REPLACES the note that stood
+   here, which said the two surfaces had been reverted together on 2026-07-30 and
+   therefore "stay identical". That stopped being true the same day: the game
+   dropped 'system-ui' and '-apple-system' from its stack to escape a Chromium
+   variable-font interpolation bug and this file did not, so the sentence claiming
+   parity was false for six weeks and got more false on 2026-09-12 when the game
+   shipped a real font file. Parity is no longer a claim anybody has to remember
+   to keep: both origins now load the SAME 18,604-byte brand/whomp-display.woff2
+   and bin/brand-parity.mjs fails this build if the file, the @font-face or the
+   stack drifts from the game's.
+
+   ONE TREATMENT, TWO SIZES. The hero and the small lockup (topbar, dev-log and
+   wiki headers) share every declaration that makes the mark the mark, so they
+   cannot drift from each other the way this file drifted from the game. Only
+   size, line-height and the idle animation differ: a 3.6s infinite pulse is the
+   title screen's, and a topbar that pulses forever is a tic, not a signature. */
+.whomp-wordmark,.brandword{font-family:var(--wordmark-font);
+  position:relative;isolation:isolate;z-index:2;font-weight:900;
+  letter-spacing:-0.055em;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
   /* PAINT ORDER IS LOAD BEARING. letter-spacing is negative, so glyphs OVERLAP,
      and a per-glyph stroke would otherwise draw the M's dark outline straight
      across the O's cream face. That is the seam the director reported, not a
@@ -86,16 +142,39 @@ button{font-family:var(--font)}
      the outline both survive; the lines through the letters do not. */
   paint-order:stroke fill;
   text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
-  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
-.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
-.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
-.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+  transform:skewX(-4deg) rotate(-1deg);}
+.whomp-wordmark::before,.whomp-wordmark::after,
+.brandword::before,.brandword::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before,.brandword::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after,.brandword::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+
+/* The hero, and the only place the mark is allowed to move. */
+.whomp-wordmark{font-size:clamp(60px,12vw,150px);line-height:0.82;margin:0;
+  animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
 @keyframes whomp-wordmark-hit{
   0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
   2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
   5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
 }
 @media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
+/* The small lockup. inline-block because it sits INSIDE a heading beside
+   ordinary words ("WHOMP dev log"): only the logo half gets the face, the
+   descriptor stays body copy, which is what keeps this a lockup rather than a
+   whole sentence wearing the logo. The em-expressed layers scale down with it
+   for free -- that is what buying them in em bought. */
+.brandword{display:inline-block;line-height:1;vertical-align:baseline;}
+
+/* THE HEADER LOCKUP: the logo, then what the page is. These two headings used
+   to be one .chroma string ("WHOMP dev log", "WHOMP wiki"), which dressed the
+   descriptor in the wordmark's costume and the wordmark in nothing but a
+   text-shadow -- no face, no stroke, no layers, no skew. Splitting them is what
+   lets the logo half be the real mark while "dev log" and "wiki" stay what they
+   are, which is body copy naming a page. .chroma keeps its job everywhere else
+   on the site: it is still the section-heading signature, and it was only ever
+   wrong on the two headings that contain the logo. */
+.brandline{color:var(--cream);font-weight:900;letter-spacing:-.01em;}
+.brandline .brandword{margin-right:.12em;}
 
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{
@@ -525,7 +604,7 @@ html,body{max-width:100%;overflow-x:clip}
 /* .wiki-home-copy and its four rules left with the second wordmark it dressed;
    the link is the icon now, and the heading beside it is the page's one name. */
 .wiki-home{display:flex;align-items:center;text-decoration:none;flex:none}
-.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:var(--tile-radius)}
 .wiki-home:hover .wiki-home-icon{transform:translateY(-1px)}
 .wiki-home:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
 @media (prefers-reduced-motion:no-preference){.wiki-home-icon{transition:transform .12s ease}}
@@ -562,8 +641,8 @@ footer a{color:var(--cyan);text-decoration:none}
     </span>
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>b8b6b9b0</code></span></div>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Live <b>unverified</b> · did not answer</span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -730,7 +809,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@b8b6b9b09</code> on 2026-09-13 01:53 UTC.
+  Every number on this page came straight out of the game, read at <code>game@f81f078</code> on 2026-09-13 07:49 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>

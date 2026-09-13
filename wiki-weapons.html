@@ -6,6 +6,7 @@
 <title>WHOMP weapons</title>
 <meta name="description" content="Weapons: The half of your build that fires itself. The full list, with the numbers the game actually runs on.">
 <link rel="icon" href="whomp-icon.svg">
+<link rel="preload" href="brand/whomp-display.woff2" as="font" type="font/woff2" crossorigin>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="WHOMP">
 <meta property="og:title" content="WHOMP weapons">
@@ -39,6 +40,53 @@
   --font:'Segoe UI',system-ui,-apple-system,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --edge:1px solid rgba(255,243,207,.10);
+  /* THE WORDMARK'S FACE, and the ONE place this repo writes the stack down.
+     Copied from the game's WHOMP_WORDMARK_FONT (src/ui/whompOfferTheme.ts), and
+     the tail is load-bearing rather than decorative: it is what paints on the
+     one load where font-display:optional loses its race, so the worst case is
+     the rendering that shipped before this lane and never a face nobody chose.
+     Note 'system-ui' and '-apple-system' are ABSENT, and that is the game's
+     2026-07-30 fix rather than an omission: Chromium mis-interpolates its
+     variable system font at weight 900 and produces overlapping outlines from
+     their mere PRESENCE in the list, at any position, so they cannot sit here
+     as a safety net. bin/brand-parity.mjs pins this string to the game's. */
+  --wordmark-font:'WHOMP Display','Segoe UI','.AppleSystemUIFontBlack','Roboto Black','sans-serif-black',sans-serif;
+  /* ONE RADIUS FOR THE CHROME TILE, named once. The canonical icon
+     (whomp/public/icons/icon.svg) is SQUARE, so every drawing of the mark here
+     is square too and the rounding is the site's own chrome, applied in CSS
+     where it can be seen and changed in one place instead of being baked into
+     an inline rect's rx where it silently disagreed with this for months. */
+  --tile-radius:8px;
+}
+
+/* THE WORDMARK'S FACE: ARCHIVO BLACK, the director's 2026-09-12 11:30pm pick,
+   self-hosted from brand/whomp-display.woff2 -- the SAME 18,604-byte file the
+   game ships at public/brand/whomp-display.woff2, byte-for-byte, so both
+   origins paint identical letterforms. This declaration is copied from the
+   game's index.html head and must stay copied; bin/brand-parity.mjs fails the
+   build if either half drifts.
+
+   The two values are not boilerplate and the game's lane report argues both:
+     font-weight:900   Archivo Black is a SINGLE-WEIGHT file. A face that does
+                       not claim 900 is taken for a 400 and the browser
+                       SYNTHESIZES the bold, smearing the outlines -- the exact
+                       squish the director reported on 2026-07-20 and 07-30.
+     font-display:optional  A logo may not flash. optional gives the file ~100ms
+                       and then never swaps for the life of the document, so the
+                       mark is either right at first paint or is the fallback
+                       tail for that load. swap would re-cut the logo under the
+                       reader; block would hide it for a UA-chosen ~3s, and
+                       because the period is the UA's, "block but briefly" is not
+                       something CSS can ask for. optional's worst case is the
+                       rendering this site already shipped; the other two have a
+                       worse-than-today failure mode.
+   The <link rel=preload crossorigin> in every head is what wins the ordinary
+   case: without it the fetch would not start until the rule is first used.
+   crossorigin is REQUIRED even same-origin or the file is fetched twice. */
+@font-face {
+  font-family: 'WHOMP Display';
+  src: url(brand/whomp-display.woff2) format('woff2');
+  font-weight: 900; font-style: normal; font-display: optional;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -58,26 +106,34 @@ button{font-family:var(--font)}
   text-shadow:.055em .05em 0 var(--cyan), -.055em .035em 0 var(--pink);
 }
 
-/* THE WORDMARK, lifted verbatim from whomp/src/ui/mainMenu.ts's
-   .whomp-mainmenu__wordmark rule (the title screen). Same font stack, same
-   clamp(60px,12vw,150px), same weight 900 (NEVER 1000: the game's own
-   comment explains 1000 exceeds the heaviest real weight of the system
-   fallback, so Mac Safari's SF substitution synthesizes a squished bold).
-   The retro chromatic layering is two ::before/::after copies of the word
-   via content:attr(data-wordmark), every offset and shadow expressed in em
-   rather than px so the layering scales WITH the clamped font-size and holds
-   together at every viewport width instead of drifting apart. SACRED, same
-   as the game's own comment on this block: a frozen copy, not a reference,
-   do not tokenize.
+/* THE WORDMARK, lifted from whomp/src/ui/mainMenu.ts's .whomp-mainmenu__wordmark
+   rule (the title screen): same face, same clamp(60px,12vw,150px), same weight
+   900 (NEVER 1000 -- the game's own comment explains 1000 exceeds the heaviest
+   real weight of the fallback, so Mac Safari's SF substitution synthesizes a
+   squished bold). The retro chromatic layering is two ::before/::after copies of
+   the word via content:attr(data-wordmark), every offset and shadow expressed in
+   em rather than px so the layering scales WITH the font-size and holds together
+   at every width instead of drifting apart.
 
-   NOTE 2026-07-30: a Chromium variable-font interpolation fix briefly replaced
-   this stack with a static Black face. The director judged the resulting face
-   worse and it was reverted, here and in the game together, so both surfaces
-   stay identical. The squish and seam report on narrow Android is therefore
-   still OPEN, and any future fix must preserve this face rather than swap it. */
-.whomp-wordmark{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-  position:relative;isolation:isolate;z-index:2;font-size:clamp(60px,12vw,150px);font-weight:900;
-  letter-spacing:-0.055em;line-height:0.82;margin:0;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
+   2026-09-13, lane site-wordmark-and-rarity. This REPLACES the note that stood
+   here, which said the two surfaces had been reverted together on 2026-07-30 and
+   therefore "stay identical". That stopped being true the same day: the game
+   dropped 'system-ui' and '-apple-system' from its stack to escape a Chromium
+   variable-font interpolation bug and this file did not, so the sentence claiming
+   parity was false for six weeks and got more false on 2026-09-12 when the game
+   shipped a real font file. Parity is no longer a claim anybody has to remember
+   to keep: both origins now load the SAME 18,604-byte brand/whomp-display.woff2
+   and bin/brand-parity.mjs fails this build if the file, the @font-face or the
+   stack drifts from the game's.
+
+   ONE TREATMENT, TWO SIZES. The hero and the small lockup (topbar, dev-log and
+   wiki headers) share every declaration that makes the mark the mark, so they
+   cannot drift from each other the way this file drifted from the game. Only
+   size, line-height and the idle animation differ: a 3.6s infinite pulse is the
+   title screen's, and a topbar that pulses forever is a tic, not a signature. */
+.whomp-wordmark,.brandword{font-family:var(--wordmark-font);
+  position:relative;isolation:isolate;z-index:2;font-weight:900;
+  letter-spacing:-0.055em;color:#fff3cf;-webkit-text-stroke:0.018em #151023;
   /* PAINT ORDER IS LOAD BEARING. letter-spacing is negative, so glyphs OVERLAP,
      and a per-glyph stroke would otherwise draw the M's dark outline straight
      across the O's cream face. That is the seam the director reported, not a
@@ -86,16 +142,39 @@ button{font-family:var(--font)}
      the outline both survive; the lines through the letters do not. */
   paint-order:stroke fill;
   text-shadow:0 0.018em 0 #fff,0 0.06em 0 #181126,0 0.107em 0.167em rgba(0,0,0,.55);
-  transform:skewX(-4deg) rotate(-1deg);animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
-.whomp-wordmark::before,.whomp-wordmark::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
-.whomp-wordmark::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
-.whomp-wordmark::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+  transform:skewX(-4deg) rotate(-1deg);}
+.whomp-wordmark::before,.whomp-wordmark::after,
+.brandword::before,.brandword::after{content:attr(data-wordmark);position:absolute;inset:0;z-index:-1;-webkit-text-stroke:0;color:#ff2f7e;}
+.whomp-wordmark::before,.brandword::before{transform:translate(-0.048em,0.048em);text-shadow:-0.042em 0.042em 0 #5f174d;}
+.whomp-wordmark::after,.brandword::after{color:#24f0ff;transform:translate(0.042em,0.083em);text-shadow:0.036em 0.042em 0 #116a79;z-index:-2;}
+
+/* The hero, and the only place the mark is allowed to move. */
+.whomp-wordmark{font-size:clamp(60px,12vw,150px);line-height:0.82;margin:0;
+  animation:whomp-wordmark-hit 3.6s cubic-bezier(.2,.9,.25,1) infinite;}
 @keyframes whomp-wordmark-hit{
   0%,8%,100%{transform:skewX(-4deg) rotate(-1deg) scale(1);}
   2%{transform:skewX(-4deg) rotate(-1deg) scale(1.06,.88) translateY(8px);}
   5%{transform:skewX(-4deg) rotate(-1deg) scale(.98,1.04) translateY(-3px);}
 }
 @media(prefers-reduced-motion:reduce){.whomp-wordmark{animation:none;}}
+
+/* The small lockup. inline-block because it sits INSIDE a heading beside
+   ordinary words ("WHOMP dev log"): only the logo half gets the face, the
+   descriptor stays body copy, which is what keeps this a lockup rather than a
+   whole sentence wearing the logo. The em-expressed layers scale down with it
+   for free -- that is what buying them in em bought. */
+.brandword{display:inline-block;line-height:1;vertical-align:baseline;}
+
+/* THE HEADER LOCKUP: the logo, then what the page is. These two headings used
+   to be one .chroma string ("WHOMP dev log", "WHOMP wiki"), which dressed the
+   descriptor in the wordmark's costume and the wordmark in nothing but a
+   text-shadow -- no face, no stroke, no layers, no skew. Splitting them is what
+   lets the logo half be the real mark while "dev log" and "wiki" stay what they
+   are, which is body copy naming a page. .chroma keeps its job everywhere else
+   on the site: it is still the section-heading signature, and it was only ever
+   wrong on the two headings that contain the logo. */
+.brandline{color:var(--cream);font-weight:900;letter-spacing:-.01em;}
+.brandline .brandword{margin-right:.12em;}
 
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{
@@ -525,7 +604,7 @@ html,body{max-width:100%;overflow-x:clip}
 /* .wiki-home-copy and its four rules left with the second wordmark it dressed;
    the link is the icon now, and the heading beside it is the page's one name. */
 .wiki-home{display:flex;align-items:center;text-decoration:none;flex:none}
-.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:10px}
+.wiki-home-icon{display:block;width:46px;height:46px;flex:none;border-radius:var(--tile-radius)}
 .wiki-home:hover .wiki-home-icon{transform:translateY(-1px)}
 .wiki-home:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:12px}
 @media (prefers-reduced-motion:no-preference){.wiki-home-icon{transition:transform .12s ease}}
@@ -562,8 +641,8 @@ footer a{color:var(--cyan);text-decoration:none}
     </span>
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
-    <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.20</b> · <code>b8b6b9b0</code></span></div>
+    <span class="dot unknown" aria-hidden="true"></span>
+    Live <b>unverified</b> · did not answer</span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -658,13 +737,13 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>
-    <div class="stat">36 entries</div>
+    <div class="stat">39 entries</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
     <nav class="wbreadcrumb" aria-label="Breadcrumb"><a href="wiki.html">Wiki</a><span aria-hidden="true">/</span><a href="wiki.html#section-buildcraft">Buildcraft</a><span aria-hidden="true">/</span><span aria-current="page">Weapons</span></nav>
     <h2 class="chroma">Weapons</h2>
-    <p class="lede">Weapons fire on their own. You are offered them as you level, you feed the levels back into them, and 6 of them are end forms that only arrive with the right tome and a boss chest. The one you aim by hand is a core weapon, and it has its own page.</p>
+    <p class="lede">Weapons fire on their own. You are offered them as you level, you feed the levels back into them, and 9 of them are end forms that only arrive with the right tome and a boss chest. The one you aim by hand is a core weapon, and it has its own page.</p>
 
     <p class="womit"><b>There is no damage-per-second column, on purpose.</b> The game never works one out: your might and your crit multiply the damage, your attack speed divides the interval, and half of these do not fire in a way that "damage times shots per second" describes at all. A beam ramps the longer it holds, a chain jump lands a flat share of the first hit, the shotgun pays more up close. One number would be wrong on most of these cards, so you get the base figures and the growth rule and you compare like with like. <b>Element is a look, not a rule</b>: it picks the color of the effect, and nothing in the game reads it for damage, resistance or status.</p>
 
@@ -675,21 +754,21 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-weapons-element">Element</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-weapons-element" data-facet="element" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="holy" aria-pressed="false" aria-controls="wiki-groups">Holy <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="void" aria-pressed="false" aria-controls="wiki-groups">Void <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="ice" aria-pressed="false" aria-controls="wiki-groups">Ice <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="lightning" aria-pressed="false" aria-controls="wiki-groups">Lightning <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="fire" aria-pressed="false" aria-controls="wiki-groups">Fire <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="earth" aria-pressed="false" aria-controls="wiki-groups">Earth <span style="opacity:.5">3</span></button><button class="wf" type="button" data-value="physical" aria-pressed="false" aria-controls="wiki-groups">Physical <span style="opacity:.5">3</span></button>
+          <button class="wf" type="button" data-value="holy" aria-pressed="false" aria-controls="wiki-groups">Holy <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="void" aria-pressed="false" aria-controls="wiki-groups">Void <span style="opacity:.5">8</span></button><button class="wf" type="button" data-value="fire" aria-pressed="false" aria-controls="wiki-groups">Fire <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="ice" aria-pressed="false" aria-controls="wiki-groups">Ice <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="lightning" aria-pressed="false" aria-controls="wiki-groups">Lightning <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="earth" aria-pressed="false" aria-controls="wiki-groups">Earth <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="physical" aria-pressed="false" aria-controls="wiki-groups">Physical <span style="opacity:.5">4</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h" id="facet-weapons-pattern">How it fires</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-weapons-pattern" data-facet="pattern" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="beam" aria-pressed="false" aria-controls="wiki-groups">Beam <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="pierceLine" aria-pressed="false" aria-controls="wiki-groups">Pierce line <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="randomAoE" aria-pressed="false" aria-controls="wiki-groups">Random AoE <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="petUnits" aria-pressed="false" aria-controls="wiki-groups">Pet units <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="aura" aria-pressed="false" aria-controls="wiki-groups">Aura <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="boomerang" aria-pressed="false" aria-controls="wiki-groups">Boomerang <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="chain" aria-pressed="false" aria-controls="wiki-groups">Chain <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="cone" aria-pressed="false" aria-controls="wiki-groups">Cone <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="orbit" aria-pressed="false" aria-controls="wiki-groups">Orbit <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="blackHole" aria-pressed="false" aria-controls="wiki-groups">Black hole <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="burstNearest" aria-pressed="false" aria-controls="wiki-groups">Burst nearest <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="homing" aria-pressed="false" aria-controls="wiki-groups">Homing <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meleeArc" aria-pressed="false" aria-controls="wiki-groups">Melee arc <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meteor" aria-pressed="false" aria-controls="wiki-groups">Meteor <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="ricochet" aria-pressed="false" aria-controls="wiki-groups">Ricochet <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="trail" aria-pressed="false" aria-controls="wiki-groups">Trail <span style="opacity:.5">1</span></button>
+          <button class="wf" type="button" data-value="beam" aria-pressed="false" aria-controls="wiki-groups">Beam <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="pierceLine" aria-pressed="false" aria-controls="wiki-groups">Pierce line <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="randomAoE" aria-pressed="false" aria-controls="wiki-groups">Random AoE <span style="opacity:.5">5</span></button><button class="wf" type="button" data-value="petUnits" aria-pressed="false" aria-controls="wiki-groups">Pet units <span style="opacity:.5">4</span></button><button class="wf" type="button" data-value="aura" aria-pressed="false" aria-controls="wiki-groups">Aura <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="boomerang" aria-pressed="false" aria-controls="wiki-groups">Boomerang <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="chain" aria-pressed="false" aria-controls="wiki-groups">Chain <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="cone" aria-pressed="false" aria-controls="wiki-groups">Cone <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="orbit" aria-pressed="false" aria-controls="wiki-groups">Orbit <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="ricochet" aria-pressed="false" aria-controls="wiki-groups">Ricochet <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="trail" aria-pressed="false" aria-controls="wiki-groups">Trail <span style="opacity:.5">2</span></button><button class="wf" type="button" data-value="blackHole" aria-pressed="false" aria-controls="wiki-groups">Black hole <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="burstNearest" aria-pressed="false" aria-controls="wiki-groups">Burst nearest <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="homing" aria-pressed="false" aria-controls="wiki-groups">Homing <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meleeArc" aria-pressed="false" aria-controls="wiki-groups">Melee arc <span style="opacity:.5">1</span></button><button class="wf" type="button" data-value="meteor" aria-pressed="false" aria-controls="wiki-groups">Meteor <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
         <span class="wfacet-h" id="facet-weapons-access">Availability</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-weapons-access" data-facet="access" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">16</span></button><button class="wf" type="button" data-value="achievement" aria-pressed="false" aria-controls="wiki-groups">Achievement <span style="opacity:.5">13</span></button><button class="wf" type="button" data-value="evolution" aria-pressed="false" aria-controls="wiki-groups">Evolution <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="quest-or-achievement" aria-pressed="false" aria-controls="wiki-groups">Quest or achievement <span style="opacity:.5">1</span></button>
+          <button class="wf" type="button" data-value="start" aria-pressed="false" aria-controls="wiki-groups">From the start <span style="opacity:.5">16</span></button><button class="wf" type="button" data-value="achievement" aria-pressed="false" aria-controls="wiki-groups">Achievement <span style="opacity:.5">13</span></button><button class="wf" type="button" data-value="evolution" aria-pressed="false" aria-controls="wiki-groups">Evolution <span style="opacity:.5">9</span></button><button class="wf" type="button" data-value="quest-or-achievement" aria-pressed="false" aria-controls="wiki-groups">Quest or achievement <span style="opacity:.5">1</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -736,7 +815,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:37%"></i></span><span class="wmeter-v">9.6</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:36%"></i></span><span class="wmeter-v">9.6</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:79%"></i></span><span class="wmeter-v">16.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -769,7 +848,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:54%"></i></span><span class="wmeter-v">14</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:52%"></i></span><span class="wmeter-v">14</span></div>
 
 
         </div>
@@ -802,7 +881,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:55%"></i></span><span class="wmeter-v">14.25</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:53%"></i></span><span class="wmeter-v">14.25</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">30<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">9.9<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -835,7 +914,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">10.8</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:40%"></i></span><span class="wmeter-v">10.8</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:50%"></i></span><span class="wmeter-v">10.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -868,7 +947,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-mortar">Mortar</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:48%"></i></span><span class="wmeter-v">12.5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">12.5</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -901,7 +980,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-arcCaster">Arc Caster</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:69%"></i></span><span class="wmeter-v">18</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">18</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -934,7 +1013,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-blizzard">Blizzard</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">7.7</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:29%"></i></span><span class="wmeter-v">7.7</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:90%"></i></span><span class="wmeter-v">19<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -963,11 +1042,11 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1600</b> ms between shots <span class="wsub">, 1200.63 at level 20</span></span></div>
           <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> discs per shot, before level bonuses</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>20</b> max, <b>+6.4%</b> damage per level <span class="wsub">, 33.79 damage at 20</span></span></div>
-
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-buzzsaw">Buzzsaw</a>, once you hold <a href="wiki-tomes.html#e-attackSpeedTome">Tome of Haste</a> and open a boss chest</span></div>
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:59%"></i></span><span class="wmeter-v">15.25</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">15.25</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:79%"></i></span><span class="wmeter-v">16.5<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -1000,7 +1079,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-tether">Tether</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:25%"></i></span><span class="wmeter-v">6.4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:24%"></i></span><span class="wmeter-v">6.4</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">10<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1033,7 +1112,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:12%"></i></span><span class="wmeter-v">3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:11%"></i></span><span class="wmeter-v">3</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">30<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:32%"></i></span><span class="wmeter-v">6.72<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -1066,7 +1145,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:18%"></i></span><span class="wmeter-v">4.6</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:17%"></i></span><span class="wmeter-v">4.6</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:50%"></i></span><span class="wmeter-v">15<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1099,7 +1178,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-photonSword">Photon Sword</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:55%"></i></span><span class="wmeter-v">14.4</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:54%"></i></span><span class="wmeter-v">14.4</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1132,7 +1211,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-frostLance">Frost Lance</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">24</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:89%"></i></span><span class="wmeter-v">24</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1165,7 +1244,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:62%"></i></span><span class="wmeter-v">16</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:60%"></i></span><span class="wmeter-v">16</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1198,7 +1277,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:46%"></i></span><span class="wmeter-v">11.9</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:44%"></i></span><span class="wmeter-v">11.9</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1231,7 +1310,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">11.3</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">11.3</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1264,7 +1343,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-staticLash">Static Lash</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:92%"></i></span><span class="wmeter-v">24</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:89%"></i></span><span class="wmeter-v">24</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1297,7 +1376,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:33%"></i></span><span class="wmeter-v">8.5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:32%"></i></span><span class="wmeter-v">8.5</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1396,7 +1475,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:48%"></i></span><span class="wmeter-v">12.5</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">12.5</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1429,7 +1508,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:38%"></i></span><span class="wmeter-v">10</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:37%"></i></span><span class="wmeter-v">10</span></div>
 
 
         </div>
@@ -1462,7 +1541,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-groundbreaker">Groundbreaker</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:50%"></i></span><span class="wmeter-v">13</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:48%"></i></span><span class="wmeter-v">13</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1495,7 +1574,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">26</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:97%"></i></span><span class="wmeter-v">26</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1528,7 +1607,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:35%"></i></span><span class="wmeter-v">9</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:34%"></i></span><span class="wmeter-v">9</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:57%"></i></span><span class="wmeter-v">17<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1557,11 +1636,11 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>300</b> ms</span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>20</b> max, <b>+10%</b> damage per level <span class="wsub">, 5.8 damage at 20</span></span></div>
-
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-cinderRoad">Cinder Road</a>, once you hold <a href="wiki-tomes.html#e-persistTome">Tome of Persistence</a> and open a boss chest</span></div>
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:8%"></i></span><span class="wmeter-v">2</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:7%"></i></span><span class="wmeter-v">2</span></div>
 
 
         </div>
@@ -1594,7 +1673,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:50%"></i></span><span class="wmeter-v">13</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:48%"></i></span><span class="wmeter-v">13</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:62%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -1627,7 +1706,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">26</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:97%"></i></span><span class="wmeter-v">26</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1660,7 +1739,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:88%"></i></span><span class="wmeter-v">23</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:86%"></i></span><span class="wmeter-v">23</span></div>
 
 
         </div>
@@ -1689,11 +1768,11 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2400</b> ms between shots <span class="wsub">, 1634.96 at level 20</span></span></div>
           <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Shard</span></div>
           <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>20</b> max, <b>+7%</b> damage per level, compounding <span class="wsub">, 32.55 damage at 20</span></span></div>
-
+          <div class="wfact"><span class="wfact-k">Becomes</span><span class="wfact-v"><a href="wiki-weapons.html#e-gravemaker">Gravemaker</a>, once you hold <a href="wiki-tomes.html#e-critDamageTome">Tome of Lethality</a> and open a boss chest</span></div>
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:35%"></i></span><span class="wmeter-v">9</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:34%"></i></span><span class="wmeter-v">9</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:30%"></i></span><span class="wmeter-v">9<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1701,7 +1780,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article></div>
     </section>
     <section class="wgroup" data-group="evolved" id="g-evolved">
-      <div class="wgroup-h"><h3>Evolutions</h3><span class="wgroup-n">6</span></div>
+      <div class="wgroup-h"><h3>Evolutions</h3><span class="wgroup-n">9</span></div>
       <p class="wgroup-note">End forms, never offered straight up. Each one is the payoff for maxing a specific weapon, holding its paired tome, and opening a boss chest. Turning one down is not final, the offer comes back at the next chest.</p>
       <div class="wgrid">
       <article class="wcard" id="e-novaLance" tabindex="-1" data-element="holy" data-pattern="pierceLine" data-access="evolution" data-s-roster="22" data-s-name="nova lance" data-s-damage="19.5672" data-s-range="21.45" data-s-cadence="647.7182143255357">
@@ -1731,7 +1810,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:75%"></i></span><span class="wmeter-v">19.57</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:73%"></i></span><span class="wmeter-v">19.57</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:63%"></i></span><span class="wmeter-v">13.2<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -1764,7 +1843,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:69%"></i></span><span class="wmeter-v">17.92</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:67%"></i></span><span class="wmeter-v">17.92</span></div>
 
 
         </div>
@@ -1797,7 +1876,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:48%"></i></span><span class="wmeter-v">12.57</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:47%"></i></span><span class="wmeter-v">12.57</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:71%"></i></span><span class="wmeter-v">15<span class="wmeter-u"> m/s</span></span></div>
         </div>
@@ -1830,7 +1909,7 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:24%"></i></span><span class="wmeter-v">6.14</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:23%"></i></span><span class="wmeter-v">6.14</span></div>
 
 
         </div>
@@ -1863,7 +1942,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <div class="wfact"><span class="wfact-k">Core weapon</span><span class="wfact-v"><a href="wiki-cores.html#e-laser">Sweepbeam</a> is built on it</span></div>
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">11.23</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:42%"></i></span><span class="wmeter-v">11.23</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:54%"></i></span><span class="wmeter-v">16.3<span class="wmeter-u"> m</span></span></div>
 
         </div>
@@ -1896,9 +1975,108 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
         <div class="wmeters">
-          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:84%"></i></span><span class="wmeter-v">21.75</span></div>
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:81%"></i></span><span class="wmeter-v">21.75</span></div>
           <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:43%"></i></span><span class="wmeter-v">13<span class="wmeter-u"> m</span></span></div>
           <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:50%"></i></span><span class="wmeter-v">10.5<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
+      </article>
+      <article class="wcard" id="e-cinderRoad" tabindex="-1" data-element="fire" data-pattern="trail" data-access="evolution" data-s-roster="36" data-s-name="cinder road" data-s-damage="4.08"  data-s-cadence="300">
+        <div class="wcard-h">
+
+          <h4>Cinder Road</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:cinderRoad" data-visual-use="entry">
+    <img src="wiki-assets/weapons/cinder-road.png" width="128" height="128" alt="Canonical in-game weapon glyph for Cinder Road." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-gold">Evolution</span>
+          <span class="wtag ink-violet">Fire</span>
+          <span class="wtag ink-cyan">Trail</span>
+        </div>
+        <p class="wdesc">Every lap you run leaves the ground angrier.</p>
+
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-emberWake">Ember Wake</a> to level <b>20</b> while holding <a href="wiki-tomes.html#e-persistTome">Tome of Persistence</a>, then open a boss chest.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v">ticks every <b>300</b> ms</span></div>
+          <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Disc</span></div>
+          <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>13</b> max, <b>+10%</b> damage per level <span class="wsub">, 8.98 damage at 13</span></span></div>
+
+
+        </div>
+        <div class="wmeters">
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:15%"></i></span><span class="wmeter-v">4.08</span></div>
+
+
+        </div>
+
+      </article>
+      <article class="wcard" id="e-buzzsaw" tabindex="-1" data-element="physical" data-pattern="ricochet" data-access="evolution" data-s-roster="37" data-s-name="buzzsaw" data-s-damage="26.82963" data-s-range="21.45" data-s-cadence="1439.3738096123013">
+        <div class="wcard-h">
+
+          <h4>Buzzsaw</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:buzzsaw" data-visual-use="entry">
+    <img src="wiki-assets/weapons/buzzsaw.png" width="128" height="128" alt="Canonical in-game weapon glyph for Buzzsaw." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-gold">Evolution</span>
+          <span class="wtag ink-violet">Physical</span>
+          <span class="wtag ink-cyan">Ricochet</span>
+        </div>
+        <p class="wdesc">It keeps cutting until the clock says stop.</p>
+        <p class="wgloss">A disc thrown at where the target is going, then bouncing on to the next one. It gets more bounces as it levels.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-ricochetDisc">Ricochet Disc</a> to level <b>20</b> while holding <a href="wiki-tomes.html#e-attackSpeedTome">Tome of Haste</a>, then open a boss chest.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>1439.37</b> ms between shots <span class="wsub">, 1200.63 at level 13</span></span></div>
+          <div class="wfact"><span class="wfact-k">Projectiles</span><span class="wfact-v"><b>4</b> discs per shot, before level bonuses</span></div>
+          <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>13</b> max, <b>+6.4%</b> damage per level <span class="wsub">, 47.43 damage at 13</span></span></div>
+
+
+        </div>
+        <div class="wmeters">
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:100%"></i></span><span class="wmeter-v">26.83</span></div>
+          <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:72%"></i></span><span class="wmeter-v">21.45<span class="wmeter-u"> m</span></span></div>
+          <div class="wmeter"><span class="wmeter-k">Shot speed</span><span class="wmeter-t"><i style="width:79%"></i></span><span class="wmeter-v">16.5<span class="wmeter-u"> m/s</span></span></div>
+        </div>
+
+      </article>
+      <article class="wcard" id="e-gravemaker" tabindex="-1" data-element="earth" data-pattern="beam" data-access="evolution" data-s-roster="38" data-s-name="gravemaker" data-s-damage="16.619838281551758" data-s-range="12.15" data-s-cadence="2083.5012797921277">
+        <div class="wcard-h">
+
+          <h4>Gravemaker</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-glyph" data-visual-key="weapons:gravemaker" data-visual-use="entry">
+    <img src="wiki-assets/weapons/gravemaker.png" width="128" height="128" alt="Canonical in-game weapon glyph for Gravemaker." loading="lazy" decoding="async" data-pixelated="false">
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-gold">Evolution</span>
+          <span class="wtag ink-violet">Earth</span>
+          <span class="wtag ink-cyan">Beam</span>
+        </div>
+        <p class="wdesc">The ground opens twice. Nothing gets up.</p>
+        <p class="wgloss">Holds persistent locks on targets and ramps its damage the longer a lock survives, with splash around where it lands.</p>
+        <div class="wfacts">
+          <div class="wfact"><span class="wfact-k">How you get it</span><span class="wfact-v">Take <a href="wiki-weapons.html#e-fissure">Fissure</a> to level <b>20</b> while holding <a href="wiki-tomes.html#e-critDamageTome">Tome of Lethality</a>, then open a boss chest.</span></div>
+
+          <div class="wfact"><span class="wfact-k">Cadence</span><span class="wfact-v"><b>2083.5</b> ms between shots <span class="wsub">, 1634.96 at level 13</span></span></div>
+          <div class="wfact"><span class="wfact-k">Shape</span><span class="wfact-v">Shard</span></div>
+          <div class="wfact"><span class="wfact-k">Levels</span><span class="wfact-v"><b>13</b> max, <b>+7%</b> damage per level, compounding <span class="wsub">, 37.43 damage at 13</span></span></div>
+
+
+        </div>
+        <div class="wmeters">
+          <div class="wmeter"><span class="wmeter-k">Base damage</span><span class="wmeter-t"><i style="width:62%"></i></span><span class="wmeter-v">16.62</span></div>
+          <div class="wmeter"><span class="wmeter-k">Range</span><span class="wmeter-t"><i style="width:41%"></i></span><span class="wmeter-v">12.15<span class="wmeter-u"> m</span></span></div>
+
         </div>
 
       </article></div>
@@ -1907,7 +2085,7 @@ footer a{color:var(--cyan);text-decoration:none}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@b8b6b9b09</code> on 2026-09-13 01:53 UTC.
+  Every number on this page came straight out of the game, read at <code>game@f81f078</code> on 2026-09-13 07:49 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>
