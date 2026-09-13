@@ -3441,7 +3441,7 @@ function renderHub(rosters, ctx) {
     <span class="brand">
       ${chrome.wikiBrand}
       <span>
-        <h1 class="chroma">WHOMP wiki</h1>
+        <h1 class="brandline"><b class="brandword" data-wordmark="WHOMP">WHOMP</b> wiki</h1>
         <p class="subtag">Everything that can kill you. Everything that can help.</p>
       </span>
     </span>
