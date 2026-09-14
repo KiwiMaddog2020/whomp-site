@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.21</b> · <code>2338d52b</code></span></div>
+    Live <b>0.7.21</b> · <code>98d68c0e</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">383 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">359 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-09-14">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-09-14</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 18</span><span class="storyday-kind" style="background:var(--cyan)">New 8</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+      </div>
+      <p class="storyday-shape">27 changes landed: 18 fixed, 8 new, 1 performance.</p>
+      <a class="storyday-release" href="#release-0-7-21-2026-09-14">
+        <b>v0.7.21</b><span>The Deep opens beneath the island</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-09-13">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-13</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 16</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 17</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span></span>
       </div>
-      <p class="storyday-shape">22 changes landed: 16 fixed, 6 new.</p>
+      <p class="storyday-shape">23 changes landed: 17 fixed, 6 new.</p>
       <a class="storyday-release" href="#release-0-7-21">
         <b>v0.7.21</b><span>The week of the fresh coat: the wordmark gets a real font, the palette drops its strays, the hub's lavafall runs, and thirty of the director's reports get their answer.</span>
       </a>
@@ -571,15 +582,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">105 changes landed: 57 new, 47 fixed, 1 performance.</p>
 
 
-    </article>
-    <article class="storyday" id="day-2026-09-07">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-09-07</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 37</span><span class="storyday-kind" style="background:var(--pink)">Fixed 15</span></span>
-      </div>
-      <p class="storyday-shape">52 changes landed: 37 new, 15 fixed.</p>
-
-
     </article></div>
   </section>
 
@@ -599,6 +601,22 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-21-2026-09-14">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-09-14</span>
+      <span class="notecard-version">v0.7.21</span>
+      <span class="notecard-source">added under this version</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The Deep opens beneath the island</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>The Deep is open: a handcrafted solo dungeon beneath the western hub, unlocked after clearing any level.</li><li>Choose different guardian routes through grand underground halls, pick your fights, and confront the Warden.</li><li>Balance six flowing feeds in a seeded cistern puzzle. Build from a fresh start each attempt and secure your gold on victory.</li><li>Indoor camera clearance, readable boss health and attack warnings, and complete retry and pause controls support the new expedition.</li><li>The western hub has a broad dungeon forecourt and an expanded platforming approach. Damage numbers are slightly smaller and statue challengers have a clearer combat rim.</li></ul>
+    </div>
+
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-21">
     <div class="notecard-head">
       <span class="notecard-date">2026-09-13</span>
@@ -1051,27 +1069,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
   </div>
   </article>
-  <article class="notecard" id="release-0-6-8">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-08-06</span>
-      <span class="notecard-version">v0.6.8</span>
-      <span class="notecard-source">from the release notes</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">Every upgrade card reads in full, airborne shots leave the barrel, and the desktop app just downloads.</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>Core weapon upgrade cards no longer cut their text off with three dots. Every one of the 212 upgrade descriptions was over the old two line limit, so the card layout won real room, the text fits itself to the space, and all cards in a row stay the same height.</li><li>Jumping while firing looks right now. Shots, tracers and muzzle flashes leave the barrel wherever it actually is, mid jump included, instead of firing from the ground you left. This was one shared fix, so it covers core weapons and regular weapons alike.</li><li>The desktop app buttons download the app. Pick APPLE SILICON, INTEL MAC or WINDOWS and the installer starts arriving immediately. No code hosting page, ever, and yes: this is the first Windows build.</li></ul>
-    </div>
-
-    <div class="bucket">
-      <h4 style="color:var(--pink)">Fixed</h4>
-      <ul><li>Offer card descriptions ending in three dots instead of words.</li><li>Airborne shots visibly firing from ground level.</li><li>The desktop card claiming a Windows build existed back when one did not.</li></ul>
-    </div>
-  </div>
-  </article>
-      <p class="lede">13 earlier releases not shown here.</p>
+      <p class="lede">14 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1081,8 +1079,117 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-09-14</h4>
+
+    <div class="row" data-kind="fix" id="chg-12f12e745">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">integrate fitted entrance terrain and camera validation <span class="scope">(deep)</span></span>
+      <span class="sha">12f12e745</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d1545e60e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">distinguish structural ground from doorway fixtures <span class="scope">(deep)</span></span>
+      <span class="sha">d1545e60e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e12d0f4bc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">fit Deep foundations and verify expanded terrain <span class="scope">(hub)</span></span>
+      <span class="sha">e12d0f4bc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-efa32d117">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">compose independently reviewed hub camera correction <span class="scope">(deep)</span></span>
+      <span class="sha">efa32d117</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-67301f8fd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">complete loading ownership and shared presentation contracts <span class="scope">(deep)</span></span>
+      <span class="sha">67301f8fd</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-698f99e9f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close loading and presentation integration gaps <span class="scope">(dungeon)</span></span>
+      <span class="sha">698f99e9f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d8d9a82c9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">integrate verified pre-gate cleanup <span class="scope">(dungeon)</span></span>
+      <span class="sha">d8d9a82c9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-13804d893">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close review bindings and moved ledger reference <span class="scope">(dungeon)</span></span>
+      <span class="sha">13804d893</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-357f6dd01">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">integrate The Deep V1 and approved hub approach <span class="scope">(dungeon)</span></span>
+      <span class="sha">357f6dd01</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-65e014c1e">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">load the expedition on demand with owned recovery <span class="scope">(dungeon)</span></span>
+      <span class="sha">65e014c1e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-00ba9a477">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">open cistern views and finish routed bronze mechanisms <span class="scope">(deep)</span></span>
+      <span class="sha">00ba9a477</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-dbd3f0be7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">restore enemy health plates and named boss vitals <span class="scope">(dungeon)</span></span>
+      <span class="sha">dbd3f0be7</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-662dca56b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire the solo Deep expedition into the real game <span class="scope">(dungeon)</span></span>
+      <span class="sha">662dca56b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-63852b8ca">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">open the approved Deep entrance and broad approach <span class="scope">(hub)</span></span>
+      <span class="sha">63852b8ca</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0184b6c4a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">make architecture block boss attacks and displacement <span class="scope">(dungeon)</span></span>
+      <span class="sha">0184b6c4a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1f105b8f9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">author vaulted cistern loading poster <span class="scope">(deep)</span></span>
+      <span class="sha">1f105b8f9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-891f849c3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">render timed boss warnings and honor live aim settings <span class="scope">(dungeon)</span></span>
+      <span class="sha">891f849c3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4fb36098d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep room shadows stable across the dungeon <span class="scope">(deep)</span></span>
+      <span class="sha">4fb36098d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0e029e799">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">persist presentation settings and preserve sky aim <span class="scope">(dungeon)</span></span>
+      <span class="sha">0e029e799</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-83f1828dc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">retain spawning pack members through activation <span class="scope">(dungeon)</span></span>
+      <span class="sha">83f1828dc</span>
+    </div><div class="row more">+ 7 more that day, not shown</div>
+  </div>
+  <div class="day">
     <h4>2026-09-13</h4>
 
+    <div class="row" data-kind="fix" id="chg-478094d24">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">trim damage digits and accent statue boss silhouettes <span class="scope">(combat)</span></span>
+      <span class="sha">478094d24</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-03f9f4c34">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">land reviewed thematic duel challengers <span class="scope">(statues)</span></span>
@@ -1177,12 +1284,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the second landing's six reds on the merged tree: the hub live-triangle and island-work baselines re-pinned by printline (-301 triangles), the island vertex-height digest and the rim census moved by the composed hub lanes, the theme file's literal ceiling 12 -&gt; 13 for the new cream token, and nine files that still carried the collapsed near-miss hexes moved to the canonical literals (tokenising them is a residual) <span class="scope">(compose)</span></span>
       <span class="sha">fd0c82098</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d57e546d4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the social card test reads the PNG header through a DataView instead of Buffer methods the test tsconfig does not carry (the landing's typecheck red) <span class="scope">(compose)</span></span>
-      <span class="sha">d57e546d4</span>
-    </div><div class="row more">+ 2 more that day, not shown</div>
+    </div><div class="row more">+ 3 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-12</h4>
@@ -1700,129 +1802,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div><div class="row more">+ 85 more that day, not shown</div>
   </div>
   <div class="day">
-    <h4>2026-09-07</h4>
-
-    <div class="row" data-kind="fix" id="chg-b56d027b8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the base weapon card goes back to being a number card <span class="scope">(offers)</span></span>
-      <span class="sha">b56d027b8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b787b23fd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the end-of-run breakdown counts health removed, not damage requested <span class="scope">(damage)</span></span>
-      <span class="sha">b787b23fd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7e51df53f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a dormant board stops writing to the avatar every other avatar shares <span class="scope">(hoverboard)</span></span>
-      <span class="sha">7e51df53f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0f50caf3b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the report stops re-committing the banned name it is about <span class="scope">(deploy18-gate-reds)</span></span>
-      <span class="sha">0f50caf3b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e5f88896e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the key sweep stops reading a CSS keyframe as a storage key, and the night's two save leaves are classified <span class="scope">(fresh-eyes)</span></span>
-      <span class="sha">e5f88896e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5459ec8cb">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the relic wave's two draws leave the shared stream, so L7's split holds again <span class="scope">(duel-core-rng)</span></span>
-      <span class="sha">5459ec8cb</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-502a19d83">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the movement station's raising and its post-and-canopy silhouette <span class="scope">(render)</span></span>
-      <span class="sha">502a19d83</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-31546d70f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">feed the station's kit into the live run, and stand the pickup down <span class="scope">(engine)</span></span>
-      <span class="sha">31546d70f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4ce7ef45c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the movement station arrives at 7:00, far from the live player <span class="scope">(sim)</span></span>
-      <span class="sha">4ce7ef45c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-39aff0953">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the placeholder slab becomes a fitted, lit, self-driving board <span class="scope">(hoverboard)</span></span>
-      <span class="sha">39aff0953</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-07ae1b834">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the vendor walks only the rungs the run pool can actually roll <span class="scope">(relic-vending)</span></span>
-      <span class="sha">07ae1b834</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e31215697">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the shrine reveal keeps its answer until the reel stops, and lands on the level-up draft's own animation <span class="scope">(shrines)</span></span>
-      <span class="sha">e31215697</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-699152762">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the relic shelf, grouped by rung, with curse ink <span class="scope">(relic-ui-shelf-and-ink)</span></span>
-      <span class="sha">699152762</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-0794c051f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">uncommon relics read their own colour (P3) <span class="scope">(relic-ui-shelf-and-ink)</span></span>
-      <span class="sha">0794c051f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-38325b00d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">curse ink on the run sheet's relic rows <span class="scope">(relic-ui-shelf-and-ink)</span></span>
-      <span class="sha">38325b00d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-54fc3af2f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire curse ink at the three call sites <span class="scope">(relic-ui-shelf-and-ink)</span></span>
-      <span class="sha">54fc3af2f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-96fc8e742">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">curse field on the shared offer card <span class="scope">(relic-ui-shelf-and-ink)</span></span>
-      <span class="sha">96fc8e742</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fe0c840b5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">every near tier carved behind the loading screen, held for the session, and swapped as a cut <span class="scope">(hub)</span></span>
-      <span class="sha">fe0c840b5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6f941164d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the statue residency band exists now, so an 0.8 m wobble stops rebuilding the plaza <span class="scope">(hub)</span></span>
-      <span class="sha">6f941164d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7b442f613">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire relicShopCost and readiness fields into the data layer <span class="scope">(relic-rows)</span></span>
-      <span class="sha">7b442f613</span>
-    </div><div class="row more">+ 32 more that day, not shown</div>
-  </div>
-  <div class="day">
-    <h4>2026-09-06</h4>
-
-    <div class="row" data-kind="feat" id="chg-382b8a25c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">movementKit leaf, derived ownership, and the fixture's registration (ritual steps 3, part 1) <span class="scope">(meta)</span></span>
-      <span class="sha">382b8a25c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6da955a57">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the wire relic list is validated, and the abort arm bounds the seat by the room <span class="scope">(coop-attestation-fix)</span></span>
-      <span class="sha">6da955a57</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-aef639aa5">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the attestation verdict reaches the accused seat, and three wire fields get the guard their siblings already have <span class="scope">(coop-attestation-fix)</span></span>
-      <span class="sha">aef639aa5</span>
-    </div>
-  </div>
-  <div class="day">
     <h4>2026-08-29</h4>
 
     <div class="row" data-kind="feat" id="chg-89bf89942">
@@ -1943,12 +1922,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@2338d52ba</code> on 2026-09-14 03:41 UTC.
+  Every number on this page came straight out of the game, read at <code>game@98d68c0ed</code> on 2026-09-14 19:19 UTC.
 
   The game is serving <code>0.7.21</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">390 player-visible changes in the last 7 days, across 9 active days, 932 internal-only commits filtered out</div>
+  <div class="stat">363 player-visible changes in the last 7 days, across 8 active days, 830 internal-only commits filtered out</div>
 </footer>
 
 
