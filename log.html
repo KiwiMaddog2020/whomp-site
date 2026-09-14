@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.21</b> · <code>46ec1bd1</code></span></div>
+    Live <b>0.7.21</b> · <code>2338d52b</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">373 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">383 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-13">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-13</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 11</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 16</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span></span>
       </div>
-      <p class="storyday-shape">12 changes landed: 11 fixed, 1 new.</p>
+      <p class="storyday-shape">22 changes landed: 16 fixed, 6 new.</p>
       <a class="storyday-release" href="#release-0-7-21">
         <b>v0.7.21</b><span>The week of the fresh coat: the wordmark gets a real font, the palette drops its strays, the hub's lavafall runs, and thirty of the director's reports get their answer.</span>
       </a>
@@ -1083,6 +1083,56 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-13</h4>
 
+    <div class="row" data-kind="feat" id="chg-03f9f4c34">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">land reviewed thematic duel challengers <span class="scope">(statues)</span></span>
+      <span class="sha">03f9f4c34</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e5a58edbe">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">preserve environmental damage origin <span class="scope">(statues)</span></span>
+      <span class="sha">e5a58edbe</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0884a4a27">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">land reviewed ricochet projectile eligibility <span class="scope">(offers)</span></span>
+      <span class="sha">0884a4a27</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3b8485787">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">connect character defenses and signature effects <span class="scope">(statues)</span></span>
+      <span class="sha">3b8485787</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3aa10c472">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">land reviewed flowing magma and rounded outlet <span class="scope">(hub)</span></span>
+      <span class="sha">3aa10c472</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-91c3f9f55">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">preserve real damage and encounter settings <span class="scope">(statue)</span></span>
+      <span class="sha">91c3f9f55</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7c9c24071">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">round the magma outlet and falling drops <span class="scope">(hub)</span></span>
+      <span class="sha">7c9c24071</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-43afaa0c6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">fight with themed level-scaled duel kits <span class="scope">(statue)</span></span>
+      <span class="sha">43afaa0c6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-450c6c1a6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">recognize ricochet bonus projectiles <span class="scope">(offers)</span></span>
+      <span class="sha">450c6c1a6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5fb2fa170">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">pour slow magma through the Riftfall <span class="scope">(hub)</span></span>
+      <span class="sha">5fb2fa170</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-7841b63ea">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">damage numbers re-lay along the live camera-right every frame (director, 2026-09-13 12:54 pm: on a fast spin the digits slid over one another or read backwards). The 09-11 facing fix laid digits out along camera-right at spawn and baked the result into world space; now each glyph keeps its run offset as a scalar and update() applies it against that frame's camera, so order and spacing hold through any turn. Eight-heading spin witness added to tests/damageNumbersFacing.test.ts; four suites green (120), tsc clean <span class="scope">(ui)</span></span>
@@ -1132,17 +1182,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the social card test reads the PNG header through a DataView instead of Buffer methods the test tsconfig does not carry (the landing's typecheck red) <span class="scope">(compose)</span></span>
       <span class="sha">d57e546d4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e7111935c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the five scoped-gate reds on the composed tree: an unused theme import in the clear-log panel (orange-retire), the lavafall tests compare bytes without Node's Buffer and type the rope amplitude as a number (hub-void-lava), the voice lint resolves its root through the file URL (voice-sweep-and-lint), and the chunk total re-pinned by printline 8364 -&gt; 8559 (8538.32 KiB across 84 chunks) <span class="scope">(compose)</span></span>
-      <span class="sha">e7111935c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f81f078f6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the two reds of the 11:36 pm gate: the rulings file names the first-party flagship bar in the house term instead of the banned company name (my verbatim quote of the director), and the statue boss fight test carries a per-row director floor for the Rift lever (0.65, Trim to mid-window, 2026-09-12 11:10 pm) with answer 4's floor kept for the other thirteen and the 1.5 ceiling for all <span class="scope">(gate)</span></span>
-      <span class="sha">f81f078f6</span>
-    </div>
+    </div><div class="row more">+ 2 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-12</h4>
@@ -1903,12 +1943,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@46ec1bd13</code> on 2026-09-13 21:35 UTC.
+  Every number on this page came straight out of the game, read at <code>game@2338d52ba</code> on 2026-09-14 03:40 UTC.
 
   The game is serving <code>0.7.21</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">380 player-visible changes in the last 7 days, across 9 active days, 918 internal-only commits filtered out</div>
+  <div class="stat">390 player-visible changes in the last 7 days, across 9 active days, 932 internal-only commits filtered out</div>
 </footer>
 
 
