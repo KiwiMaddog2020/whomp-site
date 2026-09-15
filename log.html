@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.21</b> · <code>95efc6e1</code></span></div>
+    Live <b>0.7.21</b> · <code>dc1eb985</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">368 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">267 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday is-quiet" id="day-2026-09-15">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-09-15</span>
+        <span class="storyday-kinds"></span>
+      </div>
+      <p class="storyday-shape">Nothing player-visible landed.</p>
+      <a class="storyday-release" href="#release-0-7-21-2026-09-15">
+        <b>v0.7.21</b><span>Smoother on big GPUs: effects and the hub now release what they no longer draw</span>
+      </a>
+
+    </article>
     <article class="storyday" id="day-2026-09-14">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-14</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 27</span><span class="storyday-kind" style="background:var(--cyan)">New 8</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 29</span><span class="storyday-kind" style="background:var(--cyan)">New 8</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
       </div>
-      <p class="storyday-shape">36 changes landed: 27 fixed, 8 new, 1 performance.</p>
+      <p class="storyday-shape">40 changes landed: 29 fixed, 8 new, 3 performance.</p>
       <a class="storyday-release" href="#release-0-7-21-2026-09-14">
         <b>v0.7.21</b><span>The Deep opens beneath the island</span>
       </a>
@@ -573,15 +584,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">69 changes landed: 36 fixed, 30 new, 3 performance.</p>
 
 
-    </article>
-    <article class="storyday" id="day-2026-09-08">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-09-08</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 57</span><span class="storyday-kind" style="background:var(--pink)">Fixed 47</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
-      </div>
-      <p class="storyday-shape">105 changes landed: 57 new, 47 fixed, 1 performance.</p>
-
-
     </article></div>
   </section>
 
@@ -601,6 +603,22 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-21-2026-09-15">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-09-15</span>
+      <span class="notecard-version">v0.7.21</span>
+      <span class="notecard-source">added under this version</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Smoother on big GPUs: effects and the hub now release what they no longer draw</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Performance: textures and instance buffers owned by weapon effects, the hub island and character faces are released on teardown instead of lingering on the GPU (a first answer to the context-lost reports on high-end cards).</li><li>The Deep: enemy pack ownership is indexed and compacted in place, so long expeditions stop paying a growing per-frame cost.</li><li>A test that had gone vacuous after the pack change now proves the stale-slot check again.</li></ul>
+    </div>
+
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-21-2026-09-14">
     <div class="notecard-head">
       <span class="notecard-date">2026-09-14</span>
@@ -1049,27 +1067,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
   </div>
   </article>
-  <article class="notecard" id="release-0-7-0">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-08-07</span>
-      <span class="notecard-version">v0.7.0</span>
-      <span class="notecard-source">from the release notes</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">Core weapon upgrades become their own kind of card: instant to tell apart, quick to read, and finally wearing real art staging.</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>Core upgrade cards now read as a different kind of thing at one glance: their own plated frame in the upgrade's element hue, a bolted rivet rail, and no rarity chrome, because core upgrades were never rolled on a rarity ladder.</li><li>All 212 core upgrade descriptions were rewritten to be concise. Every one now fits at full text size, most in two or three lines, with every number and condition preserved exactly.</li><li>Bug reports get real markup tools: freehand, circle, and arrow above the screenshot. Drag to place, and UNDO pops your most recent mark of any kind, again and again.</li><li>The settings panel content sits in one clean column again inside the wide window: title, tabs, rows and CLOSE all share one left edge and one comfortable measure.</li></ul>
-    </div>
-
-    <div class="bucket">
-      <h4 style="color:var(--pink)">Fixed</h4>
-      <ul><li>A screenshot that finished preparing after you closed the feedback panel, or after you attached a newer one, could replace or resurrect the wrong attachment. Stale preparations are now discarded.</li><li>Very long freehand markup strokes no longer grow without bound; drawing stays smooth for as long as you scribble.</li><li>One hub draw attribution defect found by the kennel render audit, fixed in the ledger without touching any budget number.</li><li>A stray em dash removed from a composed core option label.</li></ul>
-    </div>
-  </div>
-  </article>
-      <p class="lede">14 earlier releases not shown here.</p>
+      <p class="lede">15 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1081,6 +1079,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-14</h4>
 
+    <div class="row" data-kind="fix" id="chg-60db6b427">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">land reviewed resource lifetime cleanup <span class="scope">(render)</span></span>
+      <span class="sha">60db6b427</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-afe6b8da1">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">land reviewed pack ownership optimization <span class="scope">(dungeon)</span></span>
+      <span class="sha">afe6b8da1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d697c8b27">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">release owned textures and instance buffers on teardown <span class="scope">(render)</span></span>
+      <span class="sha">d697c8b27</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-1411babb7">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">index pack ownership and compact slots in place <span class="scope">(dungeon)</span></span>
+      <span class="sha">1411babb7</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-95efc6e1b">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">fit cleanup notes within the existing bundle budget <span class="scope">(release)</span></span>
@@ -1160,27 +1178,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">integrate verified pre-gate cleanup <span class="scope">(dungeon)</span></span>
       <span class="sha">d8d9a82c9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-13804d893">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close review bindings and moved ledger reference <span class="scope">(dungeon)</span></span>
-      <span class="sha">13804d893</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-357f6dd01">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">integrate The Deep V1 and approved hub approach <span class="scope">(dungeon)</span></span>
-      <span class="sha">357f6dd01</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-65e014c1e">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">load the expedition on demand with owned recovery <span class="scope">(dungeon)</span></span>
-      <span class="sha">65e014c1e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-00ba9a477">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">open cistern views and finish routed bronze mechanisms <span class="scope">(deep)</span></span>
-      <span class="sha">00ba9a477</span>
-    </div><div class="row more">+ 16 more that day, not shown</div>
+    </div><div class="row more">+ 20 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-13</h4>
@@ -1705,101 +1703,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the two arms are one arm mirrored, and both shoulder ruffs close <span class="scope">(whompus)</span></span>
       <span class="sha">5e5fabce3</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-32a197201">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the engine chunk's RAW ceiling moves 6075 -&gt; 6093 in both suites that read it; the loft is the arrival at +4.65 KiB and there was nothing cheaper to take first <span class="scope">(pins)</span></span>
-      <span class="sha">32a197201</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-38a7f7d40">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the hub's two exact triangle pins move by -632 for the lofted cow and pig, by printline copy from this lane's own run <span class="scope">(pins)</span></span>
-      <span class="sha">38a7f7d40</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5be6ce4cd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the two arms are one arm mirrored, and both shoulder ruffs close <span class="scope">(whompus)</span></span>
-      <span class="sha">5be6ce4cd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f59cf9a88">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">loft() closes each end with a pole fan wound WITH its body quads, so no normal on the cow or the pig faces inward; the r3 pin was measuring the cow's shape and now carries its own counterfactual <span class="scope">(paddock)</span></span>
-      <span class="sha">f59cf9a88</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4a411616c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the cow and the pig are one lofted skin each with authored smooth normals the update turns, the material is smooth, the cow wears a patterned coat on the mesh and the hen keeps her flat look by name (report 617) <span class="scope">(paddock)</span></span>
-      <span class="sha">4a411616c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a241d8466">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">seven cross-lane reds after the evening's landings, each with its reason; coreAura reads the bottom-centre owner instead of CSS literals, engine gzip 1845 -&gt; 1855, first paint raw 1065 -&gt; 1070, chunk total 8070 -&gt; 8090, the firstMinutes roster 13 -&gt; 18 for the six hub teaching beats <span class="scope">(pins)</span></span>
-      <span class="sha">a241d8466</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b98ab17c4">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the cow and the pig are one lofted skin each with authored smooth normals the update turns, the material is smooth, the cow wears a patterned coat on the mesh and the hen keeps her flat look by name (report 617) <span class="scope">(paddock)</span></span>
-      <span class="sha">b98ab17c4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b91ba0f4d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the E rung refuses the two display-only interactable kinds <span class="scope">(hub)</span></span>
-      <span class="sha">b91ba0f4d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3b2beb35a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">RGBA vertex colour so the morph-colour vertex shader compiles (three r185 adds a vec3 into the vec4 vColor under plain USE_COLOR; found live by bin/shot.sh, the hub behind the crash overlay, invisible to every suite); the station turn at 4.5 rad/s over 0.75 s; the paw lift on the raw swing fraction; ?catHold=1 pins the cat clock for a capture; the slide law measures between two settled stance frames <span class="scope">(cats)</span></span>
-      <span class="sha">3b2beb35a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4889de8e8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the replacement first post staged, the hammer landed at 700 ms with the director's text; held by today's cadence until he deletes the first post and says so <span class="scope">(social)</span></span>
-      <span class="sha">4889de8e8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d90dd2801">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">five cross-lane pins moved with provenance after tonight's landings; achievements roster 63 -&gt; 77 (fourteen statue deeds), hubRegions doc-index fence 50 -&gt; 52 (lava docs), engine chunk raw 6060 -&gt; 6075 (lava fragment pass), first paint raw 1060 -&gt; 1065 (mobile gate in first paint), total chunks 8050 -&gt; 8070 <span class="scope">(pins)</span></span>
-      <span class="sha">d90dd2801</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-53ef30acb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">add WHOMP_SHOT_GPU door and take the capture lock only after floors pass <span class="scope">(shot)</span></span>
-      <span class="sha">53ef30acb</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fa7c3eaa8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">split the four-ask teaching prompt into six sequenced beats <span class="scope">(hub)</span></span>
-      <span class="sha">fa7c3eaa8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-48777273e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a panel beat draws its shipped illustration when one exists, and its code-drawn painting when one does not <span class="scope">(cutscene)</span></span>
-      <span class="sha">48777273e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f0d88aede">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hammer reshoot set, ten pre-impact frames on a true mid-swing vantage, eight post-impact, a run-camera control and two contact sheets <span class="scope">(shots)</span></span>
-      <span class="sha">f0d88aede</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1abb6cf67">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the cats face their travel and their paws stay planted, and the model is a cat (reports 561, 569, 622, 623) <span class="scope">(cats)</span></span>
-      <span class="sha">1abb6cf67</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1b4e98f15">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">one owner for the bottom-centre stack, so the hint card cannot sit under the power-up timers <span class="scope">(hud)</span></span>
-      <span class="sha">1b4e98f15</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8a13003b3">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hub greeter answers and prints its keys <span class="scope">(greeter)</span></span>
-      <span class="sha">8a13003b3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1bbb503fd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">drop the Bluesky link from the phone screen, director's word 2026-09-08 6:27pm; the quiet row keeps Dev log and Wiki <span class="scope">(mobile-landing-notice)</span></span>
-      <span class="sha">1bbb503fd</span>
-    </div><div class="row more">+ 85 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-08-29</h4>
@@ -1922,12 +1825,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@95efc6e1b</code> on 2026-09-14 22:44 UTC.
+  Every number on this page came straight out of the game, read at <code>game@dc1eb985a</code> on 2026-09-15 16:49 UTC.
 
   The game is serving <code>0.7.21</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">372 player-visible changes in the last 7 days, across 8 active days, 836 internal-only commits filtered out</div>
+  <div class="stat">272 player-visible changes in the last 7 days, across 8 active days, 625 internal-only commits filtered out</div>
 </footer>
 
 
