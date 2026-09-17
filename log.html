@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.21</b> · <code>7e01d282</code></span></div>
+    Live <b>0.7.21</b> · <code>5062aded</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">272 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">293 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-16">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-16</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 10</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 13</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">10 changes landed, all of them fixes.</p>
+      <p class="storyday-shape">21 changes landed: 13 fixed, 6 new, 1 balance, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-21-2026-09-16">
         <b>v0.7.21</b><span>The balance batch lands, The Deep gets its doorway and shadow, statue bosses fight fair</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-15">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-15</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 36</span><span class="storyday-kind" style="background:var(--cyan)">New 24</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 37</span><span class="storyday-kind" style="background:var(--cyan)">New 28</span><span class="storyday-kind" style="background:var(--gold)">Performance 7</span><span class="storyday-kind" style="background:var(--violet)">Balance 2</span></span>
       </div>
-      <p class="storyday-shape">64 changes landed: 36 fixed, 24 new, 2 balance, 2 performance.</p>
+      <p class="storyday-shape">74 changes landed: 37 fixed, 28 new, 7 performance, 2 balance.</p>
       <a class="storyday-release" href="#release-0-7-21-2026-09-15">
         <b>v0.7.21</b><span>Smoother on big GPUs: effects and the hub now release what they no longer draw</span>
       </a>
@@ -1077,6 +1077,56 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-16</h4>
 
+    <div class="row" data-kind="fix" id="chg-55306c6c4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">two useless assignments from the perf landings removed; the no-useless-assignment ratchet holds at 14 <span class="scope">(lint)</span></span>
+      <span class="sha">55306c6c4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-01cca8808">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">wire qualityTier into The Deep, and witness the wire <span class="scope">(deep)</span></span>
+      <span class="sha">01cca8808</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cd9eb17f3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the report must quote a RECENT sha, not the tip, which no correct report can carry <span class="scope">(lander)</span></span>
+      <span class="sha">cd9eb17f3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2eaafcb12">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">one advisory cloud-gate dispatch per deploy, never waited on <span class="scope">(train)</span></span>
+      <span class="sha">2eaafcb12</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d02452f11">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">queue a lane from its report, and only if the report says it finished <span class="scope">(lander)</span></span>
+      <span class="sha">d02452f11</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a3255e836">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the composed-pin pre-check, and a list that grows from gate reds <span class="scope">(gate)</span></span>
+      <span class="sha">a3255e836</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3ad32575a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the deploy train refuses to start over an unlanded gate row <span class="scope">(train)</span></span>
+      <span class="sha">3ad32575a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-46003ab2f">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bin/lander-status.mjs reads the landing state instead of reconstructing it <span class="scope">(lander)</span></span>
+      <span class="sha">46003ab2f</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-300738cb4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the mechanical lander reads the repo queue's rows and names artifact staleness instead of halting <span class="scope">(lander)</span></span>
+      <span class="sha">300738cb4</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-b5ae4862a">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">tune down every shrine offer a tome also modifies <span class="scope">(shrines)</span></span>
+      <span class="sha">b5ae4862a</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-eef891689">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">trim Hellmouth and The Ascent back inside the TTK window <span class="scope">(statueBosses)</span></span>
@@ -1126,7 +1176,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the net-progress clock, report #684's second half, and 26 to 0 <span class="scope">(sim)</span></span>
       <span class="sha">dda15f743</span>
-    </div>
+    </div><div class="row more">+ 1 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-15</h4>
@@ -1135,6 +1185,41 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">two deploy 39 reds: the patch note said 'lane' (a machinery word under voiceLint), and the lander's reformat of the-deep interactable broke tests/dungeonAppStateUnreachable's source-text pin (kind:'dungeon'). Test Files 2 passed (2). The three other reds were 20 s timeouts under a Mac shared with two workflows and a review, not witness reds. <span class="scope">(gate)</span></span>
       <span class="sha">c3e719019</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-bf02e492d">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">walk the drawable rectangle, not the whole padded grid <span class="scope">(surfaces)</span></span>
+      <span class="sha">bf02e492d</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-f4caf295c">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">cast the mallet's shadow from a coarse proxy, not the mallet <span class="scope">(whomp)</span></span>
+      <span class="sha">f4caf295c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ddc1c8148">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">frame-render-probe drives the render body's stage timer over CDP <span class="scope">(perf)</span></span>
+      <span class="sha">ddc1c8148</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-071cb22b1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">cache the hub sky canvas paint across builds <span class="scope">(hub-sky-cache)</span></span>
+      <span class="sha">071cb22b1</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-918dc78ae">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">give Terrain.normalAt an out-parameter and use it on the player tick <span class="scope">(sim)</span></span>
+      <span class="sha">918dc78ae</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-472afae1b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">headless per-tier cost probe for THE WHOMP, with the BEFORE table <span class="scope">(probe)</span></span>
+      <span class="sha">472afae1b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-58454c09b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">DEV-gated stage timer inside the solo render body <span class="scope">(engine)</span></span>
+      <span class="sha">58454c09b</span>
     </div>
     <div class="row" data-kind="fix" id="chg-6d8f8d347">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1150,6 +1235,21 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the Grand Hall's doorway and its flickering rings (reports #766, #767) <span class="scope">(deep)</span></span>
       <span class="sha">951878d5a</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-1792a4029">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">cull the camera solids that cannot reach the arm before bounding them <span class="scope">(deep)</span></span>
+      <span class="sha">1792a4029</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-a570a03fc">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">answer the layout containment predicate without the 298-edge sweep <span class="scope">(deep)</span></span>
+      <span class="sha">a570a03fc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-75f3bfc6c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">forty percent off every Deep boss's health <span class="scope">(deep)</span></span>
+      <span class="sha">75f3bfc6c</span>
     </div>
     <div class="row" data-kind="fix" id="chg-ca08d8d5c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1180,57 +1280,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">install the hero mass outline on the Deep's avatar <span class="scope">(deep)</span></span>
       <span class="sha">5b6525d9c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-bbe30b4de">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">mirror the two void portal stations onto the lava half <span class="scope">(void-portals-764)</span></span>
-      <span class="sha">bbe30b4de</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-991a5abb8">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">re-point the three composed pins the buried footing's removal saves <span class="scope">(hub)</span></span>
-      <span class="sha">991a5abb8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8f2a7179e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">compensate the late taper with per-enemy contact damage, sized by measurement (report #751) <span class="scope">(balance)</span></span>
-      <span class="sha">8f2a7179e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-46bf1eb50">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the cave mouth's buried footing and its misfiled lintel <span class="scope">(hub)</span></span>
-      <span class="sha">46bf1eb50</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8bfc50aa7">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">late-run spawn pressure taper, ~15% fewer live bodies past the death window (report #751) <span class="scope">(balance)</span></span>
-      <span class="sha">8bfc50aa7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a53bbb168">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">THE TEN PERCENT, every aimed core's own damage multiplier +10% <span class="scope">(cores)</span></span>
-      <span class="sha">a53bbb168</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9c452e291">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">report #721 fast-kind -5%, the twenty kinds above the median authored chase speed <span class="scope">(balance)</span></span>
-      <span class="sha">9c452e291</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ac591feca">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">one snap at L1 growing to five at L8, spread across targets <span class="scope">(coldsnap)</span></span>
-      <span class="sha">ac591feca</span>
-    </div>
-    <div class="row" data-kind="balance" id="chg-a7ae8f1e4">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">the Tome of Wisdom reined in a bit, not over-corrected (#747) <span class="scope">(passives)</span></span>
-      <span class="sha">a7ae8f1e4</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b9872d97b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Velocity blessing 0.05 -&gt; 0.045 (report #750) <span class="scope">(shrines)</span></span>
-      <span class="sha">b9872d97b</span>
-    </div><div class="row more">+ 44 more that day, not shown</div>
+    </div><div class="row more">+ 54 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-14</h4>
@@ -1853,12 +1903,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@7e01d2826</code> on 2026-09-16 22:22 UTC.
+  Every number on this page came straight out of the game, read at <code>game@5062aded7</code> on 2026-09-17 05:16 UTC.
 
   The game is serving <code>0.7.21</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">273 player-visible changes in the last 7 days, across 8 active days, 619 internal-only commits filtered out</div>
+  <div class="stat">294 player-visible changes in the last 7 days, across 8 active days, 682 internal-only commits filtered out</div>
 </footer>
 
 
