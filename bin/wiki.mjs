@@ -3807,7 +3807,7 @@ function visualManifestViolations(D, V) {
   return violations;
 }
 
-function tierEvidenceViolations(D, T) {
+export function tierEvidenceViolations(D, T) {
   const violations = [];
   if (!T || T.schema !== 2) return [`tier-rankings.json schema 2 is required${T ? `, received ${T.schema}` : ''}`];
   const named = (value) => typeof value === 'string' && value.trim().length > 0;
@@ -3904,8 +3904,13 @@ function tierEvidenceViolations(D, T) {
   // same place the game repo's own siteWikiContract mirror reads the flag; the
   // refs do not carry it yet (filed upstream: refs also still claim inOfferPool
   // for the two, which is the same staleness).
+  // September 20 core evolutions are registry faces, not automatic patterns.
+  // Require a real evolved entry and a resolvable core before excluding its evidence.
+  const isCoreFace = (id) => weaponDomain.entries?.[id]?.evolved === true
+    && !!D.domains.coreWeapons?.entries?.[weaponDomain.refs?.[id]?.evolvesFromCore];
   const expectedEligible = (weaponDomain.order || []).filter((id) =>
-    !weaponDomain.refs?.[id]?.evolvesFrom && weaponDomain.entries?.[id]?.disabled !== true).sort();
+    !weaponDomain.refs?.[id]?.evolvesFrom && !isCoreFace(id)
+    && weaponDomain.entries?.[id]?.disabled !== true).sort();
   if (!Number.isInteger(loadout?.weaponSlots) || loadout.weaponSlots <= 0
     || !Array.isArray(loadout?.eligibleIds) || new Set(loadout.eligibleIds).size !== loadout.eligibleIds.length
     || JSON.stringify([...loadout.eligibleIds].sort()) !== JSON.stringify(expectedEligible)
@@ -3946,13 +3951,14 @@ function tierEvidenceViolations(D, T) {
   // pool) and the tier engine publishes them under coverage.unmeasured rather
   // than silently shrinking the census. So the contract is now: measured plus
   // unmeasured accounts for every def, and the unmeasured set is EXACTLY the
-  // defs the data layer marks disabled, no more and no fewer.
-  const disabledIds = Object.entries(weaponDomain.entries || {})
-    .filter(([, e]) => e?.disabled === true).map(([id]) => id).sort();
+  // disabled defs plus core-evolution registry faces, no more and no fewer.
+  // Those faces dispatch through aimed cores, so automatic-pattern DPS would be false evidence.
+  const unmeasurableIds = Object.entries(weaponDomain.entries || {})
+    .filter(([id, e]) => e?.disabled === true || isCoreFace(id)).map(([id]) => id).sort();
   const unmeasured = Array.isArray(T.coverage?.unmeasured) ? [...T.coverage.unmeasured].sort() : [];
   if (T.coverage?.weaponDefs !== weaponDomain.count
-    || T.coverage?.measured !== weaponDomain.count - disabledIds.length
-    || JSON.stringify(unmeasured) !== JSON.stringify(disabledIds)
+    || T.coverage?.measured !== weaponDomain.count - unmeasurableIds.length
+    || JSON.stringify(unmeasured) !== JSON.stringify(unmeasurableIds)
     || T.coverage?.rows !== rows.length) violations.push('tier coverage does not cover the complete automatic-weapon roster and evidence rows');
   const rowIds = new Set();
   const ranks = new Map();

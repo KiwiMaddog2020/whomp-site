@@ -1,0 +1,4 @@
+bin/wiki.mjs
+tests/wikiTierEvidence.test.mjs
+docs/claims/core-evolution-wiki-contract.claims
+docs/lane-reports/core-evolution-wiki-contract.md
