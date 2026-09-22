@@ -3924,6 +3924,20 @@ export function tierEvidenceViolations(D, T) {
   const expectedEligible = (weaponDomain.order || []).filter((id) =>
     !weaponDomain.refs?.[id]?.evolvesFrom && !isCoreFace(id)
     && weaponDomain.entries?.[id]?.disabled !== true).sort();
+  for (const weapon of Object.values(weaponDomain.entries || {})) {
+    const refs = weaponDomain.refs?.[weapon.id] || {};
+    if (weapon.evolved || refs.evolvesFromCore) {
+      const recipes = Object.values(D.domains.evolutions.entries).filter((row) => row.evolvedId === weapon.id);
+      const recipe = recipes[0];
+      const fromCore = !!D.domains.coreWeapons.entries[recipe?.baseId];
+      const baseExists = fromCore || !!D.domains.weapons.entries[recipe?.baseId];
+      if (recipes.length !== 1 || !baseExists
+        || (fromCore ? refs.evolvesFromCore !== recipe.baseId || !!refs.evolvesFrom
+          : refs.evolvesFrom !== recipe.baseId || !!refs.evolvesFromCore)) {
+        violations.push(`weapon ${weapon.id} origin does not match one unique valid evolution recipe`);
+      }
+    }
+  }
   if (!Number.isInteger(loadout?.weaponSlots) || loadout.weaponSlots <= 0
     || !Array.isArray(loadout?.eligibleIds) || new Set(loadout.eligibleIds).size !== loadout.eligibleIds.length
     || JSON.stringify([...loadout.eligibleIds].sort()) !== JSON.stringify(expectedEligible)

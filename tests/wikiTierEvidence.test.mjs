@@ -69,7 +69,8 @@ test('all canonical wiki source contracts render, including every core evolution
   for (const id of coreFaces()) {
     const html = weapons.card(D.domains.weapons.entries[id]);
     assert.match(html, /Aimed-core evolution/);
-    assert.ok(html.includes(`wiki-cores.html#e-${D.domains.weapons.refs[id].evolvesFromCore}`));
+    const recipe = Object.values(D.domains.evolutions.entries).find((row) => row.evolvedId === id);
+    assert.ok(html.includes(`wiki-cores.html#e-${recipe.baseId}`));
     assert.doesNotMatch(html, /ticks every|ms between shots|Base damage/);
   }
   assert.ok(wiki.pages.length > 0);
@@ -89,4 +90,27 @@ test('automatic tick weapons still require their actual tick interval', options,
   assert.ok(entry);
   delete entry.tickRateMs;
   assert.throws(() => buildWiki(context(broken)), /conditional displayed field tickRateMs/);
+});
+
+
+test('another existing core cannot replace the independently owned origin', options, () => {
+  for (const id of coreFaces()) {
+    const broken = structuredClone(D);
+    const correct = broken.domains.weapons.refs[id].evolvesFromCore;
+    broken.domains.weapons.refs[id].evolvesFromCore = Object.keys(broken.domains.coreWeapons.entries).find((key) => key !== correct);
+    assert.throws(() => buildWiki(context(broken)), /origin does not match one unique valid evolution recipe/);
+  }
+});
+
+test('missing, duplicate and unresolved evolution recipes are refused', options, () => {
+  const id = coreFaces()[0];
+  for (const fault of ['missing', 'duplicate', 'base']) {
+    const broken = structuredClone(D);
+    const recipes = broken.domains.evolutions.entries;
+    const key = Object.keys(recipes).find((key) => recipes[key].evolvedId === id);
+    if (fault === 'missing') delete recipes[key];
+    if (fault === 'duplicate') recipes.duplicate = structuredClone(recipes[key]);
+    if (fault === 'base') recipes[key].baseId = 'missing-core';
+    assert.throws(() => buildWiki(context(broken)), /origin does not match one unique valid evolution recipe/);
+  }
 });
