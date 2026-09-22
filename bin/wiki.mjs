@@ -1040,6 +1040,9 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     if (row.evolvedId) evoByEvolved.set(row.evolvedId, row);
   }
 
+  const recipeBaseName = (id) => C.entries[id] ? coreName(id) : weaponName(id);
+  const recipeBaseLink = (id) => cardLink(C.entries[id] ? 'cores' : 'weapons', id, esc(recipeBaseName(id)));
+
   // ---- weapons ------------------------------------------------------------
   /* THE SECOND SELECTION PATH. Weapons predate `ordered` and built their own
      list, which is how the fresh-save sentence below went wrong: seven of the
@@ -1712,7 +1715,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
         <div class="wfacts">
           ${fact('Levels', `<b>${e.maxLevel}</b> max, adds <b>${num(e.perLevel)}</b> per level${e.shieldRegenPerLevel !== undefined ? `, shield regen <b>${num(e.shieldRegenPerLevel)}</b> per level` : ''}`)}
           ${fact(runtimeUnlock ? 'Milestone unlock' : unlocks.length ? 'Unlocked by' : 'Availability', availability)}
-          ${recipes.length ? fact('Evolution key', list(recipes.map((row) => `${cardLink('weapons', row.baseId, esc(weaponName(row.baseId)))} into ${cardLink('weapons', row.evolvedId, esc(weaponName(row.evolvedId)))}`))) : ''}
+          ${recipes.length ? fact('Evolution key', list(recipes.map((row) => `${recipeBaseLink(row.baseId)} into ${cardLink('weapons', row.evolvedId, esc(weaponName(row.evolvedId)))}`))) : ''}
         </div>
         ${runtimeUnlock ? sourceParams(runtimeUnlock.provenance, 'Runtime-unlock provenance') : ''}`;
     },
@@ -1926,11 +1929,11 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       { key: 'roster', label: 'Registry order', of: (e) => evolutionEntries.indexOf(e) },
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
     ],
-    searchText: (e) => `${weaponName(e.baseId)} ${weaponName(e.evolvedId)} ${passiveName(e.passiveId)} weapon tome evolution recipe`,
+    searchText: (e) => `${recipeBaseName(e.baseId)} ${weaponName(e.evolvedId)} ${passiveName(e.passiveId)} weapon tome evolution recipe`,
     card: (e) => `
       <div class="wtags">${tag('Recipe', 'gold')}</div>
-      <div class="wequation" aria-label="${esc(`${weaponName(e.baseId)} plus ${passiveName(e.passiveId)} becomes ${weaponName(e.evolvedId)}`)}">
-        ${cardLink('weapons', e.baseId, esc(weaponName(e.baseId)))} <b>+</b>
+      <div class="wequation" aria-label="${esc(`${recipeBaseName(e.baseId)} plus ${passiveName(e.passiveId)} becomes ${weaponName(e.evolvedId)}`)}">
+        ${recipeBaseLink(e.baseId)} <b>+</b>
         ${cardLink('tomes', e.passiveId, esc(passiveName(e.passiveId)))} <b>=</b>
         ${cardLink('weapons', e.evolvedId, esc(weaponName(e.evolvedId)))}
       </div>`,

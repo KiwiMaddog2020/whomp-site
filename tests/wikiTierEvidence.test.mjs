@@ -114,3 +114,20 @@ test('missing, duplicate and unresolved evolution recipes are refused', options,
     assert.throws(() => buildWiki(context(broken)), /origin does not match one unique valid evolution recipe/);
   }
 });
+
+
+test('tome and evolution recipes link each base to its actual roster', options, () => {
+  const wiki = buildWiki(context());
+  const tomes = wiki.rosters.find((roster) => roster.domain === 'passives');
+  const evolutions = wiki.rosters.find((roster) => roster.domain === 'evolutions');
+  for (const recipe of Object.values(D.domains.evolutions.entries)) {
+    const isCore = !!D.domains.coreWeapons.entries[recipe.baseId];
+    const href = `wiki-${isCore ? 'cores' : 'weapons'}.html#e-${recipe.baseId}`;
+    const evolution = evolutions.entries.find((entry) => entry.evolvedId === recipe.evolvedId);
+    const tome = tomes.entries.find((entry) => entry.id === recipe.passiveId);
+    for (const html of [evolutions.card(evolution), tomes.card(tome)]) {
+      assert.ok(html.includes(href), `${recipe.evolvedId} must link ${href}`);
+      if (isCore) assert.ok(!html.includes(`wiki-weapons.html#e-${recipe.baseId}"`));
+    }
+  }
+});
