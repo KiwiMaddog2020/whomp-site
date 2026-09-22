@@ -1092,6 +1092,10 @@ export function rosterSpecs(D, esc, T = null, V = null) {
    * new player that Void Railgun is in their level-up pool. */
   const weaponAcquire = (e) => {
     const r = W.refs[e.id] || {};
+    if (r.evolvesFromCore) {
+      const recipe = evoByEvolved.get(e.id);
+      return `Evolves from ${cardLink('cores', r.evolvesFromCore, esc(coreName(r.evolvesFromCore)))}${recipe?.passiveId ? ` while holding ${cardLink('tomes', recipe.passiveId, esc(passiveName(recipe.passiveId)))}` : ''}, through a boss chest.`;
+    }
     if (r.evolvesFrom) {
       const tome = evoByEvolved.get(e.id)?.passiveId;
       const base = W.entries[r.evolvesFrom];
@@ -1171,6 +1175,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     searchText: (e) => `${e.desc} ${e.element} ${e.pattern} weapon ${e.evolved ? 'evolution' : ''}`,
     card: (e) => {
       const r = W.refs[e.id] || {};
+      if (r.evolvesFromCore) return `
+        <div class="wtags">${tag('Aimed-core evolution', 'gold')}</div>
+        <p class="wdesc">${esc(e.desc)}</p>
+        <div class="wfacts">
+          ${fact('How you get it', weaponAcquire(e))}
+          ${fact('Rhythm', `Uses the aimed ${cardLink('cores', r.evolvesFromCore, esc(coreName(r.evolvesFromCore)))}. Automatic-weapon donor damage and tick intervals do not describe this form.`)}
+        </div>`;
       const dMax = damageAtMax(e);
       const cMax = cadenceAtMax(e);
       const linear = !!e.params?.linearDamageScale;
@@ -2977,7 +2988,8 @@ export const DISPLAY_REF_FIELD_PATHS = Object.freeze({
     { path: 'suggestedByCharacters', when: (entry, D) => Object.values(D.domains.characters.entries).some((row) => row.startWeaponId === entry.id) },
     { path: 'unlockedByAchievements', when: (entry, D) => Object.values(D.domains.achievements.entries).some((row) => row.unlocks?.weapon === entry.id) },
     { path: 'unlockedByQuests', when: (entry, D) => Object.values(D.domains.quests.entries).some((row) => row.reward?.weaponId === entry.id) },
-    { path: 'evolvesFrom', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id) },
+    { path: 'evolvesFrom', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id && !D.domains.coreWeapons.entries[row.baseId]) },
+    { path: 'evolvesFromCore', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id && !!D.domains.coreWeapons.entries[row.baseId]) },
     { path: 'evolvesInto', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.baseId === entry.id) },
     { path: 'donorForCores', when: (entry, D) => Object.values(D.domains.coreWeapons.entries).some((row) => row.donorWeaponId === entry.id) },
   ],
@@ -3092,7 +3104,8 @@ export const DISPLAY_ROOT_FIELD_PATHS = Object.freeze([
 
 export const DISPLAY_CONDITIONAL_FIELD_PATHS = Object.freeze({
   weapons: [
-    { path: 'tickRateMs', when: (entry) => entry.fireRateMs === 0 },
+    { path: 'tickRateMs', when: (entry, D) => entry.fireRateMs === 0
+      && !Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id && !!D.domains.coreWeapons.entries[row.baseId]) },
     { path: 'evolved', when: (entry, D) => Object.values(D.domains.evolutions.entries).some((row) => row.evolvedId === entry.id) },
   ],
   passives: [{ path: 'shieldRegenPerLevel', when: (entry) => entry.id === 'aegisTome' }],

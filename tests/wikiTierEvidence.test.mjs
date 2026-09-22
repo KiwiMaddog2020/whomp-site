@@ -48,3 +48,45 @@ test('an invalid core relation cannot silently exempt a weapon from evidence', o
   broken.domains.weapons.refs[coreFaces()[0]].evolvesFromCore = 'missing-core';
   assert.ok(tierEvidenceViolations(broken, T).some((message) => message.startsWith('tier coverage')));
 });
+
+// Exercise the whole source contract before publication, not just the first
+// evidence check that happens to throw. Chrome is inert; all data stays real.
+import { buildWiki, parseRelicRarityInk } from '../bin/wiki.mjs';
+const esc = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+const context = (data = D, tiers = T) => ({
+  D: data, T: tiers,
+  V: JSON.parse(readFileSync(resolve(game, 'data/wiki-visuals.json'), 'utf8')),
+  rarityInk: parseRelicRarityInk(readFileSync(resolve(game, 'src/data/relics.ts'), 'utf8')),
+  esc, page: ({ body }) => body,
+  chrome: { AUTHBAR: '', wikiBrand: '', headSha: 'contract-test', buildStamp: 'contract-test',
+    SEARCH_PLACEHOLDER: '', NAV_SCRIPT: '', liveChip: () => '', searchMarkup: () => '',
+    wikiNav: () => '', SEARCH_SCRIPT: () => '' },
+});
+
+test('all canonical wiki source contracts render, including every core evolution origin', options, () => {
+  const wiki = buildWiki(context());
+  const weapons = wiki.rosters.find((roster) => roster.domain === 'weapons');
+  for (const id of coreFaces()) {
+    const html = weapons.card(D.domains.weapons.entries[id]);
+    assert.match(html, /Aimed-core evolution/);
+    assert.ok(html.includes(`wiki-cores.html#e-${D.domains.weapons.refs[id].evolvesFromCore}`));
+    assert.doesNotMatch(html, /ticks every|ms between shots|Base damage/);
+  }
+  assert.ok(wiki.pages.length > 0);
+});
+
+test('every core evolution still requires its independently owned origin backlink', options, () => {
+  for (const id of coreFaces()) {
+    const broken = structuredClone(D);
+    delete broken.domains.weapons.refs[id].evolvesFromCore;
+    assert.throws(() => buildWiki(context(broken)), /Wiki (evidence|source) contract failed/);
+  }
+});
+
+test('automatic tick weapons still require their actual tick interval', options, () => {
+  const broken = structuredClone(D);
+  const entry = Object.values(broken.domains.weapons.entries).find((row) => !row.disabled && row.fireRateMs === 0 && !coreFaces().includes(row.id));
+  assert.ok(entry);
+  delete entry.tickRateMs;
+  assert.throws(() => buildWiki(context(broken)), /conditional displayed field tickRateMs/);
+});
