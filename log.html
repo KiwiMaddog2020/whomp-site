@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.22</b> · <code>4ae65111</code></span></div>
+    Live <b>0.7.22</b> · <code>6bf20100</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">231 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">253 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-23">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-23</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 9</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">11 changes landed: 9 fixed, 1 new, 1 performance.</p>
+      <p class="storyday-shape">16 changes landed: 14 fixed, 1 new, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-23">
         <b>v0.7.22</b><span>Your run stars, counted on the HUD</span>
       </a>
@@ -546,9 +546,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-20">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-20</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 18</span><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--gold)">Polish 7</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 32</span><span class="storyday-kind" style="background:var(--pink)">Fixed 9</span><span class="storyday-kind" style="background:var(--gold)">Polish 8</span></span>
       </div>
-      <p class="storyday-shape">32 changes landed: 18 new, 7 fixed, 7 polish.</p>
+      <p class="storyday-shape">49 changes landed: 32 new, 9 fixed, 8 polish.</p>
       <a class="storyday-release" href="#release-0-7-21-2026-09-20">
         <b>v0.7.21</b><span>Six core weapons now evolve, the Fairy Forest gets its trickster boss</span>
       </a>
@@ -1057,6 +1057,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-23</h4>
 
+    <div class="row" data-kind="fix" id="chg-44cafcab7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">row 25 names the horde-bridge-plan report by its branch, not a main path it does not have yet (deploy 50 gate) <span class="scope">(verification-debt)</span></span>
+      <span class="sha">44cafcab7</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c78a88b69">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">re-apply the deploy 49 intent resolutions the fix lane's base never carried (DEPLOY50 lander) <span class="scope">(hand-cannon-altfire-fix)</span></span>
+      <span class="sha">c78a88b69</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-40e71ed6d">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the deploy 49 Sunpiercer line says holds, not a machinery word (deploy 49 gate) <span class="scope">(patch-notes)</span></span>
@@ -1067,10 +1077,25 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the unbuilt-villager crash line carries the [whomp/hub] tag so crash triage keeps it (deploy 49 gate) <span class="scope">(villagers)</span></span>
       <span class="sha">a5474f5c7</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-217a76ea5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">probe the Hand Cannon at its authored two-button split <span class="scope">(hand-cannon-altfire-fix)</span></span>
+      <span class="sha">217a76ea5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c98dd8e1b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the assisted path fans through the hold again <span class="scope">(hand-cannon-altfire-fix)</span></span>
+      <span class="sha">c98dd8e1b</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-4c82f8f3c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">move the Cove Glass Float (#821) to the reachable rim above its sealed pocket <span class="scope">(keepsakes)</span></span>
       <span class="sha">4c82f8f3c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5a7c6876e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">compose step 1, four conflicting hunks restored to their merge-base text so main's side applies cleanly <span class="scope">(altfire-integrate-two)</span></span>
+      <span class="sha">5a7c6876e</span>
     </div>
     <div class="row" data-kind="fix" id="chg-23c286e50">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1240,86 +1265,86 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">an evolution's base may be a core, and cores render <span class="scope">(wiki-visuals)</span></span>
       <span class="sha">521af0365</span>
     </div>
+    <div class="row" data-kind="feat" id="chg-0326bd1c9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the harness can press the right button, and the share probe is ported <span class="scope">(dev)</span></span>
+      <span class="sha">0326bd1c9</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-0c19bf27f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the rift's perimeter wall triangle pin, by printline <span class="scope">(void-inverted-ruin)</span></span>
       <span class="sha">0c19bf27f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0fc2f41b7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the anvil throw gate reads the fire-tick counter, not a field that does not exist <span class="scope">(test)</span></span>
+      <span class="sha">0fc2f41b7</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3e82c3ba4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the conductors' alt-fire terms, and the void pulse rifle's card <span class="scope">(sim)</span></span>
+      <span class="sha">3e82c3ba4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-889a36fcd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wave two's nine alt fires wired, every paste-line applied <span class="scope">(sim)</span></span>
+      <span class="sha">889a36fcd</span>
+    </div>
+    <div class="row" data-kind="style" id="chg-fd87ac641">
+      <span class="kind" style="background:var(--gold)">Polish</span>
+      <span class="what">drop em dashes from the void pulse alt fire lane's prose <span class="scope">(sim)</span></span>
+      <span class="sha">fd87ac641</span>
     </div>
     <div class="row" data-kind="feat" id="chg-313a1e302">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the dispatcher's own suite, and the Flamethrower defect it caught <span class="scope">(altfire)</span></span>
       <span class="sha">313a1e302</span>
     </div>
+    <div class="row" data-kind="feat" id="chg-bf5fc3c3d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">let the glass cannon alt fire wrap the evolution's own cycle <span class="scope">(sim)</span></span>
+      <span class="sha">bf5fc3c3d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-3fc93f2b2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">export the beat a cash arms, so the adapter needs one import <span class="scope">(sim)</span></span>
+      <span class="sha">3fc93f2b2</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-287eb2b0a">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the Mortar and Arc Caster arms, the door ON, and the input plumbing <span class="scope">(altfire)</span></span>
       <span class="sha">287eb2b0a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f187c66a5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the void pulse rifle's alt fire, and the fourth-burst collapse removed <span class="scope">(sim)</span></span>
+      <span class="sha">f187c66a5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8a1ee9508">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Hand Cannon's alt fire, the fan moved to the right button <span class="scope">(sim)</span></span>
+      <span class="sha">8a1ee9508</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-29bfc9280">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">drop a mutation-proven dead line from the fuse wire alt fire <span class="scope">(sim)</span></span>
+      <span class="sha">29bfc9280</span>
     </div>
     <div class="row" data-kind="feat" id="chg-bb7b53b5a">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the Photon Sword, Sweepbeam and Sunpiercer arms <span class="scope">(altfire)</span></span>
       <span class="sha">bb7b53b5a</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-af527842b">
+    <div class="row" data-kind="feat" id="chg-473761ba0">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the shared seams and the first four arms, Shotgun Frost Lance Static Lash Flamethrower <span class="scope">(altfire)</span></span>
-      <span class="sha">af527842b</span>
+      <span class="what">the ripcord's alt fire, the drum cashed as one deliberate climb <span class="scope">(sim)</span></span>
+      <span class="sha">473761ba0</span>
     </div>
-    <div class="row" data-kind="style" id="chg-cf28b1bb7">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">no em dashes in any line this lane authored <span class="scope">(rightclick-clearout)</span></span>
-      <span class="sha">cf28b1bb7</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-48afdbcb2">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">no em dashes, per the standing rules block <span class="scope">(altfire-arccaster)</span></span>
-      <span class="sha">48afdbcb2</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-bdd513cf5">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">drop the two em dashes from this lane's own headers <span class="scope">(sim)</span></span>
-      <span class="sha">bdd513cf5</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-73f898b75">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">drop em dashes from the shotgun alt fire lane's prose <span class="scope">(sim)</span></span>
-      <span class="sha">73f898b75</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a5114cce3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">drop an em dash from the umbraRepeater rename comment <span class="scope">(core-renames)</span></span>
-      <span class="sha">a5114cce3</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-775d84d63">
+    <div class="row" data-kind="feat" id="chg-517f6afe6">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">rename three core weapon display names (board v58) <span class="scope">(core-renames)</span></span>
-      <span class="sha">775d84d63</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-35807d757">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">no em dashes in this lane's claims file <span class="scope">(altfire-photonsword)</span></span>
-      <span class="sha">35807d757</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f2758d477">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the dark ?altfire=0 door, an empty dispatcher, and the nine carried rules <span class="scope">(altfire)</span></span>
-      <span class="sha">f2758d477</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ea2a1a08f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Photon Sword's alt fire, the crescent thrown off a blade that goes dark <span class="scope">(altfire-photonsword)</span></span>
-      <span class="sha">ea2a1a08f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-397095c8d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">mobile dock reads NEXT and COPY so the counter shows; the hero stamp comes from the board data <span class="scope">(console)</span></span>
-      <span class="sha">397095c8d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ea3b2613b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Arc Caster's alt fire, sim half, default off <span class="scope">(altfire-arccaster)</span></span>
-      <span class="sha">ea3b2613b</span>
-    </div><div class="row more">+ 12 more that day, not shown</div>
+      <span class="what">the anvil's alt fire, the recall and the anvil drop <span class="scope">(sim)</span></span>
+      <span class="sha">517f6afe6</span>
+    </div><div class="row more">+ 29 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-19</h4>
@@ -1655,12 +1680,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@4ae651118</code> on 2026-09-23 21:37 UTC.
+  Every number on this page came straight out of the game, read at <code>game@6bf20100b</code> on 2026-09-24 04:09 UTC.
 
   The game is serving <code>0.7.22</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">231 player-visible changes in the last 7 days, across 6 active days, 740 internal-only commits filtered out</div>
+  <div class="stat">253 player-visible changes in the last 7 days, across 6 active days, 786 internal-only commits filtered out</div>
 </footer>
 
 
