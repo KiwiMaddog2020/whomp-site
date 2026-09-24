@@ -1548,6 +1548,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     groups: [
       { key: 'tidebound', title: 'The Colossus dressed', note: 'Tidebound underneath.', has: (e) => e.baseKind === 'tidebound' },
       { key: 'oilfather', title: 'The Father dressed', note: 'Oilfather underneath.', has: (e) => e.baseKind === 'oilfather' },
+      { key: 'archivist', title: 'The Archivist dressed', note: 'Archivist underneath.', has: (e) => e.baseKind === 'archivist' },
       { key: 'ramhorn', title: 'The Ram dressed', note: 'Ramhorn underneath.', has: (e) => e.baseKind === 'ramhorn' },
       { key: 'thistlemaw', title: 'The Maw dressed', note: 'Thistlemaw underneath.', has: (e) => e.baseKind === 'thistlemaw' },
       { key: 'kingbloom', title: 'The King dressed', note: 'Kingbloom underneath.', has: (e) => e.baseKind === 'kingbloom' },
