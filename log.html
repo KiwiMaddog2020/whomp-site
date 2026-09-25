@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.22</b> · <code>a76dc1bd</code></span></div>
+    Live <b>0.7.22</b> · <code>afd9b757</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">417 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">433 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-24">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-24</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 16</span><span class="storyday-kind" style="background:var(--pink)">Fixed 14</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 21</span><span class="storyday-kind" style="background:var(--pink)">Fixed 19</span></span>
       </div>
-      <p class="storyday-shape">30 changes landed: 16 new, 14 fixed.</p>
+      <p class="storyday-shape">40 changes landed: 21 new, 19 fixed.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-24">
         <b>v0.7.22</b><span>Weapons show their attack coming</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-23">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-23</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 61</span><span class="storyday-kind" style="background:var(--cyan)">New 42</span><span class="storyday-kind" style="background:var(--gold)">Performance 13</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 63</span><span class="storyday-kind" style="background:var(--cyan)">New 46</span><span class="storyday-kind" style="background:var(--gold)">Performance 13</span></span>
       </div>
-      <p class="storyday-shape">116 changes landed: 61 fixed, 42 new, 13 performance.</p>
+      <p class="storyday-shape">122 changes landed: 63 fixed, 46 new, 13 performance.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-23">
         <b>v0.7.22</b><span>Your run stars, counted on the HUD</span>
       </a>
@@ -1058,6 +1058,56 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the Anvil's deploy 52 note says strip, not lane <span class="scope">(notes)</span></span>
       <span class="sha">f23577459</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-e95c94443">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">check 14 exempts the lander's own queue and report commits <span class="scope">(land-chain)</span></span>
+      <span class="sha">e95c94443</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-35716a9b5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a title carrying the verdict counts (&quot;# boss-build-cost: DONE&quot;); the markdown prints n/a without a unit <span class="scope">(protocol-metrics)</span></span>
+      <span class="sha">35716a9b5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ef57244fc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">two useless escapes in the verdict pattern (eslint no-useless-escape) <span class="scope">(protocol-metrics)</span></span>
+      <span class="sha">ef57244fc</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-6891d8eff">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">per-deploy and per-week protocol numbers from history, the queue, the train logs and the lane reports <span class="scope">(protocol-metrics)</span></span>
+      <span class="sha">6891d8eff</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-793ccc5ba">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">step 7 runs bin/pre-gate.sh --fast-reds before the release commit and refuses on red <span class="scope">(deploy-train)</span></span>
+      <span class="sha">793ccc5ba</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5456c4458">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bin/pre-gate.sh --fast-reds runs the lint-class set in one vitest run <span class="scope">(pre-gate)</span></span>
+      <span class="sha">5456c4458</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-74f7d7381">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">FULL-SUITE-RED is exit 12, and a GREEN size-line run covers the budget so no landing runs its suite twice <span class="scope">(land-chain)</span></span>
+      <span class="sha">74f7d7381</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-56b086175">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the size line refuses on Expected/Received, re-runs a bare timeout alone once <span class="scope">(land)</span></span>
+      <span class="sha">56b086175</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2eb147ce5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the size line, a wide landing runs the full suite on the composed tree before the merge <span class="scope">(land)</span></span>
+      <span class="sha">2eb147ce5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f8000f32d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">INCOMPLETE-CHANGED-UNRUN is exit 13, and land-lane refuses tests.changed_dropped under the chain's flags so the merge it undoes was never pushed <span class="scope">(land-chain)</span></span>
+      <span class="sha">f8000f32d</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-d411bd7b8">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">stage bin/land-incomplete.mjs in the done-log fixture <span class="scope">(test)</span></span>
@@ -1102,61 +1152,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">check 14, refuse to premerge while local main carries unpushed commits, naming them (exit 9) <span class="scope">(land-chain)</span></span>
       <span class="sha">09eed01b9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-528b63c14">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">one landing lock for the daemon and the chain, in place of pgrep <span class="scope">(land-chain, land-queue)</span></span>
-      <span class="sha">528b63c14</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8389551b7">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">item (e), write the rulings stub <span class="scope">(console-board)</span></span>
-      <span class="sha">8389551b7</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-dc1a8cef6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">item (d), derive the queue-caps backlog <span class="scope">(console-board)</span></span>
-      <span class="sha">dc1a8cef6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c9a2beae0">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">item (c), carry-forward or refuse unanswered cards <span class="scope">(console-board)</span></span>
-      <span class="sha">c9a2beae0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a8106abb6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a refused push stops the chain (exit 8) instead of printing LANDED <span class="scope">(land-chain)</span></span>
-      <span class="sha">a8106abb6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-156512dd0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">--ack-blockers stops covering a selection.capped gap; --ack-budget does, and the chain never passes it <span class="scope">(land-lane)</span></span>
-      <span class="sha">156512dd0</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b1c214eaa">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">item (a), publish-mode placeholder refusal <span class="scope">(console-board)</span></span>
-      <span class="sha">b1c214eaa</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d76cc49d9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">check 18, a bare generate refuses a software-only renderer host unless --allow-software <span class="scope">(wiki-visuals)</span></span>
-      <span class="sha">d76cc49d9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-36a5dac9b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">print the four account-relay items from machine sources <span class="scope">(relay-state)</span></span>
-      <span class="sha">36a5dac9b</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-43a165f4c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">check 8, headlessSim skipped when the diff cannot reach src/sim <span class="scope">(lane-witnesses)</span></span>
-      <span class="sha">43a165f4c</span>
-    </div><div class="row more">+ 10 more that day, not shown</div>
+    </div><div class="row more">+ 20 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-23</h4>
 
+    <div class="row" data-kind="feat" id="chg-ffc1e53cd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">tests=incomplete, never tests=pass, when the budget drops a test file the branch changed <span class="scope">(merge-check)</span></span>
+      <span class="sha">ffc1e53cd</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c390107ea">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the back of the thigh follows the leg below the gluteal fold (#869) <span class="scope">(liveWire)</span></span>
+      <span class="sha">c390107ea</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-19b7ac04d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">every file the landing budget drops gets its own MERGE-CHECK-UNRUN line in the verdict <span class="scope">(merge-check)</span></span>
+      <span class="sha">19b7ac04d</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-c610883db">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">three local bindings stop shadowing module bindings, the noShadowedBindings ratchet 3 -&gt; 0 (deploy 51 gate) <span class="scope">(boss-render)</span></span>
@@ -1241,22 +1256,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the release gather rides the blade wafer only <span class="scope">(telegraph-void-scythe)</span></span>
       <span class="sha">543bbd3e1</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-7ecb6bdc8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Meteor Strike's tell reads to contact on any ground, with an entry glint and a heat ramp <span class="scope">(fx)</span></span>
-      <span class="sha">7ecb6bdc8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b7e9b7f16">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Chain Lightning's hop links grow body to body with a white-hot head <span class="scope">(render)</span></span>
-      <span class="sha">b7e9b7f16</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b9bb8b39c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Beam's searching laser counts down to its lock <span class="scope">(telegraph-beam)</span></span>
-      <span class="sha">b9bb8b39c</span>
-    </div><div class="row more">+ 96 more that day, not shown</div>
+    </div><div class="row more">+ 102 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-22</h4>
@@ -1771,12 +1771,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@a76dc1bda</code> on 2026-09-24 23:28 UTC.
+  Every number on this page came straight out of the game, read at <code>game@afd9b7574</code> on 2026-09-25 03:57 UTC.
 
   The game is serving <code>0.7.22</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">417 player-visible changes in the last 7 days, across 6 active days, 1130 internal-only commits filtered out</div>
+  <div class="stat">433 player-visible changes in the last 7 days, across 6 active days, 1188 internal-only commits filtered out</div>
 </footer>
 
 
