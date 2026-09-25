@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.22</b> · <code>b59b6de1</code></span></div>
+    Live <b>0.7.22</b> · <code>f9f099a3</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">349 player-visible changes landed in the last 7 days, across 5 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">360 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday is-quiet" id="day-2026-09-25">
+    <article class="storyday" id="day-2026-09-25">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-25</span>
-        <span class="storyday-kinds"></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 2</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
       </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
+      <p class="storyday-shape">3 changes landed: 2 fixed, 1 new.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-25">
         <b>v0.7.22</b><span>The crashed ship stands up, Fuse Wire's spark lands true</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-24">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-24</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 21</span><span class="storyday-kind" style="background:var(--pink)">Fixed 19</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 24</span><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span></span>
       </div>
-      <p class="storyday-shape">40 changes landed: 21 new, 19 fixed.</p>
+      <p class="storyday-shape">48 changes landed: 24 new, 24 fixed.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-24">
         <b>v0.7.22</b><span>Weapons show their attack coming</span>
       </a>
@@ -616,7 +616,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The crashed ship in the hub now mends in stages as you bring ship cores home: the villagers keep the tear in her hull boarded up at first, and once your first core is back she stands upright and the boards come off.</li><li>Fuse Wire's spark now sits on the node that is actually burning instead of running ahead of it, and the unburnt cord keeps its glow until the fire reaches it.</li></ul>
+      <ul><li>The crashed ship in the hub now mends in stages as you bring ship cores home: the villagers keep the tear in her hull boarded up at first, and once your first core is back she stands upright and the boards come off.</li><li>Fuse Wire's spark now sits on the node that is actually burning instead of running ahead of it, and the unburnt cord keeps its glow until the fire reaches it.</li><li>Co-op runs now have a boss: it picks its target one player at a time, pays out gold when it falls, and the whole party earns the boss star. Its health bar runs from WHOMP pink into gold.</li><li>The results screen and the hub's pause menu now work on a controller, so you never have to reach for the keyboard after a run.</li><li>In the Fairy Forest the lit path now runs unbroken past the spot where a run starts, and no path runs under a cottage any more.</li></ul>
     </div>
 
   </div>
@@ -1047,8 +1047,67 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-09-25</h4>
+
+    <div class="row" data-kind="feat" id="chg-33520a359">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">resolve a KNOWN_REDS.txt conflict by test key, main wins <span class="scope">(land-premerge)</span></span>
+      <span class="sha">33520a359</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-edfd17825">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">merge KNOWN_REDS.txt by union, dedupe duplicate rows in the reader</span>
+      <span class="sha">edfd17825</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-47b7f745e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">pin the two pre-existing container cases to platform linux <span class="scope">(wikiVisualsSoftwareRefusal)</span></span>
+      <span class="sha">47b7f745e</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-09-24</h4>
 
+    <div class="row" data-kind="fix" id="chg-026e0a5f2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">demote a red confined to the artifact-freshness suites to a named gap <span class="scope">(land-full-suite)</span></span>
+      <span class="sha">026e0a5f2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-284633953">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">boss plate reads WHOMP_PINK-&gt;WHOMP_GOLD, coopHud.ts back to 12 literals <span class="scope">(coop-boss-face-token)</span></span>
+      <span class="sha">284633953</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-09096bd4c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">move the desktop shell version line to Settings <span class="scope">(settings)</span></span>
+      <span class="sha">09096bd4c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f6a5d6dfd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the ledger's read side and the delta anchor live in green-stamp.mjs, which keeps importing only Node <span class="scope">(gate)</span></span>
+      <span class="sha">f6a5d6dfd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c01513083">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">delta re-gate after a qualifying red; the stamp records mode full|delta and the full run it rides on <span class="scope">(gate)</span></span>
+      <span class="sha">c01513083</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-76e0a1d81">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire spellchecker suggestions into right-click <span class="scope">(electron)</span></span>
+      <span class="sha">76e0a1d81</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c8ee473c2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">hide dictation control instead of a dead button <span class="scope">(feedbackPanel)</span></span>
+      <span class="sha">c8ee473c2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7f0063cc6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">check 18 keys the software-renderer refusal on platform, not device shape <span class="scope">(wiki-visuals)</span></span>
+      <span class="sha">7f0063cc6</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-f23577459">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the Anvil's deploy 52 note says strip, not lane <span class="scope">(notes)</span></span>
@@ -1108,47 +1167,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">stage bin/land-incomplete.mjs in the done-log fixture <span class="scope">(test)</span></span>
       <span class="sha">d411bd7b8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9084d4ddc">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">realpath-safe entrypoint guard in level-warmup-probe.mjs <span class="scope">(bin)</span></span>
-      <span class="sha">9084d4ddc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5abd3fddd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">two conductor-docs reds before the Fairy re-gate: the rulings doc quotes the director's words as a quote block and drops the studio names from its description (namePolicy); the shipped altfire-right-click roadmap entry is deleted and the landmarks step-out is the honest in-flight entry (roadmap fence) <span class="scope">(gate)</span></span>
-      <span class="sha">5abd3fddd</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e73e8f30e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">check 16, warn when a row's merge-base predates a landing that resolved the same files <span class="scope">(land-premerge)</span></span>
-      <span class="sha">e73e8f30e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-552b16a94">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">check 1, gap report.not-head when the report commit is not the lane ref's head <span class="scope">(merge-check)</span></span>
-      <span class="sha">552b16a94</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cb405130d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">sim-reach tests every changed src/sim file a suite reaches, not the last element of one sorted chain <span class="scope">(merge-check)</span></span>
-      <span class="sha">cb405130d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2366f0c9a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the wave-end sweep runs every file the budget dropped, once, in parallel, on the landed main <span class="scope">(land-chain)</span></span>
-      <span class="sha">2366f0c9a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-68672121c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">check 15, re-seed a stale local lane ref only when origin descends (exit 10 on divergence) <span class="scope">(land-chain)</span></span>
-      <span class="sha">68672121c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-09eed01b9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">check 14, refuse to premerge while local main carries unpushed commits, naming them (exit 9) <span class="scope">(land-chain)</span></span>
-      <span class="sha">09eed01b9</span>
-    </div><div class="row more">+ 20 more that day, not shown</div>
+    </div><div class="row more">+ 28 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-23</h4>
@@ -1566,6 +1585,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="sha">51f208e01</span>
     </div><div class="row more">+ 30 more that day, not shown</div>
   </div>
+  <div class="day">
+    <h4>2026-09-16</h4>
+
+    <div class="row" data-kind="feat" id="chg-604df2339">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the shared boss health plate, built from scratch <span class="scope">(coop-boss-face)</span></span>
+      <span class="sha">604df2339</span>
+    </div>
+  </div>
 
     </div>
   </section>
@@ -1663,12 +1691,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@b59b6de17</code> on 2026-09-25 08:51 UTC.
+  Every number on this page came straight out of the game, read at <code>game@f9f099a34</code> on 2026-09-25 16:26 UTC.
 
   The game is serving <code>0.7.22</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">349 player-visible changes in the last 7 days, across 5 active days, 994 internal-only commits filtered out</div>
+  <div class="stat">361 player-visible changes in the last 7 days, across 7 active days, 1071 internal-only commits filtered out</div>
 </footer>
 
 
