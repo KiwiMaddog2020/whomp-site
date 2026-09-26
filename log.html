@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.22</b> · <code>f9f099a3</code></span></div>
+    Live <b>0.7.22</b> · <code>f108fa7b</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">360 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">376 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-25">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-25</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 2</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 10</span><span class="storyday-kind" style="background:var(--cyan)">New 5</span></span>
       </div>
-      <p class="storyday-shape">3 changes landed: 2 fixed, 1 new.</p>
+      <p class="storyday-shape">15 changes landed: 10 fixed, 5 new.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-25">
         <b>v0.7.22</b><span>The crashed ship stands up, Fuse Wire's spark lands true</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-24">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-24</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 24</span><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 26</span><span class="storyday-kind" style="background:var(--cyan)">New 24</span></span>
       </div>
-      <p class="storyday-shape">48 changes landed: 24 new, 24 fixed.</p>
+      <p class="storyday-shape">50 changes landed: 26 fixed, 24 new.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-24">
         <b>v0.7.22</b><span>Weapons show their attack coming</span>
       </a>
@@ -537,9 +537,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-23">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-23</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 64</span><span class="storyday-kind" style="background:var(--cyan)">New 46</span><span class="storyday-kind" style="background:var(--gold)">Performance 13</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 64</span><span class="storyday-kind" style="background:var(--cyan)">New 48</span><span class="storyday-kind" style="background:var(--gold)">Performance 13</span></span>
       </div>
-      <p class="storyday-shape">123 changes landed: 64 fixed, 46 new, 13 performance.</p>
+      <p class="storyday-shape">125 changes landed: 64 fixed, 48 new, 13 performance.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-23">
         <b>v0.7.22</b><span>Your run stars, counted on the HUD</span>
       </a>
@@ -1049,6 +1049,31 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-25</h4>
 
+    <div class="row" data-kind="fix" id="chg-5fd9bd7d1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the two deploy 56 lint ratchet reds fixed at the cause, budgets unchanged <span class="scope">(lint)</span></span>
+      <span class="sha">5fd9bd7d1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-21e50a2f8">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the visible-wall sweep searches every ring the separation contract allows (report #935) <span class="scope">(portals)</span></span>
+      <span class="sha">21e50a2f8</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-be52a8f57">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">declare bridge-coping- and bridge-lamp- as shared solid families <span class="scope">(hubRegions)</span></span>
+      <span class="sha">be52a8f57</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3a4ff8e4f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">inner-flank band rides ruling 133's lock condition; coping and lamps solid; site C held <span class="scope">(hub)</span></span>
+      <span class="sha">3a4ff8e4f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4ef72e66f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the skirt behind the southern arc's inner parapet is walkable (#920 #921 #922) <span class="scope">(hub)</span></span>
+      <span class="sha">4ef72e66f</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-33520a359">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">resolve a KNOWN_REDS.txt conflict by test key, main wins <span class="scope">(land-premerge)</span></span>
@@ -1058,6 +1083,41 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">merge KNOWN_REDS.txt by union, dedupe duplicate rows in the reader</span>
       <span class="sha">edfd17825</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fbca10228">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a sacred witness timeout is never re-run and never excused <span class="scope">(merge-check)</span></span>
+      <span class="sha">fbca10228</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a4de2798c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">re-run a starved timeout alone once, as land-full-suite.sh does <span class="scope">(merge-check)</span></span>
+      <span class="sha">a4de2798c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-652db47f3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">demote symbol-in-range to a WARN, per the brief's own stop line <span class="scope">(brief-check-origin)</span></span>
+      <span class="sha">652db47f3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ce84a780d">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">--check-origin also runs the citation pass <span class="scope">(lane-brief-check)</span></span>
+      <span class="sha">ce84a780d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a1767eec5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">refuse a STANDING page that omits the block <span class="scope">(lane-brief-check)</span></span>
+      <span class="sha">a1767eec5</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b77c9a164">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">refuse a new-era report with a bad verdict block <span class="scope">(queue-from-report)</span></span>
+      <span class="sha">b77c9a164</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-f899168ec">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">parse and validate the LANE-VERDICT-BLOCK <span class="scope">(verify-lane)</span></span>
+      <span class="sha">f899168ec</span>
     </div>
     <div class="row" data-kind="fix" id="chg-47b7f745e">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1073,10 +1133,20 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">demote a red confined to the artifact-freshness suites to a named gap <span class="scope">(land-full-suite)</span></span>
       <span class="sha">026e0a5f2</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-ad66b0681">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the Marsh door's dressing rocks are solid, and it faces the water <span class="scope">(hub)</span></span>
+      <span class="sha">ad66b0681</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-284633953">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">boss plate reads WHOMP_PINK-&gt;WHOMP_GOLD, coopHud.ts back to 12 literals <span class="scope">(coop-boss-face-token)</span></span>
       <span class="sha">284633953</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-11a36727b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">seat the Gloom Marsh door in the swamp's right circle (report #881) <span class="scope">(hub)</span></span>
+      <span class="sha">11a36727b</span>
     </div>
     <div class="row" data-kind="feat" id="chg-09096bd4c">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1157,21 +1227,21 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the size line, a wide landing runs the full suite on the composed tree before the merge <span class="scope">(land)</span></span>
       <span class="sha">2eb147ce5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f8000f32d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">INCOMPLETE-CHANGED-UNRUN is exit 13, and land-lane refuses tests.changed_dropped under the chain's flags so the merge it undoes was never pushed <span class="scope">(land-chain)</span></span>
-      <span class="sha">f8000f32d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d411bd7b8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">stage bin/land-incomplete.mjs in the done-log fixture <span class="scope">(test)</span></span>
-      <span class="sha">d411bd7b8</span>
-    </div><div class="row more">+ 28 more that day, not shown</div>
+    </div><div class="row more">+ 30 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-23</h4>
 
+    <div class="row" data-kind="feat" id="chg-271cfe92c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the pyramid moves 14 m further out on its arrival line, and the flagship row moves onto the building <span class="scope">(pyramid)</span></span>
+      <span class="sha">271cfe92c</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ce9547af0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Mirage Flats pyramid rebuilt to the landmark standard: block courses, capstone, sealed door, tone breaks, walked and walled <span class="scope">(pyramid)</span></span>
+      <span class="sha">ce9547af0</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-ffc1e53cd">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">tests=incomplete, never tests=pass, when the budget drops a test file the branch changed <span class="scope">(merge-check)</span></span>
@@ -1261,17 +1331,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">lift the swing foot at the hip so it clears the ground; re-cut the lamp-arm census cells <span class="scope">(watcher)</span></span>
       <span class="sha">c64bf03bc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d0e294308">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Dune Marshal carries Dunefather's five multipliers (director ruling 5:19 pm, finding 9) <span class="scope">(bosses)</span></span>
-      <span class="sha">d0e294308</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c78a88b69">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-apply the deploy 49 intent resolutions the fix lane's base never carried (DEPLOY50 lander) <span class="scope">(hand-cannon-altfire-fix)</span></span>
-      <span class="sha">c78a88b69</span>
-    </div><div class="row more">+ 103 more that day, not shown</div>
+    </div><div class="row more">+ 105 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-22</h4>
@@ -1691,12 +1751,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@f9f099a34</code> on 2026-09-25 16:27 UTC.
+  Every number on this page came straight out of the game, read at <code>game@f108fa7bf</code> on 2026-09-26 03:17 UTC.
 
   The game is serving <code>0.7.22</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">361 player-visible changes in the last 7 days, across 7 active days, 1071 internal-only commits filtered out</div>
+  <div class="stat">377 player-visible changes in the last 7 days, across 7 active days, 1139 internal-only commits filtered out</div>
 </footer>
 
 
