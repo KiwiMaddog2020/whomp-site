@@ -21,6 +21,7 @@ import {
   isLiveVisualEntry,
   liveDomainIds,
   parseRelicRarityInk,
+  playerHiddenDomainIds,
   retiredDomainIds,
   rosterSpecs,
   SEARCH_TYPE,
@@ -389,6 +390,22 @@ expectModelFailure('visual path traverses output root', (_d, _t, v) => {
 expectModelFailure('visual variant path is duplicated', (_d, _t, v) => {
   v.entries[1].variants[0].path = v.entries[0].variants[0].path;
 }, /duplicate path/);
+/* PLAYER-HIDDEN, BROKEN BOTH WAYS (2026-09-26, lane site-expeditions-domain).
+ * The visual policy owes exactly the domain's entries minus its player-hidden
+ * ones. Hiding a row the manifest still pictures must fail, and so must a
+ * hidden row losing its flag while the manifest still skips it: the second is
+ * the deploy 58 red read backwards, and it only runs while the game holds one. */
+expectModelFailure('visual policy keeps a row the game hides', (d) => {
+  const id = d.domains.levels.order[0];
+  d.domains.levels.refs[id] = { ...(d.domains.levels.refs[id] || {}), playerHidden: true };
+}, /visual policy levels does not exactly cover its canonical game-data domain/);
+for (const [domain, source] of Object.entries(D.domains)) {
+  for (const id of playerHiddenDomainIds(source)) {
+    expectModelFailure(`player-hidden ${domain} ${id} loses its flag`, (d) => {
+      delete d.domains[domain].refs[id].playerHidden;
+    }, new RegExp(`visual policy ${domain} does not exactly cover its canonical game-data domain`));
+  }
+}
 expectModelFailure('visual dimensions disappear', (_d, _t, v) => { delete v.entries[0].variants[0].width; }, /invalid dimensions/);
 expectModelFailure('visual alt semantics disappear', (_d, _t, v) => { v.entries[0].alt.text = ''; }, /visual entry .* alt/);
 expectModelFailure('runtime visual loses neutral camera context', (_d, _t, v) => {
@@ -1010,6 +1027,22 @@ for (const [domain, ids] of retiredByDomain) {
       `retired ${domain} ${id} still has a card in the generated wiki`);
     requireThat(!model.searchEntries.some((search) => search.href.endsWith(`#e-${id}`)),
       `retired ${domain} ${id} is still reachable from wiki search`);
+  }
+}
+/* AND A PLAYER-HIDDEN ROW HAS NO CARD ON ITS OWN ROUTE, NOR A SEARCH ENTRY.
+ * Checked on the route file rather than the whole wiki: an ambient-events card is
+ * keyed by world id, so a hidden world's id can legitimately name a card there. */
+for (const [domain, source] of Object.entries(D.domains)) {
+  const ids = playerHiddenDomainIds(source);
+  const roster = rosters.find((candidate) => candidate.domain === domain);
+  if (!ids.length || !roster) continue;
+  const routeFile = `wiki-${roster.slug}.html`;
+  const routeHtml = readFileSync(join(OUTDIR, routeFile), 'utf8');
+  for (const id of ids) {
+    requireThat(!routeHtml.includes(`id="e-${esc(id)}"`), `player-hidden ${domain} ${id} still has a card on ${routeFile}`);
+    requireThat(!model.searchEntries.some((search) => search.href === `${routeFile}#e-${id}`),
+      `player-hidden ${domain} ${id} is still reachable from wiki search`);
+    requireThat(!wikiOutputText.includes(`href="${routeFile}#e-${esc(id)}"`), `player-hidden ${domain} ${id} is still linked from the wiki`);
   }
 }
 requireThat(!/boss ultimates?/i.test(wikiOutputText), 'generated wiki has regressed to the misleading boss-ultimate taxonomy');

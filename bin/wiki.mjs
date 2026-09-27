@@ -811,17 +811,42 @@ export const visualLead = (kind, cameraView = 'front') => (Object.hasOwn(VISUAL_
  * retired ids must be ABSENT, which is what makes this a contract rather than a
  * filter somebody can quietly widen. */
 const isRetiredEntry = (entry) => entry?.disabled === true;
+/* PLAYER-HIDDEN IS THE SECOND FLAG, AND IT IS NOT RETIREMENT (2026-09-26, lane
+ * site-expeditions-domain, deploy 58 site step: `visual policy expeditions does
+ * not exactly cover its canonical game-data domain`). The game row
+ * meadowfall-one-world made the classic `LEVELS.meadowfall` internal: the game
+ * keeps it (relations still resolve through it) and marks its expedition ref
+ * `playerHidden: true` in bin/data-layer.mjs, whose comment is the contract - "a
+ * consumer that LISTS worlds (the site wiki) skips a row marked here". The game's
+ * visual manifest already skips it (src/data/wikiVisuals.ts expeditionEntries),
+ * so its `expeditions` policy is empty while the domain still holds one entry.
+ *
+ * The two flags differ on purpose. A RETIRED def keeps its canonical picture in
+ * the manifest (the inventory is complete) and loses its card. A PLAYER-HIDDEN
+ * row has neither: no picture, no card, no link from another card. Like
+ * retirement it is read off the data, never a list here, so the day an
+ * expedition is authored again it lists itself and the day one is hidden it
+ * leaves on its own. Only the flag's own refs row counts, so a domain with no
+ * `playerHidden` ref (today every domain but expeditions) is byte-identical. */
+const isPlayerHiddenId = (domain, id) => domain?.refs?.[id]?.playerHidden === true;
 export const liveDomainIds = (domain) => (domain?.order || Object.keys(domain?.entries || {}))
-  .filter((id) => domain.entries[id] != null && !isRetiredEntry(domain.entries[id]));
+  .filter((id) => domain.entries[id] != null && !isRetiredEntry(domain.entries[id]) && !isPlayerHiddenId(domain, id));
 export const retiredDomainIds = (domain) => (domain?.order || Object.keys(domain?.entries || {}))
   .filter((id) => isRetiredEntry(domain.entries[id]));
+export const playerHiddenDomainIds = (domain) => (domain?.order || Object.keys(domain?.entries || {}))
+  .filter((id) => domain.entries[id] != null && !isRetiredEntry(domain.entries[id]) && isPlayerHiddenId(domain, id));
+/** The ids the game's visual manifest owes a policy for: every registered entry,
+ *  retired ones included, and never a player-hidden one (the manifest skips
+ *  those at source). */
+export const visualDomainIds = (domain) => Object.keys(domain?.entries || {})
+  .filter((id) => !isPlayerHiddenId(domain, id));
 /** The visual manifest is a complete inventory; the pages are not. This is the
  *  subset a reader can actually reach, and it is what the picture counts and the
  *  rendered-asset contract are measured against. */
 export const isLiveVisualEntry = (D, entry) => {
   const domain = D?.domains?.[entry?.domain];
   if (!domain) return true;
-  return !isRetiredEntry(domain.entries?.[entry.id]);
+  return !isRetiredEntry(domain.entries?.[entry.id]) && !isPlayerHiddenId(domain, entry.id);
 };
 
 /** HOW MANY PICTURES ARE ACTUALLY ON THESE PAGES. Three sentences on the hub and
@@ -936,6 +961,10 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const visuals = visualIndex(V);
 
   const levelName = (id) => L.entries[id]?.name || EX.entries[id]?.name || humanize(id);
+  /* A world a run can reach. A player-hidden world (see isPlayerHiddenId) has no
+     card, so every relation that would name or link it drops it here, once,
+     rather than printing a second "Meadowfall" that points at nothing. */
+  const reachableWorld = (id) => !isPlayerHiddenId(L, id) && !isPlayerHiddenId(EX, id);
   const charName = (id) => CH.entries[id]?.name || humanize(id);
   const passiveName = (id) => P.entries[id]?.name || humanize(id);
   const weaponName = (id) => W.entries[id]?.name || humanize(id);
@@ -1411,7 +1440,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   const campaignAll = new Set(L.campaignLevelIds || []);
 
   const enemyWhere = (e) => {
-    const rows = (E.refs[e.id] || {}).spawnsIn || [];
+    const rows = ((E.refs[e.id] || {}).spawnsIn || []).filter((row) => reachableWorld(row.levelId));
     if (!rows.length) return '';
     const first = new Map();
     for (const row of rows) {
@@ -1439,7 +1468,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
   };
 
   const enemyBoss = (e) => {
-    const boss = (E.refs[e.id] || {}).bossIn || [];
+    const boss = ((E.refs[e.id] || {}).bossIn || []).filter((b) => reachableWorld(b.levelId));
     if (!boss.length) return '';
     const byTime = new Map();
     for (const b of boss) {
@@ -2193,6 +2222,13 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     omissions: `<b>Nothing on this page is progression.</b> An expedition unlocks nothing and is unlocked by nothing, so a card here is only ever the arena itself. Its rows and its signature-boss times were written by hand the same way a world is, and the automatic minibosses laid over them are the same unpublished interval: how often, never which one and never when. ${clockNote}`,
     featureHtml: encounterScheduleFeature('expedition-encounter-schedule'),
     entries: expeditionEntries,
+    /* An EMPTY roster is a true state, not a broken page: the game keeps the
+       expeditions domain for the day one is authored again (src/data/wikiVisuals.ts
+       expeditionEntries) and today every expedition it holds is player-hidden.
+       Said plainly, rather than a filter bar over nothing telling the reader
+       "nothing survives all of those filters". The route, nav label, search type
+       and display rows stay, so an expedition authored tomorrow lists itself. */
+    emptyHtml: '<b>There are no expeditions right now.</b>Every arena the game holds is a campaign world this week, and those are on the <a href="wiki-worlds.html">campaign worlds page</a>. When an expedition is built again it will be listed here.',
     groups: [{ key: 'all', title: 'Expedition roster', note: 'Every expedition there is, in the order the game lists them.', has: () => true }],
     facets: [{ key: 'access', label: 'Availability', of: (e) => e.unlockedFromStart ? 'from the start' : 'unlockable' }],
     sorts: [
@@ -2263,25 +2299,29 @@ export function rosterSpecs(D, esc, T = null, V = null) {
     entries: worldEventEntries,
     groups: [{ key: 'all', title: 'The rare-event pool', note: 'A single run only ever places a few of these.', has: () => true }],
     facets: [
-      { key: 'expedition', label: 'Expedition eligible', of: (e) => WE.refs[e.id]?.expeditions?.length ? 'yes' : 'no' },
-      { key: 'worlds', label: 'World coverage', of: (e) => e.allowedWorlds.length === WE.allEventWorlds.length ? 'all listed worlds' : `${e.allowedWorlds.length} listed worlds` },
+      { key: 'expedition', label: 'Expedition eligible', of: (e) => (WE.refs[e.id]?.expeditions || []).some(reachableWorld) ? 'yes' : 'no' },
+      { key: 'worlds', label: 'World coverage', of: (e) => {
+        const reachable = e.allowedWorlds.filter(reachableWorld).length;
+        return reachable === (WE.allEventWorlds || []).filter(reachableWorld).length ? 'all listed worlds' : `${reachable} listed worlds`;
+      } },
     ],
     sorts: [
       { key: 'roster', label: 'Roster order', of: (e) => worldEventEntries.indexOf(e) },
       { key: 'name', label: 'Name', of: (e) => e.name, text: true },
       { key: 'weight', label: 'Weight', of: (e) => e.weight, desc: true },
     ],
-    searchText: (e) => `${e.id} rare world event weight ${(WE.refs[e.id]?.campaignLevels || []).map(levelName).join(' ')} ${(WE.refs[e.id]?.expeditions || []).map(levelName).join(' ')}`,
+    searchText: (e) => `${e.id} rare world event weight ${(WE.refs[e.id]?.campaignLevels || []).map(levelName).join(' ')} ${(WE.refs[e.id]?.expeditions || []).filter(reachableWorld).map(levelName).join(' ')}`,
     card: (e) => {
       const refs = WE.refs[e.id] || {};
+      const expeditions = (refs.expeditions || []).filter(reachableWorld);
       return `
-        <div class="wtags">${tag('Rare event', 'gold')}${tag(`${e.allowedWorlds.length} worlds`, 'cyan')}</div>
+        <div class="wtags">${tag('Rare event', 'gold')}${tag(`${e.allowedWorlds.filter(reachableWorld).length} worlds`, 'cyan')}</div>
         <div class="wfacts">
           ${fact('Weight', `<b>${num(e.weight)}</b>`)}
           ${fact('Per-run cap', `<b>${num(e.maxPerRun)}</b>`)}
           ${fact('Minimum spacing', `<b>${num(e.minSpacingM)} m</b>`)}
           ${refs.campaignLevels?.length ? fact('Campaign', list(refs.campaignLevels.map((id) => cardLink('worlds', id, esc(levelName(id)))))) : ''}
-          ${refs.expeditions?.length ? fact('Expeditions', list(refs.expeditions.map((id) => cardLink('expeditions', id, esc(levelName(id)))))) : ''}
+          ${expeditions.length ? fact('Expeditions', list(expeditions.map((id) => cardLink('expeditions', id, esc(levelName(id)))))) : ''}
         </div>`;
     },
   };
@@ -2327,7 +2367,7 @@ export function rosterSpecs(D, esc, T = null, V = null) {
       return `
         <div class="wtags">${e.events.map((row) => tag(esc(humanize(row.event)), 'cyan')).join('')}</div>
         <div class="wfacts">
-          ${fact('World', cardLink(page, e.id, esc(e.name)))}
+          ${fact('World', reachableWorld(e.id) ? cardLink(page, e.id, esc(e.name)) : esc(e.name))}
           ${fact('Placements', e.events.map((row) => `${esc(humanize(row.event))}<span class="wsub"> &middot; ${esc(humanize(row.themeId))} theme</span>`).join('<br>'))}
         </div>`;
     },
@@ -3325,12 +3365,12 @@ function renderRosterPage(roster, ctx) {
 
     ${roster.featureHtml || ''}
 
-    <div class="wbar">${facetBar}${sortBar}</div>
+    ${total === 0 ? `<div class="wempty">${roster.emptyHtml || '<b>Nothing is listed here right now.</b>'}</div>` : `<div class="wbar">${facetBar}${sortBar}</div>
     <p class="wcount" id="wcount" role="status" aria-live="polite"></p>
     <div class="wempty" id="wempty" hidden>
       <b>Nothing survives all of those filters at once.</b>
       <button type="button" id="wreset">Clear the filters</button>
-    </div>
+    </div>`}
 
     <div id="wiki-groups">${groupsHtml}</div>
   </main>
@@ -3699,7 +3739,7 @@ function visualManifestViolations(D, V) {
     const expectedIds = Array.isArray(policy.expectedIds) ? policy.expectedIds : [];
     const classifiedSurface = surfaces.find((surface) => surface.surface === policy.domain);
     if (!sourceDomain || !named(policy.strategy) || new Set(expectedIds).size !== expectedIds.length
-      || canonicalJson([...expectedIds].sort()) !== canonicalJson(Object.keys(sourceDomain.entries || {}).sort())) {
+      || canonicalJson([...expectedIds].sort()) !== canonicalJson(visualDomainIds(sourceDomain).sort())) {
       violations.push(`visual policy ${policy.domain || '(missing)'} does not exactly cover its canonical game-data domain`);
     }
     if (classifiedSurface && classifiedSurface.status !== 'generated') {
@@ -4256,9 +4296,10 @@ export function buildWiki(ctx) {
       const sourceIds = Object.keys(source.entries).sort();
       const liveIds = liveDomainIds(source).sort();
       const retiredIds = retiredDomainIds(source).sort();
+      const hiddenIds = playerHiddenDomainIds(source).sort();
       const renderedIds = roster.entries.map((entry) => entry.id).sort();
       if (sourceIds.length !== source.count) violations.push(`domain ${roster.domain} declares ${source.count} entries but contains ${sourceIds.length}`);
-      if (liveIds.length + retiredIds.length !== sourceIds.length) violations.push(`domain ${roster.domain} does not split cleanly into live and retired entries`);
+      if (liveIds.length + retiredIds.length + hiddenIds.length !== sourceIds.length) violations.push(`domain ${roster.domain} does not split cleanly into live, retired and player-hidden entries`);
       if (new Set(renderedIds).size !== renderedIds.length) violations.push(`roster ${roster.slug} emits duplicate entry ids`);
       if (JSON.stringify(renderedIds) !== JSON.stringify(liveIds)) {
         const missing = liveIds.filter((id) => !renderedIds.includes(id));
@@ -4268,6 +4309,10 @@ export function buildWiki(ctx) {
       const shownRetired = renderedIds.filter((id) => retiredIds.includes(id));
       if (shownRetired.length) {
         violations.push(`roster ${roster.slug} publishes ${shownRetired.length} retired ${roster.domain} the player cannot obtain: [${shownRetired.join(', ')}]`);
+      }
+      const shownHidden = renderedIds.filter((id) => hiddenIds.includes(id));
+      if (shownHidden.length) {
+        violations.push(`roster ${roster.slug} publishes ${shownHidden.length} player-hidden ${roster.domain} no run can reach: [${shownHidden.join(', ')}]`);
       }
       const displayedPaths = DISPLAY_FIELD_PATHS[roster.domain];
       if (!displayedPaths) {
