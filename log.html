@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.22</b> · <code>cd555027</code></span></div>
+    Live <b>0.7.22</b> · <code>31d3a877</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">360 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">376 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-09-26">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-26</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span><span class="storyday-kind" style="background:var(--cyan)">New 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 10</span><span class="storyday-kind" style="background:var(--pink)">Fixed 10</span></span>
       </div>
-      <p class="storyday-shape">5 changes landed: 3 fixed, 2 new.</p>
+      <p class="storyday-shape">20 changes landed: 10 new, 10 fixed.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-26">
         <b>v0.7.22</b><span>The Fairy Forest river runs for everyone, and dictation works on the desktop</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-25">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-25</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 21</span><span class="storyday-kind" style="background:var(--cyan)">New 19</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 21</span><span class="storyday-kind" style="background:var(--cyan)">New 20</span></span>
       </div>
-      <p class="storyday-shape">40 changes landed: 21 fixed, 19 new.</p>
+      <p class="storyday-shape">41 changes landed: 21 fixed, 20 new.</p>
       <a class="storyday-release" href="#release-0-7-22-2026-09-25">
         <b>v0.7.22</b><span>The crashed ship stands up, Fuse Wire's spark lands true</span>
       </a>
@@ -1045,6 +1045,51 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-26</h4>
 
+    <div class="row" data-kind="fix" id="chg-43ce5da3e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">drop a useless initial assignment (lint no-useless-assignment) <span class="scope">(conductor-handoff)</span></span>
+      <span class="sha">43ce5da3e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-716e745f9">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the account handoff is generated from measured state and checked on arrival <span class="scope">(conductor-handoff)</span></span>
+      <span class="sha">716e745f9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1c7978e16">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no wrap seam at u=0/1 (#955), no horizon band across the planet (#956) <span class="scope">(hub-sky)</span></span>
+      <span class="sha">1c7978e16</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c6714e06a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the original cabinet design comes back; only the rarity colour follows the offer (#958) <span class="scope">(vending)</span></span>
+      <span class="sha">c6714e06a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1c9539bd9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">offer decline buttons read &quot;Skip&quot; everywhere (report #954) <span class="scope">(ui)</span></span>
+      <span class="sha">1c9539bd9</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7a52122b2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">refuse a director question the ledger already answers <span class="scope">(brief-check)</span></span>
+      <span class="sha">7a52122b2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1d0cc3dfa">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">every card carries prior; a re-asked ruling is refused <span class="scope">(console)</span></span>
+      <span class="sha">1d0cc3dfa</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-93df1c3b3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bin/rulings-ledger.mjs and docs/design/RULINGS_LEDGER.tsv <span class="scope">(rulings)</span></span>
+      <span class="sha">93df1c3b3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d12ddc87b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">apply board v72 release answers - legal pages MET, mp eyeball rows with verdict rules, spine row deferred <span class="scope">(release-bar)</span></span>
+      <span class="sha">d12ddc87b</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-6f3105065">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">level-up hint follows the reel ruling: one press after the settle picks <span class="scope">(shot)</span></span>
@@ -1059,6 +1104,36 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the Audio Check dialog reads in the house voice (no parenthetical); desktopCopyVoice guards three dialogs <span class="scope">(desktop)</span></span>
       <span class="sha">5ba8076b0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-45e014c27">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">arch sills stop inside the jambs; fairy forest coplanar ratchet 4 -&gt; 0 <span class="scope">(fairy-river)</span></span>
+      <span class="sha">45e014c27</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9641ffb3e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">round the plunge no-go's downstream end so nothing freezes in its corner <span class="scope">(fairy-river)</span></span>
+      <span class="sha">9641ffb3e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-50cd3d5ee">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the river runs on through the north wall below the falls (#882) <span class="scope">(fairy-river)</span></span>
+      <span class="sha">50cd3d5ee</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-83f99340a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">wind every base ice patch face-up so FrontSide stops culling it</span>
+      <span class="sha">83f99340a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d060a75a3">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the first world's poster is Meadowfall's; no surface lists two meadows <span class="scope">(ui,hub)</span></span>
+      <span class="sha">d060a75a3</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-bc8135229">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the first world is Meadowfall; Neon Meadow retires <span class="scope">(levels)</span></span>
+      <span class="sha">bc8135229</span>
     </div>
     <div class="row" data-kind="feat" id="chg-b87204e3c">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1098,6 +1173,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">name the desktop shell's dictation reason plainly <span class="scope">(feedbackPanel)</span></span>
       <span class="sha">926fa35c8</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8dd9edca1">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bundle-delta-over-20k, js-cap-9600's lazy-load rule <span class="scope">(merge-check)</span></span>
+      <span class="sha">8dd9edca1</span>
     </div>
     <div class="row" data-kind="fix" id="chg-5fd9bd7d1">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1168,12 +1248,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">one artifact; the director console embeds the deploy status board as a second view behind hero and rail buttons, stamps its hero from the board json, and --check validates the deploy data <span class="scope">(console-board)</span></span>
       <span class="sha">8fea1e90e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-21e50a2f8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the visible-wall sweep searches every ring the separation contract allows (report #935) <span class="scope">(portals)</span></span>
-      <span class="sha">21e50a2f8</span>
-    </div><div class="row more">+ 20 more that day, not shown</div>
+    </div><div class="row more">+ 21 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-24</h4>
@@ -1697,12 +1772,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@cd5550277</code> on 2026-09-26 17:12 UTC.
+  Every number on this page came straight out of the game, read at <code>game@31d3a8774</code> on 2026-09-27 04:32 UTC.
 
   The game is serving <code>0.7.22</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">361 player-visible changes in the last 7 days, across 7 active days, 1123 internal-only commits filtered out</div>
+  <div class="stat">377 player-visible changes in the last 7 days, across 7 active days, 1192 internal-only commits filtered out</div>
 </footer>
 
 
