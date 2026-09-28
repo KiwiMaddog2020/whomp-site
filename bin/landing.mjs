@@ -707,6 +707,21 @@ export function heroPicture(art = HERO_ART, sizes = HERO_SIZES) {
   </picture>`;
 }
 
+/** THE CAMPAIGN SHARE CARD, landing page only. marketing-integration-boundaries:
+ *  the old share image keeps its file and the campaign card takes a new filename
+ *  with its own alt. So whomp-icon-512.png stays exactly where it is and still
+ *  unfurls the log, the wiki and the pitch as the square summary card, and the
+ *  landing page alone unfurls as the 1200x630 key art. The alt is the kit's
+ *  "Link preview / landscape social post" entry, verbatim. */
+export const SHARE_CARD = Object.freeze({
+  path: 'brand/share-card-1200x630.jpg',
+  width: 1200,
+  height: 630,
+  sha256: 'e8a385adc0287d7fae3026d72eef7bc3af3e36bd9e8af0852ced532aee14edb2',
+  alt: 'Illustrated WHOMP key art: Capsule Signal lands a cyan hammer, sending a shockwave through startled blobs in Meadowfall. Text: WHOMP. Politely violent. A 3D horde-survivor. playwhomp.com.',
+  twitterCard: 'summary_large_image',
+});
+
 /** The hero's one line under the slogan, the kit's description verbatim. It
  *  states no magnitude, so it is copy this repo may write; "desktop browser" is
  *  the kit's own honesty about a keyboard-and-mouse game. */

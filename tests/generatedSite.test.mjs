@@ -29,6 +29,7 @@ import { PITCH_PINS } from '../bin/pitch.mjs';
 import { isExpiredSchedule, localDay, trailsOff } from '../bin/landing.mjs';
 
 const SITE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const SITE_URL = 'https://kiwimaddog2020.github.io/whomp-site';
 const read = (file) => (existsSync(join(SITE_ROOT, file)) ? readFileSync(join(SITE_ROOT, file), 'utf8') : null);
 
 const index = read('index.html');
@@ -250,8 +251,9 @@ test('every page a stranger can land on unfurls as something, not as a bare URL'
       /<meta property="og:type" content="website">/,
       /<meta property="og:title" content="[^"]+">/,
       /<meta property="og:description" content="[^"]{20,}">/,
-      /<meta property="og:image" content="https:\/\/[^"]+\/whomp-icon-512\.png">/,
-      /<meta name="twitter:card" content="summary">/,
+      /<meta property="og:image" content="https:\/\/[^"]+">/,
+      /<meta property="og:image:alt" content="[^"]{20,}">/,
+      /<meta name="twitter:image" content="https:\/\/[^"]+">/,
       /<link rel="canonical" href="https:\/\/[^"]+">/,
     ]) {
       assert.match(html, tag, `${file} is missing ${tag}`);
@@ -259,6 +261,33 @@ test('every page a stranger can land on unfurls as something, not as a bare URL'
     const url = /<meta property="og:url" content="([^"]+)">/.exec(html)?.[1];
     assert.ok(url, `${file} has no og:url`);
     assert.equal(url.endsWith(file === 'index.html' ? '/' : file), true, `${file} claims og:url ${url}`);
+    /* Both images an unfurler fetches are this site's own files, served under
+       the site's origin, and the claimed card type matches the picture. */
+    const image = /<meta property="og:image" content="([^"]+)">/.exec(html)[1];
+    assert.equal(/<meta name="twitter:image" content="([^"]+)">/.exec(html)[1], image, `${file} shows two different card images`);
+    assert.ok(image.startsWith(`${SITE_URL}/`), `${file} card image ${image} is not on the site's own origin`);
+    const onDisk = image.slice(SITE_URL.length + 1);
+    assert.ok(existsSync(join(SITE_ROOT, ...onDisk.split('/'))), `${file} card image ${onDisk} is not in the repo`);
+    const card = /<meta name="twitter:card" content="([^"]+)">/.exec(html)?.[1];
+    if (file === 'index.html') {
+      /* THE LANDING PAGE UNFURLS AS THE CAMPAIGN CARD (director cards
+         marketing-kit-2026-09-28 and marketing-integration-boundaries): the
+         approved 1200x630 key art, its own filename, the kit's own alt. */
+      assert.equal(onDisk, 'brand/share-card-1200x630.jpg');
+      assert.equal(card, 'summary_large_image');
+      assert.match(html, /<meta property="og:image:width" content="1200">/);
+      assert.match(html, /<meta property="og:image:height" content="630">/);
+      assert.match(html, /<meta property="og:image:alt" content="Illustrated WHOMP key art: Capsule Signal lands a cyan hammer, sending a shockwave through startled blobs in Meadowfall\. Text: WHOMP\. Politely violent\. A 3D horde-survivor\. playwhomp\.com\.">/);
+      assert.match(html, /<meta name="twitter:image:alt" content="Illustrated WHOMP key art: [^"]+">/);
+    } else {
+      /* The old card keeps its file and every other surface: a square icon is a
+         summary card, never a large one. */
+      assert.equal(onDisk, 'whomp-icon-512.png');
+      assert.equal(card, 'summary');
+    }
+    // The favicon is the rounded website W on every surface. The social card is
+    // not an icon and the icon is not replaced by it.
+    assert.match(html, /<link rel="icon" href="whomp-icon\.svg">/, `${file} lost its favicon`);
   }
   assert.ok(existsSync(join(SITE_ROOT, 'whomp-icon-512.png')), 'the social card image was never written');
 });

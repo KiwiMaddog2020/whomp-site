@@ -38,6 +38,7 @@ import {
   renderableArcs,
   resolveDate,
   runShape,
+  SHARE_CARD,
   trailsOff,
   withoutSourceRefs,
 } from '../bin/landing.mjs';
@@ -514,6 +515,13 @@ test('the hero art is the approved bytes, all six of them', () => {
     assert.ok(existsSync(join(SITE_ROOT, ...file.path.split('/'))), `${file.path} is not in the repo`);
     assert.equal(sha256(file.path), file.sha256, `${file.path} is not the approved kit export`);
   }
+  assert.ok(existsSync(join(SITE_ROOT, ...SHARE_CARD.path.split('/'))), `${SHARE_CARD.path} is not in the repo`);
+  assert.equal(sha256(SHARE_CARD.path), SHARE_CARD.sha256, 'the share card is not the approved kit export');
+  assert.equal(SHARE_CARD.width, 1200);
+  assert.equal(SHARE_CARD.height, 630);
+  assert.equal(SHARE_CARD.twitterCard, 'summary_large_image');
+  // The old card keeps its file (marketing-integration-boundaries).
+  assert.notEqual(SHARE_CARD.path, 'whomp-icon-512.png');
 });
 
 test('the picture is WebP first, a JPEG fallback, three widths, an empty alt and a reserved box', () => {

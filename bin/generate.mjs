@@ -60,7 +60,7 @@ import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import {
   buildPipelineTeasers, HERO_DESCRIPTION, heroPicture, kitCards, kitShape, localDay, parseArcs,
   parseBuildSlots, parseChannelMode, parseHouseSlogan, parsePlayUrl, parseReleaseChannelUrls,
-  PLAY_LABEL, renderableArcs, runShape,
+  PLAY_LABEL, renderableArcs, runShape, SHARE_CARD,
 } from './landing.mjs';
 import { pinWarning, trainScale, verifyPins } from './pitch.mjs';
 import { fetchLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
@@ -1128,23 +1128,44 @@ const WORDMARK_PRELOAD = '<link rel="preload" href="brand/whomp-display.woff2" a
  *
  * summary, NOT summary_large_image, for the same reason: the card matches the
  * asset. A square icon stretched into a 2:1 banner looks like a mistake, and
- * claiming a large image the site does not have is the wrong kind of confident. */
+ * claiming a large image the site does not have is the wrong kind of confident.
+ *
+ * THE LANDING PAGE HAS A LARGE IMAGE NOW, and only the landing page (director
+ * cards marketing-kit-2026-09-28 and marketing-integration-boundaries). The
+ * approved 1200x630 campaign card is real key art at the ratio unfurlers draw,
+ * so index.html claims summary_large_image for it, with its own filename and the
+ * kit's own alt. The icon keeps its file and keeps the other three surfaces, so
+ * their tags are byte-for-byte what they were: the default argument below is the
+ * old card, spelled exactly as before. The favicon is untouched either way; the
+ * social card is not an icon and the icon is not a social card. */
 const SOCIAL_IMAGE = 'whomp-icon-512.png';
-const socialTags = ({ title, description, path }) => {
+const ICON_CARD = {
+  path: SOCIAL_IMAGE,
+  width: 512,
+  height: 512,
+  alt: 'The WHOMP mark: a chromatic cream W on a dark violet square.',
+  twitterCard: 'summary',
+};
+const socialTags = ({ title, description, path, card = ICON_CARD }) => {
   const url = `${SITE_URL}/${path === 'index.html' ? '' : path}`;
+  const image = `${SITE_URL}/${card.path}`;
+  /* twitter:image:alt only rides the large card: adding it to the icon card
+     would move the tags on three pages this change has no business touching. */
+  const twitterAlt = card === ICON_CARD ? ''
+    : `\n<meta name="twitter:image:alt" content="${esc(card.alt)}">`;
   return `<meta property="og:type" content="website">
 <meta property="og:site_name" content="WHOMP">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(url)}">
-<meta property="og:image" content="${esc(`${SITE_URL}/${SOCIAL_IMAGE}`)}">
-<meta property="og:image:width" content="512">
-<meta property="og:image:height" content="512">
-<meta property="og:image:alt" content="The WHOMP mark: a chromatic cream W on a dark violet square.">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="${esc(image)}">
+<meta property="og:image:width" content="${card.width}">
+<meta property="og:image:height" content="${card.height}">
+<meta property="og:image:alt" content="${esc(card.alt)}">
+<meta name="twitter:card" content="${card.twitterCard}">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
-<meta name="twitter:image" content="${esc(`${SITE_URL}/${SOCIAL_IMAGE}`)}">
+<meta name="twitter:image" content="${esc(image)}">${twitterAlt}
 <link rel="canonical" href="${esc(url)}">`;
 };
 
@@ -2132,7 +2153,7 @@ const indexHtml = `<!doctype html>
 <meta name="description" content="${esc(INDEX_DESCRIPTION)}">
 <link rel="icon" href="${FAVICON}">
 ${WORDMARK_PRELOAD}
-${socialTags({ title: INDEX_TITLE, description: INDEX_DESCRIPTION, path: 'index.html' })}
+${socialTags({ title: INDEX_TITLE, description: INDEX_DESCRIPTION, path: 'index.html', card: SHARE_CARD })}
 <style>
 ${SHARED_CSS}
 ${LANDING_CHROME_CSS}
