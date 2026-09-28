@@ -11,10 +11,17 @@
  *  found by a person reading the page. These are the eyes that replace that.
  */
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 import {
   buildPipelineTeasers,
+  HERO_ART,
+  HERO_DESCRIPTION,
+  heroPicture,
   isExpiredSchedule,
   kitCards,
   kitShape,
@@ -23,14 +30,20 @@ import {
   openingCapital,
   parseArcs,
   parseBuildSlots,
+  parseHouseSlogan,
+  parsePlayUrl,
   parseReleaseChannelUrls,
   parseWishlistWants,
+  PLAY_LABEL,
   renderableArcs,
   resolveDate,
   runShape,
   trailsOff,
   withoutSourceRefs,
 } from '../bin/landing.mjs';
+
+const SITE_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const sha256 = (path) => createHash('sha256').update(readFileSync(join(SITE_ROOT, ...path.split('/')))).digest('hex');
 
 const TODAY = '2026-08-06';
 
@@ -452,4 +465,70 @@ const AUDITED_RELEASE_CHANNEL_URLS = Object.freeze({
   preview: 'https://whomp-preview.pages.dev/',
 } as const satisfies X);
 `), /stable URL/);
+});
+
+/* ------------------------------------------------------------ the marketing hero */
+
+test('the play link is the game\'s PLAY_URL, spelled as the origin the kit names', () => {
+  const source = `
+/** The one URL this screen exists to hand over. */
+export const PLAY_URL = 'https://playwhomp.com';
+`;
+  assert.equal(parsePlayUrl(source), 'https://playwhomp.com/');
+  assert.equal(parsePlayUrl("export const PLAY_URL = 'https://playwhomp.com/';"), 'https://playwhomp.com/');
+});
+
+test('a play link that moved, went insecure or grew a path stops the build', () => {
+  assert.throws(() => parsePlayUrl('export const OTHER_URL = \'https://playwhomp.com\';'), /PLAY_URL/);
+  assert.throws(() => parsePlayUrl("export const PLAY_URL = 'http://playwhomp.com';"), /PLAY_URL/);
+  assert.throws(() => parsePlayUrl("export const PLAY_URL = 'https://playwhomp.com/beta/';"), /PLAY_URL/);
+  assert.throws(() => parsePlayUrl("export const PLAY_URL = 'not a url';"), /PLAY_URL/);
+});
+
+test('the hero slogan is the game\'s HOUSE_SLOGAN, never a rotation entry', () => {
+  const source = `
+export const TAGLINES: readonly string[] = [
+  "It's a hammer.",
+  'Politely violent.',
+];
+export const HOUSE_SLOGAN = 'Politely violent.';
+`;
+  assert.equal(parseHouseSlogan(source), 'Politely violent.');
+  assert.equal(parseHouseSlogan('export const HOUSE_SLOGAN = "It\'s polite.";'), "It's polite.");
+  assert.throws(() => parseHouseSlogan('export const TAGLINES = [\'Politely violent.\'];'), /HOUSE_SLOGAN/);
+  assert.throws(() => parseHouseSlogan("export const HOUSE_SLOGAN = '  ';"), /HOUSE_SLOGAN/);
+});
+
+test('the hero copy is the kit\'s, word for word', () => {
+  assert.equal(HERO_DESCRIPTION, 'A 3D horde-survivor. Play in your desktop browser.');
+  assert.equal(PLAY_LABEL, 'Play WHOMP');
+});
+
+test('the hero art is the approved bytes, all six of them', () => {
+  // Three widths, two formats each, and nothing else.
+  assert.deepEqual(HERO_ART.map((f) => `${f.width}x${f.height}.${f.format}`).sort(), [
+    '1200x675.jpg', '1200x675.webp', '1600x900.jpg', '1600x900.webp', '800x450.jpg', '800x450.webp',
+  ]);
+  for (const file of HERO_ART) {
+    assert.equal(file.height * 16, file.width * 9, `${file.path} is not 16:9`);
+    assert.ok(existsSync(join(SITE_ROOT, ...file.path.split('/'))), `${file.path} is not in the repo`);
+    assert.equal(sha256(file.path), file.sha256, `${file.path} is not the approved kit export`);
+  }
+});
+
+test('the picture is WebP first, a JPEG fallback, three widths, an empty alt and a reserved box', () => {
+  const html = heroPicture();
+  const source = /<source type="image\/webp" srcset="([^"]+)" sizes="([^"]+)">/.exec(html);
+  assert.ok(source, 'no WebP source');
+  const img = /<img ([^>]+)>/.exec(html)?.[1];
+  assert.ok(img, 'no img fallback');
+  assert.ok(html.indexOf('<source') < html.indexOf('<img'), 'the fallback comes before the source');
+  assert.equal(source[1], 'brand/hero/website-hero-800x450.webp 800w, brand/hero/website-hero-1200x675.webp 1200w, brand/hero/website-hero-1600x900.webp 1600w');
+  assert.match(img, /srcset="brand\/hero\/website-hero-800x450\.jpg 800w, brand\/hero\/website-hero-1200x675\.jpg 1200w, brand\/hero\/website-hero-1600x900\.jpg 1600w"/);
+  assert.match(img, /src="brand\/hero\/website-hero-1600x900\.jpg"/);
+  assert.match(img, /width="1600" height="900"/);
+  assert.match(img, /alt=""/);
+  assert.equal(source[2], '(min-width: 1600px) 1600px, 100vw');
+  assert.match(img, /sizes="\(min-width: 1600px\) 1600px, 100vw"/);
+  assert.throws(() => heroPicture(HERO_ART.filter((f) => f.format === 'webp')), /JPEG fallback/);
 });

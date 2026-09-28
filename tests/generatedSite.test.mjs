@@ -130,8 +130,11 @@ test('the hero leads with the one play button, and no page names a track', optio
   assert.equal(buttons.length, 3, 'the hero does not carry exactly three buttons');
   assert.equal(buttons.filter((b) => b.kind === 'loud').length, 1, 'the hero has more than one loud button');
   assert.equal(buttons[0].kind, 'loud');
-  assert.match(buttons[0].label, /PLAY WHOMP/);
-  assert.match(buttons[0].href, /^https:\/\/whomp-preview\.pages\.dev\//);
+  /* THE KIT'S WORDS AND THE PUBLIC DOMAIN (director card marketing-kit-2026-09-28:
+     the canonical public link is https://playwhomp.com/). Re-pointed from the
+     Preview origin, which that domain serves; the live chip still measures it. */
+  assert.equal(buttons[0].label, 'Play WHOMP');
+  assert.equal(buttons[0].href, 'https://playwhomp.com/');
   assert.deepEqual(buttons.slice(1).map((b) => b.label), ['WIKI', 'DEV LOG']);
   assert.deepEqual(buttons.slice(1).map((b) => b.href), ['wiki.html', 'log.html']);
   /* TWO ROWS (director, 2026-09-06 23:25, reading the page on a phone): Play on
@@ -258,6 +261,42 @@ test('every page a stranger can land on unfurls as something, not as a bare URL'
     assert.equal(url.endsWith(file === 'index.html' ? '/' : file), true, `${file} claims og:url ${url}`);
   }
   assert.ok(existsSync(join(SITE_ROOT, 'whomp-icon-512.png')), 'the social card image was never written');
+});
+
+/* ------------------------------------------------------------------- the hero */
+
+/* THE TEXT-FREE HERO (director cards marketing-kit-2026-09-28 and
+ * marketing-integration-boundaries). The art is decoration under live copy, so
+ * the checks are the kit's own: one H1 and it is WHOMP, the house slogan fixed
+ * rather than rotated, the description word for word, the picture at 800, 1200
+ * and 1600 in WebP with a JPEG fallback, an empty alt, and a width and height on
+ * the img so nothing moves when it arrives. */
+test('the hero is live copy over the approved art, and the art cannot shift the page', options, () => {
+  const header = /<header>([\s\S]*?)<\/header>/.exec(index)?.[1];
+  assert.ok(header, 'index.html has no hero');
+  assert.equal((index.match(/<h1[\s>]/g) || []).length, 1, 'index.html carries more than one H1');
+  assert.match(header, /<h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP<\/h1>/);
+  assert.match(header, /<p class="tag">Politely violent\.<\/p>/);
+  assert.doesNotMatch(header, /<script/, 'the slogan still rotates');
+  assert.match(header, /<p class="spec">A 3D horde-survivor\. Play in your desktop browser\.<\/p>/);
+  const picture = /<picture class="hero-art">([\s\S]*?)<\/picture>/.exec(header)?.[1];
+  assert.ok(picture, 'the hero has no picture');
+  assert.ok(header.indexOf('class="hero-copy"') < header.indexOf('<picture'),
+    'the copy no longer comes before the art, so a narrow screen would not stack it on top');
+  const source = /<source type="image\/webp" srcset="([^"]+)" sizes="[^"]+">/.exec(picture)?.[1];
+  assert.ok(source, 'the picture offers no WebP source');
+  const img = /<img ([^>]+)>/.exec(picture)?.[1];
+  assert.ok(img, 'the picture has no img fallback');
+  const widths = (srcset) => srcset.split(',').map((c) => c.trim().split(/\s+/)[1]);
+  assert.deepEqual(widths(source), ['800w', '1200w', '1600w']);
+  assert.deepEqual(widths(/srcset="([^"]+)"/.exec(img)[1]), ['800w', '1200w', '1600w']);
+  assert.match(source, /^brand\/hero\/[^ ]+\.webp 800w, [^ ]+\.webp 1200w, [^ ]+\.webp 1600w$/);
+  assert.match(img, /src="brand\/hero\/website-hero-1600x900\.jpg"/);
+  assert.match(img, /\bwidth="1600" height="900"/, 'the hero img reserves no box, so it would shift the page');
+  assert.match(img, /\balt=""/, 'the decorative art is described, so the hero is read twice');
+  for (const path of [...picture.matchAll(/(brand\/hero\/[^\s",]+)/g)].map((m) => m[1])) {
+    assert.ok(existsSync(join(SITE_ROOT, ...path.split('/'))), `the hero points at missing ${path}`);
+  }
 });
 
 /* ------------------------------------------------------------------- the run */

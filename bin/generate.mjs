@@ -58,8 +58,9 @@ import { fileURLToPath } from 'node:url';
 import { buildStory, readableNights, windowDates } from './devlog.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import {
-  buildPipelineTeasers, kitCards, kitShape, localDay, parseArcs, parseBuildSlots,
-  parseChannelMode, parseReleaseChannelUrls, renderableArcs, runShape,
+  buildPipelineTeasers, HERO_DESCRIPTION, heroPicture, kitCards, kitShape, localDay, parseArcs,
+  parseBuildSlots, parseChannelMode, parseHouseSlogan, parsePlayUrl, parseReleaseChannelUrls,
+  PLAY_LABEL, renderableArcs, runShape,
 } from './landing.mjs';
 import { pinWarning, trainScale, verifyPins } from './pitch.mjs';
 import { fetchLiveVersion, normalizeSuppliedLiveVersion } from './live-version.mjs';
@@ -176,7 +177,7 @@ const mdInline = (s) => noEmDash(esc(s))
  * retypes a weapon's damage is a cache with no invalidation, which is the exact
  * failure this whole file exists to stop repeating.
  *
- * LOUD ON MISSING, same law as parseGameTaglines above: if the artifact is gone
+ * LOUD ON MISSING, same law as the hero's HOUSE_SLOGAN read: if the artifact is gone
  * or its schema moved, the run stops. A wiki that silently renders an empty
  * roster is worse than a build that refuses, because nobody notices the first
  * one until a reader does. */
@@ -327,32 +328,36 @@ if (mainSha && mainSha !== headSha) {
   warn(`${REPO} is checked out at ${headSha} but its main ref is at ${mainSha}. Every page stamps the first and the shipped feed is read from the second, so this build would publish a provenance its own dev log does not match. Check out main there, or move main, before publishing.`);
 }
 
-// ---------------------------------------------------------------- derive: title screen wordmark + slogans
+// ---------------------------------------------------------------- derive: the hero's slogan and play link
 /* Director change 2026-07-30: "copy the title from the title screen EXACTLY"
- * and "use the same rotating slogans... under the title". Both come straight
- * out of whomp/src/ui/mainMenu.ts, the game's own source of truth, so this
- * page can never drift from what the title screen actually says or does.
- * TAGLINES is parsed out of the exported array rather than hand-copied, same
- * derive-not-duplicate reasoning as arcs/bugs above: the strings are the
- * game's own authored copy, and a hand-copy is exactly the kind of thing that
- * goes stale the next time someone tunes a line in the game. */
-/* MOVED 2026-09-03: the game relocated the TAGLINES literal to the zero-import
- * leaf src/data/taglines.ts, and src/ui/mainMenu.ts now only re-exports it, so
- * this source-text scraper reads the leaf first and only falls back to the old
- * title-screen path for checkouts from before the move. */
-function parseGameTaglines() {
-  const leaf = join(REPO, 'src/data/taglines.ts');
-  const path = existsSync(leaf) ? leaf : join(REPO, 'src/ui/mainMenu.ts');
-  if (!existsSync(path)) return [];
-  const raw = readFileSync(path, 'utf8');
-  const block = raw.split(/export const TAGLINES: readonly string\[\] = \[/)[1]?.split(/\n\];/)[0] ?? '';
-  return [...block.matchAll(/'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)"/g)]
-    .map((m) => (m[1] ?? m[2]).replace(/\\'/g, "'").replace(/\\"/g, '"'));
+ * and "use the same rotating slogans... under the title". The title half stands:
+ * the H1 is still the title screen's wordmark. The slogan half is superseded.
+ *
+ * ONE FIXED LINE NOW (director cards marketing-kit-2026-09-28 and
+ * marketing-integration-boundaries, recorded 2026-09-28 4:40 pm). The hero became
+ * the approved text-free key art with live copy over it, and the kit fixes that
+ * copy: WHOMP, then "Politely violent.", then one line, then Play WHOMP. The game
+ * already keeps that line as HOUSE_SLOGAN for exactly this case, a surface with
+ * room for one non-rotating slogan (ruling 2026-09-09 1:30 pm), so the hero reads
+ * the constant rather than freezing a TAGLINES entry or typing the words here.
+ * The rotation lives on in the game, which still draws from the whole pool.
+ *
+ * THE PLAY LINK IS THE PUBLIC DOMAIN. The kit names https://playwhomp.com/ the
+ * canonical public link and the game holds it as PLAY_URL in
+ * src/ui/mobileLanding.ts. It serves the same Preview build the live chip below
+ * measures; the audited channel table still feeds that chip and the parked
+ * dual-track buttons. Both reads are loud on missing, same law as the TAGLINES
+ * scraper they replace. */
+const TAGLINES_LEAF_PATH = join(REPO, 'src/data/taglines.ts');
+if (!existsSync(TAGLINES_LEAF_PATH)) {
+  throw new Error(`No ${TAGLINES_LEAF_PATH}. The hero prints the game's HOUSE_SLOGAN and will not author its own.`);
 }
-const gameTaglines = parseGameTaglines();
-if (gameTaglines.length === 0) {
-  throw new Error('No TAGLINES parsed from whomp/src/data/taglines.ts (nor the legacy whomp/src/ui/mainMenu.ts). The taglines leaf moved or its export shape changed, fix parseGameTaglines rather than shipping an empty rotation.');
+const houseSlogan = parseHouseSlogan(readFileSync(TAGLINES_LEAF_PATH, 'utf8'));
+const MOBILE_LANDING_PATH = join(REPO, 'src/ui/mobileLanding.ts');
+if (!existsSync(MOBILE_LANDING_PATH)) {
+  throw new Error(`No ${MOBILE_LANDING_PATH}. The hero's play button links the game's own PLAY_URL and will not hand-type a domain.`);
 }
+const PLAY_URL = parsePlayUrl(readFileSync(MOBILE_LANDING_PATH, 'utf8'));
 
 // ---------------------------------------------------------------- derive: the rarity ladder's colours
 /* THE RARITY LADDER IS THE GAME'S, READ RATHER THAN COPIED. Director ruling
@@ -382,7 +387,7 @@ if (gameTaglines.length === 0) {
  * settled from this repo. If the game ever unifies them, nothing here changes:
  * this scraper follows whatever RELIC_RARITY_COLOR becomes.
  *
- * LOUD ON MISSING, same law as parseGameTaglines: an unparseable table stops
+ * LOUD ON MISSING, same law as parseHouseSlogan: an unparseable table stops
  * the run rather than shipping a ladder the site invented for itself. */
 const RELICS_SOURCE_PATH = join(REPO, 'src/data/relics.ts');
 const relicRarityInk = existsSync(RELICS_SOURCE_PATH)
@@ -1955,8 +1960,8 @@ const wiki = buildWiki({
  * that one weapon is aimed, that it opens in a tab, or that a Preview track
  * exists at all. Five sections now, each of them derived:
  *
- *   the hero      two play buttons, one per release track, each carrying the
- *                 version that track is actually serving right now
+ *   the hero      the approved key art under live copy: the wordmark, the
+ *                 house slogan, one line, the play button and the live chip
  *   the run       what twenty minutes of this game is, off the mode registry
  *   your kit      the five things you take in, as five offer cards
  *   what shipped  the newest concise log entries, the same source log.html uses
@@ -1971,14 +1976,22 @@ const wiki = buildWiki({
  *
  * NOTHING ON IT IS TYPED TWICE. The clock comes out of runModes, the roster
  * sizes out of the domain counts, the shipped lines out of the release notes,
- * the arcs out of CAMPAIGN.md, the teasers out of the wishlist, the play URLs
- * out of releaseChannel.ts and the versions off the two live endpoints. The
- * authored half is the framing sentences, and they state no magnitude. */
+ * the arcs out of CAMPAIGN.md, the teasers out of the wishlist, the slogan out
+ * of HOUSE_SLOGAN, the play link out of the game's PLAY_URL (the parked
+ * dual-track URLs out of releaseChannel.ts) and the versions off the live
+ * endpoints. The authored half is the framing sentences, and they state no
+ * magnitude. The hero's one line is the kit's approved copy (HERO_DESCRIPTION in
+ * bin/landing.mjs), and it states none either. */
 /* No version badge on the button: the director cut it 2026-08-07 ("remove the
  * version numbering from the play the preview button"). The number still lives
  * in the tracks line's Stable link, where a tester looking for it looks. */
-const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(track.url)}">
-      ${channelMode === 'single' ? 'PLAY WHOMP'
+/* SINGLE MODE LINKS THE PUBLIC DOMAIN (director card marketing-kit-2026-09-28):
+ * one button, the kit's words, the game's PLAY_URL. playwhomp.com serves the
+ * Preview build the live chip measures, so the chip and the button still agree
+ * about what a click reaches. The parked dual rendering keeps its per-track
+ * origins, because two tracks are two URLs and one domain cannot be both. */
+const trackButton = (track, kind) => `<a class="play ${kind}" href="${esc(channelMode === 'single' ? PLAY_URL : track.url)}">
+      ${channelMode === 'single' ? esc(PLAY_LABEL)
     : track.channel === 'preview' ? 'PLAY THE PREVIEW' : 'PLAY STABLE'}
     </a>`;
 
@@ -2159,8 +2172,52 @@ ${LANDING_CHROME_CSS}
    position:sticky. Only the column needs lifting off the star layer. */
 .wrap{position:relative;z-index:1}
 
-/* ------------------------------------------------------------------ THE HERO */
-header{padding:64px 0 8px;text-align:center}
+/* ------------------------------------------------------------------ THE HERO
+   THE KEY ART IS THE HERO (director cards marketing-kit-2026-09-28 and
+   marketing-integration-boundaries, 2026-09-28). The approved illustration is
+   text-free on purpose and the words sit over it as live HTML: selectable, read
+   aloud, and true the day the slogan or the link moves, which lettering baked
+   into pixels never is. The files and their hashes are HERO_ART in
+   bin/landing.mjs.
+
+   THE MARK STAYS IN THE BAR (director, 2026-08-06). The art takes the space the
+   centred column used to leave empty, not the mark's: the hero still opens on
+   the wordmark as its one H1, same treatment, same clamp, and it is still the
+   only place the mark is allowed to move.
+
+   WIDE: one band as wide as the widest export, 16:9 so the whole picture shows,
+   the copy centred in the left half the illustration leaves dark for it.
+   aspect-ratio is a floor rather than a height, so copy taller than the band
+   grows the band and object-fit trims the edges, never the character.
+   NARROW: the copy first, then the whole picture under it at its own ratio. A
+   landscape illustration forced into a portrait background cuts the character
+   off, and that is the one crop the kit rules out.
+   NO SHIFT at either: the img carries its width and height and the band its
+   ratio, so every box is reserved before a byte of the art arrives. */
+header{position:relative;z-index:1;display:flex;align-items:center;max-width:1600px;margin:0 auto;
+  aspect-ratio:16/9;text-align:center}
+.hero-copy{position:relative;z-index:1;width:min(54%,760px);padding:48px 2vw 56px 4vw}
+.hero-art{position:absolute;inset:0;z-index:0;display:block;overflow:hidden}
+.hero-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:68% 50%}
+/* A scrim under the copy and a fade into the page ink at the foot: the live text
+   stays legible whatever the art does beneath it, and the band ends where the
+   reading starts instead of on a hard edge. Neither reaches the character. */
+.hero-art::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(6,4,14,.6) 0,rgba(6,4,14,.3) 36%,rgba(6,4,14,0) 56%),
+    linear-gradient(180deg,rgba(6,4,14,0) 82%,var(--ink) 100%)}
+/* Past the widest export the band sits centred on the page ink, so its sides
+   fade in rather than ending on a straight cut. */
+@media (min-width:1601px){
+  .hero-art{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+}
+@media (max-width:900px){
+  header{display:block;aspect-ratio:auto}
+  .hero-copy{width:auto;padding:52px 24px 28px}
+  .hero-art{position:relative;inset:auto}
+  .hero-art img{height:auto}
+  .hero-art::after{background:linear-gradient(180deg,var(--ink) 0,rgba(6,4,14,0) 12%,rgba(6,4,14,0) 88%,var(--ink) 100%)}
+}
 /* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
    700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size
    stays the site's own responsive clamp (the game's is a fixed 16px in a
@@ -2168,6 +2225,7 @@ header{padding:64px 0 8px;text-align:center}
 .tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:20px auto 0;max-width:34ch;
   font-weight:700;font-style:italic;letter-spacing:0.03em}
 .spec{margin:14px auto 0;max-width:56ch;color:var(--body);font-size:clamp(.95rem,1.9vw,1.06rem);text-wrap:balance}
+.hero-copy .tag,.hero-copy .spec{text-shadow:0 2px 10px rgba(6,4,14,.9)}
 
 /* THE BUTTON, in the shape the game's own START row uses when it is the active
    item: the sweep as fill, dark ink, no border, a flat plinth under it. The
@@ -2181,21 +2239,32 @@ header{padding:64px 0 8px;text-align:center}
    with Play no louder in the layout than the two beside it. Two rows say the
    same thing at every width, and the second one still wraps on a narrow phone
    rather than pushing the page sideways. */
+/* UPPER CASE IS THE FAMILY'S, NOT THE COPY'S. The kit writes the button as
+   "Play WHOMP" and the markup says exactly that, so a screen reader announces
+   the words as written; the transform keeps it in the same voice as WIKI and
+   DEV LOG beside it. */
 .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
 .cta-second{margin-top:14px}
 .play{display:inline-flex;align-items:center;gap:12px;padding:17px 34px;border-radius:14px;border:0;
-  text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:clamp(.98rem,2vw,1.14rem);
+  text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:clamp(.98rem,2vw,1.14rem);text-transform:uppercase;
   transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
 .play em{font-style:normal;opacity:.66;font-weight:800;font-size:.74em;letter-spacing:.1em}
 .play.loud{background:var(--sweep);color:#0a0714;box-shadow:0 7px 0 #7a1440,0 16px 30px -12px rgba(255,47,126,.55)}
 .play.loud:hover{transform:translateY(3px);box-shadow:0 4px 0 #7a1440,0 10px 22px -12px rgba(255,47,126,.5)}
-.play.quiet{color:var(--cream);border:2px solid rgba(255,243,207,.2);background:rgba(255,243,207,.05);
+/* The quiet pair sits on the art now, so its ground is the page ink at half
+   strength rather than a cream wash the illustration would show straight
+   through. */
+.play.quiet{color:var(--cream);border:2px solid rgba(255,243,207,.2);background:rgba(6,4,14,.55);
   box-shadow:0 5px 0 rgba(0,0,0,.42)}
 .play.quiet:hover{background:rgba(255,243,207,.12);transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.42)}
-.play:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+/* THE FOCUS RING IS THE LOUDEST THING ON THE BAND. Three pixels of the house
+   cyan, held clear of the button by an offset so it reads against the plinth,
+   the sweep and the art alike; keyboard only, so a click never leaves it lit. */
+.play:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
 .tracks{margin:22px auto 0;max-width:58ch;color:var(--dim);font-size:.88rem}
 .tracks b{color:var(--body);font-weight:800}
 .chips{justify-content:center;margin-top:22px}
+header .chip{background:rgba(6,4,14,.62)}
 
 /* ---------------------------------------------------------------- THE FLOOR */
 section{margin-top:78px}
@@ -2281,21 +2350,24 @@ h2{font-size:1.65rem;margin:0 0 6px}
 
 ${landingTopBar('index.html')}
 
-<div class="wrap">
-
 <header>
-  <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
-  <p class="tag" id="hero-tagline">${esc(gameTaglines[0])}</p>
-  <script>document.getElementById('hero-tagline').textContent=(${JSON.stringify(gameTaglines)})[Math.min(${gameTaglines.length}-1,Math.max(0,Math.floor(Math.random()*${gameTaglines.length})))];</script>
-  <div class="cta">
-    ${trackButton(tracks[0], 'loud')}
+  <div class="hero-copy">
+    <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
+    <p class="tag">${esc(houseSlogan)}</p>
+    <p class="spec">${esc(HERO_DESCRIPTION)}</p>
+    <div class="cta">
+      ${trackButton(tracks[0], 'loud')}
+    </div>
+    <div class="cta cta-second">
+      <a class="play quiet" href="wiki.html">WIKI</a>
+      <a class="play quiet" href="log.html">DEV LOG</a>
+    </div>
+    <div class="chips">${liveChip()}</div>
   </div>
-  <div class="cta cta-second">
-    <a class="play quiet" href="wiki.html">WIKI</a>
-    <a class="play quiet" href="log.html">DEV LOG</a>
-  </div>
-  <div class="chips">${liveChip()}</div>
+  ${heroPicture()}
 </header>
+
+<div class="wrap">
 
 <section id="run">
   <div class="rule"></div>
@@ -3127,7 +3199,7 @@ searchIndex.push(...wiki.searchEntries);
  * So every internal wiki link is checked against the ids actually emitted, before
  * anything is written. This is cheap, it is exact, and it fails the build rather
  * than shipping a link that is dead until a reader finds it. Same reasoning as
- * parseGameTaglines throwing on an empty rotation: a generator that cannot do
+ * parseHouseSlogan throwing on a missing slogan: a generator that cannot do
  * what it was asked says so at the moment it happens.
  *
  * It also covers search-index.json, which is the easier one to get wrong because

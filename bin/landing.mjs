@@ -627,3 +627,91 @@ export function parseChannelMode(source) {
   }
   return m[1];
 }
+
+/* ------------------------------------------------------------ the marketing hero */
+
+/** THE ONE PUBLIC PLAY LINK IS THE GAME'S. Director card marketing-kit-2026-09-28
+ *  names https://playwhomp.com/ the canonical public link, and the game already
+ *  holds it as PLAY_URL in whomp/src/ui/mobileLanding.ts ("the spelling the
+ *  social posts use"). Read, not pasted, for the reason the channel table above
+ *  is read: a second copy is a second thing to forget the day the domain moves.
+ *  The game writes it bare; the page links the origin, so it is normalised to
+ *  the trailing-slash href the kit and the ruling spell. */
+export function parsePlayUrl(source) {
+  const m = String(source).match(/export const PLAY_URL\s*=\s*'([^']+)'/);
+  let url = null;
+  try { url = m ? new URL(m[1]) : null; } catch { url = null; }
+  if (!url || url.protocol !== 'https:' || url.pathname !== '/' || url.search || url.hash) {
+    throw new Error('whomp/src/ui/mobileLanding.ts did not yield an https PLAY_URL origin. The hero\'s play button is read from the game and will not be hand-typed here.');
+  }
+  return url.href;
+}
+
+/** THE HERO SAYS ONE FIXED LINE, AND IT IS THE HOUSE SLOGAN. Director ruling
+ *  2026-09-09 1:30 pm, which the game keeps as HOUSE_SLOGAN in the zero-import
+ *  leaf whomp/src/data/taglines.ts: "any time we only have one non-rotating
+ *  slogan shown for the game it should be Politely Violent." The marketing kit
+ *  (2026-09-28) fixes the hero to exactly that line, so the rotation this hero
+ *  used to run through TAGLINES stops here and the one constant is read instead.
+ *  Loud on missing, same law as the TAGLINES scraper it replaces. */
+export function parseHouseSlogan(source) {
+  const m = String(source).match(/export const HOUSE_SLOGAN\s*=\s*(?:'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)")/);
+  const slogan = m ? (m[1] ?? m[2]).replace(/\\'/g, "'").replace(/\\"/g, '"').trim() : '';
+  if (!slogan) {
+    throw new Error('whomp/src/data/taglines.ts did not yield a HOUSE_SLOGAN. The hero prints the game\'s one fixed slogan and will not author its own.');
+  }
+  return slogan;
+}
+
+/** THE HERO ART, exactly as approved. Six exports of one illustration from
+ *  WHOMP-marketing-kit-2026-09-28-v1 (exports/web/website-hero-*), copied
+ *  byte-for-byte into brand/hero/. The sha256 beside each is the kit's own
+ *  metadata/SHA256SUMS.txt line, and tests/landing.test.mjs reads every file off
+ *  disk against it: an approval is for these bytes, so a re-export, a
+ *  recompression or an "optimised" copy is a different picture and fails the
+ *  suite rather than shipping unapproved. */
+export const HERO_ART_DIR = 'brand/hero';
+export const HERO_ART = Object.freeze([
+  { width: 800, height: 450, format: 'webp', sha256: '215fb1ec07ac0572636af163fabb9acd7e9dc504b21ade2e2ff238d542e9106a' },
+  { width: 800, height: 450, format: 'jpg', sha256: 'a2cba48b7b05ad30634d75db703e2d6df13ef7d212bfffd63f9514c1b0d02b0d' },
+  { width: 1200, height: 675, format: 'webp', sha256: '9675daab2e65c2bd265d32f8fcb8f98e5157e270b0950650956f4c1d6886c1d3' },
+  { width: 1200, height: 675, format: 'jpg', sha256: 'c0f60db9e172221288d19b1c130d0e32e0368be73987a5074152d10857b62f86' },
+  { width: 1600, height: 900, format: 'webp', sha256: '7a2a81df1f6e65cf0728182685ee9fd0cc454e315cdc2ebcac467966ce68c255' },
+  { width: 1600, height: 900, format: 'jpg', sha256: 'd0bb4fe36d4fc87c0ecc2fb92867ee74db824ddfb7a9fc94a123ca109cc4b11d' },
+].map((file) => Object.freeze({ ...file, path: `${HERO_ART_DIR}/website-hero-${file.width}x${file.height}.${file.format}` })));
+
+/** The band is never wider than its widest export, and below the stacking
+ *  breakpoint the picture runs the full width of the viewport, so one sizes
+ *  string is true at both layouts. */
+export const HERO_SIZES = '(min-width: 1600px) 1600px, 100vw';
+
+/** The picture element, WebP first with the JPEG as the fallback every browser
+ *  can decode. alt is EMPTY on purpose, and it is the kit's own instruction
+ *  (docs/CAPTIONS-AND-ALT.md, "Website background with live HTML text"): the art
+ *  is decorative beside live copy that already says WHOMP, the slogan and what
+ *  the game is, so describing the picture as well would read the hero twice.
+ *  width and height are the largest export's, which reserves the 16:9 box
+ *  before a byte arrives: no layout shift at either layout. */
+export function heroPicture(art = HERO_ART, sizes = HERO_SIZES) {
+  const set = (format) => art.filter((f) => f.format === format)
+    .sort((a, b) => a.width - b.width)
+    .map((f) => `${f.path} ${f.width}w`).join(', ');
+  const jpgs = art.filter((f) => f.format === 'jpg').sort((a, b) => a.width - b.width);
+  const largest = jpgs[jpgs.length - 1];
+  if (!largest || !art.some((f) => f.format === 'webp')) {
+    throw new Error('The hero needs both a WebP set and a JPEG fallback set.');
+  }
+  return `<picture class="hero-art">
+    <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
+    <img src="${largest.path}" srcset="${set('jpg')}" sizes="${sizes}" width="${largest.width}" height="${largest.height}" alt="" fetchpriority="high" decoding="async">
+  </picture>`;
+}
+
+/** The hero's one line under the slogan, the kit's description verbatim. It
+ *  states no magnitude, so it is copy this repo may write; "desktop browser" is
+ *  the kit's own honesty about a keyboard-and-mouse game. */
+export const HERO_DESCRIPTION = 'A 3D horde-survivor. Play in your desktop browser.';
+
+/** The button says what the kit says. Upper case is the button family's CSS,
+ *  not the copy, so a screen reader announces the words as written. */
+export const PLAY_LABEL = 'Play WHOMP';

@@ -327,8 +327,52 @@ html,body{max-width:100%;overflow-x:clip}
    position:sticky. Only the column needs lifting off the star layer. */
 .wrap{position:relative;z-index:1}
 
-/* ------------------------------------------------------------------ THE HERO */
-header{padding:64px 0 8px;text-align:center}
+/* ------------------------------------------------------------------ THE HERO
+   THE KEY ART IS THE HERO (director cards marketing-kit-2026-09-28 and
+   marketing-integration-boundaries, 2026-09-28). The approved illustration is
+   text-free on purpose and the words sit over it as live HTML: selectable, read
+   aloud, and true the day the slogan or the link moves, which lettering baked
+   into pixels never is. The files and their hashes are HERO_ART in
+   bin/landing.mjs.
+
+   THE MARK STAYS IN THE BAR (director, 2026-08-06). The art takes the space the
+   centred column used to leave empty, not the mark's: the hero still opens on
+   the wordmark as its one H1, same treatment, same clamp, and it is still the
+   only place the mark is allowed to move.
+
+   WIDE: one band as wide as the widest export, 16:9 so the whole picture shows,
+   the copy centred in the left half the illustration leaves dark for it.
+   aspect-ratio is a floor rather than a height, so copy taller than the band
+   grows the band and object-fit trims the edges, never the character.
+   NARROW: the copy first, then the whole picture under it at its own ratio. A
+   landscape illustration forced into a portrait background cuts the character
+   off, and that is the one crop the kit rules out.
+   NO SHIFT at either: the img carries its width and height and the band its
+   ratio, so every box is reserved before a byte of the art arrives. */
+header{position:relative;z-index:1;display:flex;align-items:center;max-width:1600px;margin:0 auto;
+  aspect-ratio:16/9;text-align:center}
+.hero-copy{position:relative;z-index:1;width:min(54%,760px);padding:48px 2vw 56px 4vw}
+.hero-art{position:absolute;inset:0;z-index:0;display:block;overflow:hidden}
+.hero-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:68% 50%}
+/* A scrim under the copy and a fade into the page ink at the foot: the live text
+   stays legible whatever the art does beneath it, and the band ends where the
+   reading starts instead of on a hard edge. Neither reaches the character. */
+.hero-art::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(6,4,14,.6) 0,rgba(6,4,14,.3) 36%,rgba(6,4,14,0) 56%),
+    linear-gradient(180deg,rgba(6,4,14,0) 82%,var(--ink) 100%)}
+/* Past the widest export the band sits centred on the page ink, so its sides
+   fade in rather than ending on a straight cut. */
+@media (min-width:1601px){
+  .hero-art{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+}
+@media (max-width:900px){
+  header{display:block;aspect-ratio:auto}
+  .hero-copy{width:auto;padding:52px 24px 28px}
+  .hero-art{position:relative;inset:auto}
+  .hero-art img{height:auto}
+  .hero-art::after{background:linear-gradient(180deg,var(--ink) 0,rgba(6,4,14,0) 12%,rgba(6,4,14,0) 88%,var(--ink) 100%)}
+}
 /* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
    700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size
    stays the site's own responsive clamp (the game's is a fixed 16px in a
@@ -336,6 +380,7 @@ header{padding:64px 0 8px;text-align:center}
 .tag{font-size:clamp(1.05rem,3.2vw,1.3rem);color:rgba(255,255,255,0.72);margin:20px auto 0;max-width:34ch;
   font-weight:700;font-style:italic;letter-spacing:0.03em}
 .spec{margin:14px auto 0;max-width:56ch;color:var(--body);font-size:clamp(.95rem,1.9vw,1.06rem);text-wrap:balance}
+.hero-copy .tag,.hero-copy .spec{text-shadow:0 2px 10px rgba(6,4,14,.9)}
 
 /* THE BUTTON, in the shape the game's own START row uses when it is the active
    item: the sweep as fill, dark ink, no border, a flat plinth under it. The
@@ -349,21 +394,32 @@ header{padding:64px 0 8px;text-align:center}
    with Play no louder in the layout than the two beside it. Two rows say the
    same thing at every width, and the second one still wraps on a narrow phone
    rather than pushing the page sideways. */
+/* UPPER CASE IS THE FAMILY'S, NOT THE COPY'S. The kit writes the button as
+   "Play WHOMP" and the markup says exactly that, so a screen reader announces
+   the words as written; the transform keeps it in the same voice as WIKI and
+   DEV LOG beside it. */
 .cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:34px}
 .cta-second{margin-top:14px}
 .play{display:inline-flex;align-items:center;gap:12px;padding:17px 34px;border-radius:14px;border:0;
-  text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:clamp(.98rem,2vw,1.14rem);
+  text-decoration:none;font-weight:900;letter-spacing:.08em;font-size:clamp(.98rem,2vw,1.14rem);text-transform:uppercase;
   transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
 .play em{font-style:normal;opacity:.66;font-weight:800;font-size:.74em;letter-spacing:.1em}
 .play.loud{background:var(--sweep);color:#0a0714;box-shadow:0 7px 0 #7a1440,0 16px 30px -12px rgba(255,47,126,.55)}
 .play.loud:hover{transform:translateY(3px);box-shadow:0 4px 0 #7a1440,0 10px 22px -12px rgba(255,47,126,.5)}
-.play.quiet{color:var(--cream);border:2px solid rgba(255,243,207,.2);background:rgba(255,243,207,.05);
+/* The quiet pair sits on the art now, so its ground is the page ink at half
+   strength rather than a cream wash the illustration would show straight
+   through. */
+.play.quiet{color:var(--cream);border:2px solid rgba(255,243,207,.2);background:rgba(6,4,14,.55);
   box-shadow:0 5px 0 rgba(0,0,0,.42)}
 .play.quiet:hover{background:rgba(255,243,207,.12);transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.42)}
-.play:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+/* THE FOCUS RING IS THE LOUDEST THING ON THE BAND. Three pixels of the house
+   cyan, held clear of the button by an offset so it reads against the plinth,
+   the sweep and the art alike; keyboard only, so a click never leaves it lit. */
+.play:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
 .tracks{margin:22px auto 0;max-width:58ch;color:var(--dim);font-size:.88rem}
 .tracks b{color:var(--body);font-weight:800}
 .chips{justify-content:center;margin-top:22px}
+header .chip{background:rgba(6,4,14,.62)}
 
 /* ---------------------------------------------------------------- THE FLOOR */
 section{margin-top:78px}
@@ -473,25 +529,31 @@ h2{font-size:1.65rem;margin:0 0 6px}
   </div>
 </div>
 
-<div class="wrap">
-
 <header>
-  <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
-  <p class="tag" id="hero-tagline">It's a hammer.</p>
-  <script>document.getElementById('hero-tagline').textContent=(["It's a hammer.","The horde is a physics object.","The ghosts started it.","Cardio, with consequences.","Politely violent.","The ghosts are unionizing. Whomp faster.","The crowd is never satisfied. Try anyway.","Whomp first. Ask questions never."])[Math.min(8-1,Math.max(0,Math.floor(Math.random()*8)))];</script>
-  <div class="cta">
-    <a class="play loud" href="https://whomp-preview.pages.dev/">
-      PLAY WHOMP
+  <div class="hero-copy">
+    <h1 class="whomp-wordmark" data-wordmark="WHOMP">WHOMP</h1>
+    <p class="tag">Politely violent.</p>
+    <p class="spec">A 3D horde-survivor. Play in your desktop browser.</p>
+    <div class="cta">
+      <a class="play loud" href="https://playwhomp.com/">
+      Play WHOMP
     </a>
-  </div>
-  <div class="cta cta-second">
-    <a class="play quiet" href="wiki.html">WIKI</a>
-    <a class="play quiet" href="log.html">DEV LOG</a>
-  </div>
-  <div class="chips"><span class="chip">
+    </div>
+    <div class="cta cta-second">
+      <a class="play quiet" href="wiki.html">WIKI</a>
+      <a class="play quiet" href="log.html">DEV LOG</a>
+    </div>
+    <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
     Live <b>0.7.22</b> · <code>ca84dee0</code></span></div>
+  </div>
+  <picture class="hero-art">
+    <source type="image/webp" srcset="brand/hero/website-hero-800x450.webp 800w, brand/hero/website-hero-1200x675.webp 1200w, brand/hero/website-hero-1600x900.webp 1600w" sizes="(min-width: 1600px) 1600px, 100vw">
+    <img src="brand/hero/website-hero-1600x900.jpg" srcset="brand/hero/website-hero-800x450.jpg 800w, brand/hero/website-hero-1200x675.jpg 1200w, brand/hero/website-hero-1600x900.jpg 1600w" sizes="(min-width: 1600px) 1600px, 100vw" width="1600" height="900" alt="" fetchpriority="high" decoding="async">
+  </picture>
 </header>
+
+<div class="wrap">
 
 <section id="run">
   <div class="rule"></div>
