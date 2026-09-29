@@ -513,7 +513,7 @@ test('the hero copy is the kit\'s, word for word', () => {
  * from the signed masters website-hero-v2 83886c0b..., website-hero-mobile-v2
  * bf4c25e3... and share-card-v2 9772e0f1.... Fired on a mutated scratch copy
  * (one byte flipped in a copied export) before it was trusted. */
-test('the hero art is the signed v2 bytes: six wide, four phone', () => {
+test('the hero art is the signed v2 bytes: six wide, four phone, one card', () => {
   assert.deepEqual(HERO_ART.map((f) => `${f.width}x${f.height}.${f.format}`).sort(), [
     '1200x675.jpg', '1200x675.webp', '1600x900.jpg', '1600x900.webp', '800x450.jpg', '800x450.webp',
   ]);
@@ -528,6 +528,7 @@ test('the hero art is the signed v2 bytes: six wide, four phone', () => {
   }
   assert.ok(existsSync(join(SITE_ROOT, ...SHARE_CARD.path.split('/'))), `${SHARE_CARD.path} is not in the repo`);
   assert.equal(sha256(SHARE_CARD.path), SHARE_CARD.sha256, 'the share card is not the signed kit export');
+  assert.equal(SHARE_CARD.sha256, '0c4b793be9451d218b29e5c66ab462f6fb2e49649cbf5f93340f4542be44781f');
   assert.equal(SHARE_CARD.width, 1200);
   assert.equal(SHARE_CARD.height, 630);
   assert.equal(SHARE_CARD.twitterCard, 'summary_large_image');
@@ -539,8 +540,8 @@ test('the hero art is the signed v2 bytes: six wide, four phone', () => {
  * eight hex of their own sha256 in the name, so a revision is always a new URL
  * and a cached copy can never be the wrong picture. The v1 files keep their
  * names and their bytes: this lane adds beside them, it never overwrites. */
-test('every hero file is named for its own hash, and v1 is untouched', () => {
-  for (const file of [...HERO_ART, ...HERO_ART_MOBILE]) {
+test('every hero file and the card are named for their own hash, and v1 is untouched', () => {
+  for (const file of [...HERO_ART, ...HERO_ART_MOBILE, SHARE_CARD]) {
     const short = file.sha256.slice(0, 8);
     assert.match(file.path, new RegExp(`\\.${short}\\.(webp|jpg)$`), `${file.path} does not carry its own short hash`);
   }

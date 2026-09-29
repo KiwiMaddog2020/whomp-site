@@ -273,7 +273,9 @@ test('every page a stranger can land on unfurls as something, not as a bare URL'
       /* THE LANDING PAGE UNFURLS AS THE CAMPAIGN CARD (director cards
          marketing-kit-2026-09-28 and marketing-integration-boundaries): the
          approved 1200x630 key art, its own filename, the kit's own alt. */
-      assert.equal(onDisk, 'brand/share-card-1200x630.jpg');
+      /* v2 (director pass 13, 2026-09-29): a new hashed filename, so an
+         unfurler's cache of the v1 card URL can never serve the wrong art. */
+      assert.equal(onDisk, 'brand/share-card-1200x630.0c4b793b.jpg');
       assert.equal(card, 'summary_large_image');
       assert.match(html, /<meta property="og:image:width" content="1200">/);
       assert.match(html, /<meta property="og:image:height" content="630">/);

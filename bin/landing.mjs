@@ -762,12 +762,19 @@ export function heroPicture(art = HERO_ART, sizes = HERO_SIZES, mobile = HERO_AR
  *  with its own alt. So whomp-icon-512.png stays exactly where it is and still
  *  unfurls the log, the wiki and the pitch as the square summary card, and the
  *  landing page alone unfurls as the 1200x630 key art. The alt is the kit's
- *  "Link preview / landscape social post" entry, verbatim. */
+ *  "Link preview / landscape social post" entry, verbatim.
+ *
+ *  v2 (director pass 13, 2026-09-29, master share-card-v2 sha256
+ *  9772e0f111f1...): only the hammer changed, so the card takes a new hashed
+ *  filename (unfurlers cache by URL, and the v1 card at its old name is never
+ *  overwritten) and the alt stays FROZEN, including "cyan" for a hammer the art
+ *  now paints mint. The kit's CAPTIONS-AND-ALT-v2-addendum.md freezes it on
+ *  purpose; do not rewrite it here. */
 export const SHARE_CARD = Object.freeze({
-  path: 'brand/share-card-1200x630.jpg',
+  path: 'brand/share-card-1200x630.0c4b793b.jpg',
   width: 1200,
   height: 630,
-  sha256: 'e8a385adc0287d7fae3026d72eef7bc3af3e36bd9e8af0852ced532aee14edb2',
+  sha256: '0c4b793be9451d218b29e5c66ab462f6fb2e49649cbf5f93340f4542be44781f',
   alt: 'Illustrated WHOMP key art: Capsule Signal lands a cyan hammer, sending a shockwave through startled blobs in Meadowfall. Text: WHOMP. Politely violent. A 3D horde-survivor. playwhomp.com.',
   twitterCard: 'summary_large_image',
 });
