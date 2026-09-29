@@ -7,9 +7,10 @@ The public WHOMP page: a short pitch (`index.html`), the real development log
 ## Four surfaces
 
 - **`index.html`** is the short public landing page. Four sections, and every
-  fact on all four is derived: a hero with one play button per release track, a
-  section that says what a run actually is, the newest release lines, and what is
-  being built next. It is deliberately small. It does not grow into the log.
+  fact on all four is derived: a hero of the approved key art under live copy
+  with one play button, a section that says what a run actually is, the newest
+  release lines, and what is being built next. It is deliberately small. It does
+  not grow into the log.
 - **`log.html`** is the real dev log. It opens with the day by day story, then
   the two views of what shipped, then known bugs and what is in flight.
 - **`built-in-the-open.html`** is the pitch: how WHOMP gets made, said to
@@ -20,12 +21,32 @@ The public WHOMP page: a short pitch (`index.html`), the real development log
   generated from the game's own registries. See "The wiki" below.
 
 All four carry Open Graph and Twitter card tags, so a link to any of them
-unfurls as something rather than as a bare URL. The card image is the canonical
-`public/icons/icon-512.png`, copied byte-for-byte from the game at build time
-exactly as `whomp-icon.svg` is, and the card type is `summary` to match it. A
-screenshot was the alternative and was not taken: a hand-taken hero shot on a
-landing page for a build that moves most days is a promise about a version that
-shipped weeks ago.
+unfurls as something rather than as a bare URL. The log, the wiki and the pitch
+use the canonical `public/icons/icon-512.png`, copied byte-for-byte from the game
+at build time exactly as `whomp-icon.svg` is, and their card type is `summary` to
+match it. A screenshot was the alternative and was not taken: a hand-taken hero
+shot on a landing page for a build that moves most days is a promise about a
+version that shipped weeks ago.
+
+The landing page is the exception, and the reason is that it has real key art
+now rather than a screenshot. Director cards `marketing-kit-2026-09-28` and
+`marketing-integration-boundaries` (2026-09-28) approved a marketing kit, and two
+of its exports live here:
+
+- `brand/hero/website-hero-{800x450,1200x675,1600x900}.{webp,jpg}` is the hero:
+  a text-free illustration with the wordmark, the slogan, one line and the play
+  button laid over it as live HTML. Empty alt, because the copy beside it already
+  says everything the picture would. At 900px and narrower the copy comes first
+  and the whole picture sits under it, uncropped.
+- `brand/share-card-1200x630.jpg` is the landing page's card, as
+  `summary_large_image` with the kit's own alt. The icon card keeps its file.
+
+Both are the kit's bytes exactly. `HERO_ART` and `SHARE_CARD` in
+`bin/landing.mjs` carry the kit's sha256 for each file, and
+`tests/landing.test.mjs` reads every one off disk against it, so a re-export or
+a recompression fails the suite instead of shipping as approved. The favicon is
+still the rounded website W; the kit's social block-W is a separate identity and
+is not an icon here.
 
 ### The landing page
 
@@ -35,12 +56,13 @@ Nothing on it is typed twice.
 |---|---|
 | The length of a run, the final horde, the hold | `runModes.classic` in `data/game-data.json` |
 | Worlds, enemies, characters, cores, weapons | the domain counts in the same artifact |
-| Both play button URLs | `src/core/releaseChannel.ts`, the audited channel table |
+| The play button | `PLAY_URL` in `src/ui/mobileLanding.ts`, which is https://playwhomp.com/ (the parked dual-track buttons read `src/core/releaseChannel.ts`) |
 | What each track is serving | each track's own `version.json`, measured at build time |
 | The five newest release lines | the same `conciseShown` array `log.html` renders |
 | The arcs | `docs/CAMPAIGN.md` |
 | What is coming | `docs/train/WISHLIST.md`, joined to authored lines |
-| The tagline rotation | `src/ui/mainMenu.ts` `TAGLINES` |
+| The slogan under the wordmark | `HOUSE_SLOGAN` in `src/data/taglines.ts`, fixed, never rotated |
+| The line under the slogan | not read: the marketing kit's approved copy, `HERO_DESCRIPTION` in `bin/landing.mjs`, and it states no magnitude |
 
 **A run is twenty minutes, not twenty eight.** `docs/GAME_SPEC.md` still opens
 its run-structure section with "28-minute Classic runs". The registry the game
