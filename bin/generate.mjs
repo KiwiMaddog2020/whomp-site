@@ -2213,8 +2213,11 @@ ${LANDING_CHROME_CSS}
    NARROW: the copy first, then the whole picture under it at its own ratio. A
    landscape illustration forced into a portrait background cuts the character
    off, and that is the one crop the kit rules out.
-   NO SHIFT at either: the img carries its width and height and the band its
-   ratio, so every box is reserved before a byte of the art arrives. */
+   PHONE: below 760px the same stacked layout takes the kit's 4:5 crop instead
+   of the landscape band (director pass 13, 2026-09-29, website-hero-mobile-v2).
+   NO SHIFT at any of them: the img carries its width and height, the band its
+   ratio and the phone crop its 4:5 box, so every box is reserved before a byte
+   of the art arrives. */
 header{position:relative;z-index:1;display:flex;align-items:center;max-width:1600px;margin:0 auto;
   aspect-ratio:16/9;text-align:center}
 .hero-copy{position:relative;z-index:1;width:min(54%,760px);padding:48px 2vw 56px 4vw}
@@ -2238,6 +2241,14 @@ header{position:relative;z-index:1;display:flex;align-items:center;max-width:160
   .hero-art{position:relative;inset:auto}
   .hero-art img{height:auto}
   .hero-art::after{background:linear-gradient(180deg,var(--ink) 0,rgba(6,4,14,0) 12%,rgba(6,4,14,0) 88%,var(--ink) 100%)}
+}
+/* THE PHONE CROP'S BOX (kit handoff v2, pointer 5). Below 760px the picture
+   swaps to the 4:5 crop (HERO_MOBILE_MEDIA in bin/landing.mjs, the same
+   759.98px so a fractional width cannot fall between the two), and this
+   reserves that 4:5 box before a byte arrives. It is an asset switch only: the
+   900px rule above still decides when the copy stacks, and is not moved. */
+@media (max-width:759.98px){
+  .hero-art img{aspect-ratio:4/5}
 }
 /* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
    700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size

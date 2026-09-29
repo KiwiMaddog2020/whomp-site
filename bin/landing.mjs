@@ -663,47 +663,97 @@ export function parseHouseSlogan(source) {
   return slogan;
 }
 
-/** THE HERO ART, exactly as approved. Six exports of one illustration from
- *  WHOMP-marketing-kit-2026-09-28-v1 (exports/web/website-hero-*), copied
- *  byte-for-byte into brand/hero/. The sha256 beside each is the kit's own
- *  metadata/SHA256SUMS.txt line, and tests/landing.test.mjs reads every file off
- *  disk against it: an approval is for these bytes, so a re-export, a
- *  recompression or an "optimised" copy is a different picture and fails the
- *  suite rather than shipping unapproved. */
+/** THE HERO ART, exactly as approved. Director pass 13 (2026-09-29 1:20 am)
+ *  signed the v2 masters: website-hero-v2 (sha256 83886c0b798e...) for the wide
+ *  band and website-hero-mobile-v2 (bf4c25e33dc3...) for phones. These are their
+ *  web exports from marketing-kit-2026-09-28 exports/web/, copied byte-for-byte
+ *  into brand/hero/. The sha256 beside each is the export's own row in the
+ *  kit's metadata/exports.json (a derivative content hash, never the approval
+ *  hash), and tests/landing.test.mjs reads every file off disk against it: an
+ *  approval is for these bytes, so a re-export, a recompression or an
+ *  "optimised" copy is a different picture and fails the suite rather than
+ *  shipping unapproved.
+ *
+ *  EVERY FILENAME CARRIES ITS OWN SHORT HASH. A served URL never changes bytes:
+ *  the v1 files keep their names and their pixels, and a browser or CDN that
+ *  cached one can never be handed the v2 art under it, or the reverse. The next
+ *  revision is a new name again, not an overwrite. */
 export const HERO_ART_DIR = 'brand/hero';
+const heroFile = (stem) => (file) => Object.freeze({
+  ...file,
+  path: `${HERO_ART_DIR}/${stem}-${file.width}x${file.height}.${file.sha256.slice(0, 8)}.${file.format}`,
+});
 export const HERO_ART = Object.freeze([
-  { width: 800, height: 450, format: 'webp', sha256: '215fb1ec07ac0572636af163fabb9acd7e9dc504b21ade2e2ff238d542e9106a' },
-  { width: 800, height: 450, format: 'jpg', sha256: 'a2cba48b7b05ad30634d75db703e2d6df13ef7d212bfffd63f9514c1b0d02b0d' },
-  { width: 1200, height: 675, format: 'webp', sha256: '9675daab2e65c2bd265d32f8fcb8f98e5157e270b0950650956f4c1d6886c1d3' },
-  { width: 1200, height: 675, format: 'jpg', sha256: 'c0f60db9e172221288d19b1c130d0e32e0368be73987a5074152d10857b62f86' },
-  { width: 1600, height: 900, format: 'webp', sha256: '7a2a81df1f6e65cf0728182685ee9fd0cc454e315cdc2ebcac467966ce68c255' },
-  { width: 1600, height: 900, format: 'jpg', sha256: 'd0bb4fe36d4fc87c0ecc2fb92867ee74db824ddfb7a9fc94a123ca109cc4b11d' },
-].map((file) => Object.freeze({ ...file, path: `${HERO_ART_DIR}/website-hero-${file.width}x${file.height}.${file.format}` })));
+  { width: 800, height: 450, format: 'webp', sha256: '8659c00608dbd51a37c1c602f07fd79a30978484107cd451ab6707c53f5db29b' },
+  { width: 800, height: 450, format: 'jpg', sha256: '3ab66b1a5c3161d7017b58242298b87944899d57e70177cabc359d3ec3322d29' },
+  { width: 1200, height: 675, format: 'webp', sha256: 'afc9e048de6043df144592461211863809e9e17049761679bbaa0853d8861d34' },
+  { width: 1200, height: 675, format: 'jpg', sha256: '316cb4a986904c2e213663d6e7e275b77a92847ea7ae8b620d9f552ae0ee364d' },
+  { width: 1600, height: 900, format: 'webp', sha256: '9eb902df162d6a5c299a592537966a255a10057adc323ef70efb53ea5be72b84' },
+  { width: 1600, height: 900, format: 'jpg', sha256: 'a8550acb0b2bc28265fb201990adde2cd29ace46e9f8845cde87fa7b0ed1a287' },
+].map(heroFile('website-hero')));
+
+/** THE PHONE CROP. The kit's 4:5 text-free crop of the same key art, at 720 and
+ *  1080 wide. A landscape band on a phone is a strip; the 4:5 crop keeps the
+ *  character at a size a thumb can see. The kit recommends 4:5 and no 9:16. */
+export const HERO_ART_MOBILE = Object.freeze([
+  { width: 720, height: 900, format: 'webp', sha256: 'd3868d967a28ab23559300f23803e30f99926d7c503e946065a8165a897f5097' },
+  { width: 720, height: 900, format: 'jpg', sha256: '53afe5030c6ff4d306add1477d7f6db7fb18581759eb03a82e07bdeaa1e75bac' },
+  { width: 1080, height: 1350, format: 'webp', sha256: '7f9860ccb321877336eeba5d9f85c80e59141d4f5dec59dec12d96ff3fa4848d' },
+  { width: 1080, height: 1350, format: 'jpg', sha256: '89fda3ed9215ba9e117b7c02d3773bfbe37eb380e2dc578e99109feb83b9434f' },
+].map(heroFile('website-hero-mobile')));
+
+/** WHERE THE PHONE CROP TAKES OVER: below 760 CSS px (kit handoff v2, pointer 4).
+ *  759.98 rather than 759 so a fractional viewport such as 759.5 (zoom, some
+ *  Android widths) still counts as below 760; range syntax (width < 760px) would
+ *  say it more plainly but older Safari drops the whole source on it. This is an
+ *  ASSET switch only. The copy still stacks at 900px, independently, so 760-900
+ *  is the stacked layout over the wide art, exactly as the handoff leaves it.
+ *  The same string drives the CSS that reserves the 4:5 box. */
+export const HERO_MOBILE_MEDIA = '(max-width: 759.98px)';
+
+/** Below the switch the page is stacked, so the crop runs the full viewport. */
+export const HERO_MOBILE_SIZES = '100vw';
 
 /** The band is never wider than its widest export, and below the stacking
  *  breakpoint the picture runs the full width of the viewport, so one sizes
  *  string is true at both layouts. */
 export const HERO_SIZES = '(min-width: 1600px) 1600px, 100vw';
 
-/** The picture element, WebP first with the JPEG as the fallback every browser
- *  can decode. alt is EMPTY on purpose, and it is the kit's own instruction
+/** The picture element. The phone crop comes first, gated on
+ *  HERO_MOBILE_MEDIA, as WebP and then as JPEG, so a browser without WebP on a
+ *  phone still gets the 4:5 crop rather than falling through to the wide JPEG.
+ *  Then the wide WebP, and the img as the wide JPEG fallback every browser can
+ *  decode. alt is EMPTY on purpose, and it is the kit's own instruction
  *  (docs/CAPTIONS-AND-ALT.md, "Website background with live HTML text"): the art
  *  is decorative beside live copy that already says WHOMP, the slogan and what
  *  the game is, so describing the picture as well would read the hero twice.
- *  width and height are the largest export's, which reserves the 16:9 box
- *  before a byte arrives: no layout shift at either layout. */
-export function heroPicture(art = HERO_ART, sizes = HERO_SIZES) {
-  const set = (format) => art.filter((f) => f.format === format)
-    .sort((a, b) => a.width - b.width)
-    .map((f) => `${f.path} ${f.width}w`).join(', ');
-  const jpgs = art.filter((f) => f.format === 'jpg').sort((a, b) => a.width - b.width);
-  const largest = jpgs[jpgs.length - 1];
-  if (!largest || !art.some((f) => f.format === 'webp')) {
+ *
+ *  NO SHIFT AT EITHER RATIO. The img carries the wide export's width and height,
+ *  and each phone source carries the 4:5 export's, which the browser applies to
+ *  the img when that source is chosen; the page CSS also sets aspect-ratio 4/5 on
+ *  the img under the same media query, so the box is reserved before a byte
+ *  arrives even where a browser ignores width and height on a source. */
+export function heroPicture(art = HERO_ART, sizes = HERO_SIZES, mobile = HERO_ART_MOBILE) {
+  const byWidth = (files, format) => files.filter((f) => f.format === format).sort((a, b) => a.width - b.width);
+  const set = (files, format) => byWidth(files, format).map((f) => `${f.path} ${f.width}w`).join(', ');
+  const largestOf = (files, format) => byWidth(files, format).at(-1);
+  const largest = largestOf(art, 'jpg');
+  if (!largest || !largestOf(art, 'webp')) {
     throw new Error('The hero needs both a WebP set and a JPEG fallback set.');
   }
+  const phone = largestOf(mobile, 'jpg');
+  if (!phone || !largestOf(mobile, 'webp')) {
+    throw new Error('The phone crop needs both a WebP set and a JPEG fallback set.');
+  }
+  if (phone.width * 5 !== phone.height * 4) {
+    throw new Error(`The phone crop must be 4:5, and ${phone.path} is ${phone.width}x${phone.height}.`);
+  }
+  const phoneSource = (type, format) => `<source media="${HERO_MOBILE_MEDIA}" type="${type}" srcset="${set(mobile, format)}" sizes="${HERO_MOBILE_SIZES}" width="${phone.width}" height="${phone.height}">`;
   return `<picture class="hero-art">
-    <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
-    <img src="${largest.path}" srcset="${set('jpg')}" sizes="${sizes}" width="${largest.width}" height="${largest.height}" alt="" fetchpriority="high" decoding="async">
+    ${phoneSource('image/webp', 'webp')}
+    ${phoneSource('image/jpeg', 'jpg')}
+    <source type="image/webp" srcset="${set(art, 'webp')}" sizes="${sizes}">
+    <img src="${largest.path}" srcset="${set(art, 'jpg')}" sizes="${sizes}" width="${largest.width}" height="${largest.height}" alt="" fetchpriority="high" decoding="async">
   </picture>`;
 }
 

@@ -20,7 +20,10 @@ import { fileURLToPath } from 'node:url';
 import {
   buildPipelineTeasers,
   HERO_ART,
+  HERO_ART_MOBILE,
   HERO_DESCRIPTION,
+  HERO_MOBILE_MEDIA,
+  HERO_MOBILE_SIZES,
   heroPicture,
   isExpiredSchedule,
   kitCards,
@@ -505,18 +508,26 @@ test('the hero copy is the kit\'s, word for word', () => {
   assert.equal(PLAY_LABEL, 'Play WHOMP');
 });
 
-test('the hero art is the approved bytes, all six of them', () => {
-  // Three widths, two formats each, and nothing else.
+/* THE SIGNED BYTES (director pass 13, 2026-09-29 1:20 am). Each sha256 is the
+ * export's own row in marketing-kit-2026-09-28 metadata/exports.json, derived
+ * from the signed masters website-hero-v2 83886c0b..., website-hero-mobile-v2
+ * bf4c25e3... and share-card-v2 9772e0f1.... Fired on a mutated scratch copy
+ * (one byte flipped in a copied export) before it was trusted. */
+test('the hero art is the signed v2 bytes: six wide, four phone', () => {
   assert.deepEqual(HERO_ART.map((f) => `${f.width}x${f.height}.${f.format}`).sort(), [
     '1200x675.jpg', '1200x675.webp', '1600x900.jpg', '1600x900.webp', '800x450.jpg', '800x450.webp',
   ]);
-  for (const file of HERO_ART) {
-    assert.equal(file.height * 16, file.width * 9, `${file.path} is not 16:9`);
+  assert.deepEqual(HERO_ART_MOBILE.map((f) => `${f.width}x${f.height}.${f.format}`).sort(), [
+    '1080x1350.jpg', '1080x1350.webp', '720x900.jpg', '720x900.webp',
+  ]);
+  for (const file of HERO_ART) assert.equal(file.height * 16, file.width * 9, `${file.path} is not 16:9`);
+  for (const file of HERO_ART_MOBILE) assert.equal(file.height * 4, file.width * 5, `${file.path} is not 4:5`);
+  for (const file of [...HERO_ART, ...HERO_ART_MOBILE]) {
     assert.ok(existsSync(join(SITE_ROOT, ...file.path.split('/'))), `${file.path} is not in the repo`);
-    assert.equal(sha256(file.path), file.sha256, `${file.path} is not the approved kit export`);
+    assert.equal(sha256(file.path), file.sha256, `${file.path} is not the signed kit export`);
   }
   assert.ok(existsSync(join(SITE_ROOT, ...SHARE_CARD.path.split('/'))), `${SHARE_CARD.path} is not in the repo`);
-  assert.equal(sha256(SHARE_CARD.path), SHARE_CARD.sha256, 'the share card is not the approved kit export');
+  assert.equal(sha256(SHARE_CARD.path), SHARE_CARD.sha256, 'the share card is not the signed kit export');
   assert.equal(SHARE_CARD.width, 1200);
   assert.equal(SHARE_CARD.height, 630);
   assert.equal(SHARE_CARD.twitterCard, 'summary_large_image');
@@ -524,19 +535,71 @@ test('the hero art is the approved bytes, all six of them', () => {
   assert.notEqual(SHARE_CARD.path, 'whomp-icon-512.png');
 });
 
-test('the picture is WebP first, a JPEG fallback, three widths, an empty alt and a reserved box', () => {
+/* A SERVED URL NEVER CHANGES BYTES. Every hero file and the card carry the first
+ * eight hex of their own sha256 in the name, so a revision is always a new URL
+ * and a cached copy can never be the wrong picture. The v1 files keep their
+ * names and their bytes: this lane adds beside them, it never overwrites. */
+test('every hero file is named for its own hash, and v1 is untouched', () => {
+  for (const file of [...HERO_ART, ...HERO_ART_MOBILE]) {
+    const short = file.sha256.slice(0, 8);
+    assert.match(file.path, new RegExp(`\\.${short}\\.(webp|jpg)$`), `${file.path} does not carry its own short hash`);
+  }
+  const v1 = {
+    'brand/hero/website-hero-800x450.webp': '215fb1ec07ac0572636af163fabb9acd7e9dc504b21ade2e2ff238d542e9106a',
+    'brand/hero/website-hero-800x450.jpg': 'a2cba48b7b05ad30634d75db703e2d6df13ef7d212bfffd63f9514c1b0d02b0d',
+    'brand/hero/website-hero-1200x675.webp': '9675daab2e65c2bd265d32f8fcb8f98e5157e270b0950650956f4c1d6886c1d3',
+    'brand/hero/website-hero-1200x675.jpg': 'c0f60db9e172221288d19b1c130d0e32e0368be73987a5074152d10857b62f86',
+    'brand/hero/website-hero-1600x900.webp': '7a2a81df1f6e65cf0728182685ee9fd0cc454e315cdc2ebcac467966ce68c255',
+    'brand/hero/website-hero-1600x900.jpg': 'd0bb4fe36d4fc87c0ecc2fb92867ee74db824ddfb7a9fc94a123ca109cc4b11d',
+    'brand/share-card-1200x630.jpg': 'e8a385adc0287d7fae3026d72eef7bc3af3e36bd9e8af0852ced532aee14edb2',
+  };
+  for (const [path, hash] of Object.entries(v1)) {
+    assert.ok(existsSync(join(SITE_ROOT, ...path.split('/'))), `${path} was removed`);
+    assert.equal(sha256(path), hash, `${path} was overwritten`);
+  }
+});
+
+test('the share card alt is the kit\'s frozen text, word for word, cyan included', () => {
+  assert.equal(SHARE_CARD.alt, 'Illustrated WHOMP key art: Capsule Signal lands a cyan hammer, sending a shockwave through startled blobs in Meadowfall. Text: WHOMP. Politely violent. A 3D horde-survivor. playwhomp.com.');
+});
+
+test('the picture is phone crop first below 760px, then wide WebP, then a JPEG img, with every box reserved', () => {
   const html = heroPicture();
-  const source = /<source type="image\/webp" srcset="([^"]+)" sizes="([^"]+)">/.exec(html);
-  assert.ok(source, 'no WebP source');
+  const sources = [...html.matchAll(/<source ([^>]+)>/g)].map((m) => m[1]);
+  assert.equal(sources.length, 3, 'expected two phone sources and one wide source');
+  const attr = (tag, name) => new RegExp(`\\b${name}="([^"]*)"`).exec(tag)?.[1];
   const img = /<img ([^>]+)>/.exec(html)?.[1];
   assert.ok(img, 'no img fallback');
-  assert.ok(html.indexOf('<source') < html.indexOf('<img'), 'the fallback comes before the source');
-  assert.equal(source[1], 'brand/hero/website-hero-800x450.webp 800w, brand/hero/website-hero-1200x675.webp 1200w, brand/hero/website-hero-1600x900.webp 1600w');
-  assert.match(img, /srcset="brand\/hero\/website-hero-800x450\.jpg 800w, brand\/hero\/website-hero-1200x675\.jpg 1200w, brand\/hero\/website-hero-1600x900\.jpg 1600w"/);
-  assert.match(img, /src="brand\/hero\/website-hero-1600x900\.jpg"/);
-  assert.match(img, /width="1600" height="900"/);
-  assert.match(img, /alt=""/);
-  assert.equal(source[2], '(min-width: 1600px) 1600px, 100vw');
-  assert.match(img, /sizes="\(min-width: 1600px\) 1600px, 100vw"/);
+  assert.ok(html.lastIndexOf('<source') < html.indexOf('<img'), 'a source comes after the img');
+
+  // The phone crop: gated, WebP then JPEG, full width, 4:5 box.
+  assert.equal(HERO_MOBILE_MEDIA, '(max-width: 759.98px)');
+  assert.equal(HERO_MOBILE_SIZES, '100vw');
+  for (const [i, type, ext] of [[0, 'image/webp', 'webp'], [1, 'image/jpeg', 'jpg']]) {
+    assert.equal(attr(sources[i], 'media'), HERO_MOBILE_MEDIA);
+    assert.equal(attr(sources[i], 'type'), type);
+    assert.equal(attr(sources[i], 'sizes'), '100vw');
+    assert.equal(attr(sources[i], 'width'), '1080');
+    assert.equal(attr(sources[i], 'height'), '1350');
+    assert.equal(attr(sources[i], 'srcset'), HERO_ART_MOBILE.filter((f) => f.format === ext)
+      .sort((a, b) => a.width - b.width).map((f) => `${f.path} ${f.width}w`).join(', '));
+  }
+  assert.match(attr(sources[0], 'srcset'), /^brand\/hero\/website-hero-mobile-720x900\.d3868d96\.webp 720w, brand\/hero\/website-hero-mobile-1080x1350\.7f9860cc\.webp 1080w$/);
+  assert.match(attr(sources[1], 'srcset'), /^brand\/hero\/website-hero-mobile-720x900\.53afe503\.jpg 720w, brand\/hero\/website-hero-mobile-1080x1350\.89fda3ed\.jpg 1080w$/);
+
+  // The wide band: ungated WebP, then the JPEG img.
+  assert.equal(attr(sources[2], 'media'), undefined, 'the wide source is gated, so a desktop could get nothing');
+  assert.equal(attr(sources[2], 'type'), 'image/webp');
+  assert.equal(attr(sources[2], 'srcset'), 'brand/hero/website-hero-800x450.8659c006.webp 800w, brand/hero/website-hero-1200x675.afc9e048.webp 1200w, brand/hero/website-hero-1600x900.9eb902df.webp 1600w');
+  assert.equal(attr(sources[2], 'sizes'), '(min-width: 1600px) 1600px, 100vw');
+  assert.equal(attr(img, 'srcset'), 'brand/hero/website-hero-800x450.3ab66b1a.jpg 800w, brand/hero/website-hero-1200x675.316cb4a9.jpg 1200w, brand/hero/website-hero-1600x900.a8550acb.jpg 1600w');
+  assert.equal(attr(img, 'src'), 'brand/hero/website-hero-1600x900.a8550acb.jpg');
+  assert.equal(attr(img, 'width'), '1600');
+  assert.equal(attr(img, 'height'), '900');
+  assert.equal(attr(img, 'alt'), '');
+  assert.equal(attr(img, 'sizes'), '(min-width: 1600px) 1600px, 100vw');
+
   assert.throws(() => heroPicture(HERO_ART.filter((f) => f.format === 'webp')), /JPEG fallback/);
+  assert.throws(() => heroPicture(HERO_ART, undefined, HERO_ART_MOBILE.filter((f) => f.format === 'jpg')), /phone crop/);
+  assert.throws(() => heroPicture(HERO_ART, undefined, HERO_ART), /4:5/);
 });

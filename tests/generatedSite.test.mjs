@@ -278,7 +278,7 @@ test('every page a stranger can land on unfurls as something, not as a bare URL'
       assert.match(html, /<meta property="og:image:width" content="1200">/);
       assert.match(html, /<meta property="og:image:height" content="630">/);
       assert.match(html, /<meta property="og:image:alt" content="Illustrated WHOMP key art: Capsule Signal lands a cyan hammer, sending a shockwave through startled blobs in Meadowfall\. Text: WHOMP\. Politely violent\. A 3D horde-survivor\. playwhomp\.com\.">/);
-      assert.match(html, /<meta name="twitter:image:alt" content="Illustrated WHOMP key art: [^"]+">/);
+      assert.match(html, /<meta name="twitter:image:alt" content="Illustrated WHOMP key art: Capsule Signal lands a cyan hammer, sending a shockwave through startled blobs in Meadowfall\. Text: WHOMP\. Politely violent\. A 3D horde-survivor\. playwhomp\.com\.">/);
     } else {
       /* The old card keeps its file and every other surface: a square icon is a
          summary card, never a large one. */
@@ -312,17 +312,34 @@ test('the hero is live copy over the approved art, and the art cannot shift the 
   assert.ok(picture, 'the hero has no picture');
   assert.ok(header.indexOf('class="hero-copy"') < header.indexOf('<picture'),
     'the copy no longer comes before the art, so a narrow screen would not stack it on top');
-  const source = /<source type="image\/webp" srcset="([^"]+)" sizes="[^"]+">/.exec(picture)?.[1];
-  assert.ok(source, 'the picture offers no WebP source');
+  /* v2 (director pass 13, 2026-09-29): the 4:5 phone crop first, gated below
+     760px as WebP then JPEG, then the wide WebP, then the wide JPEG img. */
+  const sources = [...picture.matchAll(/<source ([^>]+)>/g)].map((m) => m[1]);
+  assert.equal(sources.length, 3, 'the picture is not two phone sources over one wide source');
+  const attr = (tag, name) => new RegExp(`\\b${name}="([^"]*)"`).exec(tag)?.[1];
+  const widths = (srcset) => srcset.split(',').map((c) => c.trim().split(/\s+/)[1]);
+  for (const [i, type] of [[0, 'image/webp'], [1, 'image/jpeg']]) {
+    assert.equal(attr(sources[i], 'media'), '(max-width: 759.98px)', 'the phone crop is not gated below 760px');
+    assert.equal(attr(sources[i], 'type'), type);
+    assert.deepEqual(widths(attr(sources[i], 'srcset')), ['720w', '1080w']);
+    assert.match(attr(sources[i], 'srcset'), /^brand\/hero\/website-hero-mobile-720x900\.[0-9a-f]{8}\.(webp|jpg) 720w, brand\/hero\/website-hero-mobile-1080x1350\.[0-9a-f]{8}\.(webp|jpg) 1080w$/);
+    assert.equal(`${attr(sources[i], 'width')}x${attr(sources[i], 'height')}`, '1080x1350', 'the phone source reserves no 4:5 box');
+  }
+  const source = attr(sources[2], 'srcset');
+  assert.equal(attr(sources[2], 'type'), 'image/webp', 'the picture offers no wide WebP source');
+  assert.equal(attr(sources[2], 'media'), undefined, 'the wide source is gated');
   const img = /<img ([^>]+)>/.exec(picture)?.[1];
   assert.ok(img, 'the picture has no img fallback');
-  const widths = (srcset) => srcset.split(',').map((c) => c.trim().split(/\s+/)[1]);
   assert.deepEqual(widths(source), ['800w', '1200w', '1600w']);
   assert.deepEqual(widths(/srcset="([^"]+)"/.exec(img)[1]), ['800w', '1200w', '1600w']);
   assert.match(source, /^brand\/hero\/[^ ]+\.webp 800w, [^ ]+\.webp 1200w, [^ ]+\.webp 1600w$/);
-  assert.match(img, /src="brand\/hero\/website-hero-1600x900\.jpg"/);
+  assert.match(img, /src="brand\/hero\/website-hero-1600x900\.[0-9a-f]{8}\.jpg"/);
   assert.match(img, /\bwidth="1600" height="900"/, 'the hero img reserves no box, so it would shift the page');
   assert.match(img, /\balt=""/, 'the decorative art is described, so the hero is read twice');
+  // The phone box is reserved in CSS too, under the same query, and the 900px
+  // stacking rule the kit said not to move is still where it was.
+  assert.match(index, /@media \(max-width:759\.98px\)\{\s*\.hero-art img\{aspect-ratio:4\/5\}\s*\}/, 'the 4:5 phone box is not reserved');
+  assert.match(index, /@media \(max-width:900px\)\{\s*header\{display:block;aspect-ratio:auto\}/, 'the 900px stacking breakpoint moved');
   for (const path of [...picture.matchAll(/(brand\/hero\/[^\s",]+)/g)].map((m) => m[1])) {
     assert.ok(existsSync(join(SITE_ROOT, ...path.split('/'))), `the hero points at missing ${path}`);
   }

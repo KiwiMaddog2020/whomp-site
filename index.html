@@ -348,8 +348,11 @@ html,body{max-width:100%;overflow-x:clip}
    NARROW: the copy first, then the whole picture under it at its own ratio. A
    landscape illustration forced into a portrait background cuts the character
    off, and that is the one crop the kit rules out.
-   NO SHIFT at either: the img carries its width and height and the band its
-   ratio, so every box is reserved before a byte of the art arrives. */
+   PHONE: below 760px the same stacked layout takes the kit's 4:5 crop instead
+   of the landscape band (director pass 13, 2026-09-29, website-hero-mobile-v2).
+   NO SHIFT at any of them: the img carries its width and height, the band its
+   ratio and the phone crop its 4:5 box, so every box is reserved before a byte
+   of the art arrives. */
 header{position:relative;z-index:1;display:flex;align-items:center;max-width:1600px;margin:0 auto;
   aspect-ratio:16/9;text-align:center}
 .hero-copy{position:relative;z-index:1;width:min(54%,760px);padding:48px 2vw 56px 4vw}
@@ -373,6 +376,14 @@ header{position:relative;z-index:1;display:flex;align-items:center;max-width:160
   .hero-art{position:relative;inset:auto}
   .hero-art img{height:auto}
   .hero-art::after{background:linear-gradient(180deg,var(--ink) 0,rgba(6,4,14,0) 12%,rgba(6,4,14,0) 88%,var(--ink) 100%)}
+}
+/* THE PHONE CROP'S BOX (kit handoff v2, pointer 5). Below 760px the picture
+   swaps to the 4:5 crop (HERO_MOBILE_MEDIA in bin/landing.mjs, the same
+   759.98px so a fractional width cannot fall between the two), and this
+   reserves that 4:5 box before a byte arrives. It is an asset switch only: the
+   900px rule above still decides when the copy stacks, and is not moved. */
+@media (max-width:759.98px){
+  .hero-art img{aspect-ratio:4/5}
 }
 /* Tagline typography lifted from the game's .whomp-mainmenu__tagline: weight
    700, letter-spacing .03em, italic, the same dimmed-white ink. Font-size
@@ -549,8 +560,10 @@ h2{font-size:1.65rem;margin:0 0 6px}
     Live <b>0.7.22</b> · <code>ca84dee0</code></span></div>
   </div>
   <picture class="hero-art">
-    <source type="image/webp" srcset="brand/hero/website-hero-800x450.webp 800w, brand/hero/website-hero-1200x675.webp 1200w, brand/hero/website-hero-1600x900.webp 1600w" sizes="(min-width: 1600px) 1600px, 100vw">
-    <img src="brand/hero/website-hero-1600x900.jpg" srcset="brand/hero/website-hero-800x450.jpg 800w, brand/hero/website-hero-1200x675.jpg 1200w, brand/hero/website-hero-1600x900.jpg 1600w" sizes="(min-width: 1600px) 1600px, 100vw" width="1600" height="900" alt="" fetchpriority="high" decoding="async">
+    <source media="(max-width: 759.98px)" type="image/webp" srcset="brand/hero/website-hero-mobile-720x900.d3868d96.webp 720w, brand/hero/website-hero-mobile-1080x1350.7f9860cc.webp 1080w" sizes="100vw" width="1080" height="1350">
+    <source media="(max-width: 759.98px)" type="image/jpeg" srcset="brand/hero/website-hero-mobile-720x900.53afe503.jpg 720w, brand/hero/website-hero-mobile-1080x1350.89fda3ed.jpg 1080w" sizes="100vw" width="1080" height="1350">
+    <source type="image/webp" srcset="brand/hero/website-hero-800x450.8659c006.webp 800w, brand/hero/website-hero-1200x675.afc9e048.webp 1200w, brand/hero/website-hero-1600x900.9eb902df.webp 1600w" sizes="(min-width: 1600px) 1600px, 100vw">
+    <img src="brand/hero/website-hero-1600x900.a8550acb.jpg" srcset="brand/hero/website-hero-800x450.3ab66b1a.jpg 800w, brand/hero/website-hero-1200x675.316cb4a9.jpg 1200w, brand/hero/website-hero-1600x900.a8550acb.jpg 1600w" sizes="(min-width: 1600px) 1600px, 100vw" width="1600" height="900" alt="" fetchpriority="high" decoding="async">
   </picture>
 </header>
 
