@@ -33,20 +33,36 @@ now rather than a screenshot. Director cards `marketing-kit-2026-09-28` and
 `marketing-integration-boundaries` (2026-09-28) approved a marketing kit, and two
 of its exports live here:
 
-- `brand/hero/website-hero-{800x450,1200x675,1600x900}.{webp,jpg}` is the hero:
-  a text-free illustration with the wordmark, the slogan, one line and the play
-  button laid over it as live HTML. Empty alt, because the copy beside it already
-  says everything the picture would. At 900px and narrower the copy comes first
-  and the whole picture sits under it, uncropped.
-- `brand/share-card-1200x630.jpg` is the landing page's card, as
-  `summary_large_image` with the kit's own alt. The icon card keeps its file.
+- `brand/hero/website-hero-{800x450,1200x675,1600x900}.<hash>.{webp,jpg}` is the
+  hero: a text-free illustration with the wordmark, the slogan, one line and the
+  play button laid over it as live HTML. Empty alt, because the copy beside it
+  already says everything the picture would. At 900px and narrower the copy comes
+  first and the picture sits under it, uncropped.
+- `brand/hero/website-hero-mobile-{720x900,1080x1350}.<hash>.{webp,jpg}` is the
+  kit's 4:5 crop of the same art. Below 760px the picture element picks it
+  instead of the landscape band (WebP, then a JPEG source, so a phone without
+  WebP still gets the crop), and CSS reserves the 4:5 box under the same
+  `(max-width: 759.98px)` query so nothing moves when it arrives. That is an
+  asset switch only; the 900px stacking rule is where it was, so 760 to 900px is
+  the stacked layout over the wide art.
+- `brand/share-card-1200x630.<hash>.jpg` is the landing page's card, as
+  `summary_large_image` with the kit's own alt, frozen word for word (it still
+  says "cyan" for a hammer the v2 art paints mint; the kit freezes that on
+  purpose). The icon card keeps its file.
 
-Both are the kit's bytes exactly. `HERO_ART` and `SHARE_CARD` in
-`bin/landing.mjs` carry the kit's sha256 for each file, and
-`tests/landing.test.mjs` reads every one off disk against it, so a re-export or
-a recompression fails the suite instead of shipping as approved. The favicon is
-still the rounded website W; the kit's social block-W is a separate identity and
-is not an icon here.
+The live files are the v2 exports director pass 13 signed on 2026-09-29
+(masters website-hero-v2, website-hero-mobile-v2 and share-card-v2). Every file
+name carries the first eight hex of its own sha256, so a served URL never
+changes bytes: a revision is a new name, never an overwrite, and a cached copy
+can never be the wrong picture. The unhashed v1 files stay in the tree unused
+and unchanged, and a test holds them to their v1 bytes.
+
+All of them are the kit's bytes exactly. `HERO_ART`, `HERO_ART_MOBILE` and
+`SHARE_CARD` in `bin/landing.mjs` carry the sha256 from the kit's
+`metadata/exports.json` for each file, and `tests/landing.test.mjs` reads every
+one off disk against it, so a re-export or a recompression fails the suite
+instead of shipping as approved. The favicon is still the rounded website W; the
+kit's social block-W is a separate identity and is not an icon here.
 
 ### The landing page
 
