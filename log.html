@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.23</b> · <code>61fbf8e1</code></span></div>
+    Live <b>0.7.23</b> · <code>a1a5da01</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,9 +509,18 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">366 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">336 player-visible changes landed in the last 7 days, across 7 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-10-06">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-10-06</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 12</span><span class="storyday-kind" style="background:var(--gold)">Performance 4</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
+      </div>
+      <p class="storyday-shape">17 changes landed: 12 fixed, 4 performance, 1 new.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-10-05">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-05</span>
@@ -568,22 +577,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-09-30">
       <div class="storyday-head">
         <span class="storyday-when">2026-09-30</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 39</span><span class="storyday-kind" style="background:var(--cyan)">New 29</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 40</span><span class="storyday-kind" style="background:var(--cyan)">New 29</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">70 changes landed: 39 fixed, 29 new, 2 performance.</p>
+      <p class="storyday-shape">71 changes landed: 40 fixed, 29 new, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-23">
         <b>v0.7.23</b><span>Deep chests take gold, and the Half Cape drapes</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-09-29">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-09-29</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 21</span><span class="storyday-kind" style="background:var(--cyan)">New 19</span><span class="storyday-kind" style="background:var(--gold)">Performance 8</span></span>
-      </div>
-      <p class="storyday-shape">48 changes landed: 21 fixed, 19 new, 8 performance.</p>
-      <a class="storyday-release" href="#release-0-7-22-2026-09-29">
-        <b>v0.7.22</b><span>Rewards Road volume two, and animals across thirteen worlds</span>
       </a>
 
     </article></div>
@@ -1019,6 +1017,95 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-10-06</h4>
+
+    <div class="row" data-kind="perf" id="chg-648bad718">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">probe a marker footprint's outer ring first <span class="scope">(terrain)</span></span>
+      <span class="sha">648bad718</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-cb3f23f81">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">ask cheap pure checks first and stop re-deriving constants <span class="scope">(terrain)</span></span>
+      <span class="sha">cb3f23f81</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-31d1e90be">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">skip provably-zero terms in the heightfield samplers <span class="scope">(terrain)</span></span>
+      <span class="sha">31d1e90be</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-2427f5ac7">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">index scenery by cell while the constructor runs <span class="scope">(terrain)</span></span>
+      <span class="sha">2427f5ac7</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3695771c1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">drop unused CAMERA_SUFFIXES test import (lint ratchet 52 -&gt; 51) <span class="scope">(signoff)</span></span>
+      <span class="sha">3695771c1</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b938c5cad">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">dock sync measures the fixed bar's own rect (documentElement.clientHeight is the page height in quirks mode)</span>
+      <span class="sha">b938c5cad</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2db36fe31">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">stop the per-deploy cloud gate dispatch (director 10:18 am 2026-10-05) <span class="scope">(deploy-train)</span></span>
+      <span class="sha">2db36fe31</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-59a6a47ce">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the drafter reads whole words with social-voice's boundary, and refuses the common inbox words <span class="scope">(notes-drafter-r2)</span></span>
+      <span class="sha">59a6a47ce</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-54db91d74">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">console dock sits on the measured tab bar; refuse a board-only render over the tabbed console</span>
+      <span class="sha">54db91d74</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-11eba25af">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the desert Grim Hex statue boss keeps the bake's two-sided mark through its material swap (#965) <span class="scope">(statue-boss)</span></span>
+      <span class="sha">11eba25af</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e091988bc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">plan the helper's share at its measured speed (helper-share-cap-r2)</span>
+      <span class="sha">e091988bc</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cad779002">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the child-env census is always selected for a tooling diff <span class="scope">(merge-check)</span></span>
+      <span class="sha">cad779002</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-548cb9968">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">cap the PC helper's planned share (retooling item 17) <span class="scope">(helper-shard)</span></span>
+      <span class="sha">548cb9968</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2689a5d9d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">real worktree paths, the newest relay page, the standing lander as the lander <span class="scope">(conductor-handoff)</span></span>
+      <span class="sha">2689a5d9d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-515216efa">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the 2026-10-05 card and deploy 70's ledger say each change once <span class="scope">(notes)</span></span>
+      <span class="sha">515216efa</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-695076d41">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no line for a notes-only row, a re-fired train says nothing twice, lander words refused <span class="scope">(deploy-notes)</span></span>
+      <span class="sha">695076d41</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-83e476e96">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">draw a statue two-sided when its rig part was DoubleSide and wound inward (#965) <span class="scope">(hub)</span></span>
+      <span class="sha">83e476e96</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-10-05</h4>
 
     <div class="row" data-kind="fix" id="chg-8efc632d7">
@@ -1441,6 +1528,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-09-30</h4>
 
+    <div class="row" data-kind="fix" id="chg-561f93e2c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">stagger the paddock pup-run wear discs (signed widening, board v91 3:21 pm) <span class="scope">(hub)</span></span>
+      <span class="sha">561f93e2c</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-4007a7bb3">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">flip standingStones default ON, non-sacred half <span class="scope">(standing-stones)</span></span>
@@ -1535,144 +1627,30 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the train takes its own machine-wide lock <span class="scope">(deploy-train)</span></span>
       <span class="sha">0ee1089b8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-bb2cda345">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">trim the Deep hall shell's boot-path bytes, 0.33 KiB, look byte-identical (report 993 r3) <span class="scope">(hub)</span></span>
-      <span class="sha">bb2cda345</span>
-    </div><div class="row more">+ 50 more that day, not shown</div>
+    </div><div class="row more">+ 51 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-09-29</h4>
 
-    <div class="row" data-kind="fix" id="chg-1b10efd92">
+    <div class="row" data-kind="fix" id="chg-c46820f06">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">no useless initial assignment in readDeltaEvidence (lint ratchet); docs(train): SHARDED_GATE.md, the delta judgement <span class="scope">(merge-check)</span></span>
-      <span class="sha">1b10efd92</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-10e943e83">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">judge the landing's cloud gate by delta against its base; land-chain parks CLOUD-FAIL as BLOCKED-CLOUD <span class="scope">(cloud-gate)</span></span>
-      <span class="sha">10e943e83</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3a7678a01">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">brace GATE_SHA in the zsh cloud-gate refspec; chain undoes the merge on REFUSED <span class="scope">(land-lane)</span></span>
-      <span class="sha">3a7678a01</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-24fe41f98">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a KNOWN_REDS.txt conflict unions by test key through known-reds-merge.mjs <span class="scope">(land-compose-pair)</span></span>
-      <span class="sha">24fe41f98</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fdd6d6dfd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the exploded door reads the verdict file, and its re-run rewrites it <span class="scope">(land-lane)</span></span>
-      <span class="sha">fdd6d6dfd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f9ef18606">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">read gate.yml's shape through workflow-shape before the --cloud-gate scratch push <span class="scope">(land-lane)</span></span>
-      <span class="sha">f9ef18606</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cdb089202">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">--no-push --cloud-gate never pushes the scratch ref to origin <span class="scope">(land-lane)</span></span>
-      <span class="sha">cdb089202</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-137a22253">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">--fast raises selection.exploded, so it never lands an exploded selection <span class="scope">(merge-check)</span></span>
-      <span class="sha">137a22253</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-43aeaf1ba">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a known-reds gate stamp is not a clean green on an exploded selection <span class="scope">(merge-check)</span></span>
-      <span class="sha">43aeaf1ba</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-fa7243c51">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the CLOUD-TRUST verdict field is space-free; one 'stamp' in the pass (cloud) detail <span class="scope">(merge-check)</span></span>
-      <span class="sha">fa7243c51</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-851663d43">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">never hand --cloud-gate to land-incomplete, as the real land-lane never does; keep the CLOUD done-log grep as pinned <span class="scope">(land-chain test stub)</span></span>
-      <span class="sha">851663d43</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-e1baf5588">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">--cloud-gate gates an exploded merged tree on the sharded cloud gate; the chain passes it on every row <span class="scope">(land-lane)</span></span>
-      <span class="sha">e1baf5588</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a1a037099">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">an exploded selection is cloud-required, read back through a gate stamp <span class="scope">(merge-check)</span></span>
-      <span class="sha">a1a037099</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-2f4bdde85">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the Frozen Lake and the Cloister hill ride lazy chunks <span class="scope">(landmarks-toggle-wrap)</span></span>
-      <span class="sha">2f4bdde85</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-4fd93f2bc">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the Hearthmound and Rift Overlook land rows ride lazy chunks <span class="scope">(standing-stones-channel-wrap)</span></span>
-      <span class="sha">4fd93f2bc</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-3c523e1ce">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the aura's meshes ride a lazy chunk <span class="scope">(standing-orders-aura-fx)</span></span>
-      <span class="sha">3c523e1ce</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-ba26b70ea">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the r2 shard and slab sculpts ride a lazy chunk <span class="scope">(rocks-stamps-fold)</span></span>
-      <span class="sha">ba26b70ea</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-9dcc12016">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the glow-up builder and its anchors ride a lazy chunk <span class="scope">(trees-variant-flip)</span></span>
-      <span class="sha">9dcc12016</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-1da288020">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the scorched bowl rides a lazy chunk <span class="scope">(star-landing-glowup)</span></span>
-      <span class="sha">1da288020</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-be19f930c">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the glow-up bakes ride a lazy chunk; held content gets one loader and a run-start gate <span class="scope">(fairy-ring-bell-glowup)</span></span>
-      <span class="sha">be19f930c</span>
-    </div><div class="row more">+ 28 more that day, not shown</div>
-  </div>
-  <div class="day">
-    <h4>2026-09-28</h4>
-
-    <div class="row" data-kind="feat" id="chg-4bcc9f0b5">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">session line lists memory notes naming missing tools <span class="scope">(sol-status)</span></span>
-      <span class="sha">4bcc9f0b5</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4bc13a309">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the push door comes from the repo tree only <span class="scope">(conductor-handoff)</span></span>
-      <span class="sha">4bc13a309</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-987bb6b61">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">pre-commit resolves named tools on staged rule pages <span class="scope">(githooks)</span></span>
-      <span class="sha">987bb6b61</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-749ece189">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">named-mechanisms resolver over the rule pages <span class="scope">(staleness)</span></span>
-      <span class="sha">749ece189</span>
+      <span class="what">the village approach lays no wear under Hearthwick's sunk gate wear <span class="scope">(hub)</span></span>
+      <span class="sha">c46820f06</span>
     </div>
   </div>
   <div class="day">
     <h4>2026-09-25</h4>
 
+    <div class="row" data-kind="fix" id="chg-9056473c2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">sink the village well green flush with one constant, WELL_GREEN_SINK_M <span class="scope">(hub)</span></span>
+      <span class="sha">9056473c2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-41845bf7c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">walk-line wear holds off the plaza green and the well green <span class="scope">(hub)</span></span>
+      <span class="sha">41845bf7c</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-ebba15d05">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">party entry contract (1-3 seats, door closed) and the encounter director's player list <span class="scope">(deep-coop-party)</span></span>
@@ -1687,26 +1665,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">remove the parked BUILD TRACK opener and chooser <span class="scope">(mainMenu)</span></span>
       <span class="sha">b701f84f6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-caff24f59">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">keyed three-way resolver for docs/train/WISHLIST.md <span class="scope">(land-premerge)</span></span>
-      <span class="sha">caff24f59</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7b71cdbc1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-copy is_pin_suite verbatim from land-premerge.sh <span class="scope">(land-compose-pair)</span></span>
-      <span class="sha">7b71cdbc1</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4b58285a9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a red tier-engine --verify is a Mac gap, never the bare sweep here <span class="scope">(land-compose-pair)</span></span>
-      <span class="sha">4b58285a9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2aa24afd9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">compose two or more queue rows into one ref through land-premerge's door <span class="scope">(land-compose-pair)</span></span>
-      <span class="sha">2aa24afd9</span>
     </div>
   </div>
   <div class="day">
@@ -1726,25 +1684,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">state the gold bank rule under Gold Banked <span class="scope">(results)</span></span>
       <span class="sha">880949931</span>
-    </div>
-  </div>
-  <div class="day">
-    <h4>2026-09-12</h4>
-
-    <div class="row" data-kind="feat" id="chg-8d674ed9d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the storm takes a seedSkip, so a mid-storm frame is reachable <span class="scope">(desert)</span></span>
-      <span class="sha">8d674ed9d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-195600ece">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Mirage Flats sandstorm, on the systems that already exist <span class="scope">(desert)</span></span>
-      <span class="sha">195600ece</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-83026c7bb">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the sandstorm's schedule, and the flagship row moved onto its own stone <span class="scope">(desert)</span></span>
-      <span class="sha">83026c7bb</span>
     </div>
   </div>
 
@@ -1844,12 +1783,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@16231e8e6</code> on 2026-10-06 03:42 UTC.
+  Every number on this page came straight out of the game, read at <code>game@061f72afe</code> on 2026-10-07 04:17 UTC.
 
   The game is serving <code>0.7.23</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">383 player-visible changes in the last 7 days, across 11 active days, 1100 internal-only commits filtered out</div>
+  <div class="stat">345 player-visible changes in the last 7 days, across 10 active days, 1069 internal-only commits filtered out</div>
 </footer>
 
 
