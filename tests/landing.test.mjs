@@ -482,10 +482,15 @@ export const PLAY_URL = 'https://playwhomp.com';
   assert.equal(parsePlayUrl("export const PLAY_URL = 'https://playwhomp.com/';"), 'https://playwhomp.com/');
 });
 
-test('a play link that moved, went insecure or grew a path stops the build', () => {
+test('the play link may carry a path: WHOMP lives at /play behind the arcade (2026-10-14)', () => {
+  assert.equal(parsePlayUrl("export const PLAY_URL = 'https://playwhomp.com/play';"), 'https://playwhomp.com/play');
+});
+
+test('a play link that moved, went insecure or grew a query or hash stops the build', () => {
   assert.throws(() => parsePlayUrl('export const OTHER_URL = \'https://playwhomp.com\';'), /PLAY_URL/);
   assert.throws(() => parsePlayUrl("export const PLAY_URL = 'http://playwhomp.com';"), /PLAY_URL/);
-  assert.throws(() => parsePlayUrl("export const PLAY_URL = 'https://playwhomp.com/beta/';"), /PLAY_URL/);
+  assert.throws(() => parsePlayUrl("export const PLAY_URL = 'https://playwhomp.com/play?x=1';"), /PLAY_URL/);
+  assert.throws(() => parsePlayUrl("export const PLAY_URL = 'https://playwhomp.com/play#top';"), /PLAY_URL/);
   assert.throws(() => parsePlayUrl("export const PLAY_URL = 'not a url';"), /PLAY_URL/);
 });
 

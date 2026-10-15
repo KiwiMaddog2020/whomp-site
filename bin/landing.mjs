@@ -636,12 +636,18 @@ export function parseChannelMode(source) {
  *  social posts use"). Read, not pasted, for the reason the channel table above
  *  is read: a second copy is a second thing to forget the day the domain moves.
  *  The game writes it bare; the page links the origin, so it is normalised to
- *  the trailing-slash href the kit and the ruling spell. */
+ *  the trailing-slash href the kit and the ruling spell.
+ *
+ *  A PATH IS ALLOWED SINCE 2026-10-14. The director made playwhomp.com the
+ *  arcade front door and moved WHOMP to /play ("Yes I want it as the main
+ *  landing", 8:39 am 2026-10-14; lane arcade-root-switch), so the game's
+ *  PLAY_URL is now https://playwhomp.com/play and the hero links it as written.
+ *  Still refused: a missing constant, a non-https link, a query or a hash. */
 export function parsePlayUrl(source) {
   const m = String(source).match(/export const PLAY_URL\s*=\s*'([^']+)'/);
   let url = null;
   try { url = m ? new URL(m[1]) : null; } catch { url = null; }
-  if (!url || url.protocol !== 'https:' || url.pathname !== '/' || url.search || url.hash) {
+  if (!url || url.protocol !== 'https:' || url.search || url.hash) {
     throw new Error('whomp/src/ui/mobileLanding.ts did not yield an https PLAY_URL origin. The hero\'s play button is read from the game and will not be hand-typed here.');
   }
   return url.href;

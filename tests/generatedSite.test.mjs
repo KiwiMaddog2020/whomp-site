@@ -135,7 +135,9 @@ test('the hero leads with the one play button, and no page names a track', optio
      the canonical public link is https://playwhomp.com/). Re-pointed from the
      Preview origin, which that domain serves; the live chip still measures it. */
   assert.equal(buttons[0].label, 'Play WHOMP');
-  assert.equal(buttons[0].href, 'https://playwhomp.com/');
+  /* Re-pointed 2026-10-14: playwhomp.com is the arcade and WHOMP is at /play
+     (lane arcade-root-switch); the button follows the game's PLAY_URL. */
+  assert.equal(buttons[0].href, 'https://playwhomp.com/play');
   assert.deepEqual(buttons.slice(1).map((b) => b.label), ['WIKI', 'DEV LOG']);
   assert.deepEqual(buttons.slice(1).map((b) => b.href), ['wiki.html', 'log.html']);
   /* TWO ROWS (director, 2026-09-06 23:25, reading the page on a phone): Play on
