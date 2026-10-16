@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.25</b> · <code>3f7002fd</code></span></div>
+    Live <b>0.7.25</b> · <code>a0d7b593</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,26 +509,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">96 player-visible changes landed in the last 7 days, across 4 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">102 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday is-quiet" id="day-2026-10-16">
+    <article class="storyday" id="day-2026-10-16">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-16</span>
-        <span class="storyday-kinds"></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 1</span></span>
       </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
+      <p class="storyday-shape">One change landed, and it was a fix.</p>
       <a class="storyday-release" href="#release-0-7-25">
         <b>v0.7.25</b><span>Closing a chest no longer leaves the game ignoring your keys until you click</span>
       </a>
 
     </article>
-    <article class="storyday is-quiet" id="day-2026-10-15">
+    <article class="storyday" id="day-2026-10-15">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-15</span>
-        <span class="storyday-kinds"></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
       </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
+      <p class="storyday-shape">One change landed, and it was new.</p>
       <a class="storyday-release" href="#release-0-7-24-2026-10-15">
         <b>v0.7.24</b><span>Closing a chest no longer leaves the game ignoring your keys until you click</span>
       </a>
@@ -537,9 +537,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-14">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-14</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 11</span><span class="storyday-kind" style="background:var(--pink)">Fixed 10</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 13</span><span class="storyday-kind" style="background:var(--pink)">Fixed 12</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">22 changes landed: 11 new, 10 fixed, 1 performance.</p>
+      <p class="storyday-shape">26 changes landed: 13 new, 12 fixed, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-24-2026-10-14">
         <b>v0.7.24</b><span>playwhomp.com/arcade is a new front page where you pick which WHOMP game to play</span>
       </a>
@@ -1015,17 +1015,55 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-10-16</h4>
+
+    <div class="row" data-kind="fix" id="chg-ac3da2ad9b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">own Umbra repeater damage <span class="scope">(cores)</span></span>
+      <span class="sha">ac3da2ad9b</span>
+    </div>
+  </div>
+  <div class="day">
+    <h4>2026-10-15</h4>
+
+    <div class="row" data-kind="feat" id="chg-4e46a303dd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">every core weapon owns its numbers; no donor change moves a core <span class="scope">(cores)</span></span>
+      <span class="sha">4e46a303dd</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-10-14</h4>
 
+    <div class="row" data-kind="fix" id="chg-fdcedf2504">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Gold Reaver follows Boomerang at its 1.215x rung <span class="scope">(balance-pass-1014)</span></span>
+      <span class="sha">fdcedf2504</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-ddfdb8d354">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">trial chip hangs under the vitals pair, never on it <span class="scope">(hud-polish-1014)</span></span>
       <span class="sha">ddfdb8d354</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-4afd2fcce9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Energy Bolt and Meteor counts honour the cap tail; outliers toward the pack <span class="scope">(balance-pass-1014)</span></span>
+      <span class="sha">4afd2fcce9</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-688b1b2148">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">damage numbers a hair smaller, boss overhead bars a hair bigger <span class="scope">(hud-polish-1014)</span></span>
       <span class="sha">688b1b2148</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-85bec62fa2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">remove Phoenix Flare from the game; its id retired <span class="scope">(relics)</span></span>
+      <span class="sha">85bec62fa2</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-a2f4b0986e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">soak --table with cap levels, build stacks and cohort log-sd <span class="scope">(balance-pass-1014)</span></span>
+      <span class="sha">a2f4b0986e</span>
     </div>
     <div class="row" data-kind="fix" id="chg-a1b824ab2c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1096,27 +1134,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">registry, heal, report, lower, census; tests first (the chain hook's two cases red until it lands) <span class="scope">(budget-steward)</span></span>
       <span class="sha">4b81b0cb10</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9df555ee1c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">retire the merged arcade-landing-b-build-r2 claims; raise the repo-weight OTHER ceiling 69500000 -&gt; 70500000 (the arcade's real stills; test-weight-ceiling-never-blocks) <span class="scope">(gate)</span></span>
-      <span class="sha">9df555ee1c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-656103945f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">bin/deploy-now.sh ships main to Preview at the next row boundary <span class="scope">(deploy-now-door)</span></span>
-      <span class="sha">656103945f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-216ebe6389">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">real Knockout and Riftside art, and Riftside's cabinet plays <span class="scope">(arcade)</span></span>
-      <span class="sha">216ebe6389</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-9178fb1bcb">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">the attract scene builds its nine heroes directly and fetches the miniboss on its own chunk <span class="scope">(arcade)</span></span>
-      <span class="sha">9178fb1bcb</span>
-    </div><div class="row more">+ 2 more that day, not shown</div>
+    </div><div class="row more">+ 6 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-13</h4>
@@ -1452,12 +1470,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@3f7002fd75</code> on 2026-10-16 09:49 UTC.
+  Every number on this page came straight out of the game, read at <code>game@a0d7b593e4</code> on 2026-10-16 14:05 UTC.
 
   The game is serving <code>0.7.25</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">96 player-visible changes in the last 7 days, across 4 active days, 610 internal-only commits filtered out</div>
+  <div class="stat">102 player-visible changes in the last 7 days, across 6 active days, 663 internal-only commits filtered out</div>
 </footer>
 
 
