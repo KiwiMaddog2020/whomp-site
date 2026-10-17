@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">57 player-visible changes landed in the last 7 days, across 5 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">61 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday is-quiet" id="day-2026-10-17">
+    <article class="storyday" id="day-2026-10-17">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-17</span>
-        <span class="storyday-kinds"></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span></span>
       </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
+      <p class="storyday-shape">3 changes landed, all of them fixes.</p>
       <a class="storyday-release" href="#release-0-7-25-2026-10-17">
         <b>v0.7.25</b><span>Fixes and polish</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-16">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-16</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 2</span></span>
       </div>
-      <p class="storyday-shape">One change landed, and it was a fix.</p>
+      <p class="storyday-shape">2 changes landed, all of them fixes.</p>
       <a class="storyday-release" href="#release-0-7-25">
         <b>v0.7.25</b><span>Closing a chest no longer leaves the game ignoring your keys until you click</span>
       </a>
@@ -1015,8 +1015,32 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-10-17</h4>
+
+    <div class="row" data-kind="fix" id="chg-9280a22577">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">every request binds the Mac's graded tree whole (patch from the base to WT_TREE) <span class="scope">(helper-shard)</span></span>
+      <span class="sha">9280a22577</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-71abdd9ac3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a stood-in base ships its bookkeeping patch; no reader scan <span class="scope">(helper-shard)</span></span>
+      <span class="sha">71abdd9ac3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2b3f213293">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">every bookkeeping reader stays on the Mac, pinned by a ratchet <span class="scope">(helper-shard)</span></span>
+      <span class="sha">2b3f213293</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-10-16</h4>
 
+    <div class="row" data-kind="fix" id="chg-ba502a1b15">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">share a batch grade whose base is a local-only bookkeeping commit <span class="scope">(helper-shard)</span></span>
+      <span class="sha">ba502a1b15</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-ac3da2ad9b">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">own Umbra repeater damage <span class="scope">(cores)</span></span>
@@ -1366,12 +1390,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@e6003adbd6</code> on 2026-10-17 10:03 UTC.
+  Every number on this page came straight out of the game, read at <code>game@e27ffd05e2</code> on 2026-10-17 10:05 UTC.
 
   The game is serving <code>0.7.25</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">57 player-visible changes in the last 7 days, across 5 active days, 489 internal-only commits filtered out</div>
+  <div class="stat">61 player-visible changes in the last 7 days, across 6 active days, 502 internal-only commits filtered out</div>
 </footer>
 
 
