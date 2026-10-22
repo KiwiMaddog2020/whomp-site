@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.25</b> · <code>d0b73aee</code></span></div>
+    Live <b>0.7.25</b> · <code>d98a73a5</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">104 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">110 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-10-21">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-21</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">3 changes landed, all of them fixes.</p>
+      <p class="storyday-shape">8 changes landed: 7 fixed, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-25-2026-10-21">
         <b>v0.7.25</b><span>The Mine's door now stands in the Frostreach cliff</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-20">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-20</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 10</span><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 11</span><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">18 changes landed: 10 new, 5 fixed, 2 polish, 1 performance.</p>
+      <p class="storyday-shape">19 changes landed: 11 new, 5 fixed, 2 polish, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-25-2026-10-20">
         <b>v0.7.25</b><span>The arcade's sky comes alive: a synthwave sun on the horizon, a moving grid floor, drifting stars</span>
       </a>
@@ -618,7 +618,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The Mine's door now stands in the Frostreach cliff, and its first rooms are built from a library of 114 hand-made rooms</li><li>Keyed Deep runs at level 3 and up now carry the week's affixes on one marked leader per pack, named on the door card and under the timer.</li></ul>
+      <ul><li>The Mine's door now stands in the Frostreach cliff, and its first rooms are built from a library of 114 hand-made rooms</li><li>Keyed Deep runs at level 3 and up now carry the week's affixes on one marked leader per pack, named on the door card and under the timer.</li><li>Tapping a new game on a phone now restyles far less of the page, so the switch is much smoother, though the very first tap still has a short hitch while sound starts.</li><li>The arcade's first tap on a phone no longer stalls while the room sound starts up.</li></ul>
     </div>
 
   </div>
@@ -1015,10 +1015,35 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-21</h4>
 
+    <div class="row" data-kind="fix" id="chg-b8a364fe70">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Studio Board status limit 30 s -&gt; 60 s (sol-status measured 31.95 s) <span class="scope">(board)</span></span>
+      <span class="sha">b8a364fe70</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-c631aa6880">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">first tap keeps the audio unlock, moves the bed build and the context make off the gesture frame <span class="scope">(arcade)</span></span>
+      <span class="sha">c631aa6880</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-be10ceffc0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">arcade tile tap writes --arc-glow and --arc-neon on their readers, not the root (director 3:50 pm 2026-10-21)</span>
+      <span class="sha">be10ceffc0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c0c80ec3c1">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">arcade no :root custom-property transition on tile tap (director 3:50 pm 2026-10-21)</span>
+      <span class="sha">c0c80ec3c1</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-0aa72a5492">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">a FAST row may carry its own earlier rounds' claims and reports, retired or renamed (arcade-planet-header-r3 was FAST-DEMOTED on its round 2's retired claims) <span class="scope">(fast-row)</span></span>
       <span class="sha">0aa72a5492</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-fd48cd3d86">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the secret-path case pattern takes its opening paren so the Mac's bash 3.2 parses it inside $(...) (landing FAIL-REAL 6:33 am 10-21, tests/binEntrypointGuards) <span class="scope">(push-lane)</span></span>
+      <span class="sha">fd48cd3d86</span>
     </div>
     <div class="row" data-kind="fix" id="chg-e3e4df153c">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1048,6 +1073,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--gold)">Polish</span>
       <span class="what">the laptop planet goes back to 22vw/440px so its ring clears the description <span class="scope">(arcade)</span></span>
       <span class="sha">b010e3e735</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-fa12349ac5">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">carry bin/push-lane.sh and its suite from push-lane-door-r2 onto main <span class="scope">(push-lane)</span></span>
+      <span class="sha">fa12349ac5</span>
     </div>
     <div class="row" data-kind="style" id="chg-24aaa2e5a3">
       <span class="kind" style="background:var(--gold)">Polish</span>
@@ -1543,12 +1573,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@38db450feb</code> on 2026-10-21 22:49 UTC.
+  Every number on this page came straight out of the game, read at <code>game@3f85c6f084</code> on 2026-10-22 04:26 UTC.
 
   The game is serving <code>0.7.25</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">104 player-visible changes in the last 7 days, across 6 active days, 519 internal-only commits filtered out</div>
+  <div class="stat">110 player-visible changes in the last 7 days, across 6 active days, 552 internal-only commits filtered out</div>
 </footer>
 
 
