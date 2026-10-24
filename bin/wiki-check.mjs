@@ -677,6 +677,11 @@ requireThat(hubCards.length === rosters.length, `wiki hub emits ${hubCards.lengt
 
 const visualByKey = new Map(V.entries.map((entry) => [entry.assetKey, entry]));
 const visualPolicyDomains = new Set(V.policies.map((policy) => policy.domain));
+/* Ids a policy declares in excludedIds (unfielded, pending-concept) have no
+   canonical visual by design; the generator still lists their cards, so the
+   contract is that they carry no visual association, not that they carry one. */
+const visualExcludedKeys = new Set(V.policies.flatMap((policy) =>
+  (policy.excludedIds || []).map((item) => `${policy.domain}:${item.id}`)));
 const renderedVisualAssociations = new Map();
 const cardSlice = (html, id) => {
   const start = html.indexOf(`id="e-${esc(id)}"`);
@@ -755,8 +760,12 @@ for (const roster of rosters) {
       `${file}#${anchor} is not a programmatically focusable search destination`);
     const href = `${file}#${anchor}`;
     requireThat(hrefCounts.get(href) === 1, `${href} does not have exactly one search entry`);
-    if (roster.domain && visualPolicyDomains.has(roster.domain)) {
-      const key = `${roster.domain}:${entry.id}`;
+    const excludedKey = `${roster.domain}:${entry.id}`;
+    if (roster.domain && visualPolicyDomains.has(roster.domain) && visualExcludedKeys.has(excludedKey)) {
+      requireThat(!visualByKey.has(excludedKey) && !cardSlice(html, entry.id).includes('data-visual-key='),
+        `${file} entry ${entry.id} is excluded from visuals but carries one`);
+    } else if (roster.domain && visualPolicyDomains.has(roster.domain)) {
+      const key = excludedKey;
       const visual = visualByKey.get(key);
       requireThat(visual, `${file} entry ${entry.id} has no canonical visual association`);
       const card = cardSlice(html, entry.id);
