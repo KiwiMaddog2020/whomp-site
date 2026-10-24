@@ -3690,7 +3690,7 @@ export function visualOutputPath(sourcePath) {
   return `${VISUAL_OUTPUT_PREFIX}${parts.join('/')}`;
 }
 
-function visualManifestViolations(D, V) {
+export function visualManifestViolations(D, V) {
   const violations = [];
   const named = (value) => typeof value === 'string' && value.trim().length > 0;
   const plainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -3737,9 +3737,17 @@ function visualManifestViolations(D, V) {
   for (const policy of policies) {
     const sourceDomain = D.domains?.[policy.domain];
     const expectedIds = Array.isArray(policy.expectedIds) ? policy.expectedIds : [];
+    // The generator drops pending-concept and unfielded ids from expectedIds and
+    // names them in excludedIds; honour exactly that, and nothing silent.
+    const excluded = Array.isArray(policy.excludedIds) ? policy.excludedIds : [];
+    const excludedIds = excluded.map((item) => item?.id);
+    const domainIds = sourceDomain ? visualDomainIds(sourceDomain) : [];
+    const exclusionsValid = excluded.every((item) => named(item?.id) && ['pending-concept', 'unfielded'].includes(item.reason))
+      && new Set(excludedIds).size === excludedIds.length && excludedIds.every((id) => domainIds.includes(id));
+    const owedIds = domainIds.filter((id) => !excludedIds.includes(id));
     const classifiedSurface = surfaces.find((surface) => surface.surface === policy.domain);
-    if (!sourceDomain || !named(policy.strategy) || new Set(expectedIds).size !== expectedIds.length
-      || canonicalJson([...expectedIds].sort()) !== canonicalJson(visualDomainIds(sourceDomain).sort())) {
+    if (!sourceDomain || !named(policy.strategy) || new Set(expectedIds).size !== expectedIds.length || !exclusionsValid
+      || canonicalJson([...expectedIds].sort()) !== canonicalJson(owedIds.sort())) {
       violations.push(`visual policy ${policy.domain || '(missing)'} does not exactly cover its canonical game-data domain`);
     }
     if (classifiedSurface && classifiedSurface.status !== 'generated') {
