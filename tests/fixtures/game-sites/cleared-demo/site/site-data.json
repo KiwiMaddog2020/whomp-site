@@ -1,0 +1,15 @@
+{
+  "fixture": true,
+  "id": "cleared-demo",
+  "name": "Cleared Demo (fixture)",
+  "playUrl": "https://fixture.invalid/cleared-demo/",
+  "palette": { "accent": "#ff2f7e" },
+  "catalogs": [
+    {
+      "id": "things",
+      "title": "Fixture things",
+      "fields": ["name"],
+      "rows": [{ "id": "thing-one", "name": "Fixture thing one" }]
+    }
+  ]
+}

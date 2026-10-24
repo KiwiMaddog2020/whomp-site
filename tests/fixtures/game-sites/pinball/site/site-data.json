@@ -1,0 +1,31 @@
+{
+  "fixture": true,
+  "id": "pinball",
+  "name": "Pinball (fixture)",
+  "playUrl": "https://fixture.invalid/play/",
+  "palette": { "ground": "#06040e", "ink": "#fff3cf", "accent": "#24f0ff" },
+  "catalogs": [
+    {
+      "id": "tables",
+      "title": "Fixture catalog A",
+      "fields": [{ "id": "name", "label": "Name" }, { "id": "value", "label": "Value" }, "note"],
+      "rows": [
+        { "id": "row-one", "name": "Fixture row one", "value": 1, "note": "placeholder" },
+        { "id": "row-two", "name": "Fixture row two", "value": 2 }
+      ]
+    },
+    {
+      "id": "modes",
+      "title": "Fixture catalog B",
+      "fields": ["name", "flag"],
+      "rows": [
+        { "id": "row-three", "name": "Fixture row three", "flag": true }
+      ]
+    }
+  ],
+  "log": [
+    { "date": "2026-10-23", "title": "Fixture log entry one", "text": "Placeholder text." },
+    { "date": "2026-10-24", "title": "Fixture log entry two" }
+  ],
+  "next": ["Fixture next item"]
+}

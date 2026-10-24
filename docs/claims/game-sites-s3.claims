@@ -1,0 +1,6 @@
+bin/hub.mjs
+bin/generate.mjs
+tests/hub.test.mjs
+tests/fixtures/game-sites/
+docs/claims/game-sites-s3.claims
+docs/lanes/game-sites-s3.md

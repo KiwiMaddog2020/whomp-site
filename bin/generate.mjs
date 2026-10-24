@@ -69,6 +69,7 @@ import {
   buildWiki, EXPLAINER_FILE, EXPLAINER_SLUG, EXPLAINER_TITLE, parseRelicRarityInk, relicRarityInkCss,
   rosterSpecs, visualOutputPath, WIKI_CSS,
 } from './wiki.mjs';
+import { buildHub, interimRenderer, loadGame, loadKitRenderer } from './hub.mjs';
 
 const SITE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -88,6 +89,14 @@ const OFFLINE = args.includes('--offline');
  * no privileged knowledge. */
 const SHA_ARG = arg('--sha', '');
 const VERSION_ARG = arg('--version', '');
+/* THE GAME SITES HUB (bin/hub.mjs, plan step S3). Each --game names a game
+ * checkout that ships site/site-data.json; it gets /<game>/, /<game>/wiki/ and
+ * /<game>/log/ plus robots.txt and its rows in search-index.json. With no
+ * --game the run writes exactly what it wrote before the hub existed. */
+const HUB_GAMES = args.flatMap((a, i) => (a === '--game' && args[i + 1] ? [resolve(args[i + 1])] : []));
+const HUB_KIT = arg('--kit', '');
+const HUB_ALLOW_FIXTURE = args.includes('--allow-fixture');
+const HUB_BASE = arg('--base', '/');
 
 /* WHERE THE SITE ITSELF LIVES. Only the social-card tags need it: og:url and the
  * absolute image URL an unfurler fetches, neither of which can be relative. It
@@ -3219,6 +3228,13 @@ for (const section of pitchSections) {
   });
 }
 searchIndex.push(...wiki.searchEntries);
+const hub = HUB_GAMES.length
+  ? buildHub(HUB_GAMES.map((dir) => loadGame(dir, { allowFixture: HUB_ALLOW_FIXTURE })), {
+    renderer: (await loadKitRenderer(HUB_KIT)) || interimRenderer,
+    base: HUB_BASE,
+  })
+  : null;
+if (hub) searchIndex.push(...hub.searchEntries);
 
 // ---------------------------------------------------------------- link integrity
 /* THE SITE IS A GRAPH AND A GRAPH ROTS AT THE EDGES. Weapon cards link to the
@@ -3265,6 +3281,9 @@ if (missingEntries.length) {
   throw new Error(`log.html is missing ${missingEntries.length} concise entr${missingEntries.length === 1 ? 'y' : 'ies'} that were derived for it: ${missingEntries.map((e) => `${e.kind} ${e.version || e.date}`).join(', ')}. The generator ran clean and published a view with holes in it, which is the failure this check exists to refuse.`);
 }
 
+/* Hub pages check their own folder-relative links in bin/hub.mjs; here they
+ * only lend their anchors, so the search-index sweep below covers their rows. */
+if (hub) for (const [file, ids] of hub.anchors) emittedAnchors.set(file, ids);
 const brokenLinks = duplicateAnchors.map((anchor) => `duplicate id ${anchor}`);
 const checkHref = (href, where, currentFile = '') => {
   if (/^(?:https?:|mailto:|data:)/.test(href)) return;
@@ -3310,6 +3329,11 @@ const OUTPUTS = [
    * rather than a screenshot. */
   { file: SOCIAL_IMAGE, body: socialIconBytes },
   ...wiki.pages.map((p) => ({ file: p.file, body: p.html })),
+  ...(hub ? [
+    ...hub.pages.map((p) => ({ file: p.file, body: p.html })),
+    ...hub.assets.map((a) => ({ file: a.file, body: a.bytes })),
+    { file: 'robots.txt', body: hub.robots },
+  ] : []),
 ];
 /* Every manifest path is a lowercase, slash-delimited relative path. Nested
    paths are required for the generated visual encyclopedia, but traversal,
@@ -3372,6 +3396,7 @@ for (const file of staleVisualFilesOnDisk) {
  * byte-for-byte untouched. */
 for (const o of OUTPUTS) {
   const body = o.file.endsWith('.html') ? o.body.replace(/[ \t]+$/gm, '') : o.body;
+  mkdirSync(dirname(join(OUTDIR, o.file)), { recursive: true });
   writeFileSync(join(OUTDIR, o.file), body);
 }
 for (const asset of visualAssets) {
@@ -3444,6 +3469,7 @@ if (wiki.gaps.length) {
   console.log(`  wiki: ${wiki.gaps.length} enum value(s) with no written explanation yet, shown as the bare value:`);
   for (const g of wiki.gaps) console.log(`    ${g}`);
 }
+if (hub) console.log(`  hub: ${hub.pages.length / 3} game(s) via ${hub.renderer}, ${hub.searchEntries.length} search rows`);
 console.log(`  search index: ${searchIndex.length} entries`);
 /* THE LAST LINE IS THE ONE THE GATE READS. bin/regenerate-and-verify.sh fails
  * on a non-zero count here, so a dropped arc, an orphaned teaser or a track that
