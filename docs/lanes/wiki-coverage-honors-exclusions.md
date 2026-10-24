@@ -39,3 +39,8 @@ end-to-end result is the `buildWiki` test above, not a full generate. The real c
 
 ## Premise check
 Nothing wrong; the manifest already expressed both exclusion classes. Not deployed; WHOMP untouched.
+
+## Superseded earlier report
+An earlier run of this lane (commit 8666b0d, same branch) reported BLOCKED because the WHOMP main it read had no
+`excludedIds`. WHOMP main `75979a0` now emits `excludedIds` per policy (the follow-up that report asked for has
+landed), so this run is unblocked and supersedes it.
