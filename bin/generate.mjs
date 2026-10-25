@@ -49,6 +49,7 @@
  *  See the comment on that constant and on ownerBugSection further down.
  *
  *  USAGE: node bin/generate.mjs [--repo ../whomp] [--outdir .] [--offline]
+ *         (no --repo: WHOMP_GAME_REPO, else ../whomp; see bin/game-repo.mjs)
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -57,6 +58,7 @@ import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildStory, readableNights, windowDates } from './devlog.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
+import { resolveGameRepo } from './game-repo.mjs';
 import {
   buildPipelineTeasers, HERO_DESCRIPTION, heroPicture, kitCards, kitShape, localDay, parseArcs,
   parseBuildSlots, parseChannelMode, parseHouseSlogan, parsePlayUrl, parseReleaseChannelUrls,
@@ -77,7 +79,8 @@ const arg = (name, dflt) => {
   const i = args.indexOf(name);
   return i >= 0 && args[i + 1] ? args[i + 1] : dflt;
 };
-const REPO = resolve(arg('--repo', '../whomp'));
+// --repo, then WHOMP_GAME_REPO (the game deploy's own checkout), then ../whomp.
+const REPO = resolveGameRepo(args, process.env);
 const OUTDIR = resolve(arg('--outdir', SITE_ROOT));
 const OFFLINE = args.includes('--offline');
 /* THE DEPLOY KNOWS WHAT IT SHIPPED; THE NETWORK DOES NOT, YET. Fetching

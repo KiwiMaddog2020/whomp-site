@@ -5,8 +5,27 @@
 # repo (no separate dist clone to stage), and the generator only ever READS
 # the game repo, so there is nothing here that could touch it even by mistake.
 #
-# Usage: bin/deploy-site.sh [--offline]
+# Usage: bin/deploy-site.sh [--offline] [--repo PATH]
+#   The game tree the site is built from: --repo, else WHOMP_GAME_REPO, else
+#   ../whomp. The game's deploy passes its own checkout (the tree it built and
+#   gated), so the site never verifies a canonical checkout the lander has moved
+#   since (site-step-deployed-tree, 2026-10-25; bin/game-repo.mjs).
 set -euo pipefail
+
+OFFLINE_FLAG=()
+GAME_REPO_ARG=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --offline) OFFLINE_FLAG=(--offline); shift ;;
+    --repo)
+      if [ "$#" -lt 2 ] || [ -z "$2" ]; then echo "ERROR: --repo needs a path" >&2; exit 1; fi
+      GAME_REPO_ARG="$2"; shift 2 ;;
+    *) echo "ERROR: unknown argument '$1' (usage: bin/deploy-site.sh [--offline] [--repo PATH])" >&2; exit 1 ;;
+  esac
+done
+# A relative --repo or WHOMP_GAME_REPO means the caller's cwd, read before the cd.
+CALLER_DIR="$(pwd)"
+
 cd "$(dirname "$0")/.."
 SITE_ROOT="$(pwd)"
 
@@ -60,14 +79,28 @@ if [ "$CURRENT_BRANCH" != "$PUBLISH_BRANCH" ]; then
   exit 1
 fi
 
-GAME_REPO="../whomp"
-if [ ! -d "$GAME_REPO/.git" ]; then
+# The default stays relative to SITE_ROOT, exactly as before; an override is
+# resolved against the caller's directory and made absolute, so the generator and
+# the commit message below name the same tree.
+if [ -n "$GAME_REPO_ARG" ]; then
+  GAME_REPO="$GAME_REPO_ARG"
+elif [ -n "${WHOMP_GAME_REPO:-}" ]; then
+  GAME_REPO="$WHOMP_GAME_REPO"
+else
+  GAME_REPO=""
+fi
+if [ -n "$GAME_REPO" ]; then
+  case "$GAME_REPO" in /*) ;; *) GAME_REPO="$CALLER_DIR/$GAME_REPO" ;; esac
+  GAME_REPO="$(cd "$GAME_REPO" 2>/dev/null && pwd || printf '%s' "$GAME_REPO")"
+else
+  GAME_REPO="../whomp"
+fi
+# -e, not -d: a deploy clone made by `git worktree add` carries a .git FILE.
+if [ ! -e "$GAME_REPO/.git" ]; then
   echo "ERROR: game repo not found at $GAME_REPO (read-only source for the generator)" >&2
   exit 1
 fi
-
-OFFLINE_FLAG=()
-if [ "${1:-}" = "--offline" ]; then OFFLINE_FLAG=(--offline); fi
+echo "game tree: $GAME_REPO"
 
 # `${a[@]+"${a[@]}"}`, not `"${a[@]}"`. macOS ships bash 3.2.57, where expanding
 # an EMPTY array under `set -u` is an unbound-variable error, so the plain form
