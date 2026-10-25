@@ -642,7 +642,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="wtopbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>965b45e8</code></span></div>
+    Live <b>0.7.26</b> · <code>d6cee483</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -737,7 +737,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <a href="index.html">&larr; Back to WHOMP</a>
       </div>
     </details>
-    <div class="stat">66 entries</div>
+    <div class="stat">67 entries</div>
   </nav>
   <main class="wmain" id="wiki-main" tabindex="-1">
     <div class="rule"></div>
@@ -785,7 +785,7 @@ footer a{color:var(--cyan);text-decoration:none}
         <span class="wfacet-h" id="facet-bestiary-tier">Tier</span>
         <div class="wfacet-row" role="group" aria-labelledby="facet-bestiary-tier" data-facet="tier" data-multi="0">
           <button class="wf is-active" type="button" data-value="all" aria-pressed="true" aria-controls="wiki-groups">All</button>
-          <button class="wf" type="button" data-value="special" aria-pressed="false" aria-controls="wiki-groups">Special <span style="opacity:.5">37</span></button><button class="wf" type="button" data-value="boss" aria-pressed="false" aria-controls="wiki-groups">Boss <span style="opacity:.5">18</span></button><button class="wf" type="button" data-value="miniboss" aria-pressed="false" aria-controls="wiki-groups">Miniboss <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="basic" aria-pressed="false" aria-controls="wiki-groups">Basic <span style="opacity:.5">5</span></button>
+          <button class="wf" type="button" data-value="special" aria-pressed="false" aria-controls="wiki-groups">Special <span style="opacity:.5">37</span></button><button class="wf" type="button" data-value="boss" aria-pressed="false" aria-controls="wiki-groups">Boss <span style="opacity:.5">19</span></button><button class="wf" type="button" data-value="miniboss" aria-pressed="false" aria-controls="wiki-groups">Miniboss <span style="opacity:.5">6</span></button><button class="wf" type="button" data-value="basic" aria-pressed="false" aria-controls="wiki-groups">Basic <span style="opacity:.5">5</span></button>
         </div>
       </div>
       <div class="wfacet">
@@ -2549,7 +2549,7 @@ footer a{color:var(--cyan);text-decoration:none}
       </article></div>
     </section>
     <section class="wgroup" data-group="boss" id="g-boss">
-      <div class="wgroup-h"><h3>Bosses</h3><span class="wgroup-n">18</span></div>
+      <div class="wgroup-h"><h3>Bosses</h3><span class="wgroup-n">19</span></div>
       <p class="wgroup-note">Booked into a world at a fixed time rather than rolled for, and driven directly once they arrive. The behaviour names in this roster do not describe how a boss moves.</p>
       <div class="wgrid">
       <article class="wcard" id="e-thistlemaw" tabindex="-1" data-tier="boss" data-s-roster="16" data-s-name="thistlemaw"    >
@@ -3190,13 +3190,49 @@ footer a{color:var(--cyan);text-decoration:none}
 
         </div>
 
+      </article>
+      <article class="wcard" id="e-starwyrm" tabindex="-1" data-tier="boss" data-s-roster="66" data-s-name="the starwyrm"    >
+        <div class="wcard-h">
+
+          <h4>The Starwyrm</h4>
+
+        </div>
+        <figure class="wvisual wvisual-runtime-render" data-visual-key="enemies:starwyrm" data-visual-use="entry">
+    <img src="wiki-assets/enemies/starwyrm-256w.png" srcset="wiki-assets/enemies/starwyrm-256w.png 256w, wiki-assets/enemies/starwyrm-512w.png 512w" sizes="(max-width:420px) calc(100vw - 60px), 256px" width="256" height="288" alt="Canonical in-game render of The Starwyrm, a boss enemy." loading="lazy" decoding="async" data-pixelated="false">
+    <figcaption><b>Drawn by the game</b><span>Posed by the game itself, not a screenshot.</span><details class="wraw wvisual-more"><summary>The fine print</summary><span>The game drew this on its own, alone, on a clear background under fixed light, seen from the front, in its own colors. It is not a screenshot, and it is not how it looks in a live world. Frame: Neutral family builder output.</span><span class="wvisual-limit">Deterministic isolated presentation render from live runtime geometry. Transparent background, neutral lighting, and any neutral preview palette are not an in-game screenshot, encounter scene, or claim that the subject appears in that world. Boss brain, attacks, phases, and encounter state are omitted.</span><span class="wvisual-source">Source: Repo-runtime · src/data/enemies.ts#ENEMY_KINDS + src/render/bossRenderer.ts#BOSS_SPECS/buildBossWikiPortrait</span></details></figcaption>
+  </figure>
+
+        <div class="wtags">
+          <span class="wtag ink-pink">Boss</span>
+
+
+
+        </div>
+
+        <div class="wfacts">
+
+
+          <div class="wfact"><span class="wfact-k">Found in</span><span class="wfact-v">No level rolls this kind from its spawn table. It reaches a run some other way.</span></div>
+
+
+
+
+          <div class="wfact"><span class="wfact-k">What decides it</span><span class="wfact-v"><b>UNMEASURED</b>: health, damage, behavior and final chase speed are set through private, multi-stage runtime authority.</span></div>
+        </div>
+        <div class="wmeters">
+
+
+
+
+        </div>
+
       </article></div>
     </section></div>
   </main>
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@54bef8e375</code> on 2026-10-25 16:44 UTC.
+  Every number on this page came straight out of the game, read at <code>game@d6cee483af</code> on 2026-10-25 21:03 UTC.
   <a href="wiki-how-it-is-built.html">Where the numbers come from</a> &middot; <a href="wiki.html">All guides</a> &middot; <a href="log.html#views">Dev log</a>
   <details class="wfine"><summary>The fine print</summary><div>Read from <code>data/game-data.json</code> and <code>data/wiki-visuals.json</code>.</div></details>
 </footer>

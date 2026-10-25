@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>965b45e8</code></span></div>
+    Live <b>0.7.26</b> · <code>d6cee483</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">122 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">127 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-10-25">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-25</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span></span>
       </div>
-      <p class="storyday-shape">3 changes landed, all of them fixes.</p>
+      <p class="storyday-shape">5 changes landed, all of them fixes.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-25">
         <b>v0.7.26</b><span>Structure trials now appear at Fern Hollow, Stillwater's Pier Village, the Orchard Temple</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-24">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-24</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 22</span><span class="storyday-kind" style="background:var(--cyan)">New 15</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--cyan)">New 16</span></span>
       </div>
-      <p class="storyday-shape">37 changes landed: 22 fixed, 15 new.</p>
+      <p class="storyday-shape">40 changes landed: 24 fixed, 16 new.</p>
       <a class="storyday-release" href="#release-0-7-26">
         <b>v0.7.26</b><span>after your first death the hub points you at the shop stall once, when you can afford a rank</span>
       </a>
@@ -1017,6 +1017,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-25</h4>
 
+    <div class="row" data-kind="fix" id="chg-4758cdcf20">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">resolve --work-dir physically like --repo <span class="scope">(deploy-train)</span></span>
+      <span class="sha">4758cdcf20</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-8c42cb07a2">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">resolve --repo physically (pwd -P) so the site step gets the same path on macOS /var -&gt; /private/var; add symlinked --repo test <span class="scope">(deploy-train)</span></span>
@@ -1026,6 +1031,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">re-baseline overseer ceiling after main grew its reads <span class="scope">(boot-budget)</span></span>
       <span class="sha">c87a27999a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-c2262a2075">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">wall the dune slumps' faces; re-baseline the ziggurat hall's walk-through <span class="scope">(caravan-graveyard)</span></span>
+      <span class="sha">c2262a2075</span>
     </div>
     <div class="row" data-kind="fix" id="chg-53ce3b31d3">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1045,6 +1055,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the site step reads the tree the deploy gated, not ../whomp <span class="scope">(deploy)</span></span>
       <span class="sha">4bb1cd2083</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-754b58b136">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">three full-suite row-reds at cause <span class="scope">(structure-collision-audit-r2)</span></span>
+      <span class="sha">754b58b136</span>
     </div>
     <div class="row" data-kind="fix" id="chg-073906c339">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1096,6 +1111,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">Shiverpeak Summit, Ember, Hellmouth and Void Rift trials <span class="scope">(structure-trials)</span></span>
       <span class="sha">1f18b29800</span>
     </div>
+    <div class="row" data-kind="fix" id="chg-a0cfb41898">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Hellmouth causeway decks stay walk-through for the horde, never spawned in <span class="scope">(nav)</span></span>
+      <span class="sha">a0cfb41898</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-c7822dd52f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">run the MCP guard hook as node bin/mcp-guard.mjs so it fails closed (V0d r2) <span class="scope">(studio)</span></span>
@@ -1125,17 +1145,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the movement station arrives as a dropship <span class="scope">(station)</span></span>
       <span class="sha">6fac4daa66</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-172ffba8f8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">comment the pinned guard's empty catch for the no-empty ratchet <span class="scope">(studio)</span></span>
-      <span class="sha">172ffba8f8</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ef26b0977c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">wire the kit v2.0.0 MCP guard as a node PreToolUse hook (studio v2 V0d) <span class="scope">(studio)</span></span>
-      <span class="sha">ef26b0977c</span>
-    </div><div class="row more">+ 17 more that day, not shown</div>
+    </div><div class="row more">+ 20 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-23</h4>
@@ -1564,12 +1574,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@54bef8e375</code> on 2026-10-25 16:44 UTC.
+  Every number on this page came straight out of the game, read at <code>game@d6cee483af</code> on 2026-10-25 21:03 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">124 player-visible changes in the last 7 days, across 7 active days, 699 internal-only commits filtered out</div>
+  <div class="stat">129 player-visible changes in the last 7 days, across 7 active days, 743 internal-only commits filtered out</div>
 </footer>
 
 
