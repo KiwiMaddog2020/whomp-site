@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>d6cee483</code></span></div>
+    Live <b>0.7.26</b> · <code>a784bde0</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">127 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">131 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-10-25">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-25</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span></span>
       </div>
-      <p class="storyday-shape">5 changes landed, all of them fixes.</p>
+      <p class="storyday-shape">7 changes landed, all of them fixes.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-25">
         <b>v0.7.26</b><span>Structure trials now appear at Fern Hollow, Stillwater's Pier Village, the Orchard Temple</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-24">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-24</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--cyan)">New 16</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--cyan)">New 18</span></span>
       </div>
-      <p class="storyday-shape">40 changes landed: 24 fixed, 16 new.</p>
+      <p class="storyday-shape">42 changes landed: 24 fixed, 18 new.</p>
       <a class="storyday-release" href="#release-0-7-26">
         <b>v0.7.26</b><span>after your first death the hub points you at the shop stall once, when you can afford a rank</span>
       </a>
@@ -1017,6 +1017,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-25</h4>
 
+    <div class="row" data-kind="fix" id="chg-68af5cd5c6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close the river pit, composed onto main with fresh artifacts (round 8, conductor hand-land) <span class="scope">(fairy-forest)</span></span>
+      <span class="sha">68af5cd5c6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-15c609609a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a helper heal is one episode until the helper is up <span class="scope">(conductor-check)</span></span>
+      <span class="sha">15c609609a</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-4758cdcf20">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">resolve --work-dir physically like --repo <span class="scope">(deploy-train)</span></span>
@@ -1046,6 +1056,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-24</h4>
 
+    <div class="row" data-kind="feat" id="chg-bec94ccbc4">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the helper DOWN line heals first (P5) <span class="scope">(conductor-check)</span></span>
+      <span class="sha">bec94ccbc4</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-15c7af7ba8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">bin/wake-pc.mjs sends the PC's Wake-on-LAN packet (P3) <span class="scope">(pc-bench)</span></span>
+      <span class="sha">15c7af7ba8</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-d95c8127ad">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">drop the pink and cyan bars flanking the title slogan, keep the submark lines (kit v2.1.0) <span class="scope">(ui)</span></span>
@@ -1135,17 +1155,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the slug aims up and down like the guns <span class="scope">(glassCannon)</span></span>
       <span class="sha">d75aabec23</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2a61922a4d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">dropship pan tracks the ship down; render witness; beat frames <span class="scope">(station)</span></span>
-      <span class="sha">2a61922a4d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6fac4daa66">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the movement station arrives as a dropship <span class="scope">(station)</span></span>
-      <span class="sha">6fac4daa66</span>
-    </div><div class="row more">+ 20 more that day, not shown</div>
+    </div><div class="row more">+ 22 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-23</h4>
@@ -1574,12 +1584,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@d6cee483af</code> on 2026-10-25 21:15 UTC.
+  Every number on this page came straight out of the game, read at <code>game@a784bde0c3</code> on 2026-10-25 23:51 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">129 player-visible changes in the last 7 days, across 7 active days, 743 internal-only commits filtered out</div>
+  <div class="stat">133 player-visible changes in the last 7 days, across 7 active days, 766 internal-only commits filtered out</div>
 </footer>
 
 
