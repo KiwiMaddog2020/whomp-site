@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>2c82354b</code></span></div>
+    Live <b>0.7.26</b> · <code>a426fe38</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,9 +509,18 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">132 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">95 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-10-27">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-10-27</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 1</span></span>
+      </div>
+      <p class="storyday-shape">One change landed, and it was a fix.</p>
+
+
+    </article>
     <article class="storyday is-quiet" id="day-2026-10-26">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-26</span>
@@ -557,9 +566,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-22">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-22</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 3</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
       </div>
-      <p class="storyday-shape">4 changes landed: 3 fixed, 1 new.</p>
+      <p class="storyday-shape">5 changes landed: 4 fixed, 1 new.</p>
       <a class="storyday-release" href="#release-0-7-25-2026-10-22">
         <b>v0.7.25</b><span>After you bank the Void Rift, a new optional portal opens</span>
       </a>
@@ -568,22 +577,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-21">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-21</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 12</span><span class="storyday-kind" style="background:var(--cyan)">New 3</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 12</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">16 changes landed: 12 fixed, 3 new, 1 performance.</p>
+      <p class="storyday-shape">19 changes landed: 12 fixed, 6 new, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-25-2026-10-21">
         <b>v0.7.25</b><span>The Mine's door now stands in the Frostreach cliff</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-10-20">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-10-20</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 21</span><span class="storyday-kind" style="background:var(--cyan)">New 18</span><span class="storyday-kind" style="background:var(--gold)">Polish 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
-      </div>
-      <p class="storyday-shape">42 changes landed: 21 fixed, 18 new, 2 polish, 1 performance.</p>
-      <a class="storyday-release" href="#release-0-7-25-2026-10-20">
-        <b>v0.7.25</b><span>The arcade's sky comes alive: a synthwave sun on the horizon, a moving grid floor, drifting stars</span>
       </a>
 
     </article></div>
@@ -1015,6 +1013,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-10-27</h4>
+
+    <div class="row" data-kind="fix" id="chg-51af7c3d7d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">inside a run only unbanked gold is spendable <span class="scope">(mine-spend-locked)</span></span>
+      <span class="sha">51af7c3d7d</span>
+    </div>
+  </div>
+  <div class="day">
     <h4>2026-10-25</h4>
 
     <div class="row" data-kind="balance" id="chg-018fac9453">
@@ -1269,6 +1276,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-22</h4>
 
+    <div class="row" data-kind="fix" id="chg-bdc18d2f79">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep main's pack contact line verbatim, apply the Mine's damageScale after it <span class="scope">(mine-t5-run-loop-r2)</span></span>
+      <span class="sha">bdc18d2f79</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-ce27662248">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">one sky on phones, frozen for a game switch (director M10, round 3 on main) <span class="scope">(arcade)</span></span>
@@ -1343,6 +1355,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the Rift Heart, FinaleArena's second client, and its set-piece kind row <span class="scope">(sim)</span></span>
       <span class="sha">9115620f45</span>
     </div>
+    <div class="row" data-kind="feat" id="chg-b8868f8c19">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the dev handle clears a floor by fiat for frames <span class="scope">(mine-t5-run-loop)</span></span>
+      <span class="sha">b8868f8c19</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-4123e01958">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">re-pin HUB_LIVE_TRIANGLE_BASELINE 1_411_139 -&gt; 1_411_439 (+300, draws unmoved at 369), printline copy from tests/hubDrawLedger.test.ts on the merged tree (overturns nothing: the starwatch +300 composed onto main's mine pin) <span class="scope">(hub)</span></span>
@@ -1352,6 +1369,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the secret-path case pattern takes its opening paren so the Mac's bash 3.2 parses it inside $(...) (landing FAIL-REAL 6:33 am 10-21, tests/binEntrypointGuards) <span class="scope">(push-lane)</span></span>
       <span class="sha">fd48cd3d86</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-46064a6b71">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the Mine's own run on fixed ticks, replacing the T3 slice <span class="scope">(mine-t5-run-loop)</span></span>
+      <span class="sha">46064a6b71</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-63785aa0f6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the seams the run loop owes (pack seating at run time, pack damage scale, loot sites, arrival yaw, leave copy, ledger spend) <span class="scope">(mine-t5-run-loop)</span></span>
+      <span class="sha">63785aa0f6</span>
     </div>
     <div class="row" data-kind="feat" id="chg-c29e13e7f0">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1382,101 +1409,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">the Sealed Gate unlock rule reads void-four (director 6:41 pm 10-20: the 2 void + the 2 lava levels open the big portal) <span class="scope">(starwatch)</span></span>
       <span class="sha">406040a6bb</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-eb15157a8c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">move HELD_ROWS and LAST_HOLD_* only after the queue commit lands (r2 review finding 4) <span class="scope">(land-chain)</span></span>
-      <span class="sha">eb15157a8c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3a755ded9b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">ROWS-HELD &lt;count&gt;: first, with a short tail, so the outbox NOTE's 160-character cut keeps four names (r2 review finding 3) <span class="scope">(land-chain)</span></span>
-      <span class="sha">3a755ded9b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b964002884">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">hold the relaunch after an exit 10 HOLD-BREAKER whose row is queued (r2 review finding 2) <span class="scope">(lander-standing)</span></span>
-      <span class="sha">b964002884</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3cfc217f2c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the breaker keys only shared-cause refusals (r2 review finding 1) <span class="scope">(land-chain)</span></span>
-      <span class="sha">3cfc217f2c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-636f99ee6d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">PLAY power-on flare by opacity and transform only <span class="scope">(arcade)</span></span>
-      <span class="sha">636f99ee6d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d9f595205f">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">info column centred on the title axis, header WHOMP back to the old wordmark under the neon PLAY <span class="scope">(arcade)</span></span>
-      <span class="sha">d9f595205f</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-b010e3e735">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">the laptop planet goes back to 22vw/440px so its ring clears the description <span class="scope">(arcade)</span></span>
-      <span class="sha">b010e3e735</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-fa12349ac5">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">carry bin/push-lane.sh and its suite from push-lane-door-r2 onto main <span class="scope">(push-lane)</span></span>
-      <span class="sha">fa12349ac5</span>
-    </div>
-    <div class="row" data-kind="style" id="chg-24aaa2e5a3">
-      <span class="kind" style="background:var(--gold)">Polish</span>
-      <span class="what">a bigger planet in the open sky on laptops <span class="scope">(arcade)</span></span>
-      <span class="sha">24aaa2e5a3</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-068bae2e5a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">older browsers write out the planet's two-colour mixes <span class="scope">(arcade)</span></span>
-      <span class="sha">068bae2e5a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-ada0fe4c9c">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the planet burns like the old sun, in each game's ink <span class="scope">(arcade)</span></span>
-      <span class="sha">ada0fe4c9c</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-f9cd126795">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the info block is left-aligned beside the planet <span class="scope">(arcade)</span></span>
-      <span class="sha">f9cd126795</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4cee801c81">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">read the glint's selector without its comment <span class="scope">(test)</span></span>
-      <span class="sha">4cee801c81</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-a33cac13bc">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the sign reads PLAY WHOMP, neon PLAY over chrome WHOMP <span class="scope">(arcade)</span></span>
-      <span class="sha">a33cac13bc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-413b797f8a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the floor grid draws square cells <span class="scope">(arcade)</span></span>
-      <span class="sha">413b797f8a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-b50afa2274">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">WHOMP's ringed planet replaces the sun on the horizon <span class="scope">(arcade)</span></span>
-      <span class="sha">b50afa2274</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-160c496ca9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the preview takes half the page width <span class="scope">(arcade)</span></span>
-      <span class="sha">160c496ca9</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-bdf615d1da">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">bound the mine yard ground lookup on the height-sample hot path <span class="scope">(hub)</span></span>
-      <span class="sha">bdf615d1da</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f886ca3e63">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">round 4 review nits - the fall-through's doom, deploy-now and artifact block <span class="scope">(deploy-on-land)</span></span>
-      <span class="sha">f886ca3e63</span>
-    </div><div class="row more">+ 22 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-17</h4>
@@ -1589,12 +1521,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@2c82354ba0</code> on 2026-10-26 07:37 UTC.
+  Every number on this page came straight out of the game, read at <code>game@a426fe38dd</code> on 2026-10-27 22:34 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">134 player-visible changes in the last 7 days, across 7 active days, 786 internal-only commits filtered out</div>
+  <div class="stat">98 player-visible changes in the last 7 days, across 8 active days, 726 internal-only commits filtered out</div>
 </footer>
 
 
