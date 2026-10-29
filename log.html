@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>b06b6977</code></span></div>
+    Live <b>0.7.26</b> · <code>a72339d3</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">103 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">105 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-10-29">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-29</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--cyan)">New 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">9 changes landed: 7 fixed, 1 new, 1 performance.</p>
+      <p class="storyday-shape">11 changes landed: 7 fixed, 2 new, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-29">
         <b>v0.7.26</b><span>Save-format changes are now checked automatically</span>
       </a>
@@ -614,7 +614,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>Save-format changes are now checked automatically, so a save-shape change can no longer ship without its old-save test file.</li><li>Fire and lava fields cost less CPU when nothing is burning; they look exactly the same.</li><li>In the Forge's Trinkets tab the Slot, Unequip and Delete buttons now fit their words, and on a controller B backs out of a delete, LT and RT cycle the filters, and Y puts a trinket in Slot 2.</li><li>A controller player can now scroll the stats page and codex, browse the leaderboard and the tailor's rail, and file a report, with B closing each.</li></ul>
+      <ul><li>Save-format changes are now checked automatically, so a save-shape change can no longer ship without its old-save test file.</li><li>Fire and lava fields cost less CPU when nothing is burning; they look exactly the same.</li><li>In the Forge's Trinkets tab the Slot, Unequip and Delete buttons now fit their words, and on a controller B backs out of a delete, LT and RT cycle the filters, and Y puts a trinket in Slot 2.</li><li>A controller player can now scroll the stats page and codex, browse the leaderboard and the tailor's rail, and file a report, with B closing each.</li><li>The title screen loads a little lighter: the cheats and labs panels now load the first time you open them.</li></ul>
     </div>
 
   </div>
@@ -1011,6 +1011,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-29</h4>
 
+    <div class="row" data-kind="feat" id="chg-5b23265e7c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">start the longest test files first <span class="scope">(audit-suite-sequencer)</span></span>
+      <span class="sha">5b23265e7c</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-587b9aa085">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">build CheatsPanel and LabsPanel on first open (PERF-LOAD-7) <span class="scope">(boot)</span></span>
+      <span class="sha">587b9aa085</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-aad6b67bc5">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the five hub plaque panels answer a pad; PAD_DEBT is empty <span class="scope">(pad)</span></span>
@@ -1548,12 +1558,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@b06b69776c</code> on 2026-10-29 17:53 UTC.
+  Every number on this page came straight out of the game, read at <code>game@a72339d3df</code> on 2026-10-29 23:44 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">105 player-visible changes in the last 7 days, across 7 active days, 746 internal-only commits filtered out</div>
+  <div class="stat">107 player-visible changes in the last 7 days, across 7 active days, 781 internal-only commits filtered out</div>
 </footer>
 
 
