@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>937a00dd</code></span></div>
+    Live <b>0.7.26</b> · <code>77c7585b</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">92 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">97 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-10-28">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-28</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 7</span><span class="storyday-kind" style="background:var(--pink)">Fixed 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 9</span><span class="storyday-kind" style="background:var(--pink)">Fixed 5</span></span>
       </div>
-      <p class="storyday-shape">9 changes landed: 7 new, 2 fixed.</p>
+      <p class="storyday-shape">14 changes landed: 9 new, 5 fixed.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-28">
         <b>v0.7.26</b><span>Trinkets can now be equipped, earned and used in runs</span>
       </a>
@@ -1011,10 +1011,35 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-28</h4>
 
+    <div class="row" data-kind="feat" id="chg-34f29085fd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">Trinkets tab in the Arsenal Forge (view, equip, delete for Dust) <span class="scope">(trinket-forge-tab)</span></span>
+      <span class="sha">34f29085fd</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1763034f66">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a chest key pays once whatever the re-roll says; Warden chest nonce gets a mint <span class="scope">(mine-chest-retry-latch)</span></span>
+      <span class="sha">1763034f66</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-4a63ed69ba">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">import process from node:process in the two mythic tests so tsc -b is clean (house idiom)</span>
       <span class="sha">4a63ed69ba</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e8c8a2b59d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the no-crypto mint's entropy comes from the caller, not the sim <span class="scope">(install-nonce)</span></span>
+      <span class="sha">e8c8a2b59d</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8432efab4b">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">Mine floors seat chests at each room's anchor chest sites <span class="scope">(mine-loot-sites)</span></span>
+      <span class="sha">8432efab4b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-43be1d9191">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">settle never re-grants after a duplicate's Dust; nonce mints without crypto <span class="scope">(mine-chest)</span></span>
+      <span class="sha">43be1d9191</span>
     </div>
     <div class="row" data-kind="fix" id="chg-3d5c98ba1f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
@@ -1493,12 +1518,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@937a00ddf7</code> on 2026-10-28 22:59 UTC.
+  Every number on this page came straight out of the game, read at <code>game@77c7585b3e</code> on 2026-10-29 01:39 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">94 player-visible changes in the last 7 days, across 7 active days, 714 internal-only commits filtered out</div>
+  <div class="stat">99 player-visible changes in the last 7 days, across 7 active days, 744 internal-only commits filtered out</div>
 </footer>
 
 
