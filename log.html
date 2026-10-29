@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>8891de16</code></span></div>
+    Live <b>0.7.26</b> · <code>b06b6977</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,16 +509,18 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">94 player-visible changes landed in the last 7 days, across 5 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">103 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday is-quiet" id="day-2026-10-29">
+    <article class="storyday" id="day-2026-10-29">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-29</span>
-        <span class="storyday-kinds"></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
-
+      <p class="storyday-shape">9 changes landed: 7 fixed, 1 new, 1 performance.</p>
+      <a class="storyday-release" href="#release-0-7-26-2026-10-29">
+        <b>v0.7.26</b><span>Save-format changes are now checked automatically</span>
+      </a>
 
     </article>
     <article class="storyday" id="day-2026-10-28">
@@ -601,6 +603,22 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-26-2026-10-29">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-10-29</span>
+      <span class="notecard-version">v0.7.26</span>
+      <span class="notecard-source">added under this version</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">Save-format changes are now checked automatically</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>Save-format changes are now checked automatically, so a save-shape change can no longer ship without its old-save test file.</li><li>Fire and lava fields cost less CPU when nothing is burning; they look exactly the same.</li><li>In the Forge's Trinkets tab the Slot, Unequip and Delete buttons now fit their words, and on a controller B backs out of a delete, LT and RT cycle the filters, and Y puts a trinket in Slot 2.</li><li>A controller player can now scroll the stats page and codex, browse the leaderboard and the tailor's rail, and file a report, with B closing each.</li></ul>
+    </div>
+
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-26-2026-10-28">
     <div class="notecard-head">
       <span class="notecard-date">2026-10-28</span>
@@ -981,23 +999,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
   </div>
   </article>
-  <article class="notecard" id="release-0-7-23-2026-10-01">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-10-01</span>
-      <span class="notecard-version">v0.7.23</span>
-      <span class="notecard-source">added under this version</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">Ripcord and Hand Cannon aim up, and core animations sit centred</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>Ripcord and Hand Cannon shots now climb with your aim, and the muzzle flash and tracer follow.</li><li>Every core's close-up animation now sits centred in front of your hero.</li><li>The Ricochet Disc hits each enemy at most once per throw.</li><li>Shield stations stay off the minimap until you have explored their area.</li><li>Mirage Flats: the white patch floating on the sea is gone.</li></ul>
-    </div>
-
-  </div>
-  </article>
-      <p class="lede">52 earlier releases not shown here.</p>
+      <p class="lede">53 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1006,6 +1008,55 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <button class="chipf" data-kind="feat" type="button">New</button><button class="chipf" data-kind="fix" type="button">Fixed</button><button class="chipf" data-kind="balance" type="button">Balance</button><button class="chipf" data-kind="perf" type="button">Performance</button><button class="chipf" data-kind="style" type="button">Polish</button>
       </div>
 
+  <div class="day">
+    <h4>2026-10-29</h4>
+
+    <div class="row" data-kind="fix" id="chg-aad6b67bc5">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the five hub plaque panels answer a pad; PAD_DEBT is empty <span class="scope">(pad)</span></span>
+      <span class="sha">aad6b67bc5</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-428e2e644a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">retire --slug refuses live lane refs, reservations and wrong case; hoist base rev-parse <span class="scope">(claims)</span></span>
+      <span class="sha">428e2e644a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ffd7f48966">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Trinkets buttons keep their width in a flex row; the slot strip wraps at phone width</span>
+      <span class="sha">ffd7f48966</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a59fefbf14">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Forge Trinkets buttons fit their labels; a pad can cancel a delete, filter and pick Slot 2</span>
+      <span class="sha">a59fefbf14</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2bc65344a2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">batch the in-base ancestor test, cherry is opt-in (it costs ~1s a branch) <span class="scope">(claims)</span></span>
+      <span class="sha">2bc65344a2</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-c76dba4952">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">skip the per-frame grid sweeps while the field is cold and clean (PERF-RUNTIME-1) <span class="scope">(surfaces)</span></span>
+      <span class="sha">c76dba4952</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-560a28feb4">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">pad answers the five run offers (cursed statue, fallen warrior, locked pick, duel pick, arena packs); PAD_DEBT 10 to 5</span>
+      <span class="sha">560a28feb4</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5d3b249a22">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">census test resolves root via import.meta.url so tsc -b passes</span>
+      <span class="sha">5d3b249a22</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c8d90615a0">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">retire --slug, and a stale test for tips already inside base <span class="scope">(claims)</span></span>
+      <span class="sha">c8d90615a0</span>
+    </div>
+  </div>
   <div class="day">
     <h4>2026-10-28</h4>
 
@@ -1497,12 +1548,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@8891de1648</code> on 2026-10-29 07:06 UTC.
+  Every number on this page came straight out of the game, read at <code>game@b06b69776c</code> on 2026-10-29 17:51 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">96 player-visible changes in the last 7 days, across 6 active days, 655 internal-only commits filtered out</div>
+  <div class="stat">105 player-visible changes in the last 7 days, across 7 active days, 746 internal-only commits filtered out</div>
 </footer>
 
 
