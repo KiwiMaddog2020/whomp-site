@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>8d34fb48</code></span></div>
+    Live <b>0.7.26</b> · <code>8891de16</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">98 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">94 player-visible changes landed in the last 7 days, across 5 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday is-quiet" id="day-2026-10-29">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-10-29</span>
+        <span class="storyday-kinds"></span>
+      </div>
+      <p class="storyday-shape">Nothing player-visible landed.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-10-28">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-28</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 9</span><span class="storyday-kind" style="background:var(--pink)">Fixed 6</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 9</span><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span></span>
       </div>
-      <p class="storyday-shape">15 changes landed: 9 new, 6 fixed.</p>
+      <p class="storyday-shape">16 changes landed: 9 new, 7 fixed.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-28">
         <b>v0.7.26</b><span>Trinkets can now be equipped, earned and used in runs</span>
       </a>
@@ -572,17 +581,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
       <p class="storyday-shape">20 changes landed: 12 fixed, 8 new.</p>
 
-
-    </article>
-    <article class="storyday" id="day-2026-10-22">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-10-22</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
-      </div>
-      <p class="storyday-shape">5 changes landed: 4 fixed, 1 new.</p>
-      <a class="storyday-release" href="#release-0-7-25-2026-10-22">
-        <b>v0.7.25</b><span>After you bank the Void Rift, a new optional portal opens</span>
-      </a>
 
     </article></div>
   </section>
@@ -1011,6 +1009,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-28</h4>
 
+    <div class="row" data-kind="fix" id="chg-df31979dbd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a Mythic+ chest key grants at most one card whatever a retry rolls <span class="scope">(mythic-chest-key-latch)</span></span>
+      <span class="sha">df31979dbd</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-34f29085fd">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">Trinkets tab in the Arsenal Forge (view, equip, delete for Dust) <span class="scope">(trinket-forge-tab)</span></span>
@@ -1384,35 +1387,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
   </div>
   <div class="day">
-    <h4>2026-10-22</h4>
-
-    <div class="row" data-kind="fix" id="chg-bdc18d2f79">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">keep main's pack contact line verbatim, apply the Mine's damageScale after it <span class="scope">(mine-t5-run-loop-r2)</span></span>
-      <span class="sha">bdc18d2f79</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ce27662248">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">one sky on phones, frozen for a game switch (director M10, round 3 on main) <span class="scope">(arcade)</span></span>
-      <span class="sha">ce27662248</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3b72935073">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the deploy report hook matches deploy-tiered.sh, like the guard hook <span class="scope">(hooks)</span></span>
-      <span class="sha">3b72935073</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-6963986a8e">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">rift-heart-body two candidate bodies behind the lab switch <span class="scope">(render)</span></span>
-      <span class="sha">6963986a8e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3abd05894c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">cut the game-switch compositing spike on phones <span class="scope">(arcade)</span></span>
-      <span class="sha">3abd05894c</span>
-    </div>
-  </div>
-  <div class="day">
     <h4>2026-10-17</h4>
 
     <div class="row" data-kind="fix" id="chg-83817cdc87">
@@ -1523,12 +1497,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@8d34fb4875</code> on 2026-10-29 03:30 UTC.
+  Every number on this page came straight out of the game, read at <code>game@8891de1648</code> on 2026-10-29 07:04 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">100 player-visible changes in the last 7 days, across 7 active days, 754 internal-only commits filtered out</div>
+  <div class="stat">96 player-visible changes in the last 7 days, across 6 active days, 655 internal-only commits filtered out</div>
 </footer>
 
 
