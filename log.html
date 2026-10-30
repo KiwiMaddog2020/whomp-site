@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>9155892a</code></span></div>
+    Live <b>0.7.26</b> · <code>5ac9a015</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">91 player-visible changes landed in the last 7 days, across 5 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">97 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday is-quiet" id="day-2026-10-30">
+    <article class="storyday" id="day-2026-10-30">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-30</span>
-        <span class="storyday-kinds"></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span><span class="storyday-kind" style="background:var(--cyan)">New 2</span></span>
       </div>
-      <p class="storyday-shape">Nothing player-visible landed.</p>
+      <p class="storyday-shape">6 changes landed: 4 fixed, 2 new.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-30">
         <b>v0.7.26</b><span>The game now makes a better first guess at your graphics settings by looking at your graphics card</span>
       </a>
@@ -616,7 +616,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The game now makes a better first guess at your graphics settings by looking at your graphics card, your screen size and how smoothly the hub actually draws.</li><li>The Deep makes less garbage every frame, which smooths out small stutters.</li><li>New players now get a guided tutorial: the keeper walks you to Meadowfall and teaches the basics, and the old welcome card in the top right is gone.</li></ul>
+      <ul><li>The game now makes a better first guess at your graphics settings by looking at your graphics card, your screen size and how smoothly the hub actually draws.</li><li>The Deep makes less garbage every frame, which smooths out small stutters.</li><li>New players now get a guided tutorial: the keeper walks you to Meadowfall and teaches the basics, and the old welcome card in the top right is gone.</li><li>Pressing B in the feedback screenshot editor now steps back to the form, and a second B closes the panel.</li><li>Small helper text on the title and settings is easier to read, and battle HUD labels no longer shrink below a readable size on phones.</li></ul>
     </div>
 
   </div>
@@ -1010,6 +1010,40 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <button class="chipf" data-kind="feat" type="button">New</button><button class="chipf" data-kind="fix" type="button">Fixed</button><button class="chipf" data-kind="balance" type="button">Balance</button><button class="chipf" data-kind="perf" type="button">Performance</button><button class="chipf" data-kind="style" type="button">Polish</button>
       </div>
 
+  <div class="day">
+    <h4>2026-10-30</h4>
+
+    <div class="row" data-kind="fix" id="chg-ad4ad0a0bd">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">first sign-in lifts both sides to one rewind generation; a generation-losing upload backs up the device's save <span class="scope">(save)</span></span>
+      <span class="sha">ad4ad0a0bd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-2d4504c468">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">rewind generation so WHOMP-REWIND wins every later sync whole <span class="scope">(save)</span></span>
+      <span class="sha">2d4504c468</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7f7d0f7fad">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">chests can pay Settling Debt, closed rungs pay upward, Warden end chest Dust base 20 <span class="scope">(loot)</span></span>
+      <span class="sha">7f7d0f7fad</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-97897a9702">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">helper text at .62 via one token; phone HUD labels at a 10px floor</span>
+      <span class="sha">97897a9702</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cdd4423a7b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">B in the markup editor backs out to the form first; a second B closes <span class="scope">(feedback)</span></span>
+      <span class="sha">cdd4423a7b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3d6662bd30">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a one-row exploded batch re-runs its base-green reds once on the composed tree before FAIL-REAL <span class="scope">(land-chain)</span></span>
+      <span class="sha">3d6662bd30</span>
+    </div>
+  </div>
   <div class="day">
     <h4>2026-10-29</h4>
 
@@ -1481,12 +1515,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@9155892a6e</code> on 2026-10-30 12:17 UTC.
+  Every number on this page came straight out of the game, read at <code>game@5ac9a01573</code> on 2026-10-30 16:09 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">92 player-visible changes in the last 7 days, across 6 active days, 726 internal-only commits filtered out</div>
+  <div class="stat">98 player-visible changes in the last 7 days, across 7 active days, 761 internal-only commits filtered out</div>
 </footer>
 
 
