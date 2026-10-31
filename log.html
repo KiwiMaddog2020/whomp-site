@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>5ac9a015</code></span></div>
+    Live <b>0.7.26</b> · <code>d7ad1f9d</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">97 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">138 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-10-30">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-30</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 4</span><span class="storyday-kind" style="background:var(--cyan)">New 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 29</span><span class="storyday-kind" style="background:var(--cyan)">New 7</span></span>
       </div>
-      <p class="storyday-shape">6 changes landed: 4 fixed, 2 new.</p>
+      <p class="storyday-shape">36 changes landed: 29 fixed, 7 new.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-30">
         <b>v0.7.26</b><span>The game now makes a better first guess at your graphics settings by looking at your graphics card</span>
       </a>
@@ -526,9 +526,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-29">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-29</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 8</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span><span class="storyday-kind" style="background:var(--gold)">Performance 3</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 12</span><span class="storyday-kind" style="background:var(--cyan)">New 11</span><span class="storyday-kind" style="background:var(--gold)">Performance 5</span></span>
       </div>
-      <p class="storyday-shape">17 changes landed: 8 fixed, 6 new, 3 performance.</p>
+      <p class="storyday-shape">28 changes landed: 12 fixed, 11 new, 5 performance.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-29">
         <b>v0.7.26</b><span>Save-format changes are now checked automatically</span>
       </a>
@@ -1013,40 +1013,145 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-30</h4>
 
+    <div class="row" data-kind="fix" id="chg-084476d70e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">write quotes in the sw stamp regexes as \x escapes so registry-guard's string masker stays in sync <span class="scope">(sw-precache)</span></span>
+      <span class="sha">084476d70e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-7f1d7f66d0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">phone control roots join the hide-chrome list <span class="scope">(shot)</span></span>
+      <span class="sha">7f1d7f66d0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d5da70a059">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">compose governor settings move with rewind generation on the save-hash chain <span class="scope">(frame-governor-r4)</span></span>
+      <span class="sha">d5da70a059</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2c9dd91fa9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">take any open offer by its 1 key; leash fight beats to the core stands <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">2c9dd91fa9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a71937f843">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">every move is a bounded pulse; portal by distance, not the keeper's banner; cheap loaded-module check <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">a71937f843</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-b0d8832bd2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">each live handle is a heap walk found once and kept, never re-asked <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">b0d8832bd2</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6b9f1fb481">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a level trip's poster counts as a loading screen too <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">6b9f1fb481</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f0b3094aae">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">controls above the HUD layer; route by the element the browser hit <span class="scope">(phone)</span></span>
+      <span class="sha">f0b3094aae</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-af10255f3e">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close in on a target by pulses, not a held key that sweeps past it <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">af10255f3e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cfedc038e0">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">step round obstacles on a clock-based stuck watch <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">cfedc038e0</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6696da011a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">realpath entrypoint guard (tests/binEntrypointGuards census was red on this file) <span class="scope">(png-lossless)</span></span>
+      <span class="sha">6696da011a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-1121f4e210">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">harden tier-rankings guard (/^tier-rankings[-.]/ + 1 MB json backstop), provenance line, stale comment <span class="scope">(dev-doors)</span></span>
+      <span class="sha">1121f4e210</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5971194d4c">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">refresh sourceFingerprint after frost-shale lossless re-encode (provenance only, pixels unchanged) <span class="scope">(wiki-visuals)</span></span>
+      <span class="sha">5971194d4c</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-ad4ad0a0bd">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">first sign-in lifts both sides to one rewind generation; a generation-losing upload backs up the device's save <span class="scope">(save)</span></span>
       <span class="sha">ad4ad0a0bd</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-2d4504c468">
+    <div class="row" data-kind="fix" id="chg-2a831b39b9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">chain entry names a real meta fixture; screenshake fixture walk accepts post-screenshake captures <span class="scope">(frame-governor)</span></span>
+      <span class="sha">2a831b39b9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3e36654095">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">register the worker after load, warm the run's lazy world chunks <span class="scope">(sw)</span></span>
+      <span class="sha">3e36654095</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-49e9a0e193">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the statue's and the grave's answers fit a sideways phone <span class="scope">(offers)</span></span>
+      <span class="sha">49e9a0e193</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cb805cf489">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">clone the HUD dial art instead of importing hud.ts <span class="scope">(phone)</span></span>
+      <span class="sha">cb805cf489</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-32c301c73e">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">rewind generation so WHOMP-REWIND wins every later sync whole <span class="scope">(save)</span></span>
-      <span class="sha">2d4504c468</span>
+      <span class="what">aim stick, ability arc, cooldown dials and multi-touch, through the pad's verbs <span class="scope">(phone)</span></span>
+      <span class="sha">32c301c73e</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-7f7d0f7fad">
+    <div class="row" data-kind="feat" id="chg-03633ef4ca">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">chests can pay Settling Debt, closed rungs pay upward, Warden end chest Dust base 20 <span class="scope">(loot)</span></span>
-      <span class="sha">7f7d0f7fad</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-97897a9702">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">helper text at .62 via one token; phone HUD labels at a 10px floor</span>
-      <span class="sha">97897a9702</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cdd4423a7b">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">B in the markup editor backs out to the form first; a second B closes <span class="scope">(feedback)</span></span>
-      <span class="sha">cdd4423a7b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3d6662bd30">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a one-row exploded batch re-runs its base-green reds once on the composed tree before FAIL-REAL <span class="scope">(land-chain)</span></span>
-      <span class="sha">3d6662bd30</span>
-    </div>
+      <span class="what">a thumb answers every run offer and draft card <span class="scope">(offers)</span></span>
+      <span class="sha">03633ef4ca</span>
+    </div><div class="row more">+ 16 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-29</h4>
 
+    <div class="row" data-kind="fix" id="chg-9f8d7cc21d">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">Meadowfall portal resolved live from hubZones ALL_PORTAL_ANCHORS <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">9f8d7cc21d</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0fa42c2b97">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">look as a middle drag; holds and timeouts sized for SwiftShader's frame rate <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">0fa42c2b97</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-60bdeda5e9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">hub steering from PlayerController's own wish convention; frame-tolerant run probes <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">60bdeda5e9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-87aadc6b26">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">widen Resource Timing buffer; case-blind intro skip label <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">87aadc6b26</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-96c7ef6c33">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">closed-loop steering, beat-aware meadow play, unit tests (tests/firstTwentyCapture.test.mjs) <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">96c7ef6c33</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-c36c8a768c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">first-twenty CDP capture driver, beat table and MISSED path <span class="scope">(review-capture-driver)</span></span>
+      <span class="sha">c36c8a768c</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-9708d3160b">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">keep one mesh per batch; the shadow pass draws its leading casting range <span class="scope">(mine)</span></span>
+      <span class="sha">9708d3160b</span>
+    </div>
     <div class="row" data-kind="feat" id="chg-820953cc2b">
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">the tutorial replay ends at the core picker <span class="scope">(tutorial)</span></span>
@@ -1056,6 +1161,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--cyan)">New</span>
       <span class="what">guidedTutorial default ON <span class="scope">(dev-toggles)</span></span>
       <span class="sha">632e17fa62</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-99020bc5f6">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">wire the governor at the presented-frame seam, perf HUD line, feedback field, tier-drop strip <span class="scope">(frame-governor)</span></span>
+      <span class="sha">99020bc5f6</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-bf76027e09">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">cast shadows only from members large enough to read, in the lit room <span class="scope">(mine)</span></span>
+      <span class="sha">bf76027e09</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-95d094234e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">Auto Performance settings row and the session-only governed tier door <span class="scope">(frame-governor)</span></span>
+      <span class="sha">95d094234e</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-d3fb929f4a">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">pure frame governor with resolution ladder, tier steps and anti-flap hysteresis <span class="scope">(frame-governor)</span></span>
+      <span class="sha">d3fb929f4a</span>
     </div>
     <div class="row" data-kind="feat" id="chg-dda0315a55">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1091,47 +1216,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">retire --slug refuses live lane refs, reservations and wrong case; hoist base rev-parse <span class="scope">(claims)</span></span>
       <span class="sha">428e2e644a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ffd7f48966">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Trinkets buttons keep their width in a flex row; the slot strip wraps at phone width</span>
-      <span class="sha">ffd7f48966</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a59fefbf14">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Forge Trinkets buttons fit their labels; a pad can cancel a delete, filter and pick Slot 2</span>
-      <span class="sha">a59fefbf14</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2bc65344a2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">batch the in-base ancestor test, cherry is opt-in (it costs ~1s a branch) <span class="scope">(claims)</span></span>
-      <span class="sha">2bc65344a2</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-c76dba4952">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">skip the per-frame grid sweeps while the field is cold and clean (PERF-RUNTIME-1) <span class="scope">(surfaces)</span></span>
-      <span class="sha">c76dba4952</span>
-    </div>
-    <div class="row" data-kind="perf" id="chg-cb8514adb7">
-      <span class="kind" style="background:var(--gold)">Performance</span>
-      <span class="what">hoist collision closures, index-loop the camera pass, diff the HUD writes (audit-deep-frame-alloc) <span class="scope">(deep)</span></span>
-      <span class="sha">cb8514adb7</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-560a28feb4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">pad answers the five run offers (cursed statue, fallen warrior, locked pick, duel pick, arena packs); PAD_DEBT 10 to 5</span>
-      <span class="sha">560a28feb4</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5d3b249a22">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">census test resolves root via import.meta.url so tsc -b passes</span>
-      <span class="sha">5d3b249a22</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c8d90615a0">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">retire --slug, and a stale test for tips already inside base <span class="scope">(claims)</span></span>
-      <span class="sha">c8d90615a0</span>
-    </div>
+    </div><div class="row more">+ 8 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-28</h4>
@@ -1515,12 +1600,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@5ac9a01573</code> on 2026-10-30 16:10 UTC.
+  Every number on this page came straight out of the game, read at <code>game@d7ad1f9ddc</code> on 2026-10-31 01:11 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">98 player-visible changes in the last 7 days, across 7 active days, 761 internal-only commits filtered out</div>
+  <div class="stat">139 player-visible changes in the last 7 days, across 7 active days, 831 internal-only commits filtered out</div>
 </footer>
 
 
