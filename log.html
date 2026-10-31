@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>8db52e3a</code></span></div>
+    Live <b>0.7.26</b> · <code>5ce8d2df</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,7 +509,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">100 player-visible changes landed in the last 7 days, across 5 of them. None of those days ended in a release, so none of it has reached a player yet.
+    <p class="lede">116 player-visible changes landed in the last 7 days, across 5 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday is-quiet" id="day-2026-10-31">
@@ -518,15 +518,17 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <span class="storyday-kinds"></span>
       </div>
       <p class="storyday-shape">Nothing player-visible landed.</p>
-
+      <a class="storyday-release" href="#release-0-7-26-2026-10-31">
+        <b>v0.7.26</b><span>none (the cost was located and cut in the render path only; nothing a player sees changes)</span>
+      </a>
 
     </article>
     <article class="storyday" id="day-2026-10-30">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-30</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 31</span><span class="storyday-kind" style="background:var(--cyan)">New 9</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 43</span><span class="storyday-kind" style="background:var(--cyan)">New 12</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
       </div>
-      <p class="storyday-shape">40 changes landed: 31 fixed, 9 new.</p>
+      <p class="storyday-shape">56 changes landed: 43 fixed, 12 new, 1 balance.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-30">
         <b>v0.7.26</b><span>The game now makes a better first guess at your graphics settings by looking at your graphics card</span>
       </a>
@@ -603,6 +605,22 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-26-2026-10-31">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-10-31</span>
+      <span class="notecard-version">v0.7.26</span>
+      <span class="notecard-source">added under this version</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">none (the cost was located and cut in the render path only; nothing a player sees changes)</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>none (the cost was located and cut in the render path only; nothing a player sees changes)</li><li>Plasma Shield now grinds bosses a little faster, and Gravemaker's second quake reaches a little farther, so both hit big targets harder.</li></ul>
+    </div>
+
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-26-2026-10-30">
     <div class="notecard-head">
       <span class="notecard-date">2026-10-30</span>
@@ -983,23 +1001,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
   </div>
   </article>
-  <article class="notecard" id="release-0-7-23-2026-10-04">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-10-04</span>
-      <span class="notecard-version">v0.7.23</span>
-      <span class="notecard-source">added under this version</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">A sandstorm in Mirage Flats, a neon Meadowfall, and legendaries in the Deep</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>Once a run, a sandstorm blows across Mirage Flats and shortens your sight, but the pyramid never disappears.</li><li>Meadowfall has a new neon colour scheme, and its horde, minibosses and statue boss wear it too.</li><li>In the Deep, your first stage two boss kill offers you a legendary, and more turn up over time, as on the maps.</li><li>The Hand Cannon shows its hammer, heat, reload and fan as light in front of you, and throws spent brass.</li><li>Leaving the Tailor's Wardrobe with Escape no longer traps the camera, and a controller's Start button now closes it.</li></ul>
-    </div>
-
-  </div>
-  </article>
-      <p class="lede">54 earlier releases not shown here.</p>
+      <p class="lede">55 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1011,6 +1013,86 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-30</h4>
 
+    <div class="row" data-kind="fix" id="chg-12cec04feb">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no-change silences only a wholly no-change note and logs it with text and rule; about-the-change narrowed; lane-finish names the no-change read <span class="scope">(deploy-on-land)</span></span>
+      <span class="sha">12cec04feb</span>
+    </div>
+    <div class="row" data-kind="balance" id="chg-25c87eff7e">
+      <span class="kind" style="background:var(--violet)">Balance</span>
+      <span class="what">lift the Plasma Shield L1 and Gravemaker boss rows out of F (one dial each)</span>
+      <span class="sha">25c87eff7e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-783dd1de9a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">PLAIN_NOTE_RULES gains no-change and about-the-change <span class="scope">(deploy-on-land)</span></span>
+      <span class="sha">783dd1de9a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-174febb7ae">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">usage from USAGE.log, 48h board rule, UNKNOWN numbering, refuse stale first-message <span class="scope">(handoff)</span></span>
+      <span class="sha">174febb7ae</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-bd4429a7a6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">close the campaign-authored-ending deferred row; the ending is on main</span>
+      <span class="sha">bd4429a7a6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-7d3e8fe588">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">frame-render-probe --heap-profile (dev-only), which function allocates inside a stage</span>
+      <span class="sha">7d3e8fe588</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-ae98e6b72c">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">frame-alloc-probe --profile, self bytes per function with no wrapper in the run</span>
+      <span class="sha">ae98e6b72c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-8b7121dc2f">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">horde uploadRange reuses its range object (124 KB to 13 KB per frame at 232 bodies)</span>
+      <span class="sha">8b7121dc2f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2cb8d411c7">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no-unused-vars in tests</span>
+      <span class="sha">2cb8d411c7</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-e00bbe2c58">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">merge budget-ledger.tsv and FABLE_CONSULTS.tsv by union (AUDIT_2026-10-29 LAND-1) <span class="scope">(land)</span></span>
+      <span class="sha">e00bbe2c58</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5d21089dbf">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no-unused-vars in bin (all but tier-engine.mjs)</span>
+      <span class="sha">5d21089dbf</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-cdc4dc44f3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no-useless-assignment (12 of 14; 2 sit in gate-shard-* pipeline files)</span>
+      <span class="sha">cdc4dc44f3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-94d4b6ba49">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a path the diff deletes derives no lane slug <span class="scope">(merge-check)</span></span>
+      <span class="sha">94d4b6ba49</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-310234b4fa">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">publish a derived reason for every unmeasured WeaponDef <span class="scope">(tier-engine)</span></span>
+      <span class="sha">310234b4fa</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2164502174">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">control-regex, regex-spaces, useless-escape, preserve-caught-error</span>
+      <span class="sha">2164502174</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-4d4b4324b3">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">no-unsafe-finally (3), plus the same files' bytes/empty/unused hunks</span>
+      <span class="sha">4d4b4324b3</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-028c07ab49">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">tier page smoke excuses only a same-origin /version.json 404</span>
@@ -1030,87 +1112,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">compose governor settings move with rewind generation on the save-hash chain <span class="scope">(frame-governor-r4)</span></span>
       <span class="sha">d5da70a059</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2c9dd91fa9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">take any open offer by its 1 key; leash fight beats to the core stands <span class="scope">(review-capture-driver)</span></span>
-      <span class="sha">2c9dd91fa9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a71937f843">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">every move is a bounded pulse; portal by distance, not the keeper's banner; cheap loaded-module check <span class="scope">(review-capture-driver)</span></span>
-      <span class="sha">a71937f843</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-b0d8832bd2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">each live handle is a heap walk found once and kept, never re-asked <span class="scope">(review-capture-driver)</span></span>
-      <span class="sha">b0d8832bd2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6b9f1fb481">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a level trip's poster counts as a loading screen too <span class="scope">(review-capture-driver)</span></span>
-      <span class="sha">6b9f1fb481</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f0b3094aae">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">controls above the HUD layer; route by the element the browser hit <span class="scope">(phone)</span></span>
-      <span class="sha">f0b3094aae</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-af10255f3e">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close in on a target by pulses, not a held key that sweeps past it <span class="scope">(review-capture-driver)</span></span>
-      <span class="sha">af10255f3e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cfedc038e0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">step round obstacles on a clock-based stuck watch <span class="scope">(review-capture-driver)</span></span>
-      <span class="sha">cfedc038e0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6696da011a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">realpath entrypoint guard (tests/binEntrypointGuards census was red on this file) <span class="scope">(png-lossless)</span></span>
-      <span class="sha">6696da011a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1121f4e210">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">harden tier-rankings guard (/^tier-rankings[-.]/ + 1 MB json backstop), provenance line, stale comment <span class="scope">(dev-doors)</span></span>
-      <span class="sha">1121f4e210</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5971194d4c">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">refresh sourceFingerprint after frost-shale lossless re-encode (provenance only, pixels unchanged) <span class="scope">(wiki-visuals)</span></span>
-      <span class="sha">5971194d4c</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-ad4ad0a0bd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">first sign-in lifts both sides to one rewind generation; a generation-losing upload backs up the device's save <span class="scope">(save)</span></span>
-      <span class="sha">ad4ad0a0bd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-2a831b39b9">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">chain entry names a real meta fixture; screenshake fixture walk accepts post-screenshake captures <span class="scope">(frame-governor)</span></span>
-      <span class="sha">2a831b39b9</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3e36654095">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">register the worker after load, warm the run's lazy world chunks <span class="scope">(sw)</span></span>
-      <span class="sha">3e36654095</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-49e9a0e193">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the statue's and the grave's answers fit a sideways phone <span class="scope">(offers)</span></span>
-      <span class="sha">49e9a0e193</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-cb805cf489">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">clone the HUD dial art instead of importing hud.ts <span class="scope">(phone)</span></span>
-      <span class="sha">cb805cf489</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-4972d32b0d">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">hero rigs load through a lazy registry, out of the run-start closure <span class="scope">(avatars)</span></span>
-      <span class="sha">4972d32b0d</span>
-    </div><div class="row more">+ 20 more that day, not shown</div>
+    </div><div class="row more">+ 36 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-29</h4>
@@ -1494,12 +1496,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@8db52e3a12</code> on 2026-10-31 16:59 UTC.
+  Every number on this page came straight out of the game, read at <code>game@5ce8d2df4c</code> on 2026-10-31 23:08 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">101 player-visible changes in the last 7 days, across 6 active days, 633 internal-only commits filtered out</div>
+  <div class="stat">117 player-visible changes in the last 7 days, across 6 active days, 707 internal-only commits filtered out</div>
 </footer>
 
 
