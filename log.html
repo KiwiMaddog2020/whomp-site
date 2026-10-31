@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>d7ad1f9d</code></span></div>
+    Live <b>0.7.26</b> · <code>579328b2</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,24 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">138 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">99 player-visible changes landed in the last 7 days, across 5 of them. None of those days ended in a release, so none of it has reached a player yet.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday is-quiet" id="day-2026-10-31">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-10-31</span>
+        <span class="storyday-kinds"></span>
+      </div>
+      <p class="storyday-shape">Nothing player-visible landed.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-10-30">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-30</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 29</span><span class="storyday-kind" style="background:var(--cyan)">New 7</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 30</span><span class="storyday-kind" style="background:var(--cyan)">New 9</span></span>
       </div>
-      <p class="storyday-shape">36 changes landed: 29 fixed, 7 new.</p>
+      <p class="storyday-shape">39 changes landed: 30 fixed, 9 new.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-30">
         <b>v0.7.26</b><span>The game now makes a better first guess at your graphics settings by looking at your graphics card</span>
       </a>
@@ -573,17 +582,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">8 changes landed: 7 fixed, 1 balance.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-25">
         <b>v0.7.26</b><span>Structure trials now appear at Fern Hollow, Stillwater's Pier Village, the Orchard Temple</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-10-24">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-10-24</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 24</span><span class="storyday-kind" style="background:var(--cyan)">New 18</span></span>
-      </div>
-      <p class="storyday-shape">42 changes landed: 24 fixed, 18 new.</p>
-      <a class="storyday-release" href="#release-0-7-26">
-        <b>v0.7.26</b><span>after your first death the hub points you at the shop stall once, when you can afford a rank</span>
       </a>
 
     </article></div>
@@ -1013,6 +1011,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-10-30</h4>
 
+    <div class="row" data-kind="fix" id="chg-028c07ab49">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">tier page smoke excuses only a same-origin /version.json 404</span>
+      <span class="sha">028c07ab49</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-084476d70e">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">write quotes in the sw stamp regexes as \x escapes so registry-guard's string masker stays in sync <span class="scope">(sw-precache)</span></span>
@@ -1103,16 +1106,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">clone the HUD dial art instead of importing hud.ts <span class="scope">(phone)</span></span>
       <span class="sha">cb805cf489</span>
     </div>
-    <div class="row" data-kind="feat" id="chg-32c301c73e">
+    <div class="row" data-kind="feat" id="chg-4972d32b0d">
       <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">aim stick, ability arc, cooldown dials and multi-touch, through the pad's verbs <span class="scope">(phone)</span></span>
-      <span class="sha">32c301c73e</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-03633ef4ca">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">a thumb answers every run offer and draft card <span class="scope">(offers)</span></span>
-      <span class="sha">03633ef4ca</span>
-    </div><div class="row more">+ 16 more that day, not shown</div>
+      <span class="what">hero rigs load through a lazy registry, out of the run-start closure <span class="scope">(avatars)</span></span>
+      <span class="sha">4972d32b0d</span>
+    </div><div class="row more">+ 19 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-29</h4>
@@ -1391,110 +1389,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
   </div>
   <div class="day">
-    <h4>2026-10-24</h4>
-
-    <div class="row" data-kind="feat" id="chg-bec94ccbc4">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the helper DOWN line heals first (P5) <span class="scope">(conductor-check)</span></span>
-      <span class="sha">bec94ccbc4</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-15c7af7ba8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">bin/wake-pc.mjs sends the PC's Wake-on-LAN packet (P3) <span class="scope">(pc-bench)</span></span>
-      <span class="sha">15c7af7ba8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d95c8127ad">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">drop the pink and cyan bars flanking the title slogan, keep the submark lines (kit v2.1.0) <span class="scope">(ui)</span></span>
-      <span class="sha">d95c8127ad</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4bb1cd2083">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the site step reads the tree the deploy gated, not ../whomp <span class="scope">(deploy)</span></span>
-      <span class="sha">4bb1cd2083</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-754b58b136">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">three full-suite row-reds at cause <span class="scope">(structure-collision-audit-r2)</span></span>
-      <span class="sha">754b58b136</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-073906c339">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">file WEAPON_ROSTER.md under a records row; drop the empty catch <span class="scope">(docs)</span></span>
-      <span class="sha">073906c339</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-579cef3f5f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">sky-gate the hit test for aimed-up Glass Cannon slugs and pistol rounds <span class="scope">(sim)</span></span>
-      <span class="sha">579cef3f5f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d7ffc3e204">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">generated weapon roster page with a --check drift test <span class="scope">(docs)</span></span>
-      <span class="sha">d7ffc3e204</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-02cd00ce96">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the coil throw aims at the struck body's centre, not its feet <span class="scope">(arcCaster)</span></span>
-      <span class="sha">02cd00ce96</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5633a2f1d8">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">publish umbraHitY only once struck, and move the census and aim-dist pins <span class="scope">(aim)</span></span>
-      <span class="sha">5633a2f1d8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-f8f9d5fda4">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the live queue counts its header and rules, not its rows (conductor ceiling 100935 -&gt; 34693) <span class="scope">(boot-budget)</span></span>
-      <span class="sha">f8f9d5fda4</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-9130d31a84">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Frost Lance and the Void Pulse Rifle follow up and down aim like the guns <span class="scope">(aim)</span></span>
-      <span class="sha">9130d31a84</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-98bad6a191">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">structure trials on Scorchdune, Sunken Sands, Frostreach Pines and The Ascent <span class="scope">(trials)</span></span>
-      <span class="sha">98bad6a191</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-2047eb04c9">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Fern Hollow, Pier Village, Orchard Temple and Caravan Graveyard trials <span class="scope">(structure-trials)</span></span>
-      <span class="sha">2047eb04c9</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-1f18b29800">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Shiverpeak Summit, Ember, Hellmouth and Void Rift trials <span class="scope">(structure-trials)</span></span>
-      <span class="sha">1f18b29800</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-a0cfb41898">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">Hellmouth causeway decks stay walk-through for the horde, never spawned in <span class="scope">(nav)</span></span>
-      <span class="sha">a0cfb41898</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c7822dd52f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">run the MCP guard hook as node bin/mcp-guard.mjs so it fails closed (V0d r2) <span class="scope">(studio)</span></span>
-      <span class="sha">c7822dd52f</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-9c49a5e14d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the inbox gate fails closed; landing tools derived from the lander; desk C1 guarded surfaces need a tier2 consult for that sha <span class="scope">(fable-consult)</span></span>
-      <span class="sha">9c49a5e14d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-6600440083">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">only a ground pick ends the slug in the ground; hold a body's height past it <span class="scope">(glassCannon)</span></span>
-      <span class="sha">6600440083</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-d75aabec23">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the slug aims up and down like the guns <span class="scope">(glassCannon)</span></span>
-      <span class="sha">d75aabec23</span>
-    </div><div class="row more">+ 22 more that day, not shown</div>
-  </div>
-  <div class="day">
     <h4>2026-10-14</h4>
 
     <div class="row" data-kind="feat" id="chg-92e0767799">
@@ -1600,12 +1494,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@d7ad1f9ddc</code> on 2026-10-31 01:12 UTC.
+  Every number on this page came straight out of the game, read at <code>game@579328b281</code> on 2026-10-31 07:08 UTC.
 
   The game is serving <code>0.7.26</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">139 player-visible changes in the last 7 days, across 7 active days, 831 internal-only commits filtered out</div>
+  <div class="stat">100 player-visible changes in the last 7 days, across 6 active days, 614 internal-only commits filtered out</div>
 </footer>
 
 
