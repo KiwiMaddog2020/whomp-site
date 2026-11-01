@@ -152,6 +152,12 @@ export const SOURCE_LABEL = {
 /** The full feed and the day-by-day story cover this many calendar days. */
 export const FEED_WINDOW_DAYS = 7;
 
+/* index.html only needs the headline numbers. log.html's full view gets the
+ * real feed, capped per day so a burst day (150+ commits) reads as a feed
+ * rather than a wall, with the drop count said out loud. */
+export const LOG_DAYS_CAP = 30;
+export const PER_DAY_CAP = 20;
+
 export const PLAYER_VISIBLE = /^(feat|fix|balance|perf|style)(\(|:)/;
 export const NOISE = /^(docs|chore|test|refactor|merge|revert)(\(|:)/i;
 export const KIND_LABEL = { feat: 'New', fix: 'Fixed', balance: 'Balance', perf: 'Performance', style: 'Polish' };

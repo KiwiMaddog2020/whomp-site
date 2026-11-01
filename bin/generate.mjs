@@ -60,7 +60,7 @@ import { readableNights } from './devlog.mjs';
 import {
   BUG_FIXES_SHOWN, conciseModel, cleanDoc, dayByDay, FEED_WINDOW_DAYS, feedDays, feedLogArgs, feedWindow,
   FOOTER_LEAD, indexDescription, indexTitle, KIND_INK, KIND_LABEL, LANDING_COPY, LANDING_LOG_ENTRIES, LOG_COPY, noEmDash,
-  readNotes, slug, SOURCE_LABEL, TAGLINE,
+  LOG_DAYS_CAP, PER_DAY_CAP, readNotes, slug, SOURCE_LABEL, TAGLINE,
 } from './site-copy.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import { resolveGameRepo } from './game-repo.mjs';
@@ -545,11 +545,8 @@ const totalShipped = [...days.values()].reduce((n, d) => n + d.length, 0);
  * taken: it is a different claim about the project, and it is not what was
  * asked for. */
 
-/* index.html only needs the headline numbers. log.html's full view gets the
- * real feed, capped per day so a burst day (150+ commits) reads as a feed
- * rather than a wall, with the drop count said out loud. */
-const LOG_DAYS_CAP = 30;
-const PER_DAY_CAP = 20;
+/* LOG_DAYS_CAP and PER_DAY_CAP, the full view's caps, live in bin/site-copy.mjs
+ * beside the window they cap. */
 const fullFeed = allDays.slice(0, LOG_DAYS_CAP);
 const renderedChanges = fullFeed.flatMap(([, changes]) => changes.slice(0, PER_DAY_CAP));
 
