@@ -56,7 +56,12 @@ import { createHash } from 'node:crypto';
 import { writeFileSync, readFileSync, readdirSync, existsSync, mkdirSync, unlinkSync } from 'node:fs';
 import { resolve, join, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildStory, readableNights, windowDates } from './devlog.mjs';
+import { readableNights } from './devlog.mjs';
+import {
+  BUG_FIXES_SHOWN, conciseModel, cleanDoc, dayByDay, FEED_WINDOW_DAYS, feedDays, feedLogArgs, feedWindow,
+  FOOTER_LEAD, indexDescription, indexTitle, KIND_INK, KIND_LABEL, LANDING_COPY, LANDING_LOG_ENTRIES, LOG_COPY, noEmDash,
+  readNotes, slug, TAGLINE,
+} from './site-copy.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import { resolveGameRepo } from './game-repo.mjs';
 import {
@@ -143,23 +148,8 @@ const git = (...a) => execFileSync('git', ['-C', REPO, ...a], { encoding: 'utf8'
 
 // ---------------------------------------------------------------- text helpers
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'x';
 
-/** Source docs in the game repo were written for engineers and sometimes carry
- *  an em dash. NO EM DASHES ANYWHERE is a site law, so any text pulled from a
- *  source doc goes through this before it reaches HTML. */
-const EM_DASH = String.fromCharCode(8212);
-const EN_DASH = String.fromCharCode(8211);
-const noEmDash = (s) => String(s)
-  .replace(new RegExp(`\\s*${EM_DASH}\\s*`, 'g'), ', ')
-  .replace(new RegExp(`\\s*${EN_DASH}\\s*`, 'g'), '-')
-  .replace(new RegExp(EM_DASH, 'g'), '-')
-  .replace(new RegExp(EN_DASH, 'g'), '-');
-
-/** Strips markdown decoration (bold, backticks) from text lifted out of a repo
- *  doc, then runs it through noEmDash. Used for bug-inventory / backlog text
- *  that was authored for engineers, not for the inline markdown in notes/. */
-const cleanDoc = (s) => noEmDash(String(s).replace(/\*\*/g, '').replace(/`([^`]*)`/g, '$1').replace(/\s+/g, ' ').trim());
+/* slug, noEmDash and cleanDoc live in bin/site-copy.mjs, beside the copy that uses them. */
 
 /** Minimal inline markdown for notes/*.md body text: escape first, then apply
  *  **bold** and ||spoiler|| on the escaped (safe) string. No other markdown is
@@ -292,12 +282,7 @@ const socialIconBytes = readFileSync(SOCIAL_ICON_PATH);
 
 // ---------------------------------------------------------------- derive: identity
 const pkg = JSON.parse(readFileSync(join(REPO, 'package.json'), 'utf8'));
-/* AUTHORED, deliberately NOT derived from package.json. The repo description is
- * written for developers and name-drops the two games WHOMP gets compared to,
- * which the director cut as "a bit much" for a public page: leading with someone
- * else's games sells theirs, not ours. This is the one string on the site that is
- * marketing copy rather than repo truth, so it lives here and Kevin owns it. */
-const TAGLINE = 'A 3D horde-survivor where one weapon is yours to aim.';
+/* TAGLINE, the one marketing line, lives in bin/site-copy.mjs with the reason it is authored. */
 
 /* Provenance names the exact checkout whose artifacts were just verified, not
  * whatever commit the local `main` ref happens to point at. Deploy normally
@@ -501,7 +486,6 @@ for (const track of tracks) {
  *
  * IT WILL STILL GO DOWN, and that is now correct rather than confusing: a
  * trailing window drops what ages past it, and the sentence says trailing. */
-const FEED_WINDOW_DAYS = 7;
 /* LOCAL date, not `toISOString()`, and the first run of this code proved why:
  * a UTC boundary is a different day for most of the evening in this timezone.
  * `--date=short-local` (2026-08-07): plain `--date=short` prints each commit
@@ -521,28 +505,11 @@ const FEED_WINDOW_DAYS = 7;
  * and the story would report its own source as out of window. One function now
  * produces both, so the two cannot disagree about what seven days means. */
 const REFERENCE_DAY = localDay();
-const STORY_DATES = windowDates(REFERENCE_DAY, FEED_WINDOW_DAYS);
-const windowStart = STORY_DATES[STORY_DATES.length - 1];
-const RAW = git(
-  'log', 'main', '--date=short-local', '--pretty=%h\x1f%ad\x1f%s',
-  `--since=${windowStart} 00:00:00`,
-).split('\n');
-const PLAYER_VISIBLE = /^(feat|fix|balance|perf|style)(\(|:)/;
-const NOISE = /^(docs|chore|test|refactor|merge|revert)(\(|:)/i;
-const KIND_LABEL = { feat: 'New', fix: 'Fixed', balance: 'Balance', perf: 'Performance', style: 'Polish' };
-const KIND_INK = { feat: '--cyan', fix: '--pink', balance: '--violet', perf: '--gold', style: '--gold' };
-
-const days = new Map();
-let filtered = 0;
-for (const line of RAW) {
-  const [sha, date, subject] = line.split('\x1f');
-  if (!subject) continue;
-  if (!PLAYER_VISIBLE.test(subject)) { if (NOISE.test(subject)) filtered++; continue; }
-  const m = subject.match(/^(\w+)(?:\(([^)]+)\))?:\s*(.+)$/);
-  if (!m) continue;
-  if (!days.has(date)) days.set(date, []);
-  days.get(date).push({ sha, kind: m[1], scope: noEmDash(m[2] || ''), text: noEmDash(m[3]) });
-}
+/* The window, the git log it reads and the day bucketing live in bin/site-copy.mjs
+ * (FEED_WINDOW_DAYS, feedWindow, feedLogArgs, feedDays), so the kit renders the same window. */
+const { start: windowStart } = feedWindow(REFERENCE_DAY, FEED_WINDOW_DAYS);
+const RAW = git(...feedLogArgs(windowStart)).split('\n');
+const { days, filtered } = feedDays(RAW);
 const allDays = [...days.entries()].sort((a, b) => b[0].localeCompare(a[0]));
 const totalShipped = [...days.values()].reduce((n, d) => n + d.length, 0);
 
@@ -781,54 +748,16 @@ const backlogTeasers = parseBacklogTeasers();
  * date, title). This is the CONCISE view's entire source. A machine cannot pick
  * highlights, so nothing lands here except a human deciding it was worth
  * saying, and that is what keeps this view from ever filling with noise. */
-function parseNote(raw, fallbackDate) {
-  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if (!m) return null;
-  const [, fmRaw, body] = m;
-  const fm = {};
-  for (const line of fmRaw.split('\n')) {
-    const mm = line.match(/^(\w+):\s*(.*)$/);
-    if (mm) fm[mm[1]] = mm[2].trim().replace(/^['"]|['"]$/g, '');
-  }
-  return { version: fm.version || '', date: fm.date || fallbackDate, title: fm.title || fallbackDate, body };
-}
+/* parseNote moved to bin/site-copy.mjs. */
 
 /* BUCKET_NAMES is the parsing vocabulary for AUTHORED notes: the four headings
  * Kevin may write in notes/*.md. BUCKET_INK is the DISPLAY map and carries one
  * more, "Highlights", which no authored note can produce because it is not in
  * BUCKET_NAMES. Generated release entries use it for keyChanges, which mix new
  * and improved and would be a lie under either "New" or "Better". */
-const BUCKET_NAMES = ['New', 'Better', 'Fixed', 'Coming'];
-const BUCKET_RE = new RegExp(`^##\\s+(${BUCKET_NAMES.join('|')})\\s*$`, 'i');
 const BUCKET_INK = { New: '--cyan', Better: '--violet', Fixed: '--pink', Coming: '--gold', Highlights: '--cyan' };
 
-function parseBody(body) {
-  const lines = body.split('\n');
-  const intro = [];
-  const buckets = [];
-  let current = null;
-  let buf = [];
-  const flush = () => {
-    const text = buf.join('\n').trim();
-    buf = [];
-    if (!text) return;
-    (current ? current.blocks : intro).push(text);
-  };
-  for (const line of lines) {
-    const bm = line.match(BUCKET_RE);
-    if (bm) {
-      flush();
-      const name = BUCKET_NAMES.find((n) => n.toLowerCase() === bm[1].toLowerCase());
-      current = { name, blocks: [] };
-      buckets.push(current);
-      continue;
-    }
-    if (line.trim() === '') { flush(); continue; }
-    buf.push(line);
-  }
-  flush();
-  return { intro, buckets };
-}
+/* parseBody moved to bin/site-copy.mjs. */
 
 /** A block is one blank-line-separated chunk of the note body. Bullet items can
  *  wrap across multiple source lines (readable line width in the .md file), so
@@ -848,19 +777,7 @@ function renderBlock(text) {
 }
 
 const NOTES_DIR = join(SITE_ROOT, 'notes');
-let notes = [];
-if (existsSync(NOTES_DIR)) {
-  notes = readdirSync(NOTES_DIR)
-    .filter((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f))
-    .map((f) => {
-      const parsed = parseNote(readFileSync(join(NOTES_DIR, f), 'utf8'), f.replace(/\.md$/, ''));
-      if (!parsed) return null;
-      const { intro, buckets } = parseBody(parsed.body);
-      return { ...parsed, file: f, intro, buckets };
-    })
-    .filter(Boolean)
-    .sort((a, b) => b.date.localeCompare(a.date));
-}
+const notes = readNotes(NOTES_DIR);
 
 // ------------------------------------------- derive: one concise entry per release
 /* THE GUARD MOVED, IT DID NOT VANISH (Kevin 2026-08-05: "i would like a system
@@ -909,80 +826,9 @@ const releases = readPatchReleases(REPO);
  * working, not a bug, but it does mean a note carrying the wrong version number
  * hides a release. Deleting the `version:` line from the front matter publishes
  * both; there is nothing to turn off and no flag to remember. */
-const authoredDates = new Set(notes.map((n) => n.date));
-const authoredVersions = new Set(notes.map((n) => n.version).filter(Boolean));
-
-/* bugFixes is not capped at the source the way keyChanges is (0.6.0 carries
- * ten), and ten fix lines under four highlights is the drift back into a full
- * list that this view cannot survive. So it is capped HERE, and the remainder
- * is said out loud rather than silently dropped: same no-silent-caps law as the
- * "+N more that day, not shown" line in the full feed. The order is the order
- * the release author wrote them in, which is an authored ordering and not a
- * machine ranking; the page never claims the shown four are the important four,
- * only that there are more and where they are. */
-const BUG_FIXES_SHOWN = 4;
-/* A ceiling on the whole view, for the same reason the full feed has one. It is
- * above the full view's reach on purpose (that view holds 30 days; this holds
- * roughly two months of releases at the current cadence), because a summary
- * that remembers less than the raw log is the wrong way round. */
-const CONCISE_RELEASES_CAP = 24;
-
-const releaseEntries = releases
-  .filter((r) => !authoredDates.has(r.date) && !authoredVersions.has(r.version))
-  .map((r) => ({
-    kind: 'release',
-    date: r.date,
-    version: r.version,
-    anchor: `release-${slug(r.version)}`,
-    title: cleanDoc(r.headline),
-    keyChanges: r.keyChanges.map(cleanDoc),
-    bugFixes: r.bugFixes.map(cleanDoc),
-  }));
-
-/* THE DAYS A VERSION NUMBER COULD NOT HOLD, flattened into the same entry shape
- * as everything else so nothing downstream needs to learn a third kind. The
- * landing page's five lines, log.html's cards, the story's per-day links and the
- * search index all read `conciseEntries`; an addition that arrives here as an
- * ordinary entry reaches every one of them for free.
- *
- * FILTERED ON DATE ONLY, and deliberately not on version. A note takes a
- * VERSION's slot (see the block above authoredDates), which is a statement about
- * one release entry. An addition is a different day under that version, and a
- * note written on the 25th has no business suppressing what shipped on the 26th.
- * A note dated the same day as an addition does replace it, because that is what
- * "Kevin wrote that day's entry" has always meant here.
- *
- * `cut` falls out FALSE for every one of these, because cutOn is keyed on
- * date|version out of the release list and no version was cut on an addition's
- * date. That is the honest reading: the day shipped, no release was cut. */
-const additionEntries = releases.flatMap((r) => (r.additions || [])
-  .filter((a) => !authoredDates.has(a.date))
-  .map((a) => ({
-    kind: 'addition',
-    date: a.date,
-    version: r.version,
-    anchor: `release-${slug(r.version)}-${a.date}`,
-    title: cleanDoc(a.headline),
-    keyChanges: a.changes.map(cleanDoc),
-    bugFixes: [],
-  })));
-
-const authoredEntries = notes.map((n) => ({
-  kind: 'authored',
-  date: n.date,
-  version: n.version,
-  anchor: `note-${n.date}`,
-  title: n.title,
-  intro: n.intro,
-  buckets: n.buckets,
-}));
-
-/* Newest first, and version breaks a date tie so the two 2026-07-17 releases
- * do not render in whatever order the sort happened to leave them. */
-const conciseEntries = [...authoredEntries, ...releaseEntries, ...additionEntries]
-  .sort((a, b) => b.date.localeCompare(a.date) || String(b.version).localeCompare(String(a.version)));
-const conciseShown = conciseEntries.slice(0, CONCISE_RELEASES_CAP);
-const conciseDropped = conciseEntries.length - conciseShown.length;
+/* The merge (authored notes over releases and their dated additions, newest first,
+ * capped at CONCISE_RELEASES_CAP) lives in bin/site-copy.mjs as conciseModel. */
+const { releaseEntries, additionEntries, conciseShown, conciseDropped } = conciseModel({ releases, notes });
 
 /* LOUD ON EMPTY. This is the failure this whole lane exists to end: a generator
  * that runs clean, exits zero, and publishes a concise view with nothing in it.
@@ -1018,17 +864,12 @@ const nights = readableNights(existsSync(nightlyPath) ? readFileSync(nightlyPath
  * patch notes date that exact version to that exact day; the story's sentence
  * about how many releases were cut counts those, and every entry keeps its link
  * regardless, because a link is about where to read more. */
-const cutOn = new Set(releases.map((r) => `${r.date}|${r.version}`));
-const releasesByDate = new Map();
-for (const entry of conciseShown) {
-  if (!releasesByDate.has(entry.date)) releasesByDate.set(entry.date, []);
-  releasesByDate.get(entry.date).push({ ...entry, cut: cutOn.has(`${entry.date}|${entry.version}`) });
-}
-const story = buildStory({
-  lastDay: REFERENCE_DAY,
+const story = dayByDay({
+  referenceDay: REFERENCE_DAY,
   windowDays: FEED_WINDOW_DAYS,
-  changesByDate: days,
-  releasesByDate,
+  days,
+  releases,
+  conciseShown,
   nightsByDate: nights.byDate,
 });
 /* The window and the feed are drawn by one function now (see THE SUBTRACTION IS
@@ -2044,7 +1885,6 @@ const kitCard = (card) => `
  * a window onto that view rather than a second feed with its own rules. The
  * headline is the release's own one-line banner, written by a person for players
  * when the release was cut, and nothing here shortens it. */
-const LANDING_LOG_ENTRIES = 5;
 const landingLog = conciseShown.slice(0, LANDING_LOG_ENTRIES).map((e) => `
     <a class="logline" href="log.html#${esc(e.anchor)}">
       <span class="logline-when">${esc(e.date)}${e.version ? ` &middot; v${esc(e.version)}` : ''}</span>
@@ -2053,7 +1893,7 @@ const landingLog = conciseShown.slice(0, LANDING_LOG_ENTRIES).map((e) => `
 
 const teaserCards = pipelineCards.map((t) => `
     <div class="arc">
-      <div class="id">QUEUED</div>
+      <div class="id">${LANDING_COPY.pipeline.tag}</div>
       <h4>${esc(t.title)}</h4>
       <p>${esc(t.line)}</p>
     </div>`).join('');
@@ -2144,8 +1984,8 @@ const LANDING_CHROME_CSS = `
 }
 `;
 
-const INDEX_TITLE = `WHOMP: ${TAGLINE}`;
-const INDEX_DESCRIPTION = `${TAGLINE} A ${run.minutes} minute run in a browser tab, built in the open with the dev log public.`;
+const INDEX_TITLE = indexTitle();
+const INDEX_DESCRIPTION = indexDescription(run.minutes);
 
 const indexHtml = `<!doctype html>
 <html lang="en">
@@ -2406,55 +2246,45 @@ ${landingTopBar('index.html')}
 
 <section id="run">
   <div class="rule"></div>
-  <h2 class="chroma">What a run does to you</h2>
-  <p class="lede">Fifteen minutes, and every one of them wants you dead. The horde arrives from all sides at once,
-    gems spray everywhere, and your build snowballs from one shaky weapon into a rolling catastrophe with your name
-    on it. By the end the screen is mostly explosions. You are in there somewhere, allegedly in charge.</p>
-  <p class="lede">Nothing to download, nothing to install, and nobody here wants your email address. Click it and you
-    are already being chased.</p>
-  <p class="tallynote">Everything currently in there with you, hostile and otherwise.</p>
+  <h2 class="chroma">${LANDING_COPY.run.title}</h2>
+  ${LANDING_COPY.run.ledes.map((lede) => `<p class="lede">${lede}</p>`).join('\n  ')}
+  <p class="tallynote">${LANDING_COPY.run.tallyNote}</p>
   <div class="chips tally">
-    <span class="chip"><b>${run.worlds}</b> worlds</span>
-    <span class="chip"><b>${run.enemies}</b> enemies</span>
-    <span class="chip"><b>${run.characters}</b> characters</span>
-    <span class="chip"><b>${run.cores}</b> aimed cores</span>
-    <span class="chip"><b>${run.weapons}</b> weapons</span>
+    ${LANDING_COPY.run.tally.map(([key, label]) => `<span class="chip"><b>${run[key]}</b> ${label}</span>`).join('\n    ')}
   </div>
 </section>
 
 <section id="kit">
   <div class="rule"></div>
-  <h2 class="chroma">Your kit</h2>
-  <p class="lede">Every level up offers ${kit.offer}. You keep one, the other ${kit.offer - 1} are gone for good.</p>
+  <h2 class="chroma">${LANDING_COPY.kit.title}</h2>
+  <p class="lede">${LANDING_COPY.kit.lede(kit.offer)}</p>
   <div class="kits">${kitCards(kit).map(kitCard).join('')}</div>
 </section>
 
 <section id="shipped">
   <div class="rule"></div>
-  <h2 class="chroma">What just shipped</h2>
-  <p class="lede">The last ${LANDING_LOG_ENTRIES} things that changed, in the words they were written in on the day.
-    The dev log has the rest, including the days that went badly.</p>
+  <h2 class="chroma">${LANDING_COPY.shipped.title}</h2>
+  <p class="lede">${LANDING_COPY.shipped.lede(LANDING_LOG_ENTRIES)}</p>
   <div class="loglines">${landingLog}</div>
-  <p class="more"><a href="log.html#views">Read the whole dev log</a></p>
+  <p class="more"><a href="log.html#views">${LANDING_COPY.shipped.more}</a></p>
 </section>
 
 <section id="next">
   <div class="rule"></div>
-  <h2 class="chroma">What we are building</h2>
-  <p class="lede">The big pieces, in the order we are actually building them rather than the order we promised.</p>
+  <h2 class="chroma">${LANDING_COPY.next.title}</h2>
+  <p class="lede">${LANDING_COPY.next.lede}</p>
   <div class="arcs">${arcCards(arcs)}</div>
 </section>
 ${pipelineCards.length ? `
 <section id="pipeline">
   <div class="rule"></div>
-  <h2 class="chroma">Coming down the pipeline</h2>
-  <p class="lede">Wanted, written down, not started. ${pipeline.queued} things are in that queue and these are
-    ${pipelineCards.length} of them.</p>
+  <h2 class="chroma">${LANDING_COPY.pipeline.title}</h2>
+  <p class="lede">${LANDING_COPY.pipeline.lede(pipeline.queued, pipelineCards.length)}</p>
   <div class="arcs">${teaserCards}</div>
 </section>` : ''}
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
+  ${FOOTER_LEAD} <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
   ${servingLine()}
 </footer>
 
@@ -2497,7 +2327,7 @@ const SOURCE_LABEL = {
   addition: 'added under this version',
 };
 
-const LOG_DESCRIPTION = 'The WHOMP dev log: what shipped, what is still broken, and what is coming next.';
+const LOG_DESCRIPTION = LOG_COPY.description;
 
 const bucketBlock = (name, html) => `
     <div class="bucket">
@@ -2630,11 +2460,11 @@ const logHtml = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WHOMP dev log</title>
+<title>${LOG_COPY.title}</title>
 <meta name="description" content="${esc(LOG_DESCRIPTION)}">
 <link rel="icon" href="${FAVICON}">
 ${WORDMARK_PRELOAD}
-${socialTags({ title: 'WHOMP dev log', description: LOG_DESCRIPTION, path: 'log.html' })}
+${socialTags({ title: LOG_COPY.title, description: LOG_DESCRIPTION, path: 'log.html' })}
 <style>
 ${SHARED_CSS}
 /* ONE ROW, NOT TWO (director, 2026-08-25: "put our sign in here in the same bar
@@ -2794,7 +2624,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       ${wordmark(48, 'l')}
       <span>
         <h1 class="brandline"><b class="brandword" data-wordmark="WHOMP">WHOMP</b> dev log</h1>
-        <p class="subtag">Built by one person and a crew of AI agents. This is the real log.</p>
+        <p class="subtag">${LOG_COPY.subtag}</p>
       </span>
     </a>
     <div class="topbar-aside">
@@ -2808,10 +2638,10 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
 
 <div class="shell">
   <nav class="side">
-    <a href="#story">Day by day</a>
-    <a href="#shipped">Shipped</a>
-    <a href="#bugs">Known bugs</a>
-    <a href="#flight">In flight</a>
+    <a href="#story">${LOG_COPY.story.title}</a>
+    <a href="#shipped">${LOG_COPY.shipped.title}</a>
+    <a href="#bugs">${LOG_COPY.bugs.title}</a>
+    <a href="#flight">${LOG_COPY.flight.title}</a>
     <span class="wside-h" style="padding:14px 12px 6px;color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase">Wiki</span>
     <a href="wiki.html">All rosters</a>
     <a href="built-in-the-open.html">How it's made</a>
@@ -2832,18 +2662,16 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
        below could only answer that by making them count. -->
   <section id="story">
     <div class="rule"></div>
-    <h2 class="chroma">Day by day</h2>
+    <h2 class="chroma">${LOG_COPY.story.title}</h2>
     <p class="lede">${story.summary.map(esc).join(' ')}
-      <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
+      <a href="${LOG_COPY.story.link.href}">${LOG_COPY.story.link.text}</a></p>
     <div class="storydays">${story.days.map(storyCard).join('')}</div>
   </section>
 
   <section id="shipped">
     <div class="rule"></div>
-    <h2 class="chroma">Shipped</h2>
-    <p class="lede">Two ways to read it. Concise is one entry per release, in the words it was written
-      in for players, with Kevin's own note in its place on any day he wrote one. Full is every commit,
-      unedited, including the ones nobody would put in a release note.</p>
+    <h2 class="chroma">${LOG_COPY.shipped.title}</h2>
+    <p class="lede">${LOG_COPY.shipped.lede}</p>
 
     <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
          lands ON the Concise / Full choice rather than above it. -->
@@ -2869,7 +2697,7 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
 
   <section id="bugs">
     <div class="rule"></div>
-    <h2 class="chroma">Known bugs</h2>
+    <h2 class="chroma">${LOG_COPY.bugs.title}</h2>
     <p class="lede">${esc(bugFraming)}</p>
     <div class="chips bugtotals">
       <span class="chip">fixed <b>${totalFixedBugs ?? '?'}</b></span>
@@ -2887,8 +2715,8 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
 
   <section id="flight">
     <div class="rule"></div>
-    <h2 class="chroma">In flight</h2>
-    <p class="lede">What is on somebody's desk right now, as opposed to what is on the wish list.</p>
+    <h2 class="chroma">${LOG_COPY.flight.title}</h2>
+    <p class="lede">${LOG_COPY.flight.lede}</p>
     <div class="arcs">${arcCards(arcs)}${backlogTeasers.map(flightCard).join('')}</div>
   </section>
 
@@ -2897,7 +2725,7 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
+  ${FOOTER_LEAD} <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
   ${/* Same retirement as the hero chip on index.html, for the same reason: this
         line compared the live Stable sha against the sha the site was generated
         from and called the difference a pending deploy. The two are supposed to
@@ -2906,7 +2734,7 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
   ${servingLine()}
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">${totalShipped} player-visible changes in the last ${FEED_WINDOW_DAYS} days, across ${allDays.length} active days, ${filtered} internal-only commits filtered out</div>
+  <div class="stat">${LOG_COPY.stat({ total: totalShipped, windowDays: FEED_WINDOW_DAYS, activeDays: allDays.length, filtered })}</div>
 </footer>
 
 ${AUTH_SCRIPT()}
@@ -3146,7 +2974,7 @@ ${pitchSections.map((section) => `
 </div>
 
 <footer>
-  Every number on this page came straight out of the game, read at <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
+  ${FOOTER_LEAD} <code>game@${esc(headSha)}</code> on ${esc(buildStamp)}.
   ${servingLine()}
 </footer>
 
