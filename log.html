@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.26</b> · <code>5ce8d2df</code></span></div>
+    Live <b>0.7.27</b> · <code>22ee5a77</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">116 player-visible changes landed in the last 7 days, across 5 of them. None of those days ended in a release, so none of it has reached a player yet.
+    <p class="lede">154 player-visible changes landed in the last 7 days, across 5 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
-    <article class="storyday is-quiet" id="day-2026-10-31">
+    <article class="storyday is-quiet" id="day-2026-11-01">
       <div class="storyday-head">
-        <span class="storyday-when">2026-10-31</span>
+        <span class="storyday-when">2026-11-01</span>
         <span class="storyday-kinds"></span>
       </div>
       <p class="storyday-shape">Nothing player-visible landed.</p>
+      <a class="storyday-release" href="#release-0-7-27">
+        <b>v0.7.27</b><span>The hub comes up with less to unpack, and the pause menu, results screen</span>
+      </a>
+
+    </article>
+    <article class="storyday" id="day-2026-10-31">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-10-31</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 23</span><span class="storyday-kind" style="background:var(--cyan)">New 6</span><span class="storyday-kind" style="background:var(--gold)">Performance 6</span></span>
+      </div>
+      <p class="storyday-shape">35 changes landed: 23 fixed, 6 new, 6 performance.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-31">
         <b>v0.7.26</b><span>none (the cost was located and cut in the render path only; nothing a player sees changes)</span>
       </a>
@@ -526,9 +537,9 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <article class="storyday" id="day-2026-10-30">
       <div class="storyday-head">
         <span class="storyday-when">2026-10-30</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 43</span><span class="storyday-kind" style="background:var(--cyan)">New 12</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 49</span><span class="storyday-kind" style="background:var(--cyan)">New 16</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span><span class="storyday-kind" style="background:var(--gold)">Performance 1</span></span>
       </div>
-      <p class="storyday-shape">56 changes landed: 43 fixed, 12 new, 1 balance.</p>
+      <p class="storyday-shape">67 changes landed: 49 fixed, 16 new, 1 balance, 1 performance.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-30">
         <b>v0.7.26</b><span>The game now makes a better first guess at your graphics settings by looking at your graphics card</span>
       </a>
@@ -575,17 +586,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <b>v0.7.26</b><span>Popper and Cindersworn fuses are longer, enemies slide along walls to reach you instead of getting</span>
       </a>
 
-    </article>
-    <article class="storyday" id="day-2026-10-25">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-10-25</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span><span class="storyday-kind" style="background:var(--violet)">Balance 1</span></span>
-      </div>
-      <p class="storyday-shape">8 changes landed: 7 fixed, 1 balance.</p>
-      <a class="storyday-release" href="#release-0-7-26-2026-10-25">
-        <b>v0.7.26</b><span>Structure trials now appear at Fern Hollow, Stillwater's Pier Village, the Orchard Temple</span>
-      </a>
-
     </article></div>
   </section>
 
@@ -605,6 +605,26 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="viewpane" id="view-concise">
 
+  <article class="notecard" id="release-0-7-27">
+    <div class="notecard-head">
+      <span class="notecard-date">2026-11-01</span>
+      <span class="notecard-version">v0.7.27</span>
+      <span class="notecard-source">from the release notes</span>
+    </div>
+    <h3 class="chroma" style="font-size:1.4rem">The hub comes up with less to unpack, and the pause menu, results screen</h3>
+    <div class="buckets">
+
+    <div class="bucket">
+      <h4 style="color:var(--cyan)">Highlights</h4>
+      <ul><li>The hub comes up with less to unpack, and the pause menu, results screen and run world load quietly in the background before you start a run, offline too.</li><li>The arcade's planet now appears as soon as playwhomp.com loads.</li><li>Clank, the Lamplighter, now runs the Dust shop at his glowing stall.</li><li>The title screen now loads about 60 KB less code before it appears, and the Settings panel looks and works exactly as before.</li></ul>
+    </div>
+
+    <div class="bucket">
+      <h4 style="color:var(--pink)">Fixed</h4>
+      <ul><li>Fixes and polish.</li></ul>
+    </div>
+  </div>
+  </article>
   <article class="notecard" id="release-0-7-26-2026-10-31">
     <div class="notecard-head">
       <span class="notecard-date">2026-10-31</span>
@@ -616,7 +636,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
     <div class="bucket">
       <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>none (the cost was located and cut in the render path only; nothing a player sees changes)</li><li>Plasma Shield now grinds bosses a little faster, and Gravemaker's second quake reaches a little farther, so both hit big targets harder.</li></ul>
+      <ul><li>none (the cost was located and cut in the render path only; nothing a player sees changes)</li><li>Plasma Shield now grinds bosses a little faster, and Gravemaker's second quake reaches a little farther, so both hit big targets harder.</li><li>The game now holds its framerate more steadily by lowering quality automatically when it dips.</li><li>The game has less to unpack before your first run; every hero looks exactly the same.</li><li>Once the Mine opens, its door no longer shows the heavy bar and lock across it.</li></ul>
     </div>
 
   </div>
@@ -985,23 +1005,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
 
   </div>
   </article>
-  <article class="notecard" id="release-0-7-23-2026-10-05">
-    <div class="notecard-head">
-      <span class="notecard-date">2026-10-05</span>
-      <span class="notecard-version">v0.7.23</span>
-      <span class="notecard-source">added under this version</span>
-    </div>
-    <h3 class="chroma" style="font-size:1.4rem">The Hearthmound rises on Meadowfall, and the map portals now take the use key</h3>
-    <div class="buckets">
-
-    <div class="bucket">
-      <h4 style="color:var(--cyan)">Highlights</h4>
-      <ul><li>The linked map portals now take the use key instead of teleporting on touch, then rest for a minute, showing &quot;Recharging&quot; while you wait.</li><li>Meadowfall has a new landmark: the Hearthmound, a stepped mound with a ring of eight standing stones.</li></ul>
-    </div>
-
-  </div>
-  </article>
-      <p class="lede">55 earlier releases not shown here.</p>
+      <p class="lede">56 earlier releases not shown here.</p>
     </div>
 
     <div class="viewpane" id="view-full" hidden>
@@ -1011,12 +1015,121 @@ h2{font-size:1.5rem;margin:0 0 6px}
       </div>
 
   <div class="day">
+    <h4>2026-10-31</h4>
+
+    <div class="row" data-kind="fix" id="chg-8a72b07ef9">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">mount tolerates a DOM stub with no setAttribute <span class="scope">(alpha-tag)</span></span>
+      <span class="sha">8a72b07ef9</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ea6dd1575a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">landLogKeepsAssertions locates the row's FAIL-REAL echo, not the fast row's <span class="scope">(test)</span></span>
+      <span class="sha">ea6dd1575a</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-a5e2d1af46">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">add six census lines the 10-22 to 10-28 tier deploys lost <span class="scope">(notes)</span></span>
+      <span class="sha">a5e2d1af46</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ee642ec1dc">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">hitch walk declares its page globals for the lint ratchet <span class="scope">(mine)</span></span>
+      <span class="sha">ee642ec1dc</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-b26004bbeb">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">AFTER numbers with warming rooms held out of the scene graph <span class="scope">(mine)</span></span>
+      <span class="sha">b26004bbeb</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-5d8ef5b77f">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">a warming room stays out of the scene graph until it is warm <span class="scope">(mine)</span></span>
+      <span class="sha">5d8ef5b77f</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-138f0d1e49">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">hitch walk link-path capture without backslashes inside the page script <span class="scope">(mine)</span></span>
+      <span class="sha">138f0d1e49</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-39347e874d">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">warm draw back on; a warmed signature counts only while three keeps its program <span class="scope">(mine)</span></span>
+      <span class="sha">39347e874d</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-58220b0747">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">parallel-link warm-up where the driver has it; hitch walk measures room entry <span class="scope">(mine)</span></span>
+      <span class="sha">58220b0747</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-4288c70927">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">warm each room through its own warm-up: one program a frame, linked and drawn <span class="scope">(mine)</span></span>
+      <span class="sha">4288c70927</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-5cb986558b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a rename is judged by both its paths and every line; an octopus merge is refused by any parent past the first <span class="scope">(lander-fast-lane)</span></span>
+      <span class="sha">5cb986558b</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-35bd2e8fec">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">link a room's programs before it shows, park dropped rooms, quiet the HUD <span class="scope">(mine)</span></span>
+      <span class="sha">35bd2e8fec</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ae2ef06b91">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">every tier deploy's notes ride the next release commit, written once <span class="scope">(deploy)</span></span>
+      <span class="sha">ae2ef06b91</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-2b94c98c87">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">backfill the three lines the 10-30 and 10-31 game-tier deploys lost <span class="scope">(notes)</span></span>
+      <span class="sha">2b94c98c87</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-db519a02e6">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the not-run text says status 75, not exit 75 (the header's exit-code pin reads every 'exit N') <span class="scope">(lander-fast-lane)</span></span>
+      <span class="sha">db519a02e6</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-111e922db8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">the FAST lane, a single-row fix lands alone on a narrow gate (ruling 3) <span class="scope">(land-chain)</span></span>
+      <span class="sha">111e922db8</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9effe2e147">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">the blame why carries no log path, so the HELD-SKIP queue comment (cut at 160) holds it whole; the path moves to the done log's BATCH-BLAMED line <span class="scope">(land-chain)</span></span>
+      <span class="sha">9effe2e147</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-3a3ce2a68a">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">BATCH-BLAME-UNCONFIRMED resets bstarve_done so the starved-machine guard reads the still-red suite before drop-last <span class="scope">(land-chain)</span></span>
+      <span class="sha">3a3ce2a68a</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-8e93026b02">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">com.endenza.whomp app id; no Google sign-in inside the wrapper <span class="scope">(mobile-app)</span></span>
+      <span class="sha">8e93026b02</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-6b1deedab2">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">point the results-screen source marker at the lazy wrapper <span class="scope">(test)</span></span>
+      <span class="sha">6b1deedab2</span>
+    </div><div class="row more">+ 15 more that day, not shown</div>
+  </div>
+  <div class="day">
     <h4>2026-10-30</h4>
 
     <div class="row" data-kind="fix" id="chg-12cec04feb">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">no-change silences only a wholly no-change note and logs it with text and rule; about-the-change narrowed; lane-finish names the no-change read <span class="scope">(deploy-on-land)</span></span>
       <span class="sha">12cec04feb</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-ec1779b9ca">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">UNVERIFIED_CEILING 9 -&gt; 6 by printline; re-date a13-d7-unverified-paydown to 2026-11-14 with the six named</span>
+      <span class="sha">ec1779b9ca</span>
     </div>
     <div class="row" data-kind="balance" id="chg-25c87eff7e">
       <span class="kind" style="background:var(--violet)">Balance</span>
@@ -1037,6 +1150,11 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">close the campaign-authored-ending deferred row; the ending is on main</span>
       <span class="sha">bd4429a7a6</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-f540e45458">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">a table header is the row above a separator row, not a four-word list (claims 267 -&gt; 264)</span>
+      <span class="sha">f540e45458</span>
     </div>
     <div class="row" data-kind="feat" id="chg-7d3e8fe588">
       <span class="kind" style="background:var(--cyan)">New</span>
@@ -1093,26 +1211,16 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="what">no-unsafe-finally (3), plus the same files' bytes/empty/unused hunks</span>
       <span class="sha">4d4b4324b3</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-028c07ab49">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">tier page smoke excuses only a same-origin /version.json 404</span>
-      <span class="sha">028c07ab49</span>
+    <div class="row" data-kind="perf" id="chg-bca99754d6">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">run-only renderers, overlays and match/co-op worlds load at the hub-to-run seam <span class="scope">(js-cap-run-split)</span></span>
+      <span class="sha">bca99754d6</span>
     </div>
-    <div class="row" data-kind="fix" id="chg-084476d70e">
+    <div class="row" data-kind="fix" id="chg-0025eb240f">
       <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">write quotes in the sw stamp regexes as \x escapes so registry-guard's string masker stays in sync <span class="scope">(sw-precache)</span></span>
-      <span class="sha">084476d70e</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-7f1d7f66d0">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">phone control roots join the hide-chrome list <span class="scope">(shot)</span></span>
-      <span class="sha">7f1d7f66d0</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-d5da70a059">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">compose governor settings move with rewind generation on the save-hash chain <span class="scope">(frame-governor-r4)</span></span>
-      <span class="sha">d5da70a059</span>
-    </div><div class="row more">+ 36 more that day, not shown</div>
+      <span class="what">delete look b (Foreman); raise HUB_LIVE_TRIANGLE_CEILING 2,504,000 -&gt; 2,600,000 for the Lamplighter <span class="scope">(clank)</span></span>
+      <span class="sha">0025eb240f</span>
+    </div><div class="row more">+ 47 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-29</h4>
@@ -1347,50 +1455,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div>
   </div>
   <div class="day">
-    <h4>2026-10-25</h4>
-
-    <div class="row" data-kind="balance" id="chg-018fac9453">
-      <span class="kind" style="background:var(--violet)">Balance</span>
-      <span class="what">round 4 onto main a784bde0c3 with the Ember statue at hpMul 1.06 <span class="scope">(compose-1024)</span></span>
-      <span class="sha">018fac9453</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-68af5cd5c6">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">close the river pit, composed onto main with fresh artifacts (round 8, conductor hand-land) <span class="scope">(fairy-forest)</span></span>
-      <span class="sha">68af5cd5c6</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-15c609609a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a helper heal is one episode until the helper is up <span class="scope">(conductor-check)</span></span>
-      <span class="sha">15c609609a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4758cdcf20">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">resolve --work-dir physically like --repo <span class="scope">(deploy-train)</span></span>
-      <span class="sha">4758cdcf20</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-8c42cb07a2">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">resolve --repo physically (pwd -P) so the site step gets the same path on macOS /var -&gt; /private/var; add symlinked --repo test <span class="scope">(deploy-train)</span></span>
-      <span class="sha">8c42cb07a2</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c87a27999a">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-baseline overseer ceiling after main grew its reads <span class="scope">(boot-budget)</span></span>
-      <span class="sha">c87a27999a</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-c2262a2075">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">wall the dune slumps' faces; re-baseline the ziggurat hall's walk-through <span class="scope">(caravan-graveyard)</span></span>
-      <span class="sha">c2262a2075</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-53ce3b31d3">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">re-baseline role ceilings to the composed tree plus 3% headroom <span class="scope">(boot-budget)</span></span>
-      <span class="sha">53ce3b31d3</span>
-    </div>
-  </div>
-  <div class="day">
     <h4>2026-10-14</h4>
 
     <div class="row" data-kind="feat" id="chg-92e0767799">
@@ -1496,12 +1560,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@5ce8d2df4c</code> on 2026-10-31 23:10 UTC.
+  Every number on this page came straight out of the game, read at <code>game@22ee5a77a9</code> on 2026-11-01 11:57 UTC.
 
-  The game is serving <code>0.7.26</code>.
+  The game is serving <code>0.7.27</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">117 player-visible changes in the last 7 days, across 6 active days, 707 internal-only commits filtered out</div>
+  <div class="stat">155 player-visible changes in the last 7 days, across 6 active days, 774 internal-only commits filtered out</div>
 </footer>
 
 
