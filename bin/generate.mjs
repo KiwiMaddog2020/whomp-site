@@ -60,7 +60,7 @@ import { readableNights } from './devlog.mjs';
 import {
   BUG_FIXES_SHOWN, conciseModel, cleanDoc, dayByDay, FEED_WINDOW_DAYS, feedDays, feedLogArgs, feedWindow,
   FOOTER_LEAD, indexDescription, indexTitle, KIND_INK, KIND_LABEL, LANDING_COPY, LANDING_LOG_ENTRIES, LOG_COPY, noEmDash,
-  readNotes, slug, TAGLINE,
+  readNotes, slug, SOURCE_LABEL, TAGLINE,
 } from './site-copy.mjs';
 import { listTrackedGeneratedFiles } from './generated-output-git.mjs';
 import { resolveGameRepo } from './game-repo.mjs';
@@ -2314,18 +2314,7 @@ ${AUTH_SCRIPT()}
  * an apology. Two neutral labels are symmetric, so neither is the deviation.
  * This is also why there is no "unreviewed" badge: with no review path it would
  * be permanent, and a permanent apology on every entry is worse than no entry. */
-const SOURCE_LABEL = {
-  authored: 'written for the log',
-  release: 'from the release notes',
-  /* A DAY THAT SHIPPED UNDER A VERSION THAT DID NOT MOVE, and it gets its own
-   * label rather than borrowing the release one. Two cards chipped v0.7.12 with
-   * different dates and different words in them is a reader's fair question, and
-   * this label is the answer: the version held, the content kept arriving. The
-   * words still come from the game's own release notes and are still authored by
-   * a person, which is why the label names the RELATIONSHIP rather than a second
-   * source. See the header of bin/patch-notes.mjs. */
-  addition: 'added under this version',
-};
+/* SOURCE_LABEL lives in bin/site-copy.mjs, with the log's other framing lines. */
 
 const LOG_DESCRIPTION = LOG_COPY.description;
 
@@ -2346,7 +2335,7 @@ const releaseBody = (e) => {
   const shown = e.bugFixes.slice(0, BUG_FIXES_SHOWN);
   const hidden = e.bugFixes.length - shown.length;
   const more = hidden > 0
-    ? `<p class="bucket-more">${hidden} more fix${hidden === 1 ? '' : 'es'} shipped in this release. The full log has all of them.</p>`
+    ? `<p class="bucket-more">${LOG_COPY.moreFixes(hidden)}</p>`
     : '';
   return `<div class="buckets">
     ${bucketBlock('Highlights', list(e.keyChanges))}
@@ -2378,7 +2367,7 @@ const dayBlock = (date, changes) => {
       <span class="what">${esc(c.text)}${c.scope ? ` <span class="scope">(${esc(c.scope)})</span>` : ''}</span>
       <span class="sha">${esc(c.sha)}</span>
     </div>`).join('');
-  const more = hidden > 0 ? `<div class="row more">+ ${hidden} more that day, not shown</div>` : '';
+  const more = hidden > 0 ? `<div class="row more">${LOG_COPY.moreThatDay(hidden)}</div>` : '';
   return `
   <div class="day">
     <h4>${esc(date)}</h4>
@@ -2427,10 +2416,10 @@ const ownerBugSection = GATING_ENABLED ? `
 
 const flightCard = (t) => `
   <div class="arc" id="flight-${slug(t.name)}">
-    <div class="id">IN FLIGHT</div>
+    <div class="id">${LOG_COPY.flight.tag}</div>
     <h4>${esc(t.name)}</h4>
     <p>${esc(t.blurb)}</p>
-    <p style="margin-top:8px;color:var(--dim);font-size:.78rem">${t.count} item${t.count === 1 ? '' : 's'} queued</p>
+    <p style="margin-top:8px;color:var(--dim);font-size:.78rem">${LOG_COPY.flight.queued(t.count)}</p>
   </div>`;
 
 /* THE DAY, AS A CARD. Three things can be on it and only the first is always
@@ -2450,7 +2439,7 @@ const storyCard = (day) => `
       </div>
       <p class="storyday-shape">${esc(day.shape)}</p>
       ${day.releases.map((r) => `<a class="storyday-release" href="#${esc(r.anchor)}">
-        <b>${r.version ? `v${esc(r.version)}` : 'Written up'}</b><span>${esc(r.title)}</span>
+        <b>${r.version ? `v${esc(r.version)}` : LOG_COPY.story.writtenUp}</b><span>${esc(r.title)}</span>
       </a>`).join('')}
       ${day.nightly.map((line) => `<p class="storyday-night">${esc(line)}</p>`).join('')}
     </article>`;
@@ -2676,22 +2665,22 @@ ${searchMarkup(SEARCH_PLACEHOLDER)}
     <!-- id="views": the nav's Dev log link targets this, so arriving from anywhere
          lands ON the Concise / Full choice rather than above it. -->
     <div class="viewtoggle" id="views" role="tablist">
-      <button class="vtab is-active" data-view="concise" type="button" role="tab" aria-selected="true">Concise</button>
-      <button class="vtab" data-view="full" type="button" role="tab" aria-selected="false">Full log</button>
+      <button class="vtab is-active" data-view="concise" type="button" role="tab" aria-selected="true">${LOG_COPY.shipped.concise}</button>
+      <button class="vtab" data-view="full" type="button" role="tab" aria-selected="false">${LOG_COPY.shipped.full}</button>
     </div>
 
     <div class="viewpane" id="view-concise">
       ${conciseShown.map(entryCard).join('')}
-      ${conciseDropped > 0 ? `<p class="lede">${conciseDropped} earlier release${conciseDropped === 1 ? '' : 's'} not shown here.</p>` : ''}
+      ${conciseDropped > 0 ? `<p class="lede">${LOG_COPY.shipped.earlierReleases(conciseDropped)}</p>` : ''}
     </div>
 
     <div class="viewpane" id="view-full" hidden>
       <div class="filters" id="kind-filters">
-        <button class="chipf is-active" data-kind="all" type="button">All</button>
+        <button class="chipf is-active" data-kind="all" type="button">${LOG_COPY.shipped.all}</button>
         ${Object.entries(KIND_LABEL).map(([k, label]) => `<button class="chipf" data-kind="${k}" type="button">${esc(label)}</button>`).join('')}
       </div>
       ${fullFeed.map(([date, changes]) => dayBlock(date, changes)).join('')}
-      ${allDays.length > LOG_DAYS_CAP ? `<p class="lede">${allDays.length - LOG_DAYS_CAP} earlier active days not shown here.</p>` : ''}
+      ${allDays.length > LOG_DAYS_CAP ? `<p class="lede">${LOG_COPY.shipped.earlierDays(allDays.length - LOG_DAYS_CAP)}</p>` : ''}
     </div>
   </section>
 

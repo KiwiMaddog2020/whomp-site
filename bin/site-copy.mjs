@@ -106,18 +106,45 @@ export const LOG_COPY = {
   story: {
     title: 'Day by day',
     link: { href: 'built-in-the-open.html', text: 'How a change gets from a lane to your browser.' },
+    /** A story day's link to an authored note with no version. */
+    writtenUp: 'Written up',
   },
   shipped: {
     title: 'Shipped',
+    concise: 'Concise',
+    full: 'Full log',
+    all: 'All',
+    earlierReleases: (n) => `${n} earlier release${n === 1 ? '' : 's'} not shown here.`,
+    earlierDays: (n) => `${n} earlier active days not shown here.`,
     lede: "Two ways to read it. Concise is one entry per release, in the words it was written\n      in for players, with Kevin's own note in its place on any day he wrote one. Full is every commit,\n      unedited, including the ones nobody would put in a release note.",
   },
   bugs: { title: 'Known bugs' },
   flight: {
     title: 'In flight',
     lede: "What is on somebody's desk right now, as opposed to what is on the wish list.",
+    tag: 'IN FLIGHT',
+    queued: (count) => `${count} item${count === 1 ? '' : 's'} queued`,
   },
+  /** Under a release card when its fixes are capped; under a day of the full feed when it is. */
+  moreFixes: (hidden) => `${hidden} more fix${hidden === 1 ? '' : 'es'} shipped in this release. The full log has all of them.`,
+  moreThatDay: (hidden) => `+ ${hidden} more that day, not shown`,
   /** The footer's provenance count, beside the build stamp. */
   stat: ({ total, windowDays, activeDays, filtered }) => `${total} player-visible changes in the last ${windowDays} days, across ${activeDays} active days, ${filtered} internal-only commits filtered out`,
+};
+
+/* HOW A READER TELLS THE CONCISE ENTRIES APART: a source chip beside the date and
+ * version chips. Both kinds are labelled, so neither reads as the exception. */
+export const SOURCE_LABEL = {
+  authored: 'written for the log',
+  release: 'from the release notes',
+  /* A DAY THAT SHIPPED UNDER A VERSION THAT DID NOT MOVE, and it gets its own
+   * label rather than borrowing the release one. Two cards chipped v0.7.12 with
+   * different dates and different words in them is a reader's fair question, and
+   * this label is the answer: the version held, the content kept arriving. The
+   * words still come from the game's own release notes and are still authored by
+   * a person, which is why the label names the RELATIONSHIP rather than a second
+   * source. See the header of bin/patch-notes.mjs. */
+  addition: 'added under this version',
 };
 
 /* -------------------------------------------------------------------- the window */
