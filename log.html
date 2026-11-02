@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.27</b> · <code>9c2c9438</code></span></div>
+    Live <b>0.7.27</b> · <code>03340ba2</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">178 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">184 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-11-01">
       <div class="storyday-head">
         <span class="storyday-when">2026-11-01</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 12</span><span class="storyday-kind" style="background:var(--cyan)">New 1</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 15</span><span class="storyday-kind" style="background:var(--cyan)">New 2</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">13 changes landed: 12 fixed, 1 new.</p>
+      <p class="storyday-shape">19 changes landed: 15 fixed, 2 new, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-27">
         <b>v0.7.27</b><span>The hub loads faster, and menus and your first run load in the background</span>
       </a>
@@ -1017,6 +1017,36 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-11-01</h4>
 
+    <div class="row" data-kind="perf" id="chg-e36f94fba3">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">drop the DEV-only run handle from the production Mine chunk <span class="scope">(mine)</span></span>
+      <span class="sha">e36f94fba3</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-d3756dd292">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">exit on an empty queue; the supervisor owns the poll <span class="scope">(lander)</span></span>
+      <span class="sha">d3756dd292</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-b8fbe3bfa8">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">--angle picks the GL backend (metal on the Mac) and the JSON names the renderer it measured <span class="scope">(mine-hitch-walk)</span></span>
+      <span class="sha">b8fbe3bfa8</span>
+    </div>
+    <div class="row" data-kind="perf" id="chg-182363ed8c">
+      <span class="kind" style="background:var(--gold)">Performance</span>
+      <span class="what">the prebuild's after walk, seed 4242 (SwiftShader) <span class="scope">(mine)</span></span>
+      <span class="sha">182363ed8c</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-0d6e96e09b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">build every room of a floor under the curtain; play only files, shows and hides <span class="scope">(mine)</span></span>
+      <span class="sha">0d6e96e09b</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-9a2353dc05">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">fall back to playwright-core, default to localhost, read curtain time and held memory <span class="scope">(mine-hitch-walk)</span></span>
+      <span class="sha">9a2353dc05</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-ad9a3e6a05">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">the boundary self-heal commits only the PNGs its own render wrote, and its subject says what moved <span class="scope">(land-chain)</span></span>
@@ -1629,12 +1659,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@9c2c94382a</code> on 2026-11-01 18:13 UTC.
+  Every number on this page came straight out of the game, read at <code>game@03340ba20a</code> on 2026-11-02 01:29 UTC.
 
   The game is serving <code>0.7.27</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">179 player-visible changes in the last 7 days, across 7 active days, 877 internal-only commits filtered out</div>
+  <div class="stat">185 player-visible changes in the last 7 days, across 7 active days, 912 internal-only commits filtered out</div>
 </footer>
 
 
