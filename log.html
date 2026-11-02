@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.27</b> · <code>ba6110b6</code></span></div>
+    Live <b>0.7.27</b> · <code>9667a65d</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,15 +509,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">187 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">192 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
     <article class="storyday" id="day-2026-11-01">
       <div class="storyday-head">
         <span class="storyday-when">2026-11-01</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 17</span><span class="storyday-kind" style="background:var(--cyan)">New 3</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 18</span><span class="storyday-kind" style="background:var(--cyan)">New 7</span><span class="storyday-kind" style="background:var(--gold)">Performance 2</span></span>
       </div>
-      <p class="storyday-shape">22 changes landed: 17 fixed, 3 new, 2 performance.</p>
+      <p class="storyday-shape">27 changes landed: 18 fixed, 7 new, 2 performance.</p>
       <a class="storyday-release" href="#release-0-7-27">
         <b>v0.7.27</b><span>The hub loads faster, and menus and your first run load in the background</span>
       </a>
@@ -1017,6 +1017,31 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <div class="day">
     <h4>2026-11-01</h4>
 
+    <div class="row" data-kind="feat" id="chg-0ad758c514">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">PLAY keeps its live on-screen size on the fitted page (Kevin's signed 1440x789 reference) <span class="scope">(arcade)</span></span>
+      <span class="sha">0ad758c514</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-285150addd">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">preview at half the stage on every fitted size (Kevin 2026-11-02) <span class="scope">(arcade)</span></span>
+      <span class="sha">285150addd</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-1aa8c1e39e">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">planet option A, bigger and centred in the gap (Kevin 2026-11-02) <span class="scope">(arcade)</span></span>
+      <span class="sha">1aa8c1e39e</span>
+    </div>
+    <div class="row" data-kind="fix" id="chg-aa931ecb0b">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">keep the peek's pinned room line, serve the fit test without node:http <span class="scope">(arcade-fit-screen)</span></span>
+      <span class="sha">aa931ecb0b</span>
+    </div>
+    <div class="row" data-kind="feat" id="chg-5ef3070eb2">
+      <span class="kind" style="background:var(--cyan)">New</span>
+      <span class="what">fit the desktop arcade to the window, no scroll <span class="scope">(arcade)</span></span>
+      <span class="sha">5ef3070eb2</span>
+    </div>
     <div class="row" data-kind="fix" id="chg-31b1c1b021">
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">pull in at a house corner only when the hero is mostly hidden <span class="scope">(hub-cam)</span></span>
@@ -1091,32 +1116,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <span class="kind" style="background:var(--pink)">Fixed</span>
       <span class="what">drop the four none lines and rewrite two broken headlines <span class="scope">(patch-notes)</span></span>
       <span class="sha">013fc9609d</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4b8a52dd10">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a PLAYER-NOTE that begins with none is none, and the backstop refuses it <span class="scope">(deploy-notes)</span></span>
-      <span class="sha">4b8a52dd10</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-911d8c37b8">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hub chase camera pulls in in front of buildings that hide the hero <span class="scope">(hub)</span></span>
-      <span class="sha">911d8c37b8</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-507c160e31">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">inset probe is position:absolute so the hide-chrome fixed-root census stays exact <span class="scope">(phone-shell)</span></span>
-      <span class="sha">507c160e31</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-5ecf5971fe">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">safe-area insets for phone controls; pwa.ts is the one owner of beforeinstallprompt <span class="scope">(phone-shell)</span></span>
-      <span class="sha">5ecf5971fe</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-57176f37e1">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">add .whomp-shell-card to HIDE_CHROME_SELECTORS (phone-shell-r2) <span class="scope">(shot-harness)</span></span>
-      <span class="sha">57176f37e1</span>
-    </div><div class="row more">+ 2 more that day, not shown</div>
+    </div><div class="row more">+ 7 more that day, not shown</div>
   </div>
   <div class="day">
     <h4>2026-10-31</h4>
@@ -1664,12 +1664,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@ba6110b604</code> on 2026-11-02 02:55 UTC.
+  Every number on this page came straight out of the game, read at <code>game@9667a65d31</code> on 2026-11-02 05:58 UTC.
 
   The game is serving <code>0.7.27</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">188 player-visible changes in the last 7 days, across 7 active days, 931 internal-only commits filtered out</div>
+  <div class="stat">193 player-visible changes in the last 7 days, across 7 active days, 945 internal-only commits filtered out</div>
 </footer>
 
 
