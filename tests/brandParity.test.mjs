@@ -29,8 +29,10 @@ const index = read('index.html');
 const log = read('log.html');
 const wiki = read('wiki.html');
 const pitch = read('built-in-the-open.html');
-const generated = index && log && wiki && pitch;
-const options = generated ? {} : { skip: 'the site has not been generated in this checkout' };
+// MOVED (game lane site-to-about): the root pages are redirect stubs.
+const moved = existsSync(join(SITE_ROOT, 'MOVED'));
+const generated = index && log && wiki && pitch && !moved;
+const options = generated ? {} : { skip: moved ? 'the site moved to playwhomp.com/about; these pages are redirect stubs' : 'the site has not been generated in this checkout' };
 
 /** The four pages a stranger can land on from somebody else's link. Every one of
  *  them paints the wordmark somewhere, so every one of them has to carry the

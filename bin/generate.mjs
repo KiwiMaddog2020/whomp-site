@@ -83,6 +83,18 @@ const arg = (name, dflt) => {
 const REPO = resolveGameRepo(args, process.env);
 const OUTDIR = resolve(arg('--outdir', SITE_ROOT));
 const OFFLINE = args.includes('--offline');
+/* MOVED (game lane site-to-about). Once bin/redirect-stubs.mjs has written the
+ * MOVED marker, this checkout's root holds redirect stubs to playwhomp.com/about
+ * and must not be regenerated over them: the game's Stable deploy
+ * (bin/deploy-play.sh) still runs this generator here with no --outdir. Writing
+ * an empty manifest and exiting 0 keeps that deploy green and stages nothing.
+ * Generating into any other directory (the game's bin/build-about.mjs, a
+ * preflight) is unaffected. */
+if (OUTDIR === SITE_ROOT && existsSync(join(SITE_ROOT, 'MOVED'))) {
+  writeFileSync(join(SITE_ROOT, '.site-outputs'), '');
+  console.log(`site moved to ${readFileSync(join(SITE_ROOT, 'MOVED'), 'utf8').split('\n')[0]}; the root holds redirect stubs and is not regenerated (pass --outdir to build the pages elsewhere)`);
+  process.exit(0);
+}
 /* THE DEPLOY KNOWS WHAT IT SHIPPED; THE NETWORK DOES NOT, YET. Fetching
  * version.json right after a deploy races GitHub Pages propagation, and the loser
  * is the site confidently reporting the PREVIOUS build as live. So the deploy

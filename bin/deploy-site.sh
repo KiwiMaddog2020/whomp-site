@@ -79,6 +79,17 @@ if [ "$CURRENT_BRANCH" != "$PUBLISH_BRANCH" ]; then
   exit 1
 fi
 
+# ── MOVED (game lane site-to-about; Kevin 11-03 "sites at game/about"). ─────
+# The pages live at playwhomp.com/about now, built by the game's Preview deploy
+# (bin/build-about.mjs). This repo's root holds redirect stubs written once by
+# bin/redirect-stubs.mjs; regenerating here would overwrite them with pages
+# nobody should be served from github.io. Every caller of this script (the
+# game's deploy-preview.sh and deploy-train.sh) keeps working: it is a no-op.
+if [ -f MOVED ]; then
+  echo "site moved to $(head -1 MOVED): github.io serves redirect stubs; nothing to regenerate here"
+  exit 0
+fi
+
 # The default stays relative to SITE_ROOT, exactly as before; an override is
 # resolved against the caller's directory and made absolute, so the generator and
 # the commit message below name the same tree.
