@@ -457,7 +457,7 @@ h2{font-size:1.5rem;margin:0 0 6px}
     <div class="topbar-aside">
       <div class="chips"><span class="chip">
     <span class="dot" aria-hidden="true"></span>
-    Live <b>0.7.27</b> · <code>2b5baf93</code></span></div>
+    Live <b>0.7.27</b> · <code>687a35f9</code></span></div>
 
 <div class="authbar">
   <span id="ab-signedout">
@@ -509,9 +509,18 @@ h2{font-size:1.5rem;margin:0 0 6px}
   <section id="story">
     <div class="rule"></div>
     <h2 class="chroma">Day by day</h2>
-    <p class="lede">191 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
+    <p class="lede">176 player-visible changes landed in the last 7 days, across 6 of them. One release was cut on one of those days, and that is the part a player can already play.
       <a href="built-in-the-open.html">How a change gets from a lane to your browser.</a></p>
     <div class="storydays">
+    <article class="storyday" id="day-2026-11-04">
+      <div class="storyday-head">
+        <span class="storyday-when">2026-11-04</span>
+        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--pink)">Fixed 1</span></span>
+      </div>
+      <p class="storyday-shape">One change landed, and it was a fix.</p>
+
+
+    </article>
     <article class="storyday" id="day-2026-11-03">
       <div class="storyday-head">
         <span class="storyday-when">2026-11-03</span>
@@ -571,17 +580,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
       <p class="storyday-shape">28 changes landed: 12 fixed, 11 new, 5 performance.</p>
       <a class="storyday-release" href="#release-0-7-26-2026-10-29">
         <b>v0.7.26</b><span>Save-format changes are now checked automatically</span>
-      </a>
-
-    </article>
-    <article class="storyday" id="day-2026-10-28">
-      <div class="storyday-head">
-        <span class="storyday-when">2026-10-28</span>
-        <span class="storyday-kinds"><span class="storyday-kind" style="background:var(--cyan)">New 9</span><span class="storyday-kind" style="background:var(--pink)">Fixed 7</span></span>
-      </div>
-      <p class="storyday-shape">16 changes landed: 9 new, 7 fixed.</p>
-      <a class="storyday-release" href="#release-0-7-26-2026-10-28">
-        <b>v0.7.26</b><span>Trinkets can now be equipped, earned and used in runs</span>
       </a>
 
     </article></div>
@@ -1012,6 +1010,15 @@ h2{font-size:1.5rem;margin:0 0 6px}
         <button class="chipf" data-kind="feat" type="button">New</button><button class="chipf" data-kind="fix" type="button">Fixed</button><button class="chipf" data-kind="balance" type="button">Balance</button><button class="chipf" data-kind="perf" type="button">Performance</button><button class="chipf" data-kind="style" type="button">Polish</button>
       </div>
 
+  <div class="day">
+    <h4>2026-11-04</h4>
+
+    <div class="row" data-kind="fix" id="chg-a1f490c116">
+      <span class="kind" style="background:var(--pink)">Fixed</span>
+      <span class="what">recompose r3 787368b36b's own paths onto main 558702406a <span class="scope">(enemy-bodies-scale-r4)</span></span>
+      <span class="sha">a1f490c116</span>
+    </div>
+  </div>
   <div class="day">
     <h4>2026-11-03</h4>
 
@@ -1463,90 +1470,6 @@ h2{font-size:1.5rem;margin:0 0 6px}
     </div><div class="row more">+ 8 more that day, not shown</div>
   </div>
   <div class="day">
-    <h4>2026-10-28</h4>
-
-    <div class="row" data-kind="fix" id="chg-df31979dbd">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a Mythic+ chest key grants at most one card whatever a retry rolls <span class="scope">(mythic-chest-key-latch)</span></span>
-      <span class="sha">df31979dbd</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-34f29085fd">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Trinkets tab in the Arsenal Forge (view, equip, delete for Dust) <span class="scope">(trinket-forge-tab)</span></span>
-      <span class="sha">34f29085fd</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-1763034f66">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">a chest key pays once whatever the re-roll says; Warden chest nonce gets a mint <span class="scope">(mine-chest-retry-latch)</span></span>
-      <span class="sha">1763034f66</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-44110421dc">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">week clears sync as a ledger; Warden settle grants the card before the Dust latch <span class="scope">(mythic)</span></span>
-      <span class="sha">44110421dc</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-4a63ed69ba">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">import process from node:process in the two mythic tests so tsc -b is clean (house idiom)</span>
-      <span class="sha">4a63ed69ba</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-e8c8a2b59d">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the no-crypto mint's entropy comes from the caller, not the sim <span class="scope">(install-nonce)</span></span>
-      <span class="sha">e8c8a2b59d</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-8432efab4b">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">Mine floors seat chests at each room's anchor chest sites <span class="scope">(mine-loot-sites)</span></span>
-      <span class="sha">8432efab4b</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-43be1d9191">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">settle never re-grants after a duplicate's Dust; nonce mints without crypto <span class="scope">(mine-chest)</span></span>
-      <span class="sha">43be1d9191</span>
-    </div>
-    <div class="row" data-kind="fix" id="chg-3d5c98ba1f">
-      <span class="kind" style="background:var(--pink)">Fixed</span>
-      <span class="what">the full suite's five lane reds <span class="scope">(mythic)</span></span>
-      <span class="sha">3d5c98ba1f</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-08a24c649a">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Warden's end chest, the weekly hub chest and the weekly clear Dust <span class="scope">(mythic)</span></span>
-      <span class="sha">08a24c649a</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-aeb57f7a86">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Mythic+ week record leaf, the install nonce and Meta.hasDustEarn <span class="scope">(save)</span></span>
-      <span class="sha">aeb57f7a86</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-c84b23de38">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the hub's Mine door boots a run once the void gate is open <span class="scope">(mine)</span></span>
-      <span class="sha">c84b23de38</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-08aefca8c4">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">the Mythic+ reward table, one named constant per number <span class="scope">(mythic)</span></span>
-      <span class="sha">08aefca8c4</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-657aabf4b6">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">boss chest table, roll, per-device key and settle <span class="scope">(mine)</span></span>
-      <span class="sha">657aabf4b6</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-06b6847c34">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">read-only hasTrinketGrant(id, receiptKey) <span class="scope">(meta)</span></span>
-      <span class="sha">06b6847c34</span>
-    </div>
-    <div class="row" data-kind="feat" id="chg-3d2e9f9357">
-      <span class="kind" style="background:var(--cyan)">New</span>
-      <span class="what">install nonce outside the synced save, for per-device receipt keys <span class="scope">(sim)</span></span>
-      <span class="sha">3d2e9f9357</span>
-    </div>
-  </div>
-  <div class="day">
     <h4>2026-10-14</h4>
 
     <div class="row" data-kind="feat" id="chg-92e0767799">
@@ -1652,12 +1575,12 @@ h2{font-size:1.5rem;margin:0 0 6px}
 </div>
 
 <footer style="max-width:1180px;margin:0 auto;padding:0 24px 40px">
-  Every number on this page came straight out of the game, read at <code>game@2b5baf9393</code> on 2026-11-04 01:40 UTC.
+  Every number on this page came straight out of the game, read at <code>game@687a35f97d</code> on 2026-11-04 14:37 UTC.
 
   The game is serving <code>0.7.27</code>.
   <!-- Provenance, beside the provenance. See "THE COUNT IS NOT NAVIGATION" where
        these three numbers are derived, for what the count actually counts. -->
-  <div class="stat">192 player-visible changes in the last 7 days, across 7 active days, 931 internal-only commits filtered out</div>
+  <div class="stat">177 player-visible changes in the last 7 days, across 7 active days, 840 internal-only commits filtered out</div>
 </footer>
 
 
