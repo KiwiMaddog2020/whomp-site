@@ -48,7 +48,7 @@
  *  controls whether the OWNER-ONLY per-report bug section even gets generated.
  *  See the comment on that constant and on ownerBugSection further down.
  *
- *  USAGE: node bin/generate.mjs [--repo ../whomp] [--outdir .] [--offline]
+ *  USAGE: node bin/generate.mjs [--repo ../whomp] [--outdir .] [--offline] [--site-url URL]
  *         (no --repo: WHOMP_GAME_REPO, else ../whomp; see bin/game-repo.mjs)
  */
 import { execFileSync } from 'node:child_process';
@@ -94,8 +94,20 @@ const VERSION_ARG = arg('--version', '');
 
 /* WHERE THE SITE ITSELF LIVES. Only the social-card tags need it: og:url and the
  * absolute image URL an unfurler fetches, neither of which can be relative. It
- * is the same origin bin/deploy-site.sh prints when it finishes. */
-const SITE_URL = 'https://kiwimaddog2020.github.io/whomp-site';
+ * is the same origin bin/deploy-site.sh prints when it finishes.
+ *
+ * A PARAMETER SINCE THE MOVE TO /about (game lane site-to-about, Kevin 11-03
+ * "sites at game/about"). The game's bin/build-about.mjs runs this generator
+ * into its dist/about/ and passes `--site-url https://playwhomp.com/about`;
+ * WHOMP_SITE_URL does the same for a hand run. No flag keeps the github.io
+ * origin, so a run that does not ask for the move is byte-for-byte unchanged.
+ * Every other link on every page is document-relative and flat, which is why
+ * nothing else needs a base. */
+const DEFAULT_SITE_URL = 'https://kiwimaddog2020.github.io/whomp-site';
+const SITE_URL = arg('--site-url', process.env.WHOMP_SITE_URL || DEFAULT_SITE_URL);
+if (!/^https:\/\/[a-z0-9.-]+(?:\/[a-z0-9._-]+)*$/i.test(SITE_URL)) {
+  throw new Error(`--site-url must be an https origin with an optional path and no trailing slash, got "${SITE_URL}"`);
+}
 
 /* WARNINGS ARE A GATE, NOT A CONSOLE DECORATION, AND THAT ONLY WORKS IF THEY
  * ARE RARE. bin/regenerate-and-verify.sh fails the run on a non-zero WARNING
